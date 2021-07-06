@@ -19,7 +19,7 @@ Sistema de registro de horas de trabajo de estudiantes en el TCU
 - Etiquetas o categorías (por ejemplo: "desarrollo web", "prototipos", "talleres", "tutorías")
 - (Ubicación, socios, etc.)
 
-`class Actividad``
+``class Actividad``
 
 - estudiante.carné (foreign key)
 - proyecto.id (foreign key)
