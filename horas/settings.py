@@ -33,13 +33,18 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'inicio.apps.InicioConfig',
-    'registro.apps.RegistroConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cuentas',
+    'actividades',
+    'solicitudes',
+    'proyectos',
+    'crispy_forms'
+    
 ]
 
 MIDDLEWARE = [
@@ -53,6 +58,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'horas.urls'
+
+CRISPY_TEMPLATE_PACK =  'bootstrap4'
 
 TEMPLATES = [
     {
@@ -116,6 +123,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL =  '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
