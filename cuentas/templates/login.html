@@ -1,0 +1,21 @@
+{% extends 'accounts_base.html' %} {% load crispy_forms_tags %} {% block main %}
+
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Iniciar Sesión</h4>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}" />
+
+      {{login_form|crispy }}
+
+      <button type="submit" class="btn btn-primary btn-block">Continuar</button>
+    </form>
+    <p class="text-center">¿No tiene una cuenta? <a href="/cuentas/register">Crear cuenta nueva</a>.</p>
+  </div>
+</div>
+
+{% endblock %}
+
+

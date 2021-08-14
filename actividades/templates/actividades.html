@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+
+<div class="container">
+</br>
+  <h1>Actividades</h1>
+  <table class="table table-bordered">
+    <thead class="thead">
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Horas</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Proyecto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Curso Django</td>
+        <td>5</td>
+        <td>8-13-2021</td>
+        <td>Web Buses</td>
+      </tr>
+      <tr>
+  
+        <td>Curso Javascript</td>
+        <td>2</td>
+        <td>8-13-2021</td>
+        <td>Web Buses</td>
+      </tr>
+      <tr>
+        <td>CSS pagina web</td>
+        <td>2</td>
+        <td>8-13-2021</td>
+        <td>Web Buses</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

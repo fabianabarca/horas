@@ -1,0 +1,16 @@
+.container {
+  margin-top: 50px;
+  box-shadow: 0 0 20px black;
+  padding:0 15px 50px 15px;
+}
+
+
+h1 {
+  padding-left: 2%;
+  padding-bottom: 2%;
+}
+
+.table thead th{
+   background-color:  #1495EA;
+}
+
