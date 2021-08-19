@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+
+<div class="container">
+</br>
+  <h1>Agregar Actividad</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />
+
+    {{actividad_form|crispy }}
+   
+
+    <button type="submit" class="btn btn-primary btn-block">Continuar</button>
+</form>
+</div>
+
+
+
+{% endblock %}

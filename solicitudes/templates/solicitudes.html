@@ -3,34 +3,32 @@
 <div class="container">
 </br>
   <h1>Solicitudes</h1>
+  <a href="solicitudes\crear_solicitud" class="btn btn-info" role="button">Agregar Solicitud</a>
+</br>
+</br>
+  {% if solicitudes %}
   <table class="table table-bordered">
-    <thead class="thead bg-primary">
+    <thead class="thead">
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Motivo</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Estudiante</th>
       </tr>
     </thead>
     <tbody>
+      {% for solicitud in solicitudes %}
       <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
+        <td>{{ solicitud.get_tipo_display }}</td>
+        <td>{{ solicitud.motivo }}</td>
+        <td>{{ solicitud.fecha }}</td>
+        <td>{{ solicitud.estudiante.user.first_name}}</td>
       </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
-    </tbody>
-  </table>
+      {% endfor %}
+  </tbody>
+    </table>
+    {% else %}
+  <strong>No hay solicitudes creadas</strong>
+{% endif %}
 </div>
 {% endblock %}
