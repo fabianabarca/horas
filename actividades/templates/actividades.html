@@ -3,36 +3,35 @@
 <div class="container">
 </br>
   <h1>Actividades</h1>
+  <a href="\crear_actividad" class="btn btn-info" role="button">Agregar Actividad</a>
+</br>
+</br>
+  {% if actividades %}
   <table class="table table-bordered">
     <thead class="thead">
       <tr>
-        <th scope="col">Nombre</th>
+        <th scope="col">Descripcion</th>
         <th scope="col">Horas</th>
         <th scope="col">Fecha</th>
         <th scope="col">Proyecto</th>
       </tr>
     </thead>
     <tbody>
+      {% for actividad in actividades %}
       <tr>
-        <td>Curso Django</td>
-        <td>5</td>
-        <td>8-13-2021</td>
-        <td>Web Buses</td>
+        <td>{{ actividad.descripcion }}</td>
+        <td>{{ actividad.horas }}</td>
+        <td>{{ actividad.fecha }}</td>
+        <td>{{ actividad.proyecto.nombre}}</td>
       </tr>
-      <tr>
-  
-        <td>Curso Javascript</td>
-        <td>2</td>
-        <td>8-13-2021</td>
-        <td>Web Buses</td>
-      </tr>
-      <tr>
-        <td>CSS pagina web</td>
-        <td>2</td>
-        <td>8-13-2021</td>
-        <td>Web Buses</td>
-      </tr>
-    </tbody>
-  </table>
+      {% endfor %}
+  </tbody>
+    </table>
+    {% else %}
+  <strong>No hay actividades registradas</strong>
+{% endif %}
 </div>
+
+
+
 {% endblock %}

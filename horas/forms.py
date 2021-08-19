@@ -1,23 +1,65 @@
+from solicitudes.models import Solicitud
+from actividades.models import Actividad
+from proyectos.models import Proyecto
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
 
 # Create your forms here.
 
 class NewUserForm(UserCreationForm):
-    carne = forms.CharField(required=True)
     email = forms.EmailField(required=True)
 
     class Meta:
         model = User
-        fields = ("username", "email", "carne", "password1", "password2")
+        fields = ("username", "first_name", "last_name","email", "password1", "password2")
+
+
+        
+    def __init__(self, *args, **kwargs):
+        super(NewUserForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username']:
+            self.fields[fieldname].label = 'Carne'
 
     def save(self, commit=True):
         user = super(NewUserForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
-        user.carne = self.cleaned_data['carne']
+    
         
         if commit:
             user.save()
         return user
+
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = UsernameField(
+        label='ID/Carne',
+        widget=forms.TextInput(attrs={'autofocus': True})
+    )
+
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+class ActividadesForm(forms.ModelForm):
+    class Meta:
+        model = Actividad
+        fields = "__all__"
+        widgets = {
+            'fecha': DateInput(),
+        }
+
+class SolicitudesForm(forms.ModelForm):
+    class Meta:
+        model = Solicitud
+        fields = "__all__"
+        widgets = {
+            'fecha': DateInput(),
+        }
+
+class ProyectosForm(forms.ModelForm):
+    class Meta:
+        model = Proyecto
+        fields = "__all__"
+       
