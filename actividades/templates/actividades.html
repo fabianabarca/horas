@@ -14,6 +14,10 @@
         <th scope="col">Horas</th>
         <th scope="col">Fecha</th>
         <th scope="col">Proyecto</th>
+        {% if request.user.is_staff %}
+        <th scope="col">Estudiante</th>
+        <th scope="col">Estado</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -23,6 +27,10 @@
         <td>{{ actividad.horas }}</td>
         <td>{{ actividad.fecha }}</td>
         <td>{{ actividad.proyecto.nombre}}</td>
+        {% if request.user.is_staff %}
+        <td>{{ actividad.estudiante.user.username}}</td>
+        <td>{{ actividad.get_estado_display}}</td>
+        {% endif %}
       </tr>
       {% endfor %}
   </tbody>
