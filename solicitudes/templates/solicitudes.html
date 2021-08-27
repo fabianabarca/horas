@@ -13,7 +13,10 @@
         <th scope="col">Tipo</th>
         <th scope="col">Motivo</th>
         <th scope="col">Fecha</th>
+        {% if request.user.is_staff %}
         <th scope="col">Estudiante</th>
+        {% endif %}
+        <th scope="col">Estado</th>
       </tr>
     </thead>
     <tbody>
@@ -22,7 +25,10 @@
         <td>{{ solicitud.get_tipo_display }}</td>
         <td>{{ solicitud.motivo }}</td>
         <td>{{ solicitud.fecha }}</td>
-        <td>{{ solicitud.estudiante.user.first_name}}</td>
+        {% if request.user.is_staff %}
+        <td>{{ solicitud.estudiante.user.username}}</td>
+        {% endif %}
+        <td>{{ solicitud.get_estado_display}}</td>
       </tr>
       {% endfor %}
   </tbody>

@@ -1,3 +1,4 @@
+from cuentas.models import Estudiante
 from solicitudes.models import Solicitud
 from actividades.models import Actividad
 from proyectos.models import Proyecto
@@ -43,12 +44,19 @@ class CustomAuthenticationForm(AuthenticationForm):
 class DateInput(forms.DateInput):
     input_type = 'date'
 class ActividadesForm(forms.ModelForm):
+
     class Meta:
         model = Actividad
         fields = "__all__"
         widgets = {
             'fecha': DateInput(),
         }
+
+        
+    def __init__(self, *args, **kwargs):
+        super(ActividadesForm, self).__init__(*args, **kwargs)
+        self.fields['estudiante'].initial = Estudiante.objects.get(user = User.objects.get(id = 1))
+        self.fields['estado'].initial = "P"
 
 class SolicitudesForm(forms.ModelForm):
     class Meta:
@@ -57,6 +65,11 @@ class SolicitudesForm(forms.ModelForm):
         widgets = {
             'fecha': DateInput(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(SolicitudesForm, self).__init__(*args, **kwargs)
+        self.fields['estudiante'].initial = Estudiante.objects.get(user = User.objects.get(id = 1))
+        self.fields['estado'].initial = "P"
 
 class ProyectosForm(forms.ModelForm):
     class Meta:

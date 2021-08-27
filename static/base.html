@@ -27,9 +27,11 @@
       <li class="nav-item">
         <a class="nav-link" href="/solicitudes/">Solicitudes</a>
       </li>
+      {% if request.user.is_staff %}
       <li class="nav-item">
         <a class="nav-link" href="/proyectos/">Proyectos</a>
       </li>
+      {% endif %}
      
     </ul>
     <ul class="navbar-nav ml-auto">
