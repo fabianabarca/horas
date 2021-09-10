@@ -1,12 +1,43 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
-
 <div class="container">
 </br>
-  <h1>Actividades</h1>
-  <a href="\crear_actividad" class="btn btn-info" role="button">Agregar Actividad</a>
-</br>
-</br>
+  <h1>Registros de Actividades</h1>
+  <a href="\crear_actividad" class="btn btn-info" role="button">Agregar Actividad</a> 
+  <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
   {% if actividades %}
+  <button type="button" class="btn btn-info" onclick="checkAll()">Seleccionar Todas</button>
+  <button type="button" class="btn btn-info" onclick="uncheckAll()">Limpiar</button>
+  {% endif %}
+</br>
+</br>
+<div id="filtrosdiv">
+<form method="post">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ next }}" />
+
+ 
+  <div class="row">
+  {% for field in filtros_form  %}
+    <div class="col-sm-4">
+      <b>{{ field.label_tag }}</b> - {{ field}} 
+    </br>
+
+    </div>
+</br>
+  {% endfor %}
+
+ 
+  </div>  
+  <button type="submit" style = 'width: 200px; height:40px;' class="btn btn-primary btn-block">Filtrar</button>
+ 
+
+  
+</form>
+</br>
+</div>
+
+  {% if actividades %}
+
   <table class="table table-bordered">
     <thead class="thead">
       <tr>
@@ -16,21 +47,22 @@
         <th scope="col">Proyecto</th>
         {% if request.user.is_staff %}
         <th scope="col">Estudiante</th>
-        <th scope="col">Estado</th>
         {% endif %}
+        <th scope="col">Estado</th>
       </tr>
     </thead>
     <tbody>
       {% for actividad in actividades %}
       <tr>
-        <td>{{ actividad.descripcion }}</td>
+        
+        <td> <input type    ="checkbox" name="brand" value= "{{ actividad.id }}">  {{ actividad.descripcion }}</td>
         <td>{{ actividad.horas }}</td>
         <td>{{ actividad.fecha }}</td>
         <td>{{ actividad.proyecto.nombre}}</td>
         {% if request.user.is_staff %}
         <td>{{ actividad.estudiante.user.username}}</td>
-        <td>{{ actividad.get_estado_display}}</td>
         {% endif %}
+        <td>{{ actividad.get_estado_display}}</td>
       </tr>
       {% endfor %}
   </tbody>
@@ -40,6 +72,33 @@
 {% endif %}
 </div>
 
+<script type="text/javascript">
+    // Select all check boxes : Setting the checked property to true in checkAll() function
+      function checkAll(){
+        var items = document.getElementsByName('brand');
+          for (var i = 0; i < items.length; i++) {
+              if (items[i].type == 'checkbox')
+                  items[i].checked = true;
+          }
+      }
+  // Clear all check boxes : Setting the checked property to false in uncheckAll() function
+      function uncheckAll(){
+        var items = document.getElementsByName('brand');
+          for (var i = 0; i < items.length; i++) {
+              if (items[i].type == 'checkbox')
+                  items[i].checked = false;
+          }
+      }
 
+
+      function esconderFiltros() {
+        var x = document.getElementById("filtrosdiv");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }     
+      }
+    </script>
 
 {% endblock %}

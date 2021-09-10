@@ -5,8 +5,13 @@ from .models import *
 
 # Create your views here.
 def solicitudes_request(request):
-    estudiante_actual = Estudiante.objects.get(user = request.user)
-    solicitudes_list = Solicitud.objects.filter(estudiante = estudiante_actual)
+
+    if request.user.is_staff:
+        solicitudes_list = Solicitud.objects.all()
+
+    else: 
+        estudiante_actual = Estudiante.objects.get(user = request.user)
+        solicitudes_list = Solicitud.objects.filter(estudiante = estudiante_actual)
     return render (request=request, template_name="../templates/solicitudes.html",context={"solicitudes":solicitudes_list})
 
 
@@ -23,7 +28,6 @@ def crear_solicitud(request):
 		
 		
     form = SolicitudesForm()
-    form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
     
     return render (request=request, template_name="../templates/crear_solicitud.html", context={"solicitud_form":form})
