@@ -33,6 +33,28 @@ class NewUserForm(UserCreationForm):
         return user
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
+class FiltrosForm(forms.Form):
+    ESTADOS = (
+        ('', '----'),
+        ('P', 'En Revisión'),
+        ('A', 'Aprobado'),
+        ('R', 'Rechazado'),
+    )
+    descripcion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    estudiante = forms.ModelChoiceField(queryset=Estudiante.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    proyecto = forms.ModelChoiceField(queryset=Proyecto.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    fecha_inicio= forms.DateField(required=False,widget=forms.DateInput(attrs={'type': 'date','style': 'width: 200px;', 'class': 'form-control'}))
+    fecha_final= forms.DateField(required=False,widget=forms.DateInput(attrs={'type': 'date','style': 'width: 200px;', 'class': 'form-control'}))
+    estado = forms.ChoiceField(required=False, choices= ESTADOS,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    
+
+
+    
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = UsernameField(
@@ -41,8 +63,7 @@ class CustomAuthenticationForm(AuthenticationForm):
     )
 
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
+
 class ActividadesForm(forms.ModelForm):
 
     class Meta:

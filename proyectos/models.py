@@ -14,3 +14,7 @@ class Proyecto(models.Model):
  
     def __str__(self):
         return self.nombre
+
+
+    def __unicode__(self):
+        return self.nombre
