@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+<div class="container">
+</br>
+  <h1>Estudiantes</h1>
+</br>
+  {% if estudiantes %}
+  <table id="datatable" class="table table-striped table-bordered">
+    <thead class="thead">
+      <tr>
+        <th scope="col">Carne</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellidos</th>
+        <th scope="col">Correo</th>
+        <th scope="col">Carrera</th>
+        <th scope="col">Tutor</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for estudiante in estudiantes %}
+      <tr>
+        <td>{{ estudiante.user.username }}</td>
+        <td>{{ estudiante.user.first_name }}</td>
+        <td>{{ estudiante.user.last_name }}</td>
+        <td>{{ estudiante.user.email }}</td>
+        <td>{{ estudiante.user.carrera }}</td>
+        <td>{{ estudiante.tutor}}</td>
+        <td style="text-align: center"><a href="estudiantes/editar_estudiante/{{ estudiante.id }}"class="btn btn-info" role="button">Asignar Tutor</a></td>
+      </tr>
+      {% endfor %}
+  </tbody>
+    </table>
+    {% else %}
+  <strong>No hay estudiantes registrados</strong>
+{% endif %}
+</div>
+{% endblock %}
+
+
+
