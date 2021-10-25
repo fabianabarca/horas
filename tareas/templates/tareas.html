@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+<div class="container">
+</br>
+  <h1>Tareas</h1>
+  <a href="tareas\crear_tarea" class="btn btn-info" role="button">Agregar Tarea</a>
+</br>
+</br>
+
+  {% if tareas %}
+  <table id="datatable" class="table table-striped table-bordered">
+    <thead class="thead">
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Proyecto</th>
+        <th scope="col">Estudiante</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tarea in tareas %}
+      <tr>
+        <td>{{ tarea.nombre }}</td>
+        <td>{{ tarea.descripcion}}</td>
+        <td>{{ tarea.proyecto}}</td>
+        <td>{{ tarea.estudiante.user.username}}</td>
+        <td style="text-align: center"><a href="tareas/editar_tarea/{{ tarea.id }}"class="btn btn-info" role="button">Asignar Tarea</a></td>
+      </tr>
+      {% endfor %}
+  </tbody>
+    </table>
+    {% else %}
+  <strong>No hay tareas registradas</strong>
+{% endif %}
+</div>
+{% endblock %}
+
+
+
