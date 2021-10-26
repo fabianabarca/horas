@@ -3,12 +3,12 @@ Sistema de registro de horas de trabajo de estudiantes en el TCU
 
 ## Ejecutar Proyecto
 
-Actualizar base de datos
-py manage.py makemigrations
-py manage.py migrate
+`Actualizar base de datos`
+- py manage.py makemigrations
+- py manage.py migrate
 
-Levantar servidor
-py manage.py runserver
+`Levantar servidor`
+- py manage.py runserver
 
 ## Esbozo de modelos de la aplicación de registro
 
