@@ -9,7 +9,7 @@ Sistema de registro de horas de trabajo de estudiantes en el TCU
 
 `Levantar servidor`
 - py manage.py runserver
-
+- Ir a pagina principal servidor http://127.0.0.1:8000/cuentas/login/ o http://127.0.0.1:8000/ si logueado
 ## Esbozo de modelos de la aplicación de registro
 
 `class Estudiante`
