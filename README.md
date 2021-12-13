@@ -3,9 +3,14 @@ Sistema de registro de horas de trabajo de estudiantes en el TCU
 
 ## Ejecutar Proyecto
 
-`Actualizar base de datos`
+`Crear base de datos`
+- Eliminar las carpetas migrations en cada folder
+- Eliminar el db.sqlite3
 - py manage.py makemigrations
-- py manage.py migrate
+- py manage.py migrate --run-syncdb
+
+`Instalar dependencias`
+- py -m pip install django-crispy-forms
 
 `Levantar servidor`
 - py manage.py runserver
