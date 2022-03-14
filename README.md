@@ -1,20 +1,42 @@
 # Horas de TCU
-Sistema de registro de horas de trabajo de estudiantes en el TCU
 
-## Ejecutar Proyecto
+Sistema de registro de horas de trabajo de estudiantes en el TCU.
 
-`Crear base de datos`
-- Eliminar las carpetas migrations en cada folder
-- Eliminar el db.sqlite3
-- py manage.py makemigrations
-- py manage.py migrate --run-syncdb
+## Componentes y vistas del sistema
 
-`Instalar dependencias`
+Nota: los "proyectos" están compuestos de "tareas".
+
+### Modo estudiantes
+
+**Menú principal**
+- **Registro de actividades**: enviar para revisión una actividad, indicando el día, las horas y una descripción.
+- **Gestiones administrativas**: hacer solicitudes de finalización, prórroga y corrección, explicando el motivo y adjuntando documentos si fuera necesario.
+- **Tareas**:
+
+### Modo profesores
+
+**Menú principal**
+- **Registro de actividades**: lista de todas las actividades registradas.
+- **Gestiones administrativas**: lista de solicitudes de gestiones administrativas.
+- **Tareas**: ver lista de tareas o crear una nueva con nombre, estudiante(s) asignado(s), proyecto asociado y descripción.
+- **Proyectos**: ver lista de proyectos o crear uno nuevo con nombre, descripción, profesor asignado, categoría y ubicación.
+- **Estudiantes**: lista de estudiantes activos.
+
+## Para ejecutar el proyecto localmente
+
+**Crear base de datos**
+- Eliminar las carpetas _migrations_ en cada folder
+- Eliminar _db.sqlite3_
+- Ejecutar `python manage.py makemigrations`
+- Ejecutar `python manage.py migrate --run-syncdb`
+
+**Instalar dependencias**
 - py -m pip install django-crispy-forms
 
-`Levantar servidor`
+**Levantar servidor**
 - py manage.py runserver
 - Ir a pagina principal servidor http://127.0.0.1:8000/cuentas/login/ o http://127.0.0.1:8000/ si logueado
+
 ## Esbozo de modelos de la aplicación de registro
 
 `class Estudiante`
