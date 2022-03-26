@@ -10,6 +10,7 @@ Nota: los "proyectos" están compuestos de "tareas".
 
 **Menú principal**
 - **Registro de actividades**: enviar para revisión una actividad, indicando el día, las horas y una descripción.
+![Registro de actividades](DesignImagesimg/RegistroDeActividades.PNG)
 - **Gestiones administrativas**: hacer solicitudes de finalización, prórroga y corrección, explicando el motivo y adjuntando documentos si fuera necesario.
 - **Tareas**:
 
