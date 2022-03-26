@@ -12,16 +12,22 @@ Nota: los "proyectos" están compuestos de "tareas".
 - **Registro de actividades**: enviar para revisión una actividad, indicando el día, las horas y una descripción.
 ![Registro de actividades](DesignImages/Estudiantes/RegistroDeActividades.PNG)
 - **Gestiones administrativas**: hacer solicitudes de finalización, prórroga y corrección, explicando el motivo y adjuntando documentos si fuera necesario.
+![GestionesAdministrativas](DesignImages/Estudiantes/GestionesAdministrativas.PNG)
 - **Tareas**:
-
+![Tareas](DesignImages/Estudiantes/Tareas.PNG)
 ### Modo profesores
 
 **Menú principal**
 - **Registro de actividades**: lista de todas las actividades registradas.
+![Registro de actividades](DesignImages/Profesores/RegistroDeActividades.PNG)
 - **Gestiones administrativas**: lista de solicitudes de gestiones administrativas.
+![GestionesAdministrativas](DesignImages/Profesores/GestionesAdministrativas.PNG)
 - **Tareas**: ver lista de tareas o crear una nueva con nombre, estudiante(s) asignado(s), proyecto asociado y descripción.
+![Tareas](DesignImages/Profesores/Tareas.PNG)
 - **Proyectos**: ver lista de proyectos o crear uno nuevo con nombre, descripción, profesor asignado, categoría y ubicación.
+![Proyectos](DesignImages/Profesores/Proyectos.PNG)
 - **Estudiantes**: lista de estudiantes activos.
+![Estudiantes](DesignImages/Profesores/Estudiantes.PNG)
 
 ## Para ejecutar el proyecto localmente
 
