@@ -32,17 +32,32 @@ Sistema de registro de horas de trabajo de estudiantes en el TCU.
 **Menú principal**
 - **Registro de actividades**: enviar para revisión una actividad, indicando el día, las horas y una descripción.
 ![Registro de actividades](DesignImages/Estudiantes/RegistroDeActividades.PNG)
+![AgregarActividad](DesignImages/Estudiantes/AgregarActividad.PNG)
 - **Gestiones administrativas**: hacer solicitudes de finalización, prórroga y corrección, explicando el motivo y adjuntando documentos si fuera necesario.
+
+![GestionesAdministrativas](DesignImages/Estudiantes/GestionesAdministrativas.PNG)
+![CrearGestion](DesignImages/Estudiantes/CrearGestion.PNG)
 - **Tareas**: ver lista de tareas asignadas o crear una nueva.
+![Tareas](DesignImages/Estudiantes/Tareas.PNG)
+![AgregarTarea](DesignImages/Estudiantes/AgregarTarea.PNG)
 
 ### Modo profesores
 
 **Menú principal**
 - **Registro de actividades**: lista de todas las actividades registradas.
+![Registro de actividades](DesignImages/Profesores/RegistroDeActividades.PNG)
+![AgregarActividad](DesignImages/Profesores/AgregarActividad.PNG)
 - **Gestiones administrativas**: lista de solicitudes de gestiones administrativas.
+![GestionesAdministrativas](DesignImages/Profesores/GestionesAdministrativas.PNG)
+![CrearGestion](DesignImages/Profesores/CrearGestion.PNG)
 - **Tareas**: ver lista de tareas o crear una nueva con nombre, estudiante(s) asignado(s), proyecto asociado y descripción.
+![Tareas](DesignImages/Profesores/Tareas.PNG)
+![AgregarTarea](DesignImages/Profesores/AgregarTarea.PNG)
 - **Proyectos**: ver lista de proyectos o crear uno nuevo con nombre, descripción, profesor asignado, categoría y ubicación.
+![Proyectos](DesignImages/Profesores/Proyectos.PNG)
+![AgregarProyecto](DesignImages/Profesores/AgregarProyecto.PNG)
 - **Estudiantes**: lista de estudiantes activos.
+![Estudiantes](DesignImages/Profesores/Estudiantes.PNG)
 
 ## Esbozo de modelos de la base de datos
 
