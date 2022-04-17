@@ -11,6 +11,7 @@ def actividades_request(request):
 
     list_of_inputs=request.POST.getlist('inputs')
 
+    is_staff = request.user.is_staff
 
     # Put the logging info within your django view
 
