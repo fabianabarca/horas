@@ -58,6 +58,7 @@
         <th scope="col">Fecha</th>
         {% if request.user.is_staff %}
         <th scope="col">Estudiante</th>
+        <th scope="col">Correo de estudiante</th>
         {% endif %}
         <th scope="col">Estado</th>
       </tr>
@@ -70,6 +71,8 @@
         <td>{{ solicitud.fecha }}</td>
         {% if request.user.is_staff %}
         <td>{{ solicitud.estudiante.user.username}}</td>
+        <td>{{ solicitud.estudiante.user.email}}</td>
+
         {% endif %}
         <td>{{ solicitud.get_estado_display}}</td>
       </tr>
