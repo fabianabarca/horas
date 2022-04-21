@@ -65,5 +65,17 @@ def crear_solicitud(request):
     	form.fields['estado'].widget = forms.HiddenInput()
     
     return render (request=request, template_name="../templates/crear_solicitud.html", context={"solicitud_form":form})
- 
-
+#"""
+# 
+def model_form_upload(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = DocumentForm()
+    return render(request, 'core/model_form_upload.html', {
+        'form': form
+    })
+#"""

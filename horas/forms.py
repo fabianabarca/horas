@@ -6,6 +6,7 @@ from tareas.models import Tarea
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
+#from uploads.core.models import Document #
 
 # Create your forms here.
 
@@ -147,4 +148,10 @@ class EstudiantesForm(forms.ModelForm):
     class Meta:
         model = Estudiante
         fields = "__all__"
-       
+"""
+#    
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ('description', 'document', )
+#"""
