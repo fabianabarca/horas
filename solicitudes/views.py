@@ -61,6 +61,8 @@ def crear_solicitud(request):
 		
     form = SolicitudesForm()
     form.fields['estudiante'].widget = forms.HiddenInput()
+    if not request.user.is_staff: #Si el usuario no es admin se quita el campo de Estado
+    	form.fields['estado'].widget = forms.HiddenInput()
     
     return render (request=request, template_name="../templates/crear_solicitud.html", context={"solicitud_form":form})
  
