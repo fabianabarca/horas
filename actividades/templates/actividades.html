@@ -58,7 +58,10 @@
         <th scope="col">Fecha</th>
         <th scope="col">Proyecto</th>
         {% if request.user.is_staff %}
-        <th scope="col">Estudiante</th>
+        <th scope="col">Carné</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+
         {% endif %}
         <th scope="col">Estado</th>
       </tr>
@@ -73,6 +76,9 @@
         <td>{{ actividad.proyecto.nombre}}</td>
         {% if request.user.is_staff %}
         <td>{{ actividad.estudiante.user.username}}</td>
+        <td>{{ actividad.estudiante.user.first_name}}</td>
+        <td>{{ actividad.estudiante.user.last_name}}</td>
+
         {% endif %}
         <td>{{ actividad.get_estado_display}}</td>
       </tr>

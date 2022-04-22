@@ -57,7 +57,10 @@
         <th scope="col">Motivo</th>
         <th scope="col">Fecha</th>
         {% if request.user.is_staff %}
-        <th scope="col">Estudiante</th>
+        <th scope="col">Carné</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+
         <th scope="col">Correo de estudiante</th>
         {% endif %}
         <th scope="col">Estado</th>
@@ -71,6 +74,9 @@
         <td>{{ solicitud.fecha }}</td>
         {% if request.user.is_staff %}
         <td>{{ solicitud.estudiante.user.username}}</td>
+        <td>{{ solicitud.estudiante.user.first_name}}</td>
+        <td>{{ solicitud.estudiante.user.last_name}}</td>
+
         <td>{{ solicitud.estudiante.user.email}}</td>
 
         {% endif %}
