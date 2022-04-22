@@ -44,8 +44,10 @@
 
   <form method="post">
     {% csrf_token %}
+    {% if request.user.is_staff %}
     <input type="submit" class="btn btn-success" value="Aprobar" name="aprobar">
-<input type="submit" class="btn btn-danger " value="Rechazar" name="rechazar">
+    <input type="submit" class="btn btn-danger " value="Rechazar" name="rechazar">
+    {% endif %}
 </br>
 </br>
 <table id="datatable" class="table table-striped table-bordered" style="width:100%">
