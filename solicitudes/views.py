@@ -58,6 +58,8 @@ def crear_solicitud(request):
             form.save() # Adjuntar archivo
             post.save()
             return HttpResponseRedirect("/solicitudes")
+        else:
+            print(form._errors) # Adjuntar archivo, el cual no debe estar vacío
 		
 		
     form = SolicitudesForm()
