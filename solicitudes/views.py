@@ -41,7 +41,7 @@ def solicitudes_request(request):
                 solicitudes_list =  solicitudes_list.filter(fecha__range=[form.cleaned_data.get('fecha_inicio'), form.cleaned_data.get('fecha_final')])
 
     
-    form = FiltrosGestionForm()  
+    form = FiltrosGestionForm()
 
     return render (request=request, template_name="../templates/solicitudes.html",context={"solicitudes":solicitudes_list, "filtros_form":form})
 
@@ -51,7 +51,7 @@ def crear_solicitud(request):
     estudiante_actual = Estudiante.objects.get(user = request.user)
 
     if request.method == "POST":
-        form = SolicitudesForm(request.POST)
+        form = SolicitudesForm(request.POST, request.FILES) # Adjuntar archivo
         if form.is_valid():
             post = form.save(commit=False)
             post.estudiante = estudiante_actual
@@ -61,21 +61,7 @@ def crear_solicitud(request):
 		
     form = SolicitudesForm()
     form.fields['estudiante'].widget = forms.HiddenInput()
-    if not request.user.is_staff: #Si el usuario no es admin se quita el campo de Estado
-    	form.fields['estado'].widget = forms.HiddenInput()
+    if not request.user.is_staff: # Si el usuario no es admin se quita el campo de Estado
+        form.fields['estado'].widget = forms.HiddenInput()
     
     return render (request=request, template_name="../templates/crear_solicitud.html", context={"solicitud_form":form})
-#"""
-# 
-def model_form_upload(request):
-    if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    else:
-        form = DocumentForm()
-    return render(request, 'core/model_form_upload.html', {
-        'form': form
-    })
-#"""
