@@ -1,11 +1,12 @@
 from cuentas.models import Estudiante, Profesor
-from solicitudes.models import Solicitud
+from solicitudes.models import Solicitud, SolicitudArchivo
 from actividades.models import Actividad
 from proyectos.models import Categoria, Proyecto
 from tareas.models import Tarea
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
+from django.forms import ClearableFileInput
 
 # Create your forms here.
 
@@ -123,12 +124,20 @@ class SolicitudesForm(forms.ModelForm):
             'fecha': DateInput(),
         }
     
-    #file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True})) # Adjuntar archivos
+    #archivo = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True})) # Adjuntar archivos
 
     def __init__(self, *args, **kwargs):
         super(SolicitudesForm, self).__init__(*args, **kwargs)
         self.fields['estudiante'].initial = Estudiante.objects.get(user = User.objects.get(id = 1))
         self.fields['estado'].initial = "P"
+
+class SolicitudesArchivoForm(forms.ModelForm):
+    class Meta:
+        model = SolicitudArchivo
+        fields = ['archivo']
+        widgets = {
+            'archivo': ClearableFileInput(attrs={'multiple': True}),
+        }
 
 class ProyectosForm(forms.ModelForm):
     class Meta:
