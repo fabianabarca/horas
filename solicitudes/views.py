@@ -55,6 +55,7 @@ def crear_solicitud(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.estudiante = estudiante_actual
+            form.save() # Adjuntar archivo
             post.save()
             return HttpResponseRedirect("/solicitudes")
 		

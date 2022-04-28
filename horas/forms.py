@@ -122,6 +122,8 @@ class SolicitudesForm(forms.ModelForm):
         widgets = {
             'fecha': DateInput(),
         }
+    
+    #file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True})) # Adjuntar archivos
 
     def __init__(self, *args, **kwargs):
         super(SolicitudesForm, self).__init__(*args, **kwargs)
