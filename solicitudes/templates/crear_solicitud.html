@@ -1,18 +1,27 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
 <script>
-  window.addEventListener("beforeunload", function (e) {
-    var confirmationMessage = 'It looks like you have been editing something. '
-                            + 'If you leave before saving, your changes will be lost.';
+  var formSubmitting = false;
+  var setFormSubmitting = function() { formSubmitting = true; };
   
-    (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-    return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-  });
+  window.onload = function() {
+      window.addEventListener("beforeunload", function (e) {
+          if (formSubmitting) {
+              return undefined;
+          }
+  
+          var confirmationMessage = 'It looks like you have been editing something. '
+                                  + 'If you leave before saving, your changes will be lost.';
+          
+          (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+          return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+      });
+  };
   </script>
 <div class="container">
 </br>
   <h1>Crear Gestion</h1>
 
-<form enctype="multipart/form-data" method="post">
+<form enctype="multipart/form-data" method="post" onsubmit="setFormSubmitting()">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />
 
