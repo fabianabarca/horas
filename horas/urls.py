@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings # Ver los archivos desde admin
+from django.conf.urls.static import static # Ver los archivos desde admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,5 +25,5 @@ urlpatterns = [
     path('solicitudes/', include('solicitudes.urls')),
     path('proyectos/', include('proyectos.urls')),
     path('estudiantes/', include('estudiantes.urls')),
-    path('tareas/', include('tareas.urls'))
-]
+    path('tareas/', include('tareas.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Ver los archivos desde admin

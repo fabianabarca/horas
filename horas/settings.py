@@ -63,7 +63,6 @@ ROOT_URLCONF = 'horas.urls'
 
 CRISPY_TEMPLATE_PACK =  'bootstrap4'
 
-#Agregado django.template.context_processors.media
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -75,7 +74,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media',
             ],
         },
     },
@@ -152,5 +150,5 @@ DATE_INPUT_FORMATS = ('%d-%m-%Y')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/' # Adjuntar archivo
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Adjuntar archivo

@@ -12,30 +12,18 @@
 </br>
   <h1>Crear Gestion</h1>
 
-<form method="post" enctype="multipart/form-data">
-
-
+<form enctype="multipart/form-data" method="post">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />
 
     {{solicitud_form|crispy }}
-    {{ form.as_p }}
-    <button type="submit">Adjuntar</button>
+    {{solicitudArchivo_form|crispy }}
+   
+
     <button type="submit" class="btn btn-primary btn-block">Continuar</button>
 </form>
-
 </div>
 
 
 
-{% endblock %}
-
-{% block content %}
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-  </form>
-
-  <p><a href="{% url 'home' %}">Return to home</a></p>
 {% endblock %}
