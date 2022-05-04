@@ -1,22 +1,24 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% load static %}
 <script>
-var formSubmitting = false;
-var setFormSubmitting = function() { formSubmitting = true; };
+  var formSubmitting = false;
+  var setFormSubmitting = function() { formSubmitting = true; };
+  
+  window.onload = function() {
+      window.addEventListener("beforeunload", function (e) {
+          if (formSubmitting) {
+              return undefined;
+          }
+  
+          var confirmationMessage = 'It looks like you have been editing something. '
+                                  + 'If you leave before saving, your changes will be lost.';
+          
+          (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+          return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+      });
+  };
+  </script>
 
-window.onload = function() {
-    window.addEventListener("beforeunload", function (e) {
-        if (formSubmitting) {
-            return undefined;
-        }
-
-        var confirmationMessage = 'It looks like you have been editing something. '
-                                + 'If you leave before saving, your changes will be lost.';
-        
-        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-    });
-};
-</script>
 <div class="container">
 </br>
   <h1>Agregar Actividad</h1>
