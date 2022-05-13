@@ -4,8 +4,11 @@ from horas.forms import *
 from django.contrib.auth.models import User
 from actividades.models import Actividad
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
+@login_required(login_url='/cuentas/login/')
 def actividades_request(request):
 
 
@@ -52,7 +55,7 @@ def actividades_request(request):
     return render (request=request, template_name="../templates/actividades.html", context={"actividades":actividades_list, "filtros_form":form})
 
 
-
+@login_required(login_url='/cuentas/login/')
 def crear_actividad(request):
 
     estudiante_actual = Estudiante.objects.get(user = request.user)

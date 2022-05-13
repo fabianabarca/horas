@@ -4,6 +4,9 @@ from horas.forms import FiltrosGestionForm, SolicitudesArchivoForm, SolicitudesF
 from django.shortcuts import render
 from .models import *
 from .models import SolicitudArchivo
+from django.contrib.auth.decorators import login_required
+
+
 '''
 # Adjuntar archivo
 from django.views.generic.edit import FormView
@@ -28,6 +31,7 @@ class FileFieldFormView(FormView):
             return self.form_invalid(form)
 '''
 # Create your views here.
+@login_required(login_url='/cuentas/login/')
 def solicitudes_request(request):
 
     list_of_inputs=request.POST.getlist('inputs')
@@ -68,7 +72,7 @@ def solicitudes_request(request):
 
     return render (request=request, template_name="../templates/solicitudes.html",context={"solicitudes":solicitudes_list, "filtros_form":form})
 
-
+@login_required(login_url='/cuentas/login/')
 def crear_solicitud(request):
 
     estudiante_actual = Estudiante.objects.get(user = request.user)

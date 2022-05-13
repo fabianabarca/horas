@@ -2,8 +2,12 @@ from django.http.response import HttpResponseRedirect
 from horas.forms import CategoriasForm, FiltrosProyectoForm, ProyectosForm
 from proyectos.models import Proyecto
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+
 
 # Create your views here.
+@login_required(login_url='/cuentas/login/')
 def proyectos_request(request):
     proyectos_list = Proyecto.objects.all()
 
@@ -28,7 +32,7 @@ def proyectos_request(request):
 
     return render (request=request, template_name="../templates/proyectos.html", context={"proyectos":proyectos_list,"filtros_form":form})
 
-
+@login_required(login_url='/cuentas/login/')
 def crear_proyecto(request):
 
     if request.method == "POST":
@@ -41,7 +45,7 @@ def crear_proyecto(request):
     
     return render (request=request, template_name="../templates/crear_proyecto.html", context={"proyecto_form":form})
  
-
+@login_required(login_url='/cuentas/login/')
 def crear_categoria(request):
 
     if request.method == "POST":
