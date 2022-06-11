@@ -2,10 +2,17 @@
 
 <div class="container">
 </br>
-  <h1>Registros de Actividades</h1>
-
   
+  {% if request.user.is_staff %}
+  <h1>Actividades</h1>
+  {% else %}
+  <h1>Registro de Actividades</h1>
+  {% endif %}
+  
+  {% if request.user.is_staff %}
+  {% else %}
   <a href="\crear_actividad" class="btn btn-info" role="button">Agregar Actividad</a> 
+  {% endif %}
   <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
   {% if actividades %}
   <button type="button" class="btn btn-info" onclick="checkAll()">Seleccionar Todas</button>
