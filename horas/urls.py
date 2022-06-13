@@ -20,10 +20,11 @@ from django.conf.urls.static import static # Ver los archivos desde admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('actividades.urls')),
     path('cuentas/', include('cuentas.urls')),
-    path('solicitudes/', include('solicitudes.urls')),
-    path('proyectos/', include('proyectos.urls')),
-    path('estudiantes/', include('estudiantes.urls')),
+    path('', include('actividades.urls')),
     path('tareas/', include('tareas.urls')),
+    path('proyectos/', include('proyectos.urls')),
+    path('categorias/', include('categorias.urls')),
+    path('estudiantes/', include('estudiantes.urls')),
+    path('solicitudes/', include('solicitudes.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Ver los archivos desde admin
