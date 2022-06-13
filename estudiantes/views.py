@@ -21,8 +21,7 @@ def estudiantes_request(request):
 
         horasTotalesPorEstudiante=0
         for actividad in actividades_list:
-            print(actividad.estudiante.user.username)
-            print(estudiante.user.username)
+            
             if actividad.estudiante.user.username == estudiante.user.username:
                 horasTotalesPorEstudiante+= actividad.horas
 
