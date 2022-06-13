@@ -17,13 +17,17 @@ def estudiantes_request(request):
     horasEstudianteslist = []
     horasTotalesPorEstudiante=0
     for estudiante in estudiantes_list:
+       
+
         horasTotalesPorEstudiante=0
         for actividad in actividades_list:
-            if actividad.id == estudiante.id:
+            print(actividad.estudiante.user.username)
+            print(estudiante.user.username)
+            if actividad.estudiante.user.username == estudiante.user.username:
                 horasTotalesPorEstudiante+= actividad.horas
 
         horasEstudianteslist.append(horasTotalesPorEstudiante)
-        
+
     zipHoras= zip(estudiantes_list,horasEstudianteslist)    
     print(horasEstudianteslist)
     return render (request=request, template_name="../templates/estudiantes.html", context={"zipHoras":zipHoras,"horaslist":horasEstudianteslist,"estudiantes":estudiantes_list,"actividades":actividades_list})
