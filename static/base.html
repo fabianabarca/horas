@@ -44,12 +44,7 @@
         {% if user.is_authenticated %}
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="">Registro de Actividades</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/solicitudes/"
-              >Gestiones Administrativas</a
-            >
+            <a class="nav-link" href="">Actividades</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/tareas/">Tareas</a>
@@ -59,9 +54,15 @@
             <a class="nav-link" href="/proyectos/">Proyectos</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="/categorias/">Categorias</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/estudiantes/">Estudiantes</a>
           </li>
           {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="/solicitudes/">Solicitudes</a>
+          </li>
         </ul>
         <ul class="navbar-nav ml-auto">
           <span class="navbar-text"> Bienvenido, {{user.username}} </span>
