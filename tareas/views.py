@@ -31,9 +31,9 @@ def editar_tarea(request, id):
     obj = get_object_or_404(Tarea, id = id) 
 
     form = TareasForm(request.POST or None, instance = obj)
-    form.fields['proyecto'].widget = forms.HiddenInput()
-    form.fields['nombre'].widget = forms.HiddenInput()
-    form.fields['descripcion'].widget = forms.HiddenInput()
+   # form.fields['proyecto'].widget = forms.HiddenInput()
+   # form.fields['nombre'].widget = forms.HiddenInput()
+   # form.fields['descripcion'].widget = forms.HiddenInput()
     if form.is_valid():
         form.save()
         return HttpResponseRedirect("/tareas")
