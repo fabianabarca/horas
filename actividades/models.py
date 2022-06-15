@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from proyectos.models import Proyecto
 from cuentas.models import Estudiante
 from django.db import models
-
+from django.conf import settings
 
 
 # Create your models here.
