@@ -72,6 +72,8 @@
 
         {% endif %}
         <th scope="col">Estado</th>
+        <th scope="col"></th>
+
       </tr>
     </thead>
     <tbody>
@@ -89,6 +91,8 @@
 
         {% endif %}
         <td>{{ actividad.get_estado_display}}</td>
+        <td style="text-align: center"><a href="actividades/editar_actividad/{{ actividad.id }}"class="btn btn-info" role="button">Editar</a></td>
+
       </tr>
       {% endfor %}
   </tbody>

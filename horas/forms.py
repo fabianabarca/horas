@@ -102,7 +102,12 @@ class ActividadesForm(forms.ModelForm):
         model = Actividad
         fields = "__all__"
         widgets = {
-            'fecha': DateInput(),
+            'fecha': DateInput(
+        format=('%Y-%m-%d'),
+        attrs={'class': 'form-control', 
+               'placeholder': 'Select a date',
+               'type': 'date'
+              }),
         }
 
         
@@ -121,7 +126,13 @@ class SolicitudesForm(forms.ModelForm):
         model = Solicitud
         fields = "__all__"
         widgets = {
-            'fecha': DateInput(),
+            'fecha': DateInput(
+        format=('%Y-%m-%d'),
+        attrs={'class': 'form-control', 
+               'placeholder': 'Select a date',
+               'type': 'date'
+              }),
+           
         }
     
     #archivo = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True})) # Adjuntar archivos

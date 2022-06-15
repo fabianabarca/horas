@@ -41,6 +41,8 @@
         <th scope="col">Profesor</th>
         <th scope="col">Categorias</th>
         <th scope="col">Ubicación</th>
+        <th scope="col"></th>
+
       </tr>
     </thead>
     <tbody>
@@ -51,6 +53,8 @@
         <td>{{ proyecto.profesor.user.first_name }}</td>
         <td>{% for categoria in proyecto.categoria.all %}{{ categoria.nombre}}<br/>{% endfor %}</td>
         <td>{{ proyecto.ubicacion }}</td>
+        <td style="text-align: center"><a href="proyectos/editar_proyecto/{{ proyecto.id }}"class="btn btn-info" role="button">Editar</a></td>
+
       </tr>
       {% endfor %}
   </tbody>

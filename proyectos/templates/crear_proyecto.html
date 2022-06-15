@@ -20,7 +20,11 @@
 
 <div class="container">
 </br>
-  <h1>Agregar Proyecto</h1>
+  {% if tipoAccion %}
+  <h1>Crear Proyecto</h1>
+  {% else %}
+  <h1>Editar Proyecto</h1>
+  {% endif %}
 
 <form method="post" onsubmit="setFormSubmitting()">
     {% csrf_token %}

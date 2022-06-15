@@ -1,4 +1,5 @@
 from django.http.response import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from horas.forms import CategoriasForm, FiltrosProyectoForm, ProyectosForm
 from proyectos.models import Proyecto
 from django.shortcuts import render
@@ -42,8 +43,8 @@ def crear_proyecto(request):
             return HttpResponseRedirect("/proyectos")
 		
     form = ProyectosForm()
-    
-    return render (request=request, template_name="../templates/crear_proyecto.html", context={"proyecto_form":form})
+    creacionOedicion = 1
+    return render (request=request, template_name="../templates/crear_proyecto.html", context={"tipoAccion":creacionOedicion,"proyecto_form":form})
  
 @login_required(login_url='/cuentas/login/')
 def crear_categoria(request):
@@ -57,3 +58,19 @@ def crear_categoria(request):
     form = CategoriasForm()
     
     return render (request=request, template_name="../templates/crear_categoria.html", context={"categoria_form":form})
+
+
+@login_required(login_url='/cuentas/login/')
+def editar_proyecto(request, id):
+
+    obj = get_object_or_404(Proyecto, id = id) 
+
+    form = ProyectosForm(request.POST or None, instance = obj)
+    
+    
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/proyectos")
+
+    creacionOedicion = 0
+    return render(request, "crear_proyecto.html", context={"tipoAccion":creacionOedicion,"proyecto_form":form})
