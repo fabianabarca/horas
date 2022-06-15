@@ -23,7 +23,9 @@ def crear_tarea(request):
 		
     form = TareasForm()
     
-    return render (request=request, template_name="../templates/crear_tarea.html", context={"tarea_form":form})
+    creacionOedicion = 1
+
+    return render (request=request, template_name="../templates/crear_tarea.html", context={"tipoAccion":creacionOedicion,"tarea_form":form})
 
 @login_required(login_url='/cuentas/login/')
 def editar_tarea(request, id):
@@ -38,5 +40,5 @@ def editar_tarea(request, id):
         form.save()
         return HttpResponseRedirect("/tareas")
 
- 
-    return render(request, "editar_tarea.html", context={"tarea_form":form})
+    creacionOedicion = 0
+    return render(request, "crear_tarea.html", context={"tipoAccion":creacionOedicion,"tarea_form":form})
