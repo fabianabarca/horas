@@ -1,4 +1,5 @@
 from django.http.response import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from cuentas.models import Estudiante
 from horas.forms import *
 from django.contrib.auth.models import User
@@ -72,5 +73,23 @@ def crear_actividad(request):
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
     
-    return render (request=request, template_name="../templates/crear_actividad.html", context={"actividad_form":form})
+    creacionOedicion = 1
+    return render (request=request, template_name="../templates/crear_actividad.html", context={"tipoAccion":creacionOedicion,"form":form})
  
+
+@login_required(login_url='/cuentas/login/')
+def editar_actividad(request, id):
+
+    obj = get_object_or_404(Actividad, id = id) 
+
+    form = ActividadesForm(request.POST or None, instance = obj)
+    
+    form.fields['estado'].widget = forms.HiddenInput()
+    form.fields['estudiante'].widget = forms.HiddenInput()
+    
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/actividades")
+
+    creacionOedicion = 0
+    return render(request, "crear_actividad.html", context={"tipoAccion":creacionOedicion,"form":form})
