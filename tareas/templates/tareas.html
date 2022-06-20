@@ -16,7 +16,7 @@
         <th scope="col">Carné</th>
         <th scope="col">Nombre</th>
         <th scope="col">Apellido</th>
-        <th scope="col">Acciones</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -29,7 +29,8 @@
         <td>{{ tarea.estudiante.user.first_name}}</td>
         <td>{{ tarea.estudiante.user.last_name}}</td>
 
-        <td style="text-align: center"><a href="tareas/editar_tarea/{{ tarea.id }}"class="btn btn-info" role="button">Asignar Tarea</a></td>
+        <td style="text-align: center"><a href="tareas/editar_tarea/{{ tarea.id }}"class="btn btn-info" role="button">Editar</a></td>
+
       </tr>
       {% endfor %}
   </tbody>

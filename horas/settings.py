@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'actividades',
     'solicitudes',
     'proyectos',
+    'categorias',
     'estudiantes',
     'tareas',
     'crispy_forms'
@@ -142,7 +143,9 @@ USE_TZ = True
 
 LOGIN_REDIRECT_URL =  '/'
 
-DATE_INPUT_FORMATS = ('%d-%m-%Y')
+#DATE_INPUT_FORMATS = ('%d-%m-%Y')
+DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

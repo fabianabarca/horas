@@ -65,6 +65,8 @@
         <th scope="col">Correo de estudiante</th>
         {% endif %}
         <th scope="col">Estado</th>
+        <th scope="col"></th>
+
       </tr>
     </thead>
     <tbody>
@@ -84,6 +86,8 @@
 
         {% endif %}
         <td>{{ solicitud.get_estado_display}}</td>
+        <td style="text-align: center"><a href="solicitudes/editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">Editar</a></td>
+
       </tr>
       {% endfor %}
   </tbody>

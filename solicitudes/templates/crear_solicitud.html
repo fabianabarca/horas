@@ -19,7 +19,12 @@
   </script>
 <div class="container">
 </br>
-  <h1>Crear Gestion</h1>
+  
+  {% if tipoAccion %}
+    <h1>Crear Solicitud</h1>
+  {% else %}
+    <h1>Editar Solicitud</h1>
+  {% endif %}
 
 <form enctype="multipart/form-data" method="post" onsubmit="setFormSubmitting()">
     {% csrf_token %}

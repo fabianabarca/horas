@@ -1,5 +1,4 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
-{% load static %}
 <script>
   var formSubmitting = false;
   var setFormSubmitting = function() { formSubmitting = true; };
@@ -21,21 +20,16 @@
 
 <div class="container">
 </br>
-  
-  {% if tipoAccion %}
-    <h1>Agregar Actividad</h1>
-  {% else %}
-    <h1>Editar Actividad</h1>
-  {% endif %}
+  <h1>Agregar Categoría</h1>
 
 <form method="post" onsubmit="setFormSubmitting()">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />
 
-    {{form|crispy }}
+    {{categoria_form|crispy }}
    
 
-    <button type="submit"  class="btn btn-primary btn-block">Continuar</button>
+    <button type="submit" class="btn btn-primary btn-block">Continuar</button>
 </form>
 </div>
 

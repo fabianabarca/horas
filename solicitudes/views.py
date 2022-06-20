@@ -1,9 +1,13 @@
 from django import forms
 from django.http.response import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from horas.forms import FiltrosGestionForm, SolicitudesArchivoForm, SolicitudesForm
 from django.shortcuts import render
 from .models import *
 from .models import SolicitudArchivo
+from django.contrib.auth.decorators import login_required
+
+
 '''
 # Adjuntar archivo
 from django.views.generic.edit import FormView
@@ -28,6 +32,7 @@ class FileFieldFormView(FormView):
             return self.form_invalid(form)
 '''
 # Create your views here.
+@login_required(login_url='/cuentas/login/')
 def solicitudes_request(request):
 
     list_of_inputs=request.POST.getlist('inputs')
@@ -68,7 +73,7 @@ def solicitudes_request(request):
 
     return render (request=request, template_name="../templates/solicitudes.html",context={"solicitudes":solicitudes_list, "filtros_form":form})
 
-
+@login_required(login_url='/cuentas/login/')
 def crear_solicitud(request):
 
     estudiante_actual = Estudiante.objects.get(user = request.user)
@@ -95,5 +100,23 @@ def crear_solicitud(request):
     form.fields['estudiante'].widget = forms.HiddenInput()
     if not request.user.is_staff: # Si el usuario no es admin se quita el campo de Estado
         form.fields['estado'].widget = forms.HiddenInput()
+        
+    creacionOedicion = 1
+    return render (request=request, template_name="../templates/crear_solicitud.html", context={"tipoAccion":creacionOedicion,"solicitud_form":form, "solicitudArchivo_form":form_archivo})
+
+
+@login_required(login_url='/cuentas/login/')
+def editar_solicitud(request, id):
+
+    obj = get_object_or_404(Solicitud, id = id) 
+
+    form = SolicitudesForm(request.POST or None, instance = obj)
     
-    return render (request=request, template_name="../templates/crear_solicitud.html", context={"solicitud_form":form, "solicitudArchivo_form":form_archivo})
+    form.fields['estado'].widget = forms.HiddenInput()
+    
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/solicitudes")
+
+    creacionOedicion = 0
+    return render(request, "crear_solicitud.html", context={"tipoAccion":creacionOedicion,"solicitud_form":form})

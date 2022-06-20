@@ -44,12 +44,7 @@
         {% if user.is_authenticated %}
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="">Registro de Actividades</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/solicitudes/"
-              >Gestiones Administrativas</a
-            >
+            <a class="nav-link" href="">Actividades</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/tareas/">Tareas</a>
@@ -59,9 +54,15 @@
             <a class="nav-link" href="/proyectos/">Proyectos</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="/categorias/">Categorias</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/estudiantes/">Estudiantes</a>
           </li>
           {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="/solicitudes/">Solicitudes</a>
+          </li>
         </ul>
         <ul class="navbar-nav ml-auto">
           <span class="navbar-text"> Bienvenido, {{user.username}} </span>
@@ -86,6 +87,36 @@
       var items = document.getElementsByName("inputs");
       for (var i = 0; i < items.length; i++) {
         if (items[i].type == "checkbox") items[i].checked = false;
+      }
+    }
+
+    function toggleCheck() {
+      var items = document.getElementsByName("inputs");
+      var checktoggle = false;
+      var checkBoxCounter = 0;
+      var checkCounter = 0;
+      for (var i = 0; i < items.length; i++) {
+
+        if (items[i].type == "checkbox") {
+          checkBoxCounter++;
+          if (items[i].checked == true){
+            checkCounter++;
+          } 
+        }
+        console.log(checkBoxCounter);
+        console.log(checkCounter);
+
+      }
+      if(checkCounter>0  && checkCounter<checkBoxCounter){
+          checkAll();
+      }
+
+      if(checkCounter==checkBoxCounter){
+          uncheckAll();
+      }
+
+      if(checkCounter==0){
+          checkAll();
       }
     }
 

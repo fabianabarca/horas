@@ -19,7 +19,11 @@
   </script>
 <div class="container">
 </br>
-  <h1>Agregar Tarea</h1>
+{% if tipoAccion %}
+  <h1>Crear Tarea</h1>
+{% else %}
+  <h1>Editar Tarea</h1>
+{% endif %}
 
 <form method="post" onsubmit="setFormSubmitting()">
     {% csrf_token %}
