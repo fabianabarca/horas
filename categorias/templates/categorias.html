@@ -1,0 +1,36 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+<div class="container">
+</br>
+  <h1>Categorias</h1>
+  <a href="categorias\crear_categoria" class="btn btn-info" role="button">Agregar Categoria</a>
+  
+</br>
+</br>
+
+  {% if categorias %}
+  <table id="datatable" class="table table-striped table-bordered">
+    <thead class="thead">
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col"></th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for categoria in categorias %}
+      <tr>
+        <td>{{ categoria }}</td>
+        <td style="text-align: center"><a href="categorias/editar_categoria/{{ categoria.id }}"class="btn btn-info" role="button">Editar</a></td>
+
+      </tr>
+      {% endfor %}
+  </tbody>
+    </table>
+    {% else %}
+  <strong>No hay categorias registrados</strong>
+{% endif %}
+</div>
+{% endblock %}
+
+
+
