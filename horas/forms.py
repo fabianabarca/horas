@@ -103,11 +103,12 @@ class ActividadesForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             'fecha': DateInput(
-        format=('%Y-%m-%d'),
-        attrs={'class': 'form-control', 
-               'placeholder': 'Select a date',
-               'type': 'date'
-              }),
+                                 format=('%Y-%m-%d'),
+                                 attrs={'class': 'form-control', 
+                                        'placeholder': 'Select a date',
+                                        'type': 'date'}
+                               ),
+
         }
 
         

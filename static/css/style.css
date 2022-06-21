@@ -11,8 +11,12 @@ h1 {
 }
 
 
-
 .table thead th{
    background-color:  #1495EA;
+   
 }
-
+#actionButtons{
+  flex-direction: column;
+  margin-top: 3px;
+  align-items: center;
+}
