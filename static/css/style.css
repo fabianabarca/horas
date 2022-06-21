@@ -15,8 +15,21 @@ h1 {
    background-color:  #1495EA;
    
 }
+
 #actionButtons{
+  height: 40px;
+  width: 40px;
   flex-direction: column;
   margin-top: 3px;
   align-items: center;
+}
+
+#imageButtons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+  height: 24px;
+  width: 18px;
+  
 }

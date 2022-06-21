@@ -95,8 +95,14 @@
           
           <td style="text-align: center">
             <div >
-              <a id="actionButtons" href="actividades/editar_actividad/{{ actividad.id }}"class="btn btn-info" role="button">Editar</a>
-              <a id="actionButtons" class="btn btn-info" onclick="borrarRegistro()" role="button">Borrar</a>
+              <a id="actionButtons"  href="actividades/editar_actividad/{{ actividad.id }}"class="btn btn-info" role="button">
+                <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
+              </a>
+              <a id="actionButtons" style="background-color:crimson;"  class="btn btn-info" onclick="borrarRegistro()" role="button">
+                <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+              </a>
+              
+              
             </div>
           </td>
           
