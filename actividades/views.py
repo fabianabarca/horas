@@ -38,6 +38,11 @@ def actividades_request(request):
         if request.POST.get('rechazar'):
             for input in list_of_inputs:
                Actividad.objects.filter(id = input.replace('/','')).update(estado='R')
+
+        if request.POST.get('deleteButton'):
+            deleteButtonItemValue=request.POST.getlist('deleteButton')
+            
+            print(deleteButtonItem)
                                                 
         if form.is_valid():
             if form.cleaned_data.get('estudiante'):
