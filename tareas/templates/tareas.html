@@ -7,7 +7,8 @@
 </br>
 
   {% if tareas %}
-  <table id="datatable" class="table table-striped table-bordered">
+  <div class="table-responsive">
+    <table id="datatable" class="table table-striped table-bordered">
     <thead class="thead">
       <tr>
         <th scope="col">Nombre</th>
@@ -35,6 +36,7 @@
       {% endfor %}
   </tbody>
     </table>
+  </div>
     {% else %}
   <strong>No hay tareas registradas</strong>
 {% endif %}
