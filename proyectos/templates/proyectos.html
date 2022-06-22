@@ -32,6 +32,8 @@
 </form>
 </br>
 </div>
+<form method="post">{% csrf_token %}
+
   {% if proyectos %}
   <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered">
@@ -72,6 +74,7 @@
     {% else %}
   <strong>No hay proyectos registrados</strong>
 {% endif %}
+</form>
 </div>
 {% endblock %}
 

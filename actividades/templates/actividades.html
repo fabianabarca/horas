@@ -49,8 +49,7 @@
 
   {% if actividades %}
 
-  <form method="post">
-    {% csrf_token %}
+<form method="post">{% csrf_token %}
     {% if request.user.is_staff %}
     <input type="submit" class="btn btn-success" value="Aprobar" name="aprobar">
     <input type="submit" class="btn btn-danger " value="Rechazar" name="rechazar">

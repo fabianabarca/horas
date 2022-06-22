@@ -6,6 +6,7 @@
   
 </br>
 </br>
+<form method="post">{% csrf_token %}
 
   {% if categorias %}
   <div class="table-responsive">
@@ -39,6 +40,7 @@
     {% else %}
   <strong>No hay categorias registrados</strong>
 {% endif %}
+</form>
 </div>
 {% endblock %}
 

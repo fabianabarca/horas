@@ -55,7 +55,12 @@ def solicitudes_request(request):
         if request.POST.get('rechazar'):
             for input in list_of_inputs:
                Solicitud.objects.filter(id = input.replace('/','')).update(estado='R')
-                                                
+       
+        if request.POST.get('deleteButton'):
+                deleteButtonItemValue=request.POST.getlist('deleteButton')
+                obj = Solicitud( id = deleteButtonItemValue[0]) 
+                obj.delete()
+
         if form.is_valid():
             if form.cleaned_data.get('estudiante'):
                 solicitudes_list =  solicitudes_list.filter(estudiante = form.cleaned_data.get('estudiante'))

@@ -10,6 +10,11 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='/cuentas/login/')
 def tareas_request(request):
     tareas_list = Tarea.objects.all()
+    if request.method == "POST":
+        if request.POST.get('deleteButton'):
+                deleteButtonItemValue=request.POST.getlist('deleteButton')
+                obj = Tarea( id = deleteButtonItemValue[0]) 
+                obj.delete()
 
     return render (request=request, template_name="../templates/tareas.html", context={"tareas":tareas_list})
 

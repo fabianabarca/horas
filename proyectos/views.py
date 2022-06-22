@@ -28,6 +28,12 @@ def proyectos_request(request):
                 proyectos_list =  proyectos_list.filter(categoria= form.cleaned_data.get('categoria'))
             if form.cleaned_data.get('ubicacion'):
                 proyectos_list =  proyectos_list.filter(ubicacion__contains= form.cleaned_data.get('ubicacion'))
+
+    
+        if request.POST.get('deleteButton'):
+                deleteButtonItemValue=request.POST.getlist('deleteButton')
+                obj = Proyecto( id = deleteButtonItemValue[0]) 
+                obj.delete()
         
     form = FiltrosProyectoForm()
 

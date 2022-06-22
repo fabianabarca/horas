@@ -12,7 +12,11 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='/cuentas/login/')
 def categorias_request(request):
     categorias_list = Categoria.objects.all()
-    
+    if request.method == "POST":
+        if request.POST.get('deleteButton'):
+                deleteButtonItemValue=request.POST.getlist('deleteButton')
+                obj = Categoria( id = deleteButtonItemValue[0]) 
+                obj.delete()
 
     return render (request=request, template_name="../templates/categorias.html", context={"categorias":categorias_list})
 
