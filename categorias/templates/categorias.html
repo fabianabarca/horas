@@ -21,8 +21,16 @@
       {% for categoria in categorias %}
       <tr>
         <td>{{ categoria }}</td>
-        <td style="text-align: center"><a href="categorias/editar_categoria/{{ categoria.id }}"class="btn btn-info" role="button">Editar</a></td>
-
+        <td style="text-align: center">
+          <div >
+            <a id="actionButtons"  href="categorias/editar_categoria/{{ categoria.id }}"class="btn btn-info" role="button">
+              <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
+            </a>
+            <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ categoria.id }}"  name="deleteButton">             
+              <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+            </button>
+          </div>
+        </td>
       </tr>
       {% endfor %}
   </tbody>

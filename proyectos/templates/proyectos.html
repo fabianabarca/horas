@@ -54,8 +54,16 @@
         <td>{{ proyecto.profesor.user.first_name }}</td>
         <td>{% for categoria in proyecto.categoria.all %}{{ categoria.nombre}}<br/>{% endfor %}</td>
         <td>{{ proyecto.ubicacion }}</td>
-        <td style="text-align: center"><a href="proyectos/editar_proyecto/{{ proyecto.id }}"class="btn btn-info" role="button">Editar</a></td>
-
+        <td style="text-align: center">
+          <div >
+            <a id="actionButtons"  href="proyectos/editar_proyecto/{{ proyecto.id }}"class="btn btn-info" role="button">
+              <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
+            </a>
+            <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ proyecto.id }}"  name="deleteButton">             
+              <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+            </button>
+          </div>
+        </td>
       </tr>
       {% endfor %}
   </tbody>

@@ -30,8 +30,16 @@
         <td>{{ tarea.estudiante.user.first_name}}</td>
         <td>{{ tarea.estudiante.user.last_name}}</td>
 
-        <td style="text-align: center"><a href="tareas/editar_tarea/{{ tarea.id }}"class="btn btn-info" role="button">Editar</a></td>
-
+        <td style="text-align: center">
+          <div >
+            <a id="actionButtons"  href="tareas/editar_tarea/{{ tarea.id }}"class="btn btn-info" role="button">
+              <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
+            </a>
+            <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ tarea.id }}"  name="deleteButton">              
+              <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+            </button>
+          </div>
+        </td>
       </tr>
       {% endfor %}
   </tbody>
