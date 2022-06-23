@@ -1,5 +1,7 @@
 from proyectos.models import Proyecto
 from cuentas.models import Estudiante
+from actividades.models import Actividad
+
 from django.db import models
 
 
