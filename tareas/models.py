@@ -1,5 +1,6 @@
 from proyectos.models import Proyecto
 from cuentas.models import Estudiante
+
 from django.db import models
 
 
@@ -11,7 +12,7 @@ class Tarea(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE,blank=True, null=True)
     proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE)
     descripcion = models.CharField(max_length=500)
-    
+
     def __str__(self):
         return self.nombre
 

@@ -65,6 +65,7 @@
           <th scope="col">Horas</th>
           <th scope="col">Fecha</th>
           <th scope="col">Proyecto</th>
+          <th scope="col">Tarea</th>
           {% if request.user.is_staff %}
           <th scope="col">Carné</th>
           <th scope="col">Nombre</th>
@@ -84,6 +85,8 @@
           <td>{{ actividad.horas }}</td>
           <td>{{ actividad.fecha }}</td>
           <td>{{ actividad.proyecto.nombre}}</td>
+          <td>{{ actividad.tarea.nombre}}</td>
+
           {% if request.user.is_staff %}
           <td>{{ actividad.estudiante.user.username}}</td>
           <td>{{ actividad.estudiante.user.first_name}}</td>
