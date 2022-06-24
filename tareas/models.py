@@ -10,7 +10,7 @@ from django.db import models
 class Tarea(models.Model):
     nombre = models.CharField(max_length=500)
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE,blank=True, null=True)
-    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE)
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)
     descripcion = models.CharField(max_length=500)
 
     def __str__(self):
