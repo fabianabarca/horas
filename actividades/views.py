@@ -50,6 +50,8 @@ def actividades_request(request):
                 actividades_list =  actividades_list.filter(estudiante = form.cleaned_data.get('estudiante'))
             if form.cleaned_data.get('proyecto'):
                 actividades_list =  actividades_list.filter(proyecto = form.cleaned_data.get('proyecto'))
+            if form.cleaned_data.get('tarea'):
+                actividades_list =  actividades_list.filter(tarea = form.cleaned_data.get('tarea'))
             if form.cleaned_data.get('estado'):
                 actividades_list =  actividades_list.filter(estado = form.cleaned_data.get('estado'))
             if form.cleaned_data.get('descripcion'):
