@@ -72,11 +72,31 @@ def solicitudes_request(request):
                 solicitudes_list =  solicitudes_list.filter(motivo__contains= form.cleaned_data.get('motivo'))
             if form.cleaned_data.get('fecha_inicio') or form.cleaned_data.get('fecha_final'):
                 solicitudes_list =  solicitudes_list.filter(fecha__range=[form.cleaned_data.get('fecha_inicio'), form.cleaned_data.get('fecha_final')])
-
     
+    
+    archivos_list = SolicitudArchivo.objects.all()
+    count = 0
+    for archivos in archivos_list:
+        
+        print(archivos_list[count].archivo)
+        count=count+1
+    '''
+    archivoSolicitudeslist = []
+    
+    for solicitud in solicitudes_list:
+    
+        for archivo in archivos_list:
+            
+            if actividad.estudiante.user.username == estudiante.user.username:
+                horasTotalesPorEstudiante+= actividad.horas
+
+        horasEstudianteslist.append(horasTotalesPorEstudiante)
+        
+    zipSolicitudesyArchivos= zip(solicitudes_list,archivos_list) 
+    '''   
     form = FiltrosGestionForm()
 
-    return render (request=request, template_name="../templates/solicitudes.html",context={"solicitudes":solicitudes_list, "filtros_form":form})
+    return render (request=request, template_name="../templates/solicitudes.html",context={"solicitudes":solicitudes_list,"archivos":archivos_list, "filtros_form":form})
 
 @login_required(login_url='/cuentas/login/')
 def crear_solicitud(request):

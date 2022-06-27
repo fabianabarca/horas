@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="container">
 </br>
   <h1>Gestiones Administrativas</h1>
@@ -62,8 +62,9 @@
         <th scope="col">Carné</th>
         <th scope="col">Nombre</th>
         <th scope="col">Apellido</th>
-
         <th scope="col">Correo de estudiante</th>
+        <th scope="col">Archivo Adjunto</th>
+
         {% endif %}
         <th scope="col">Estado</th>
         <th scope="col"></th>
@@ -84,7 +85,17 @@
         <td>{{ solicitud.estudiante.user.last_name}}</td>
 
         <td>{{ solicitud.estudiante.user.email}}</td>
-
+        <td>
+          {% for archivo in archivos %}
+                 
+                   {% if archivo.solicitud_id == solicitud.id %} 
+                        {{ archivo.archivo}}<br/>
+                    {% endif %}
+                 
+                  
+          {% endfor %}
+        </td>
+        
         {% endif %}
         <td>{{ solicitud.get_estado_display}}</td>
         <td style="text-align: center">
