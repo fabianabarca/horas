@@ -4,7 +4,7 @@ from django.contrib import messages
 from actividades.views import *
 from django.contrib.auth import login, authenticate, logout #add this
 from cuentas.models import *
-
+from django.core.exceptions import ValidationError
 
 def register_request(request):
 	if request.method == "POST":
@@ -16,10 +16,10 @@ def register_request(request):
 
 			
 			if(not Carrera.objects.filter(nombre__contains=carrera).exists()):
-				print("no existe")
+				
 				c = Carrera(nombre=carrera)
 				c.save()
-			print("existe")
+			
 			estudiante = Estudiante.objects.get(id=user.id)
 			estudiante.carrera_id = Carrera.objects.get(nombre__contains=carrera)
 			estudiante.save()
@@ -35,6 +35,8 @@ def register_request(request):
 
 
 def login_request(request):
+
+
 	if request.method == "POST":
 		form = CustomAuthenticationForm(request, data=request.POST)
 		if form.is_valid():
@@ -43,9 +45,11 @@ def login_request(request):
 			user = authenticate(username=username, password=password)
 			if user is not None:
 				login(request, user)
-				messages.info(request, f"You are now logged in as {username}.")
+				#messages.info(request, "You are now logged in as {username}.")
+				
 				return redirect(actividades_request)
 			else:
+				
 				messages.error(request,"Invalid username or password.")
 		else:
 			messages.error(request,"Invalid username or password.")
