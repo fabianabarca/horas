@@ -75,11 +75,15 @@ def crear_actividad(request):
             post = form.save(commit=False)
             post.estudiante = estudiante_actual
             post.save()
-            return HttpResponseRedirect("/")
+            return HttpResponseRedirect("/actividades")
+       
+            
 		
     form = ActividadesForm()
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     creacionOedicion = 1
     return render (request=request, template_name="../templates/crear_actividad.html", context={"tipoAccion":creacionOedicion,"form":form})

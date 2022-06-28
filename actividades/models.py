@@ -21,6 +21,9 @@ class Actividad(models.Model):
     fecha = models.DateField()
     horas = models.IntegerField()
     estado = models.CharField(max_length=1, choices=ESTADOS, default= "En Revisión")
+    enPapelera = models.BooleanField(default='False')
+    fechaPapelera = models.DateField( blank=True,null=True)
+    fechaCreacion = models.DateField(auto_now_add=True,null=True)
 
     def __str__(self):
         return self.descripcion
