@@ -25,7 +25,8 @@ def crear_tarea(request):
         form = TareasForm(request.POST)
         if form.is_valid():
             form.save()
-		
+            return HttpResponseRedirect("/tareas")
+            
     form = TareasForm()
     
     creacionOedicion = 1
