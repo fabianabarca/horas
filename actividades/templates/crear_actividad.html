@@ -2,8 +2,13 @@
 {% load static %}
 <script>
   var formSubmitting = false;
-  var setFormSubmitting = function() { formSubmitting = true; };
-  
+  var setFormSubmitting = function() {  formSubmitting = true; };
+ /* var setContinueSubmitting = function() { 
+    formSubmitting = confirm('Do you really want to submit the form?');
+    
+    return formSubmitting;
+  };*/
+
   window.onload = function() {
       window.addEventListener("beforeunload", function (e) {
           if (formSubmitting) {
@@ -16,7 +21,9 @@
           (e || window.event).returnValue = confirmationMessage; //Gecko + IE
           return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
       });
+      
   };
+  
   </script>
 
 <div class="container">
@@ -35,7 +42,7 @@
     {{form|crispy }}
    
 
-    <button type="submit"  class="btn btn-primary btn-block">Continuar</button>
+    <button type="submit" onClick = "return confirm('Do you really want to submit the form?');"  class="btn btn-primary btn-block">Continuar</button>
 </form>
 </div>
 
