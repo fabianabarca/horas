@@ -3,12 +3,29 @@ from horas.forms import *
 from django.contrib import messages
 from actividades.views import *
 from django.contrib.auth import login, authenticate, logout #add this
+from cuentas.models import *
+
 
 def register_request(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
 		if form.is_valid():
 			user = form.save()
+			
+			carrera = form.cleaned_data.get('carrera')
+
+			
+			if(not Carrera.objects.filter(nombre__contains=carrera).exists()):
+				print("no existe")
+				c = Carrera(nombre=carrera)
+				c.save()
+			print("existe")
+			estudiante = Estudiante.objects.get(id=user.id)
+			estudiante.carrera_id = Carrera.objects.get(nombre__contains=carrera)
+			estudiante.save()
+			
+			
+
 			login(request, user)
 			messages.success(request, "Registration successful." )
 			return redirect(actividades_request)

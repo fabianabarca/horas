@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 class Carrera(models.Model):
     nombre = models.CharField(max_length=100)
-    
+
     def __str__(self):
         return self.nombre
 
@@ -25,6 +25,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 class Estudiante(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     tutor = models.ForeignKey(Profesor, blank=True, null=True, on_delete=models.SET_NULL)
+    carrera = models.ForeignKey(Carrera, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.user.first_name

@@ -5,6 +5,7 @@ from cuentas.models import *
 from horas.forms import EstudiantesForm
 from actividades.models import Actividad
 
+
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.

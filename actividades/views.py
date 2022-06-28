@@ -43,7 +43,7 @@ def actividades_request(request):
             deleteButtonItemValue=request.POST.getlist('deleteButton')
             obj = Actividad( id = deleteButtonItemValue[0]) 
             obj.delete()
-            #print(obj.delete())
+            
                                                 
         if form.is_valid():
             if form.cleaned_data.get('estudiante'):
