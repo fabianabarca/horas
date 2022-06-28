@@ -27,9 +27,9 @@ def register_request(request):
 			
 
 			login(request, user)
-			messages.success(request, "Registration successful." )
+			messages.success(request, "Registro exitoso." )
 			return redirect(actividades_request)
-		messages.error(request, "Unsuccessful registration. Invalid information.")
+		messages.error(request, "Fallo el registro. Información inválida.")
 	form = NewUserForm()
 	return render (request=request, template_name="../templates/register.html", context={"register_form":form})
 
@@ -50,13 +50,13 @@ def login_request(request):
 				return redirect(actividades_request)
 			else:
 				
-				messages.error(request,"Invalid username or password.")
+				messages.error(request,"Usuario o contraseña inválido.")
 		else:
-			messages.error(request,"Invalid username or password.")
+			messages.error(request,"Usuario o contraseña inválido.")
 	form = CustomAuthenticationForm()
 	return render(request=request, template_name="../templates/login.html", context={"login_form":form})
 
 def logout_request(request):
 	logout(request)
-	messages.info(request, "You have successfully logged out.") 
+	messages.info(request, "Has terminado tu sesión exitosamente.") 
 	return redirect(login_request)
