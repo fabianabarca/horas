@@ -97,6 +97,8 @@ def editar_actividad(request, id):
     
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     if form.is_valid():
         form.save()

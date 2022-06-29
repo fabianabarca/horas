@@ -10,7 +10,7 @@
 </br>
 {% if actividades %}
 <div class="table-responsive">
-  <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+  <table  class="table table-striped table-bordered">
       <thead class="thead" >
         <tr>
           <!--<th scope="col"></th>-->
@@ -50,12 +50,12 @@
           <td>{{ actividad.get_estado_display}}</td>
           
           <td style="text-align: center">
-            <div >
-              <button id="actionButtons"  type="submit" class="btn btn-info"    value="{{ actividad.id }}"  name="returnButtonActividad">
-                <img  id="imageButtons" src="static/svg/arrow-go-back-line.svg" />
+            <div class="actionButtons">
+              <button  type="submit" class="btn btn-info "    value="{{ actividad.id }}"  name="returnButtonActividad">
+                <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
               </button>
-              <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ actividad.id }}"  name="deleteButtonActividad">            
-                <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+              <button class="btn btn-info" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;"   value="{{ actividad.id }}"  name="deleteButtonActividad">            
+                <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
               </button>
             </div>
           </td>
@@ -78,7 +78,7 @@
 <form method="post">{% csrf_token %}
   {% if tareas %}
   <div class="table-responsive">
-    <table id="datatable" class="table table-striped table-bordered">
+    <table  class="table table-striped table-bordered">
     <thead class="thead">
       <tr>
         <th scope="col">Nombre</th>
@@ -103,11 +103,11 @@
 
         <td style="text-align: center">
           <div >
-            <a id="actionButtons"  href="tareas/editar_tarea/{{ tarea.id }}"class="btn btn-info" role="button">
-              <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
+            <a  href="tareas/editar_tarea/{{ tarea.id }}" class="btn btn-info actionButtons" role="button">
+              <img  class="imageButtons"    src="static/svg/file-edit-line.svg" />
             </a>
-            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ tarea.id }}"  name="deleteButtonTarea">              
-              <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ tarea.id }}"  name="deleteButtonTarea">              
+              <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
             </button>
           </div>
         </td>
@@ -128,7 +128,7 @@
 </br>
 {% if proyectos %}
   <div class="table-responsive">
-    <table id="datatable" class="table table-striped table-bordered">
+    <table  class="table table-striped table-bordered">
     <thead class="thead">
       <tr>
         <th scope="col">Nombre</th>
@@ -151,11 +151,11 @@
         <td>{{ proyecto.ubicacion }}</td>
         <td style="text-align: center">
           <div >
-            <a id="actionButtons"  href="proyectos/editar_proyecto/{{ proyecto.id }}"class="btn btn-info" role="button">
-              <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
+            <a  href="proyectos/editar_proyecto/{{ proyecto.id }}"class="btn btn-info actionButtons" role="button">
+              <img  class="imageButtons"    src="static/svg/file-edit-line.svg" />
             </a>
-            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ proyecto.id }}"  name="deleteButtonProyecto">             
-              <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ proyecto.id }}"  name="deleteButtonProyecto">             
+              <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
             </button>
           </div>
         </td>
@@ -175,7 +175,7 @@
 </br>
 {% if categorias %}
 <div class="table-responsive">
-  <table id="datatable" class="table table-striped table-bordered">
+  <table  class="table table-striped table-bordered">
   <thead class="thead">
     <tr>
       <th scope="col">Nombre</th>
@@ -190,11 +190,11 @@
       <td>{{ categoria }}</td>
       <td style="text-align: center">
         <div >
-          <a id="actionButtons"  href="categorias/editar_categoria/{{ categoria.id }}"class="btn btn-info" role="button">
-            <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
+          <a  href="categorias/editar_categoria/{{ categoria.id }}"class="btn btn-info actionButtons" role="button">
+            <img  class="imageButtons"    src="static/svg/file-edit-line.svg" />
           </a>
-          <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ categoria.id }}"  name="deleteButtonCategoria">             
-            <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+          <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ categoria.id }}"  name="deleteButtonCategoria">             
+            <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
           </button>
         </div>
       </td>
@@ -253,11 +253,11 @@
         <td>{{ solicitud.get_estado_display}}</td>
         <td style="text-align: center">
           <div >
-             <a id="actionButtons"  href="solicitudes/editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
-              <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
+             <a  href="solicitudes/editar_solicitud/{{ solicitud.id }}"class="btn btn-info actionButtons" role="button">
+              <img  class="imageButtons"    src="static/svg/file-edit-line.svg" />
             </a>
-            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ solicitud.id }}"  name="deleteButtonSolicitud">             
-              <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ solicitud.id }}"  name="deleteButtonSolicitud">             
+              <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
             </button>
           </div>
         </td>

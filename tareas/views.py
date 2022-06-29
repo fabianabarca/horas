@@ -28,7 +28,8 @@ def crear_tarea(request):
             return HttpResponseRedirect("/tareas")
             
     form = TareasForm()
-    
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     creacionOedicion = 1
 
     return render (request=request, template_name="../templates/crear_tarea.html", context={"tipoAccion":creacionOedicion,"tarea_form":form})
@@ -39,6 +40,8 @@ def editar_tarea(request, id):
     obj = get_object_or_404(Tarea, id = id) 
 
     form = TareasForm(request.POST or None, instance = obj)
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
    # form.fields['proyecto'].widget = forms.HiddenInput()
    # form.fields['nombre'].widget = forms.HiddenInput()
    # form.fields['descripcion'].widget = forms.HiddenInput()

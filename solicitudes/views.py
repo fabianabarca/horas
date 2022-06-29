@@ -103,6 +103,8 @@ def crear_solicitud(request):
         form_archivo = SolicitudesArchivoForm()
 
     form.fields['estudiante'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     if not request.user.is_staff: # Si el usuario no es admin se quita el campo de Estado
         form.fields['estado'].widget = forms.HiddenInput()
         
@@ -118,6 +120,8 @@ def editar_solicitud(request, id):
     form = SolicitudesForm(request.POST or None, instance = obj)
     
     form.fields['estado'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     if form.is_valid():
         form.save()
