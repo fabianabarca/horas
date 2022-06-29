@@ -47,7 +47,7 @@
 </br>
 </div>
 
-  {% if actividades %}
+{% if actividades %}
 
 <form method="post">{% csrf_token %}
     {% if request.user.is_staff %}
@@ -114,7 +114,7 @@
       </tbody>
   </table>
 </div>
-    {% else %}
+{% else %}
   <strong>No hay actividades registradas</strong>
 {% endif %}
 
