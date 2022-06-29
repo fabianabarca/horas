@@ -13,7 +13,7 @@
   <table id="datatable" class="table table-striped table-bordered" style="width:100%">
       <thead class="thead" >
         <tr>
-          <th scope="col"></th>
+          <!--<th scope="col"></th>-->
           <th scope="col">Descripcion</th>
           <th scope="col">Horas</th>
           <th scope="col">Fecha</th>
@@ -26,7 +26,7 @@
 
           {% endif %}
           <th scope="col">Estado</th>
-          <th scope="col"></th>
+           <th scope="col"></th>
 
         </tr>
       </thead>
@@ -34,7 +34,7 @@
         {% for actividad in actividades %}
             {% if actividad.enPapelera %}
         <tr>
-          <td> <input type="checkbox" name="inputs"  value="{{actividad.id}}"/> </td>
+         <!-- <td> <input type="checkbox" name="inputs"  value="{{actividad.id}}"/> </td> -->
           <td>  {{ actividad.descripcion }}</td>
           <td>{{ actividad.horas }}</td>
           <td>{{ actividad.fecha }}</td>
@@ -51,12 +51,10 @@
           
           <td style="text-align: center">
             <div >
-              <a id="actionButtons"  href="actividades/editar_actividad/{{ actividad.id }}"class="btn btn-info" role="button">
-                <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
-              </a>
-              <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ actividad.id }}"  name="deleteButtonActividad">
-                <!--<a id="actionButtons" style="background-color:crimson;"  class="btn btn-info"  onclick="borrarRegistro('{{ actividad.id }}')"   role="button">
-                -->               
+              <button id="actionButtons"  type="submit" class="btn btn-info"    value="{{ actividad.id }}"  name="returnButtonActividad">
+                <img  id="imageButtons" src="static/svg/arrow-go-back-line.svg" />
+              </button>
+              <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ actividad.id }}"  name="deleteButtonActividad">            
                 <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
               </button>
             </div>
@@ -108,7 +106,7 @@
             <a id="actionButtons"  href="tareas/editar_tarea/{{ tarea.id }}"class="btn btn-info" role="button">
               <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
             </a>
-            <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ tarea.id }}"  name="deleteButtonTarea">              
+            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ tarea.id }}"  name="deleteButtonTarea">              
               <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
             </button>
           </div>
@@ -156,7 +154,7 @@
             <a id="actionButtons"  href="proyectos/editar_proyecto/{{ proyecto.id }}"class="btn btn-info" role="button">
               <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
             </a>
-            <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ proyecto.id }}"  name="deleteButtonProyecto">             
+            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ proyecto.id }}"  name="deleteButtonProyecto">             
               <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
             </button>
           </div>
@@ -195,7 +193,7 @@
           <a id="actionButtons"  href="categorias/editar_categoria/{{ categoria.id }}"class="btn btn-info" role="button">
             <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
           </a>
-          <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ categoria.id }}"  name="deleteButtonCategoria">             
+          <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ categoria.id }}"  name="deleteButtonCategoria">             
             <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
           </button>
         </div>
@@ -219,7 +217,7 @@
     <table id = "datatable" class="table table-striped table-bordered">
     <thead class="thead">
       <tr>
-        <th scope="col"></th>
+      <!-- <th scope="col"></th>  -->
         <th scope="col">Tipo</th>
         <th scope="col">Motivo</th>
         <th scope="col">Fecha</th>
@@ -239,7 +237,7 @@
       {% for solicitud in solicitudes %}
       {% if solicitud.enPapelera %}
       <tr>
-        <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td>
+       <!-- <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td> -->
         <td>{{ solicitud.get_tipo_display }}</td>
 
         <td>{{ solicitud.motivo }}</td>
@@ -255,10 +253,10 @@
         <td>{{ solicitud.get_estado_display}}</td>
         <td style="text-align: center">
           <div >
-            <a id="actionButtons"  href="solicitudes/editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
+             <a id="actionButtons"  href="solicitudes/editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
               <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
             </a>
-            <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ solicitud.id }}"  name="deleteButtonSolicitud">             
+            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ solicitud.id }}"  name="deleteButtonSolicitud">             
               <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
             </button>
           </div>
