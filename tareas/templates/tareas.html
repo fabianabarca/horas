@@ -22,6 +22,7 @@
     </thead>
     <tbody>
       {% for tarea in tareas %}
+         {% if not tarea.enPapelera %}
       <tr>
         <td>{{ tarea.nombre }}</td>
         <td>{{ tarea.descripcion}}</td>
@@ -41,6 +42,7 @@
           </div>
         </td>
       </tr>
+         {% endif %}
       {% endfor %}
   </tbody>
     </table>

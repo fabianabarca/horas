@@ -16,7 +16,7 @@ def categorias_request(request):
         if request.POST.get('deleteButton'):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Categoria( id = deleteButtonItemValue[0]) 
-                obj.delete()
+                Categoria.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
 
     return render (request=request, template_name="../templates/categorias.html", context={"categorias":categorias_list})
 

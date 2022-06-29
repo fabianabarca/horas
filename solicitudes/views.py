@@ -59,7 +59,7 @@ def solicitudes_request(request):
         if request.POST.get('deleteButton'):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Solicitud( id = deleteButtonItemValue[0]) 
-                obj.delete()
+                Solicitud.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
 
         if form.is_valid():
             if form.cleaned_data.get('estudiante'):

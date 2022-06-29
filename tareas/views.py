@@ -14,7 +14,7 @@ def tareas_request(request):
         if request.POST.get('deleteButton'):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Tarea( id = deleteButtonItemValue[0]) 
-                obj.delete()
+                Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
 
     return render (request=request, template_name="../templates/tareas.html", context={"tareas":tareas_list})
 

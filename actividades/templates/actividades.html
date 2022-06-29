@@ -79,6 +79,7 @@
       </thead>
       <tbody>
         {% for actividad in actividades %}
+          {% if not actividad.enPapelera %}
         <tr>
           <td> <input type="checkbox" name="inputs"  value="{{actividad.id}}"/> </td>
           <td>  {{ actividad.descripcion }}</td>
@@ -110,6 +111,7 @@
           
 
         </tr>
+          {% endif %}
         {% endfor %}
       </tbody>
   </table>

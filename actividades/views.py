@@ -41,8 +41,7 @@ def actividades_request(request):
 
         if request.POST.get('deleteButton'):
             deleteButtonItemValue=request.POST.getlist('deleteButton')
-            obj = Actividad( id = deleteButtonItemValue[0]) 
-            obj.delete()
+            Actividad.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
             
                                                 
         if form.is_valid():

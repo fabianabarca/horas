@@ -72,32 +72,34 @@
     </thead>
     <tbody>
       {% for solicitud in solicitudes %}
-      <tr>
-        <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td>
-        <td>{{ solicitud.get_tipo_display }}</td>
+        {% if not solicitud.enPapelera %}
+          <tr>
+            <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td>
+            <td>{{ solicitud.get_tipo_display }}</td>
 
-        <td>{{ solicitud.motivo }}</td>
-        <td>{{ solicitud.fecha }}</td>
-        {% if request.user.is_staff %}
-        <td>{{ solicitud.estudiante.user.username}}</td>
-        <td>{{ solicitud.estudiante.user.first_name}}</td>
-        <td>{{ solicitud.estudiante.user.last_name}}</td>
+            <td>{{ solicitud.motivo }}</td>
+            <td>{{ solicitud.fecha }}</td>
+            {% if request.user.is_staff %}
+            <td>{{ solicitud.estudiante.user.username}}</td>
+            <td>{{ solicitud.estudiante.user.first_name}}</td>
+            <td>{{ solicitud.estudiante.user.last_name}}</td>
 
-        <td>{{ solicitud.estudiante.user.email}}</td>
+            <td>{{ solicitud.estudiante.user.email}}</td>
 
+            {% endif %}
+            <td>{{ solicitud.get_estado_display}}</td>
+            <td style="text-align: center">
+              <div >
+                <a id="actionButtons"  href="solicitudes/editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
+                  <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
+                </a>
+                <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ solicitud.id }}"  name="deleteButton">             
+                  <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+                </button>
+              </div>
+            </td>
+          </tr>
         {% endif %}
-        <td>{{ solicitud.get_estado_display}}</td>
-        <td style="text-align: center">
-          <div >
-            <a id="actionButtons"  href="solicitudes/editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
-              <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
-            </a>
-            <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ solicitud.id }}"  name="deleteButton">             
-              <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
-            </button>
-          </div>
-        </td>
-      </tr>
       {% endfor %}
   </tbody>
     </table>

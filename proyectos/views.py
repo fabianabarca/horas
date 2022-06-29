@@ -33,7 +33,7 @@ def proyectos_request(request):
         if request.POST.get('deleteButton'):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Proyecto( id = deleteButtonItemValue[0]) 
-                obj.delete()
+                Proyecto.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
         
     form = FiltrosProyectoForm()
 
