@@ -16,9 +16,25 @@ def papelera_request(request):
     categorias_list = Categoria.objects.all()
     solicitudes_list = Solicitud.objects.all()
     if request.method == "POST":
-        if request.POST.get('deleteButton'):
-                deleteButtonItemValue=request.POST.getlist('deleteButton')
-                obj = Tarea( id = deleteButtonItemValue[0]) 
+        if request.POST.get('deleteButtonActividad'):
+                deleteButtonItemValueList=request.POST.getlist('deleteButtonActividad')
+                obj = Tarea( id = deleteButtonItemValueList[0]) 
+                obj.delete()
+        if request.POST.get('deleteButtonTarea'):
+                deleteButtonItemValueList=request.POST.getlist('deleteButtonTarea')
+                obj = Tarea( id = deleteButtonItemValueList[0]) 
+                obj.delete()
+        if request.POST.get('deleteButtonProyecto'):
+                deleteButtonItemValueList=request.POST.getlist('deleteButtonProyecto')
+                obj = Proyecto( id = deleteButtonItemValueList[0]) 
+                obj.delete()
+        if request.POST.get('deleteButtonCategoria'):
+                deleteButtonItemValueList=request.POST.getlist('deleteButtonCategoria')
+                obj = Categoria( id = deleteButtonItemValueList[0]) 
+                obj.delete()
+        if request.POST.get('deleteButtonSolicitud'):
+                deleteButtonItemValueList=request.POST.getlist('deleteButtonSolicitud')
+                obj = Solicitud( id = deleteButtonItemValueList[0]) 
                 obj.delete()
 
     return render (request=request, template_name="../templates/papelera.html", context={"actividades":actividades_list,"tareas":tareas_list,"proyectos":proyectos_list,"categorias":categorias_list,"solicitudes":solicitudes_list})
