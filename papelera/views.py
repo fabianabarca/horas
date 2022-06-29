@@ -18,7 +18,7 @@ def papelera_request(request):
     if request.method == "POST":
         if request.POST.get('deleteButtonActividad'):
                 deleteButtonItemValueList=request.POST.getlist('deleteButtonActividad')
-                obj = Tarea( id = deleteButtonItemValueList[0]) 
+                obj = Actividad( id = deleteButtonItemValueList[0]) 
                 obj.delete()
         if request.POST.get('deleteButtonTarea'):
                 deleteButtonItemValueList=request.POST.getlist('deleteButtonTarea')
