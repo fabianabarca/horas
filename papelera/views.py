@@ -43,6 +43,28 @@ def papelera_request(request):
                 deleteButtonItemValueList=request.POST.getlist('returnButtonActividad')
                 obj = Actividad( id = deleteButtonItemValueList[0]) 
                 Actividad.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
+        
+        if request.POST.get('returnButtonTarea'):
+                deleteButtonItemValueList=request.POST.getlist('returnButtonTarea')
+                obj = Tarea( id = deleteButtonItemValueList[0]) 
+                Tarea.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
+
+        if request.POST.get('returnButtonProyecto'):
+                deleteButtonItemValueList=request.POST.getlist('returnButtonProyecto')
+                obj = Proyecto( id = deleteButtonItemValueList[0]) 
+                Proyecto.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
+
+        if request.POST.get('returnButtonCategoria'):
+                deleteButtonItemValueList=request.POST.getlist('returnButtonCategoria')
+                obj = Categoria( id = deleteButtonItemValueList[0]) 
+                Categoria.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
+
+        if request.POST.get('returnButtonSolicitud'):
+                deleteButtonItemValueList=request.POST.getlist('returnButtonSolicitud')
+                obj = Solicitud( id = deleteButtonItemValueList[0]) 
+                Solicitud.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
+
+       
 
     return render (request=request, template_name="../templates/papelera.html", context={"actividades":actividades_list,"tareas":tareas_list,"proyectos":proyectos_list,"categorias":categorias_list,"solicitudes":solicitudes_list})
 
