@@ -1,5 +1,26 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %} {% load static %}
 
-<h1>Página de registro de horas</h1>
+<div class="container">
+    </br>
+    <h1>Página de registro de horas</h1>
+    </br>
+    Usuario: {{user.username}} <br>
+    Nombre: {{user.first_name}} <br>
+    Apellido: {{user.last_name}} <br>
+    <br>
+    <br>
+    {% if request.user.is_staff %}
+    Cantidad de estudiante activos: <br>
+    Cantidad de proyectos: <br>
+
+    {% else %}
+    Fecha de inicio del TCU: <br>
+    <br>
+    Progreso del periodo regular: <br>
+    Progreso de horas: <br>
+
+    {% endif %}
+
+</div>
 
 {% endblock %}
