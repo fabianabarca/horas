@@ -1,128 +1,121 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
 
-<div class="container"  align-items="stretch">
-</br>
-  
+<div class="container" align-items="stretch">
+
+  <!-- Título -->
   {% if request.user.is_staff %}
-  <h1>Actividades</h1>
+  <h1 class="display-4">Actividades</h1>
   {% else %}
-  <h1>Registro de Actividades</h1>
+  <h1 class="display-4">Registro de actividades</h1>
   {% endif %}
-  
+  <p>
+    Las actividades pertenecen a una tarea específica, que son parte de un proyecto.
+  </p>
+
+  <!-- Botón para agregar actividades -->
   {% if request.user.is_staff %}
   {% else %}
-  <a href="\crear_actividad" class="btn btn-info" role="button">Agregar Actividad</a> 
+  <a href="\crear_actividad" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i> Agregar actividad</a>
   {% endif %}
-  <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
+
+  <!-- Lista de actividades -->
   {% if actividades %}
-  <button type="button" class="btn btn-info" onclick="toggleCheck()">Seleccionar Todas</button>
-  <button type="button" class="btn btn-info" onclick="uncheckAll()">Limpiar</button>
 
-  {% endif %}
-</br>
-</br>
-<div id="filtrosdiv" style = 'display: none;'>
-<form method="post">
-  {% csrf_token %}
-  <input type="hidden" name="next" value="{{ next }}" />
+  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de actividades</h6>
 
- 
-  <div class="row">
-  {% for field in filtros_form  %}
-    <div class="col-sm-4">
-      <b>{{ field.label_tag }}</b> - {{ field}} 
-    </br>
+  <form method="post">{% csrf_token %}
+    <div class="card">
+      <div class="card-body">
+        {% if request.user.is_staff %}
+        <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
+        <input type="submit" class="btn btn-outline-danger btn-sm" value="Rechazar" name="rechazar">
+        {% endif %}
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
+          Seleccionar todo
+        </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">
+          Filtros
+        </button>
+        <!-- Opciones de filtrado -->
+        <div id="filtrosdiv" style="display: none;" class="card">
+          <p>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ next }}" />
+              <div class="row">
+                {% for field in filtros_form %}
+                <div class="col-sm-4">
+                  <b>{{ field.label_tag }}</b> - {{ field}}
+                  </br>
+                </div>
+                </br>
+                {% endfor %}
+              </div>
+              <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
+            </form>
+          </div>
+          </p>
+        </div>
 
+        <!-- Tabla -->
+        <div class="table-responsive">
+          <table id="datatable" class="table align-items-center table-hover">
+            <thead class="thead">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Horas</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Proyecto</th>
+                <th scope="col">Tarea</th>
+                {% if request.user.is_staff %}
+                <th scope="col">Carné</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                {% endif %}
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for actividad in actividades %}
+              <tr>
+                <td>
+                  <input type="checkbox" name="inputs" value="{{actividad.id}}" /> <br>
+                  <a id="actionButtons" href="actividades/editar_actividad/{{ actividad.id }}" class="text-info">
+                    <i class="fas fa-edit"></i>
+                  </a> <br>
+                  <a onclick="return confirm('¿Está seguro de borrar?')" id="actionButtons" type="submit"
+                    class="text-danger" value="{{ actividad.id }}" name="deleteButton">
+                    <i class="fas fa-trash-alt"></i>
+                  </a>
+                </td>
+                <td>{{ actividad.descripcion }}</td>
+                <td>{{ actividad.horas }}</td>
+                <td>{{ actividad.fecha }}</td>
+                <td>{{ actividad.proyecto.nombre }}</td>
+                <td>{{ actividad.tarea.nombre }}</td>
+                {% if request.user.is_staff %}
+                <td>{{ actividad.estudiante.user.username }}</td>
+                <td>{{ actividad.estudiante.user.first_name }}</td>
+                <td>{{ actividad.estudiante.user.last_name }}</td>
+                {% endif %}
+                <td>{{ actividad.get_estado_display }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-</br>
-  {% endfor %}
 
- 
-  </div>  
-  <button type="submit" style = 'width: 200px; height:40px;' class="btn btn-primary btn-block">Filtrar</button>
- 
-
-  
-</form>
-</br>
-</div>
-
-  {% if actividades %}
-
-<form method="post">{% csrf_token %}
-    {% if request.user.is_staff %}
-    <input type="submit" class="btn btn-success" value="Aprobar" name="aprobar">
-    <input type="submit" class="btn btn-danger " value="Rechazar" name="rechazar">
-    {% endif %}
-</br>
-</br>
-<div class="table-responsive">
-  <table id="datatable" class="table table-striped table-bordered" style="width:100%">
-      <thead class="thead" >
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">Descripcion</th>
-          <th scope="col">Horas</th>
-          <th scope="col">Fecha</th>
-          <th scope="col">Proyecto</th>
-          <th scope="col">Tarea</th>
-          {% if request.user.is_staff %}
-          <th scope="col">Carné</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Apellido</th>
-
-          {% endif %}
-          <th scope="col">Estado</th>
-          <th scope="col"></th>
-
-        </tr>
-      </thead>
-      <tbody>
-        {% for actividad in actividades %}
-        <tr>
-          <td> <input type="checkbox" name="inputs"  value="{{actividad.id}}"/> </td>
-          <td>  {{ actividad.descripcion }}</td>
-          <td>{{ actividad.horas }}</td>
-          <td>{{ actividad.fecha }}</td>
-          <td>{{ actividad.proyecto.nombre}}</td>
-          <td>{{ actividad.tarea.nombre}}</td>
-
-          {% if request.user.is_staff %}
-          <td>{{ actividad.estudiante.user.username}}</td>
-          <td>{{ actividad.estudiante.user.first_name}}</td>
-          <td>{{ actividad.estudiante.user.last_name}}</td>
-
-          {% endif %}
-          <td>{{ actividad.get_estado_display}}</td>
-          
-          <td style="text-align: center">
-            <div >
-              <a id="actionButtons"  href="actividades/editar_actividad/{{ actividad.id }}"class="btn btn-info" role="button">
-                <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
-              </a>
-              <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ actividad.id }}"  name="deleteButton">
-                <!--<a id="actionButtons" style="background-color:crimson;"  class="btn btn-info"  onclick="borrarRegistro('{{ actividad.id }}')"   role="button">
-                -->               
-                <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
-              </button>
-            </div>
-          </td>
-          
-
-        </tr>
-        {% endfor %}
-      </tbody>
-  </table>
-</div>
     {% else %}
-  <strong>No hay actividades registradas</strong>
-{% endif %}
+    <p>
+      <strong>No hay actividades registradas</strong>
+    </p>
+    {% endif %}
 
-
-
-  
-</form>
+  </form>
 </div>
-
 
 {% endblock %}
