@@ -85,8 +85,18 @@
           <td>  {{ actividad.descripcion }}</td>
           <td>{{ actividad.horas }}</td>
           <td>{{ actividad.fecha }}</td>
-          <td>{{ actividad.proyecto.nombre}}</td>
-          <td>{{ actividad.tarea.nombre}}</td>
+          {% if not actividad.proyecto.enPapelera %}
+            <td>{{ actividad.proyecto.nombre}}</td>
+          {% else %}  
+          <td></td>
+          {% endif %}
+          {% if not actividad.tarea.enPapelera %}
+            <td>{{ actividad.tarea.nombre}}</td>
+          {% else %}  
+          <td></td>
+          {% endif %}
+          
+          
 
           {% if request.user.is_staff %}
           <td>{{ actividad.estudiante.user.username}}</td>

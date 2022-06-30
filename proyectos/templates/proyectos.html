@@ -56,7 +56,15 @@
             <td>{{ proyecto.nombre }}</td>
             <td>{{ proyecto.descripcion }}</td>
             <td>{{ proyecto.profesor.user.first_name }}</td>
-            <td>{% for categoria in proyecto.categoria.all %}{{ categoria.nombre}}<br/>{% endfor %}</td>
+            
+            <td>
+                {% for categoria in proyecto.categoria.all %}
+                   {% if not categoria.enPapelera %}
+                       {{ categoria.nombre}}<br/>
+                    {% endif %}
+                {% endfor %}
+            </td>
+            
             <td>{{ proyecto.ubicacion }}</td>
             <td style="text-align: center">
               <div >

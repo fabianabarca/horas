@@ -26,7 +26,12 @@
       <tr>
         <td>{{ tarea.nombre }}</td>
         <td>{{ tarea.descripcion}}</td>
-        <td>{{ tarea.proyecto}}</td>
+        {% if not tarea.proyecto.enPapelera %}
+            <td>{{ tarea.proyecto}}</td>
+        {% else %}  
+            <td></td>
+        {% endif %}
+        
         <td>{{ tarea.estudiante.user.username}}</td>
         <td>{{ tarea.estudiante.user.first_name}}</td>
         <td>{{ tarea.estudiante.user.last_name}}</td>
