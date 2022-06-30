@@ -28,5 +28,6 @@ urlpatterns = [
     path('categorias/', include('categorias.urls')),
     path('estudiantes/', include('estudiantes.urls')),
     path('tareas/', include('tareas.urls')),
+    path('dashboard/', include('dashboard.urls')),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Ver los archivos desde admin
