@@ -4,7 +4,7 @@
   <h1>Papelera de archivos borrados</h1>
 </br>
 </br>
-
+<form method="post">{% csrf_token %}
 </br>
 <h1>Actividades</h1>
 </br>
@@ -75,7 +75,7 @@
 </br>
 <h1>Tareas</h1>
 </br>
-<form method="post">{% csrf_token %}
+
   {% if tareas %}
   <div class="table-responsive">
     <table  class="table table-striped table-bordered">
@@ -120,7 +120,7 @@
   {% else %}
   <strong>No hay tareas borrados</strong>
   {% endif %}
-</form>
+
 </br>
 
 </br>
@@ -271,7 +271,7 @@
   <strong>No hay solicitudes borradas</strong>
 {% endif %}
 </br>
-
+</form>
 </div>
 {% endblock %}
 
