@@ -2,6 +2,7 @@ from django.shortcuts import  render, redirect
 from horas.forms import *
 from django.contrib import messages
 from actividades.views import *
+from inicio.views import *
 from django.contrib.auth import login, authenticate, logout #add this
 from cuentas.models import *
 from django.core.exceptions import ValidationError
@@ -28,7 +29,7 @@ def register_request(request):
 
 			login(request, user)
 			messages.success(request, "Registro exitoso." )
-			return redirect(actividades_request)
+			return redirect(index)
 		messages.error(request, "Fallo el registro. Información inválida.")
 	form = NewUserForm()
 	return render (request=request, template_name="../templates/register.html", context={"register_form":form})
@@ -47,7 +48,7 @@ def login_request(request):
 				login(request, user)
 				#messages.info(request, "You are now logged in as {username}.")
 				
-				return redirect(actividades_request)
+				return redirect(index)
 			else:
 				
 				messages.error(request,"Usuario o contraseña inválido.")
