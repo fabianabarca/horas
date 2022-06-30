@@ -2,8 +2,8 @@
 <div class="container">
 </br>
   <h1>Proyectos</h1>
-  <a href="proyectos\crear_proyecto" class="btn btn-info" role="button">Agregar Proyecto</a>
-  <a href="proyectos\crear_categoria" class="btn btn-info" role="button">Agregar Categoria</a>
+  <a href="crear_proyecto" class="btn btn-info" role="button">Agregar Proyecto</a>
+  <a href="crear_categoria" class="btn btn-info" role="button">Agregar Categoria</a>
   <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
 </br>
 </br>
@@ -58,7 +58,7 @@
         <td>{{ proyecto.ubicacion }}</td>
         <td style="text-align: center">
           <div >
-            <a id="actionButtons"  href="proyectos/editar_proyecto/{{ proyecto.id }}"class="btn btn-info" role="button">
+            <a id="actionButtons"  href="editar_proyecto/{{ proyecto.id }}"class="btn btn-info" role="button">
               <img  id="imageButtons" src="{% static '/svg/file-edit-line.svg' %}" />
             </a>
             <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ proyecto.id }}"  name="deleteButton">             

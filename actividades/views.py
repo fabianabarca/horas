@@ -75,7 +75,7 @@ def crear_actividad(request):
             post = form.save(commit=False)
             post.estudiante = estudiante_actual
             post.save()
-            return HttpResponseRedirect("/")
+            return HttpResponseRedirect("/actividades")
 		
     form = ActividadesForm()
     form.fields['estado'].widget = forms.HiddenInput()

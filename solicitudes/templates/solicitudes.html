@@ -4,7 +4,7 @@
 </br>
   <h1>Gestiones Administrativas</h1>
  
-  <a href="solicitudes\crear_solicitud" class="btn btn-info" role="button">Crear Gestion</a>
+  <a href="crear_solicitud" class="btn btn-info" role="button">Crear Gestion</a>
   <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
   {% if solicitudes %}
   <button type="button" class="btn btn-info" onclick="checkAll()">Seleccionar Todas</button>
@@ -89,7 +89,7 @@
         <td>{{ solicitud.get_estado_display}}</td>
         <td style="text-align: center">
           <div >
-            <a id="actionButtons"  href="solicitudes/editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
+            <a id="actionButtons"  href="editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
               <img  id="imageButtons" src="{% static '/svg/file-edit-line.svg' %}" />
             </a>
             <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ solicitud.id }}"  name="deleteButton">             
