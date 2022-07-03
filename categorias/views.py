@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from horas.forms import CategoriasForm, CategoriasForm
 from proyectos.models import Categoria
 from proyectos.models import Proyecto
-
+from django import forms
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
@@ -16,7 +16,7 @@ def categorias_request(request):
         if request.POST.get('deleteButton'):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Categoria( id = deleteButtonItemValue[0]) 
-                obj.delete()
+                Categoria.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
 
     return render (request=request, template_name="../templates/categorias.html", context={"categorias":categorias_list})
 
@@ -30,6 +30,8 @@ def crear_categoria(request):
             return HttpResponseRedirect("/categorias")
 		
     form = CategoriasForm()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     creacionOedicion = 1
     return render (request=request, template_name="../templates/crear_categoria.html", context={"tipoAccion":creacionOedicion,"categoria_form":form})
  
@@ -45,6 +47,8 @@ def editar_categoria(request, id):
     if form.is_valid():
         form.save()
         return HttpResponseRedirect("/categorias")
-
+        
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     creacionOedicion = 0
     return render(request, "crear_categoria.html", context={"tipoAccion":creacionOedicion,"categoria_form":form})

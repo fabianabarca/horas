@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'categorias',
     'estudiantes',
     'tareas',
+    'papelera',
     'crispy_forms'
     
 ]

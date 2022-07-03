@@ -1,12 +1,13 @@
 from proyectos.models import Proyecto
 from cuentas.models import Estudiante
+from inicio.models import Registro
 from django.db import models
 
 
 
 # Create your models here.
 
-class Tarea(models.Model):
+class Tarea(Registro):
     nombre = models.CharField(max_length=500)
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE,blank=True, null=True)
     proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)

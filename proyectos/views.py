@@ -4,7 +4,7 @@ from horas.forms import CategoriasForm, FiltrosProyectoForm, ProyectosForm
 from proyectos.models import Proyecto
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-
+from django import forms
 
 
 # Create your views here.
@@ -33,7 +33,7 @@ def proyectos_request(request):
         if request.POST.get('deleteButton'):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Proyecto( id = deleteButtonItemValue[0]) 
-                obj.delete()
+                Proyecto.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
         
     form = FiltrosProyectoForm()
 
@@ -47,8 +47,11 @@ def crear_proyecto(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/proyectos")
-		
+	
+    
     form = ProyectosForm()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     creacionOedicion = 1
     return render (request=request, template_name="../templates/crear_proyecto.html", context={"tipoAccion":creacionOedicion,"proyecto_form":form})
  
@@ -60,9 +63,11 @@ def crear_categoria(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/proyectos")
-		
-    form = CategoriasForm()
+	
     
+    form = CategoriasForm()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     return render (request=request, template_name="../templates/crear_categoria.html", context={"categoria_form":form})
 
 
@@ -72,7 +77,8 @@ def editar_proyecto(request, id):
     obj = get_object_or_404(Proyecto, id = id) 
 
     form = ProyectosForm(request.POST or None, instance = obj)
-    
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     if form.is_valid():
         form.save()
