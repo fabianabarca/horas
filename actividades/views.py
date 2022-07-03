@@ -80,6 +80,8 @@ def crear_actividad(request):
     form = ActividadesForm()
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     creacionOedicion = 1
     return render (request=request, template_name="../templates/crear_actividad.html", context={"tipoAccion":creacionOedicion,"form":form})
@@ -94,6 +96,8 @@ def editar_actividad(request, id):
     
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     if form.is_valid():
         form.save()
