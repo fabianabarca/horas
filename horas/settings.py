@@ -26,7 +26,7 @@ SECRET_KEY = '#(cc)eq+&ml&%0v6fcgyhts+&9fsdl)u9*&k0*uo)zw+&$nxh1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['146.190.48.253', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'categorias',
     'estudiantes',
     'tareas',
+    'papelera',
     'crispy_forms'
     
 ]
@@ -150,7 +151,7 @@ DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 MEDIA_URL = '/media/' # Adjuntar archivo

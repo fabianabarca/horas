@@ -41,9 +41,8 @@ def actividades_request(request):
 
         if request.POST.get('deleteButton'):
             deleteButtonItemValue=request.POST.getlist('deleteButton')
-            obj = Actividad( id = deleteButtonItemValue[0]) 
-            obj.delete()
-            #print(obj.delete())
+            Actividad.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
+            
                                                 
         if form.is_valid():
             if form.cleaned_data.get('estudiante'):
@@ -75,11 +74,13 @@ def crear_actividad(request):
             post = form.save(commit=False)
             post.estudiante = estudiante_actual
             post.save()
-            return HttpResponseRedirect("/")
+            return HttpResponseRedirect("/actividades")
 		
     form = ActividadesForm()
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     creacionOedicion = 1
     return render (request=request, template_name="../templates/crear_actividad.html", context={"tipoAccion":creacionOedicion,"form":form})
@@ -94,6 +95,8 @@ def editar_actividad(request, id):
     
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     if form.is_valid():
         form.save()

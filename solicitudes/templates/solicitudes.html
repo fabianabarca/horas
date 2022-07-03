@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+=======
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
+
+>>>>>>> mainDeveloper
 <div class="container">
 </br>
   <h1>Gestiones Administrativas</h1>
  
-  <a href="solicitudes\crear_solicitud" class="btn btn-info" role="button">Crear Gestion</a>
+  <a href="crear_solicitud" class="btn btn-info" role="button">Crear Gestion</a>
   <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
   {% if solicitudes %}
   <button type="button" class="btn btn-info" onclick="checkAll()">Seleccionar Todas</button>
@@ -63,9 +68,8 @@
         <th scope="col">Nombre</th>
         <th scope="col">Apellido</th>
         <th scope="col">Correo de estudiante</th>
-        <th scope="col">Archivo Adjunto</th>
-
         {% endif %}
+        <th scope="col">Archivo Adjunto</th>
         <th scope="col">Estado</th>
         <th scope="col"></th>
 
@@ -73,49 +77,52 @@
     </thead>
     <tbody>
       {% for solicitud in solicitudes %}
-      <tr>
-        <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td>
-        <td>{{ solicitud.get_tipo_display }}</td>
+        {% if not solicitud.enPapelera %}
+          <tr>
+            <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td>
+            <td>{{ solicitud.get_tipo_display }}</td>
 
-        <td>{{ solicitud.motivo }}</td>
-        <td>{{ solicitud.fecha }}</td>
-        {% if request.user.is_staff %}
-        <td>{{ solicitud.estudiante.user.username}}</td>
-        <td>{{ solicitud.estudiante.user.first_name}}</td>
-        <td>{{ solicitud.estudiante.user.last_name}}</td>
+            <td>{{ solicitud.motivo }}</td>
+            <td>{{ solicitud.fecha }}</td>
+            {% if request.user.is_staff %}
+            <td>{{ solicitud.estudiante.user.username}}</td>
+            <td>{{ solicitud.estudiante.user.first_name}}</td>
+            <td>{{ solicitud.estudiante.user.last_name}}</td>
 
-        <td>{{ solicitud.estudiante.user.email}}</td>
-        <td>
-          {% for archivo in archivos %}
-                 
-                   {% if archivo.solicitud_id == solicitud.id %} 
-                        {{ archivo.archivo}}<br/>
-                    {% endif %}
-                 
-                  
-          {% endfor %}
-        </td>
-        
+
+            <td>{{ solicitud.estudiante.user.email}}</td>
+            {% endif %}
+            <td>
+              {% for archivo in archivos %}
+                    
+                      {% if archivo.solicitud_id == solicitud.id %} 
+                            {{ archivo.archivo}}<br/>
+                        {% endif %}
+                    
+                      
+              {% endfor %}
+            </td>
+            <td>{{ solicitud.get_estado_display}}</td>
+            <td style="text-align: center">
+              <div >
+                <a id="actionButtons"  href="editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
+                  <img  id="imageButtons" src="{% static '/svg/file-edit-line.svg' %}" />
+                </a>
+                <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ solicitud.id }}"  name="deleteButton">             
+                  <img id="imageButtons" src="{% static '/svg/delete-bin-line.svg' %}" />
+                </button>
+              </div>
+            </td>
+          </tr>
+
         {% endif %}
-        <td>{{ solicitud.get_estado_display}}</td>
-        <td style="text-align: center">
-          <div >
-            <a id="actionButtons"  href="solicitudes/editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
-              <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
-            </a>
-            <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ solicitud.id }}"  name="deleteButton">             
-              <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
-            </button>
-          </div>
-        </td>
-      </tr>
       {% endfor %}
   </tbody>
     </table>
   </div>
     {% else %}
-  <strong>No hay solicitudes creadas</strong>
-{% endif %}
+         <strong>No hay solicitudes creadas</strong>
+    {% endif %}
 </form>
 </div>
 

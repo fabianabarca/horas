@@ -125,3 +125,24 @@ Sistema de registro de horas de trabajo de estudiantes en el TCU.
 - `python manage.py runserver`
 - Ir a pagina principal servidor http://127.0.0.1:8000/cuentas/login/ o http://127.0.0.1:8000/ si logueado
 
+Para despliegue en digital-ocean se uso https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-20-04-es
+que recomienda:
+
+**Cuando actualice su configuración o aplicación, es probable que necesite reiniciar los procesos para que asimilen sus cambios.**
+
+Si actualiza su aplicación de Django, puede reiniciar el proceso de Gunicorn para que incorpore los cambios escribiendo lo siguiente:
+
+- `sudo systemctl restart gunicorn`
+
+Si cambia los archivos de socket y servicio de Gunicorn, vuelva a cargar el demonio y reinicie el proceso escribiendo lo siguiente:
+
+- `sudo systemctl daemon-reload`
+- `sudo systemctl restart gunicorn.socket gunicorn.service`
+
+Si cambia la configuración de bloque del servidor de Nginx, pruébela y luego verifique Nginx escribiendo lo siguiente:
+
+- `sudo nginx -t && sudo systemctl restart nginx`
+
+Estos comandos son útiles para incorporar cambios cuando ajusta su configuración.
+
+

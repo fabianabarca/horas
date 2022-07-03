@@ -16,7 +16,7 @@ h1 {
    
 }
 
-#actionButtons{
+.actionButtons{
   height: 40px;
   width: 40px;
   flex-direction: column;
@@ -24,7 +24,7 @@ h1 {
   align-items: center;
 }
 
-#imageButtons{
+.imageButtons{
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
 
 <div class="container"  align-items="stretch">
 </br>
@@ -47,7 +47,7 @@
 </br>
 </div>
 
-  {% if actividades %}
+{% if actividades %}
 
 <form method="post">{% csrf_token %}
     {% if request.user.is_staff %}
@@ -79,13 +79,24 @@
       </thead>
       <tbody>
         {% for actividad in actividades %}
+          {% if not actividad.enPapelera %}
         <tr>
           <td> <input type="checkbox" name="inputs"  value="{{actividad.id}}"/> </td>
           <td>  {{ actividad.descripcion }}</td>
           <td>{{ actividad.horas }}</td>
           <td>{{ actividad.fecha }}</td>
-          <td>{{ actividad.proyecto.nombre}}</td>
-          <td>{{ actividad.tarea.nombre}}</td>
+          {% if not actividad.proyecto.enPapelera %}
+            <td>{{ actividad.proyecto.nombre}}</td>
+          {% else %}  
+          <td></td>
+          {% endif %}
+          {% if not actividad.tarea.enPapelera %}
+            <td>{{ actividad.tarea.nombre}}</td>
+          {% else %}  
+          <td></td>
+          {% endif %}
+          
+          
 
           {% if request.user.is_staff %}
           <td>{{ actividad.estudiante.user.username}}</td>
@@ -97,24 +108,25 @@
           
           <td style="text-align: center">
             <div >
-              <a id="actionButtons"  href="actividades/editar_actividad/{{ actividad.id }}"class="btn btn-info" role="button">
-                <img  id="imageButtons" src="static/svg/file-edit-line.svg" />
+              <a id="actionButtons"  href="/editar_actividad/{{ actividad.id }}"class="btn btn-info" role="button">
+                <img  id="imageButtons" src="{% static '/svg/file-edit-line.svg' %}" />
               </a>
               <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ actividad.id }}"  name="deleteButton">
                 <!--<a id="actionButtons" style="background-color:crimson;"  class="btn btn-info"  onclick="borrarRegistro('{{ actividad.id }}')"   role="button">
                 -->               
-                <img id="imageButtons" src="static/svg/delete-bin-line.svg" />
+                <img id="imageButtons" src="{% static '/svg/delete-bin-line.svg' %}" />
               </button>
             </div>
           </td>
           
 
         </tr>
+          {% endif %}
         {% endfor %}
       </tbody>
   </table>
 </div>
-    {% else %}
+{% else %}
   <strong>No hay actividades registradas</strong>
 {% endif %}
 

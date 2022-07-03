@@ -1,8 +1,9 @@
 from cuentas.models import Estudiante
+from inicio.models import Registro
 from django.db import models
 
 # Create your models here.
-class Solicitud(models.Model):
+class Solicitud(Registro):
     TIPOS = (
         ('F', 'Finalización'),
         ('M', 'Prórroga'),

@@ -59,7 +59,7 @@ def solicitudes_request(request):
         if request.POST.get('deleteButton'):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Solicitud( id = deleteButtonItemValue[0]) 
-                obj.delete()
+                Solicitud.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
 
         if form.is_valid():
             if form.cleaned_data.get('estudiante'):
@@ -123,6 +123,8 @@ def crear_solicitud(request):
         form_archivo = SolicitudesArchivoForm()
 
     form.fields['estudiante'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     if not request.user.is_staff: # Si el usuario no es admin se quita el campo de Estado
         form.fields['estado'].widget = forms.HiddenInput()
         
@@ -138,6 +140,8 @@ def editar_solicitud(request, id):
     form = SolicitudesForm(request.POST or None, instance = obj)
     
     form.fields['estado'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     if form.is_valid():
         form.save()

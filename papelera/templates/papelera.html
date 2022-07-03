@@ -1,0 +1,279 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+<div class="container">
+</br>
+  <h1>Papelera de archivos borrados</h1>
+</br>
+</br>
+<form method="post">{% csrf_token %}
+</br>
+<h1>Actividades</h1>
+</br>
+{% if actividades %}
+<div class="table-responsive">
+  <table  class="table table-striped table-bordered">
+      <thead class="thead" >
+        <tr>
+          <!--<th scope="col"></th>-->
+          <th scope="col">Descripcion</th>
+          <th scope="col">Horas</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Proyecto</th>
+          <th scope="col">Tarea</th>
+          {% if request.user.is_staff %}
+          <th scope="col">Carné</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+
+          {% endif %}
+          <th scope="col">Estado</th>
+           <th scope="col"></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for actividad in actividades %}
+            {% if actividad.enPapelera %}
+        <tr>
+         <!-- <td> <input type="checkbox" name="inputs"  value="{{actividad.id}}"/> </td> -->
+          <td>  {{ actividad.descripcion }}</td>
+          <td>{{ actividad.horas }}</td>
+          <td>{{ actividad.fecha }}</td>
+          <td>{{ actividad.proyecto.nombre}}</td>
+          <td>{{ actividad.tarea.nombre}}</td>
+
+          {% if request.user.is_staff %}
+          <td>{{ actividad.estudiante.user.username}}</td>
+          <td>{{ actividad.estudiante.user.first_name}}</td>
+          <td>{{ actividad.estudiante.user.last_name}}</td>
+
+          {% endif %}
+          <td>{{ actividad.get_estado_display}}</td>
+          
+          <td style="text-align: center">
+            <div class="actionButtons">
+              <button  type="submit" class="btn btn-info "    value="{{ actividad.id }}"  name="returnButtonActividad">
+                <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
+              </button>
+              <button class="btn btn-info" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;"   value="{{ actividad.id }}"  name="deleteButtonActividad">            
+                <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
+              </button>
+            </div>
+          </td>
+          
+
+        </tr>
+            {% endif %}
+        {% endfor %}
+      </tbody>
+  </table>
+</div>
+{% else %}
+  <strong>No hay actividades borradas</strong>
+{% endif %}
+</br>
+
+</br>
+<h1>Tareas</h1>
+</br>
+
+  {% if tareas %}
+  <div class="table-responsive">
+    <table  class="table table-striped table-bordered">
+    <thead class="thead">
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Proyecto</th>
+        <th scope="col">Carné</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tarea in tareas %}
+          {% if tarea.enPapelera %}
+      <tr>
+        <td>{{ tarea.nombre }}</td>
+        <td>{{ tarea.descripcion}}</td>
+        <td>{{ tarea.proyecto}}</td>
+        <td>{{ tarea.estudiante.user.username}}</td>
+        <td>{{ tarea.estudiante.user.first_name}}</td>
+        <td>{{ tarea.estudiante.user.last_name}}</td>
+
+        <td style="text-align: center">
+          <div >
+            <button  type="submit" class="btn btn-info "    value="{{ tarea.id }}"  name="returnButtonTarea">
+              <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
+            </button>
+            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ tarea.id }}"  name="deleteButtonTarea">              
+              <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
+            </button>
+          </div>
+        </td>
+      </tr>
+          {% endif %}
+      {% endfor %}
+  </tbody>
+    </table>
+  </div>
+  {% else %}
+  <strong>No hay tareas borrados</strong>
+  {% endif %}
+
+</br>
+
+</br>
+<h1>Proyectos</h1>
+</br>
+{% if proyectos %}
+  <div class="table-responsive">
+    <table  class="table table-striped table-bordered">
+    <thead class="thead">
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Profesor</th>
+        <th scope="col">Categorias</th>
+        <th scope="col">Ubicación</th>
+        <th scope="col"></th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for proyecto in proyectos %}
+      {% if proyecto.enPapelera %}
+      <tr>
+        <td>{{ proyecto.nombre }}</td>
+        <td>{{ proyecto.descripcion }}</td>
+        <td>{{ proyecto.profesor.user.first_name }}</td>
+        <td>{% for categoria in proyecto.categoria.all %}{{ categoria.nombre}}<br/>{% endfor %}</td>
+        <td>{{ proyecto.ubicacion }}</td>
+        <td style="text-align: center">
+          <div >
+            <button  type="submit" class="btn btn-info "    value="{{ proyecto.id }}"  name="returnButtonProyecto">
+              <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
+            </button>
+            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ proyecto.id }}"  name="deleteButtonProyecto">             
+              <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
+            </button>
+          </div>
+        </td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+  </tbody>
+    </table>
+  </div>
+{% else %}
+  <strong>No hay proyectos borrados</strong>
+{% endif %}
+</br>
+
+</br>
+<h1>Categorias</h1>
+</br>
+{% if categorias %}
+<div class="table-responsive">
+  <table  class="table table-striped table-bordered">
+  <thead class="thead">
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col"></th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for categoria in categorias %}
+    {% if categoria.enPapelera %}
+    <tr>
+      <td>{{ categoria }}</td>
+      <td style="text-align: center">
+        <div >
+          <button  type="submit" class="btn btn-info "    value="{{ categoria.id }}"  name="returnButtonCategoria">
+            <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
+          </button>
+          <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ categoria.id }}"  name="deleteButtonCategoria">             
+            <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
+          </button>
+        </div>
+      </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</tbody>
+  </table>
+</div>
+  {% else %}
+<strong>No hay categorias borradas</strong>
+{% endif %}
+</br>
+
+</br>
+<h1>Solicitudes</h1>
+</br>
+{% if solicitudes %}
+  <div class="table-responsive">
+    <table id = "datatable" class="table table-striped table-bordered">
+    <thead class="thead">
+      <tr>
+      <!-- <th scope="col"></th>  -->
+        <th scope="col">Tipo</th>
+        <th scope="col">Motivo</th>
+        <th scope="col">Fecha</th>
+        {% if request.user.is_staff %}
+        <th scope="col">Carné</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+
+        <th scope="col">Correo de estudiante</th>
+        {% endif %}
+        <th scope="col">Estado</th>
+        <th scope="col"></th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for solicitud in solicitudes %}
+      {% if solicitud.enPapelera %}
+      <tr>
+       <!-- <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td> -->
+        <td>{{ solicitud.get_tipo_display }}</td>
+
+        <td>{{ solicitud.motivo }}</td>
+        <td>{{ solicitud.fecha }}</td>
+        {% if request.user.is_staff %}
+        <td>{{ solicitud.estudiante.user.username}}</td>
+        <td>{{ solicitud.estudiante.user.first_name}}</td>
+        <td>{{ solicitud.estudiante.user.last_name}}</td>
+
+        <td>{{ solicitud.estudiante.user.email}}</td>
+
+        {% endif %}
+        <td>{{ solicitud.get_estado_display}}</td>
+        <td style="text-align: center">
+          <div >
+            <button  type="submit" class="btn btn-info "    value="{{ solicitud.id }}"  name="returnButtonSolicitud">
+              <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
+            </button>
+            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ solicitud.id }}"  name="deleteButtonSolicitud">             
+              <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
+            </button>
+          </div>
+        </td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+  </tbody>
+    </table>
+  </div>
+{% else %}
+  <strong>No hay solicitudes borradas</strong>
+{% endif %}
+</br>
+</form>
+</div>
+{% endblock %}
+
+
+
