@@ -90,10 +90,10 @@
             <td>{{ solicitud.get_estado_display}}</td>
             <td style="text-align: center">
               <div >
-                <a id="actionButtons"  href="editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
+                <a   href="editar_solicitud/{{ solicitud.id }}"class="btn btn-info" role="button">
                   <img  class="imageButtons" src="{% static '/svg/file-edit-line.svg' %}" />
                 </a>
-                <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ solicitud.id }}"  name="deleteButton">             
+                <button onclick="return confirm('Está seguro de borrar?')"  type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ solicitud.id }}"  name="deleteButton">             
                   <img class="imageButtons" src="{% static '/svg/delete-bin-line.svg' %}" />
                 </button>
               </div>

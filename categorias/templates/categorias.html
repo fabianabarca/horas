@@ -25,10 +25,10 @@
             <td>{{ categoria }}</td>
             <td style="text-align: center">
               <div >
-                <a id="actionButtons"  href="editar_categoria/{{ categoria.id }}" class="btn btn-info" role="button">
+                <a   href="editar_categoria/{{ categoria.id }}" class="btn btn-info" role="button">
                   <img  class="imageButtons" src="{% static '/svg/file-edit-line.svg' %}" />
                 </a>
-                <button onclick="return confirm('Está seguro de borrar?')" id="actionButtons" type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ categoria.id }}"  name="deleteButton">             
+                <button onclick="return confirm('Está seguro de borrar?')"  type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ categoria.id }}"  name="deleteButton">             
                   <img class="imageButtons" src="{% static '/svg/delete-bin-line.svg' %}" />
                 </button>
               </div>
