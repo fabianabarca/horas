@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from actividades.models import Actividad
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+import time
 
 
 # Create your views here.
@@ -74,6 +75,7 @@ def crear_actividad(request):
             post = form.save(commit=False)
             post.estudiante = estudiante_actual
             post.save()
+            time.sleep(1)#para que mensaje de que se creo pueda verse
             return HttpResponseRedirect("/actividades")
 		
     form = ActividadesForm()
