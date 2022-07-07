@@ -6,7 +6,7 @@ from django.shortcuts import render
 from .models import *
 from .models import SolicitudArchivo
 from django.contrib.auth.decorators import login_required
-
+import time
 
 '''
 # Adjuntar archivo
@@ -95,6 +95,7 @@ def crear_solicitud(request):
             for f in archivos:
                 instancia_archivo = SolicitudArchivo(archivo=f, solicitud=post)
                 instancia_archivo.save()
+            time.sleep(1)#para que mensaje de que se creo pueda verse
             return HttpResponseRedirect("/solicitudes")
         else:
             print(form._errors) # Adjuntar archivo, el cual no debe estar vacio
