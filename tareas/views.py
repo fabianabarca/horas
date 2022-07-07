@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from tareas.models import *
 from horas.forms import TareasForm
 from django.contrib.auth.decorators import login_required
-
+import time
 
 # Create your views here.
 @login_required(login_url='/cuentas/login/')
@@ -25,6 +25,8 @@ def crear_tarea(request):
         form = TareasForm(request.POST)
         if form.is_valid():
             form.save()
+            time.sleep(1)#para que mensaje de que se creo pueda verse
+
             return HttpResponseRedirect("/tareas")
             
     form = TareasForm()

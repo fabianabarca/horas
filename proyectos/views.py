@@ -5,7 +5,7 @@ from proyectos.models import Proyecto
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django import forms
-
+import time
 
 # Create your views here.
 @login_required(login_url='/cuentas/login/')
@@ -46,6 +46,8 @@ def crear_proyecto(request):
         form = ProyectosForm(request.POST)
         if form.is_valid():
             form.save()
+            time.sleep(1)#para que mensaje de que se creo pueda verse
+
             return HttpResponseRedirect("/proyectos")
 	
     
@@ -62,6 +64,8 @@ def crear_categoria(request):
         form = CategoriasForm(request.POST)
         if form.is_valid():
             form.save()
+            time.sleep(1)#para que mensaje de que se creo pueda verse
+
             return HttpResponseRedirect("/proyectos")
 	
     

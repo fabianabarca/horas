@@ -22,11 +22,9 @@
   </script>
 <script  type="text/javascript">
   function confirmarRegistro(){
-    console.log("confirmar")
     var creacion =  confirm('¿Está seguro/a de que desea crear el registro?');
     if(creacion){
       const collection = document.getElementsByClassName("alert alert-success");
-      console.log("tamaño"+collection.length);
 
       collection[0].setAttribute("style", "display:block");
     }
