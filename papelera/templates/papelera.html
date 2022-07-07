@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %} {% load static %}
 <div class="container">
 </br>
   <h1>Papelera de archivos borrados</h1>
@@ -52,10 +52,10 @@
           <td style="text-align: center">
             <div >
               <button  type="submit" class="btn btn-info "    value="{{ actividad.id }}"  name="returnButtonActividad">
-                <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
+                <img  class="imageButtons"    src="{% static '/svg/arrow-go-back-line.svg' %}" />
               </button>
               <button class="btn btn-info" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;"   value="{{ actividad.id }}"  name="deleteButtonActividad">            
-                <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
+                <img  class="imageButtons"   src="{% static '/svg/delete-bin-line.svg' %}" />
               </button>
             </div>
           </td>
@@ -104,10 +104,10 @@
         <td style="text-align: center">
           <div >
             <button  type="submit" class="btn btn-info "    value="{{ tarea.id }}"  name="returnButtonTarea">
-              <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
+              <img  class="imageButtons"    src="{% static '/svg/arrow-go-back-line.svg' %}" />
             </button>
             <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ tarea.id }}"  name="deleteButtonTarea">              
-              <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
+              <img  class="imageButtons"   src="{% static '/svg/delete-bin-line.svg' %}" />
             </button>
           </div>
         </td>
@@ -152,10 +152,10 @@
         <td style="text-align: center">
           <div >
             <button  type="submit" class="btn btn-info "    value="{{ proyecto.id }}"  name="returnButtonProyecto">
-              <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
+              <img  class="imageButtons"    src="{% static '/svg/arrow-go-back-line.svg' %}" />
             </button>
             <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ proyecto.id }}"  name="deleteButtonProyecto">             
-              <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
+              <img  class="imageButtons"   src="{% static '/svg/delete-bin-line.svg' %}" />
             </button>
           </div>
         </td>
@@ -191,10 +191,10 @@
       <td style="text-align: center">
         <div >
           <button  type="submit" class="btn btn-info "    value="{{ categoria.id }}"  name="returnButtonCategoria">
-            <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
+            <img  class="imageButtons"    src="{% static '/svg/arrow-go-back-line.svg' %}" />
           </button>
           <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ categoria.id }}"  name="deleteButtonCategoria">             
-            <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
+            <img  class="imageButtons"   src="{% static '/svg/delete-bin-line.svg' %}" />
           </button>
         </div>
       </td>
@@ -254,10 +254,10 @@
         <td style="text-align: center">
           <div >
             <button  type="submit" class="btn btn-info "    value="{{ solicitud.id }}"  name="returnButtonSolicitud">
-              <img  class="imageButtons"    src="static/svg/arrow-go-back-line.svg" />
+              <img  class="imageButtons"    src="{% static '/svg/arrow-go-back-line.svg' %}" />
             </button>
             <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ solicitud.id }}"  name="deleteButtonSolicitud">             
-              <img  class="imageButtons"   src="static/svg/delete-bin-line.svg" />
+              <img  class="imageButtons"   src="{% static '/svg/delete-bin-line.svg' %}" />
             </button>
           </div>
         </td>
