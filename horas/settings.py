@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'estudiantes',
     'tareas',
     'papelera',
-    'crispy_forms'
+    'crispy_forms',
+    'dashboard'
     
 ]
 
