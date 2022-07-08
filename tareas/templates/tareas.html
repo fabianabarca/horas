@@ -42,6 +42,7 @@
         <th scope="col">Nombre</th>
         <th scope="col">Descripción</th>
         <th scope="col">Proyecto</th>
+        <th scope="col">Categorias</th>
         <th scope="col">Carné</th>
         <th scope="col">Nombre</th>
         <th scope="col">Apellido</th>
@@ -59,6 +60,14 @@
         {% else %}  
             <td></td>
         {% endif %}
+
+        <td>
+          {% for categoria in tarea.proyecto.categoria.all %}
+             {% if not categoria.enPapelera %}
+                 {{ categoria.nombre}}<br/>
+              {% endif %}
+          {% endfor %}
+        </td>
         
         <td>{{ tarea.estudiante.user.username}}</td>
         <td>{{ tarea.estudiante.user.first_name}}</td>

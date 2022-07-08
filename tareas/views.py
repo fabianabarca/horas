@@ -2,6 +2,7 @@ from django import forms
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from tareas.models import *
+from proyectos.models import *
 from horas.forms import TareasForm ,FiltrosTareaForm
 from django.contrib.auth.decorators import login_required
 import time
@@ -27,9 +28,9 @@ def tareas_request(request):
                 tareas_list =  tareas_list.filter(descripcion__contains = form.cleaned_data.get('descripcion'))
             if form.cleaned_data.get('proyecto'):
                 tareas_list =  tareas_list.filter(proyecto = form.cleaned_data.get('proyecto'))
-            
-          #  if form.cleaned_data.get('categoria'):
-           #     tareas_list =  tareas_list.filter(categoria= form.cleaned_data.get('categoria'))
+
+            if form.cleaned_data.get('categoria'):
+                tareas_list =  tareas_list.filter(proyecto__categoria= form.cleaned_data.get('categoria'))
            
     
     form = FiltrosTareaForm()
