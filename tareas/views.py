@@ -17,6 +17,20 @@ def tareas_request(request):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Tarea( id = deleteButtonItemValue[0]) 
                 Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
+        
+        if form.is_valid():
+            if form.cleaned_data.get('nombre'):
+                tareas_list =  tareas_list.filter(nombre__contains = form.cleaned_data.get('nombre'))
+            if form.cleaned_data.get('estudiante'):
+                tareas_list =  tareas_list.filter(estudiante = form.cleaned_data.get('estudiante'))
+            if form.cleaned_data.get('descripcion'):
+                tareas_list =  tareas_list.filter(descripcion__contains = form.cleaned_data.get('descripcion'))
+            if form.cleaned_data.get('proyecto'):
+                tareas_list =  tareas_list.filter(proyecto = form.cleaned_data.get('proyecto'))
+            
+          #  if form.cleaned_data.get('categoria'):
+           #     tareas_list =  tareas_list.filter(categoria= form.cleaned_data.get('categoria'))
+           
     
     form = FiltrosTareaForm()
 
