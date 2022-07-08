@@ -30,7 +30,7 @@ def dashboard_request(request):
     for actividad in my_actividades_list:
             horasTotalesPorEstudiante+= actividad.horas
 
-    #horasTotalesPorEstudiante=20   #para pruebas
+    #horasTotalesPorEstudiante=30  #para pruebas
     porcentaje= (100 / 300) * horasTotalesPorEstudiante
     porcentajeWidth = int(porcentaje)
     print(horasTotalesPorEstudiante)
