@@ -2,7 +2,7 @@ from django import forms
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from tareas.models import *
-from horas.forms import TareasForm
+from horas.forms import TareasForm ,FiltrosTareaForm
 from django.contrib.auth.decorators import login_required
 import time
 
@@ -11,12 +11,16 @@ import time
 def tareas_request(request):
     tareas_list = Tarea.objects.all()
     if request.method == "POST":
+           
+        form = FiltrosTareaForm(request.POST or None)
         if request.POST.get('deleteButton'):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Tarea( id = deleteButtonItemValue[0]) 
                 Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
+    
+    form = FiltrosTareaForm()
 
-    return render (request=request, template_name="../templates/tareas.html", context={"tareas":tareas_list})
+    return render (request=request, template_name="../templates/tareas.html", context={"tareas":tareas_list,"filtros_form":form})
 
 @login_required(login_url='/cuentas/login/')
 def crear_tarea(request):

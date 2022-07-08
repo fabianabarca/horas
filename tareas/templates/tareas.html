@@ -3,8 +3,36 @@
 </br>
   <h1>Tareas</h1>
   <a href="crear_tarea" class="btn btn-info" role="button">Agregar Tarea</a>
+  <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
 </br>
 </br>
+<div id="filtrosdiv" style = 'display: none;'>
+<form method="post">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ next }}" />
+
+ 
+  <div class="row">
+  {% for field in filtros_form  %}
+    <div class="col-sm-4">
+      <b>{{ field.label_tag }}</b> - {{ field}} 
+    </br>
+
+    </div>
+</br>
+  {% endfor %}
+
+ 
+  </div>  
+  <button type="submit" style = 'width: 200px; height:40px;' class="btn btn-primary btn-block">Filtrar</button>
+ 
+
+  
+</form>
+</br>
+</div>
+
+
 <form method="post">{% csrf_token %}
   {% if tareas %}
   <div class="table-responsive">
