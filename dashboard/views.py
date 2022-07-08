@@ -24,13 +24,13 @@ def dashboard_request(request):
     #if request.user.is_staff:
     actividades_list = Actividad.objects.all()
 
-    Actividad.objects.raw('SELECT id, horas FROM myapp_actividad where id == '+ str(estudiante_actual.id))
+    my_actividades_list= Actividad.objects.raw('SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false")
     horasTotalesPorEstudiante=0      
-
-    for actividad in actividades_list:
+    print(str(estudiante_actual.id))
+    for actividad in my_actividades_list:
             horasTotalesPorEstudiante+= actividad.horas
 
-    #horasTotalesPorEstudiante=2   #para pruebas
+    #horasTotalesPorEstudiante=20   #para pruebas
     porcentaje= (100 / 300) * horasTotalesPorEstudiante
     porcentajeWidth = int(porcentaje)
     print(horasTotalesPorEstudiante)
