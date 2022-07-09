@@ -355,6 +355,7 @@
     if (checkCounter == 0) {
       checkAll();
     }
+
   }
 
   function esconderFiltros() {
@@ -372,21 +373,23 @@
   }
 
   $(document).ready(function () {
-    $("#datatable").DataTable({
-      language: {
-        lengthMenu: "Mostrar _MENU_ filas por página",
-        zeroRecords: "No hay datos disponibles",
-        info: "Mostrando página _PAGE_ de _PAGES_",
-        infoEmpty: "No hay datos disponibles",
-        infoFiltered: "(filtrado de _MAX_ total filas)",
-        loadingRecords: "Cargando...",
-        processing: "Procesando...",
-        search: "Buscar:",
-        paginate: {
-          first: "Primero",
-          last: "Último",
-          next: "Siguiente",
-          previous: "Anterior",
+      $("table.table").DataTable({
+        language: {
+          lengthMenu: "Mostrar _MENU_ filas por página",
+          zeroRecords: "No hay datos disponibles - sorry",
+          info: "Mostrando página _PAGE_ de _PAGES_",
+          infoEmpty: "No hay datos disponibles",
+          infoFiltered: "(filtrado de _MAX_ total filas)",
+          loadingRecords: "Cargando...",
+          processing: "Procesando...",
+          search: "Buscar:",
+          paginate: {
+            first: "Primero",
+            last: "Último",
+            next: "Siguiente",
+            previous: "Anterior",
+
+          
         },
       },
     });

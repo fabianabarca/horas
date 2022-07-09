@@ -18,10 +18,27 @@
       });
       
   };
-  
+ 
   </script>
+<script  type="text/javascript">
+  function confirmarRegistro(){
+    var creacion =  confirm('¿Está seguro/a de que desea crear el registro?');
+    if(creacion){
+      const collection = document.getElementsByClassName("alert alert-success");
 
+      collection[0].setAttribute("style", "display:block");
+    }
+    
+    return creacion
+  }
+</script>
 <div class="container">
+
+  <div class="alert alert-success" role="alert" style="display:none">
+    <img  src="{%static '/svg/check-line.svg'%}" /> El registro de actividad se ha realizado exitosamente.
+  </div>
+
+
 </br>
   
   {% if tipoAccion %}
@@ -37,9 +54,10 @@
     {{form|crispy }}
    
 
-    <button type="submit" onClick = "return confirm('¿Está seguro/a de que desea crear el registro?');"  class="btn btn-primary btn-block">Continuar</button>
+    <button type="submit" onClick = "return confirmarRegistro();"  class="btn btn-primary btn-block">Continuar</button>
 </form>
 </div>
+
 
 
 

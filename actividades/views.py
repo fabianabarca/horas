@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from actividades.models import Actividad
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+import time
 
 
 # Create your views here.
@@ -41,8 +42,7 @@ def actividades_request(request):
 
         if request.POST.get('deleteButton'):
             deleteButtonItemValue=request.POST.getlist('deleteButton')
-            obj = Actividad( id = deleteButtonItemValue[0]) 
-            obj.delete()
+            Actividad.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
             
                                                 
         if form.is_valid():
@@ -75,11 +75,14 @@ def crear_actividad(request):
             post = form.save(commit=False)
             post.estudiante = estudiante_actual
             post.save()
-            return HttpResponseRedirect("/")
+            time.sleep(1)#para que mensaje de que se creo pueda verse
+            return HttpResponseRedirect("/actividades")
 		
     form = ActividadesForm()
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     creacionOedicion = 1
     return render (request=request, template_name="../templates/crear_actividad.html", context={"tipoAccion":creacionOedicion,"form":form})
@@ -94,6 +97,8 @@ def editar_actividad(request, id):
     
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     if form.is_valid():
         form.save()

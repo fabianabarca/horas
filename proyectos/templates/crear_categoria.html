@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% load static %}
 <script>
   var formSubmitting = false;
   var setFormSubmitting = function() { formSubmitting = true; };
@@ -17,8 +18,24 @@
       });
   };
   </script>
+  <script  type="text/javascript">
+    function confirmarRegistro(){
+      
+      var creacion =  confirm('¿Está seguro/a de que desea crear el registro?');
+      if(creacion){
+        const collection = document.getElementsByClassName("alert alert-success");
+  
+        collection[0].setAttribute("style", "display:block");
+      }
+      
+      return creacion
+    }
+  </script>
 
 <div class="container">
+  <div class="alert alert-success" role="alert" style="display:none">
+    <img  src="{%static '/svg/check-line.svg'%}" /> El registro de categoria se ha realizado exitosamente.
+  </div>
 </br>
   <h1>Agregar Categoría</h1>
 
@@ -29,7 +46,7 @@
     {{categoria_form|crispy }}
    
 
-    <button type="submit"  onClick = "return confirm('¿Está seguro/a de que desea crear el registro?');" class="btn btn-primary btn-block">Continuar</button>
+    <button type="submit"  onClick = "return confirmarRegistro();" class="btn btn-primary btn-block">Continuar</button>
 </form>
 </div>
 

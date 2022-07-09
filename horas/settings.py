@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'categorias',
     'estudiantes',
     'tareas',
-    'crispy_forms'
+    'papelera',
+    'crispy_forms',
+    'dashboard'
     
 ]
 
@@ -150,7 +152,7 @@ DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 MEDIA_URL = '/media/' # Adjuntar archivo
