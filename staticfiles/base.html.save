@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="{%  static  'css/style.css'  %}" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css"
+    />
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"
+    ></script>
+    <base href="" />
+  </head>
+  <body>
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+      <a class="navbar-brand" href="#">Registro de Actividades TCU-691</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarText"
+        aria-controls="navbarText"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        {% if user.is_authenticated %}
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="">Actividades</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/tareas/">Tareas</a>
+          </li>
+          {% if request.user.is_staff %}
+          <li class="nav-item">
+            <a class="nav-link" href="/proyectos/">Proyectos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/categorias/">Categorias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/estudiantes/">Estudiantes</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="/solicitudes/">Solicitudes</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <span class="navbar-text"> Bienvenido, {{user.username}} </span>
+          <li class="nav-item">
+            <a class="nav-link" href="cuentas/logout/">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    {% block main %} {% endblock %} {% endif %}
+  </body>
+  <script type="text/javascript">
+    // Select all check boxes : Setting the checked property to true in checkAll() function
+    function checkAll() {
+      var items = document.getElementsByName("inputs");
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].type == "checkbox") items[i].checked = true;
+      }
+    }
+    // Clear all check boxes : Setting the checked property to false in uncheckAll() function
+    function uncheckAll() {
+      var items = document.getElementsByName("inputs");
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].type == "checkbox") items[i].checked = false;
+      }
+    }
+
+    function toggleCheck() {
+      var items = document.getElementsByName("inputs");
+      var checktoggle = false;
+      var checkBoxCounter = 0;
+      var checkCounter = 0;
+      for (var i = 0; i < items.length; i++) {
+
+        if (items[i].type == "checkbox") {
+          checkBoxCounter++;
+          if (items[i].checked == true){
+            checkCounter++;
+          } 
+        }
+        console.log(checkBoxCounter);
+        console.log(checkCounter);
+
+      }
+      if(checkCounter>0  && checkCounter<checkBoxCounter){
+          checkAll();
+      }
+
+      if(checkCounter==checkBoxCounter){
+          uncheckAll();
+      }
+
+      if(checkCounter==0){
+          checkAll();
+      }
+    }
+
+    function esconderFiltros() {
+      var x = document.getElementById("filtrosdiv");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+
+    $(document).ready(function () {
+      $("#datatable").DataTable({
+        language: {
+          lengthMenu: "Mostrar _MENU_ filas por página",
+          zeroRecords: "No hay datos disponibles - sorry",
+          info: "Mostrando página _PAGE_ de _PAGES_",
+          infoEmpty: "No hay datos disponibles",
+          infoFiltered: "(filtrado de _MAX_ total filas)",
+          loadingRecords: "Cargando...",
+          processing: "Procesando...",
+          search: "Buscar:",
+          paginate: {
+            first: "Primero",
+            last: "Último",
+            next: "Siguiente",
+            previous: "Anterior",
+          },
+        },
+      });
+    });
+  </script>
+</html>
