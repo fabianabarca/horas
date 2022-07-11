@@ -93,8 +93,9 @@
               {% for archivo in archivos %}
                     
                       {% if archivo.solicitud_id == solicitud.id %} 
-                            {{ archivo.archivo}}<br/>
-                        {% endif %}
+                         <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
+                         <br/>
+                      {% endif %}
                     
                       
               {% endfor %}
