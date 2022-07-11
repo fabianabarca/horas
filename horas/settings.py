@@ -154,7 +154,9 @@ DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),) 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT  se necesita en desliegue para digital-ocean, puede afectar  que corra  en desarrollo
+#Asi que puede removerse y devolverse según la máquina en  la que  corre
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #STATIC_URL = '/static/'
 #STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 #STATIC_ROOT = (os.path.join(BASE_DIR, 'staticfiles'),)
