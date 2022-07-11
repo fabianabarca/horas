@@ -1,11 +1,16 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
 <div class="container">
 </br>
-  <h1>Estudiantes</h1>
+  <!-- Título -->
+  <h1 class="display-4">Estudiantes</h1>
 </br>
   {% if estudiantes %}
+  <!-- Lista de estudiantes -->
+  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de estudiantes</h6>
+  
+   <!-- Tabla -->
   <div class="table-responsive">
-    <table id="datatable" class="table table-striped table-bordered">
+    <table id="datatable" class="table align-items-center table-hover">
     <thead class="thead">
       <tr>
         <th scope="col">Carne</th>

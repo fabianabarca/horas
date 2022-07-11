@@ -18,24 +18,33 @@
   <a href="\crear_actividad" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i> Agregar actividad</a>
   {% endif %}
 
+
   <!-- Lista de actividades -->
-  {% if actividades %}
-
-  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de actividades</h6>
-
   <form method="post">{% csrf_token %}
+  {% if actividades %}
+    <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de actividades</h6>
+
     <div class="card">
       <div class="card-body">
+        <!-- Opciones de aprobación -->
         {% if request.user.is_staff %}
         <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
         <input type="submit" class="btn btn-outline-danger btn-sm" value="Rechazar" name="rechazar">
         {% endif %}
-        <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
-          Seleccionar todo
-        </button>
+
+        <!-- Opciones de selección -->
         <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">
           Filtros
         </button>
+        {% if actividades %}
+            <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
+              Seleccionar todo
+            </button>
+            <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
+              Limpiar Selección
+            </button>
+        {% endif %}
+
         <!-- Opciones de filtrado -->
         <div id="filtrosdiv" style="display: none;" class="card">
           <p>
@@ -59,7 +68,7 @@
         </div>
 
         <!-- Tabla -->
-        <div class="table-responsive">
+        <div class="table-responsive ">
           <table id="datatable" class="table align-items-center table-hover">
             <thead class="thead">
               <tr>
@@ -82,11 +91,16 @@
                 {% if not actividad.enPapelera %}
               <tr>
                 <td>
+                  <!-- Checkbox -->
                   <input type="checkbox" name="inputs" value="{{actividad.id}}" /> <br>
-                  <a id="actionButtons" href="/editar_actividad/{{ actividad.id }}" class="text-info">
+
+                  <!-- Edit button -->
+                  <a  href="/editar_actividad/{{ actividad.id }}" class="text-info" role="button">
                     <i class="fas fa-edit"></i>
                   </a> <br>
-                  <a onclick="return confirm('¿Está seguro de borrar?')" id="actionButtons" type="submit"
+
+                  <!-- Delete button -->
+                  <a onclick="return confirm('¿Está seguro de borrar?')"  type="submit"
                     class="text-danger" value="{{ actividad.id }}" name="deleteButton">
                     <i class="fas fa-trash-alt"></i>
                   </a>
@@ -123,12 +137,12 @@
         </div>
       </div>
     </div>
-    {% else %}
+  {% else %}
     <p>
       <strong>No hay actividades registradas</strong>
     </p>
-    {% endif %}
-
+  {% endif %}
+  </form>
 
 </div>
 

@@ -1,87 +1,108 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
 <div class="container">
 </br>
-  <h1>Proyectos</h1>
-  <a href="crear_proyecto" class="btn btn-info" role="button">Agregar Proyecto</a>
-  <a href="crear_categoria" class="btn btn-info" role="button">Agregar Categoria</a>
-  <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
-</br>
-</br>
-<div id="filtrosdiv" style = 'display: none;'>
-<form method="post">
-  {% csrf_token %}
-  <input type="hidden" name="next" value="{{ next }}" />
+  <!-- Título -->
+  <h1 class="display-4">Proyectos</h1>
+  <p>
+    Los proyectos pueden pertenecer a varias categorias.
+  </p>
+  <a href="crear_proyecto" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Proyecto</a>
+  <a href="crear_categoria" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Categoria</a>
+
 
  
-  <div class="row">
-  {% for field in filtros_form  %}
-    <div class="col-sm-4">
-      <b>{{ field.label_tag }}</b> - {{ field}} 
-    </br>
-
-    </div>
 </br>
-  {% endfor %}
-
- 
-  </div>  
-  <button type="submit" style = 'width: 200px; height:40px;' class="btn btn-primary btn-block">Filtrar</button>
- 
-
+</br>
   
-</form>
-</br>
-</div>
+
+
+
+<!-- Lista de proyectos -->
 <form method="post">{% csrf_token %}
-
   {% if proyectos %}
-  <div class="table-responsive">
-    <table id="datatable" class="table table-striped table-bordered">
-    <thead class="thead">
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Descripción</th>
-        <th scope="col">Profesor</th>
-        <th scope="col">Categorias</th>
-        <th scope="col">Ubicación</th>
-        <th scope="col"></th>
-
-      </tr>
-    </thead>
-    <tbody>
-      {% for proyecto in proyectos %}
-        {% if not proyecto.enPapelera %}
-
-          <tr>
-            <td>{{ proyecto.nombre }}</td>
-            <td>{{ proyecto.descripcion }}</td>
-            <td>{{ proyecto.profesor.user.first_name }}</td>
-            
-            <td>
-                {% for categoria in proyecto.categoria.all %}
-                   {% if not categoria.enPapelera %}
-                       {{ categoria.nombre}}<br/>
-                    {% endif %}
-                {% endfor %}
-            </td>
-            
-            <td>{{ proyecto.ubicacion }}</td>
-            <td style="text-align: center">
-              <div >
-                <a   href="editar_proyecto/{{ proyecto.id }}"class="btn btn-info" role="button">
-                  <img  class="imageButtons" src="{% static '/svg/file-edit-line.svg' %}" />
-                </a>
-                <button onclick="return confirm('Está seguro de borrar?')"  type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ proyecto.id }}"  name="deleteButton">             
-                  <img class="imageButtons" src="{% static '/svg/delete-bin-line.svg' %}" />
-                </button>
+  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h6>
+  <div class="card">
+    <div class="card-body">
+      <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">Filtros</button>
+      <!-- Opciones de filtrado -->
+      <div id="filtrosdiv" style = 'display: none;' class="card">
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div class="row">
+            {% for field in filtros_form  %}
+              <div class="col-sm-4">
+                <b>{{ field.label_tag }}</b> - {{ field}} 
+              </br>
               </div>
-            </td>
-          </tr>
-        {% endif %}
+              </br>
+            {% endfor %}
+          </div>  
 
-      {% endfor %}
-  </tbody>
-    </table>
+            <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
+            
+          </form>
+        </div> 
+        </br>
+      </div>
+      <!-- Tabla -->
+      <div class="table-responsive">
+        <table id="datatable" class="table align-items-center table-hover">
+        <thead class="thead">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Profesor</th>
+            <th scope="col">Categorias</th>
+            <th scope="col">Ubicación</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for proyecto in proyectos %}
+            {% if not proyecto.enPapelera %}
+
+              <tr>
+                <td>
+                  <!-- Checkbox -->
+                  <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
+        
+                    <!-- Edit button -->
+                    <a   href="editar_proyecto/{{ proyecto.id }}" class="text-info" role="button">
+                      <i class="fas fa-edit"></i>
+                    </a>
+        
+                    <!-- Delete button -->
+                    <a onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                    class="text-danger" value="{{ proyecto.id }}"  name="deleteButton">              
+                    <i class="fas fa-trash-alt"></i>
+                    </a>
+                  
+                </td>
+                <td>{{ proyecto.nombre }}</td>
+                <td>{{ proyecto.descripcion }}</td>
+                <td>{{ proyecto.profesor.user.first_name }}</td>
+                
+                <td>
+                    {% for categoria in proyecto.categoria.all %}
+                      {% if not categoria.enPapelera %}
+                          {{ categoria.nombre}}<br/>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                
+                <td>{{ proyecto.ubicacion }}</td>
+                
+              </tr>
+            {% endif %}
+
+          {% endfor %}
+      </tbody>
+        </table>
+      </div>
+    </div>
   </div>
     {% else %}
   <strong>No hay proyectos registrados</strong>
