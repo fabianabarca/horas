@@ -1,20 +1,28 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
 <div class="container">
 </br>
-  <h1>Categorias</h1>
-  <a href="crear_categoria" class="btn btn-info" role="button">Agregar Categoria</a>
-  
+  <!-- Título -->
+  <h1 class="display-4">Categorias</h1>
+  <p>
+    Pueden haber multiples categorias por proyecto.
+  </p>
+  <a href="crear_categoria" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Categoria</a>
 </br>
 </br>
+
+<!-- Lista de categorias -->
 <form method="post">{% csrf_token %}
 
   {% if categorias %}
+  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de categorias</h6>
+  
+   <!-- Tabla -->
   <div class="table-responsive">
-    <table id="datatable" class="table table-striped table-bordered">
+    <table id="datatable" class="table align-items-center table-hover">
     <thead class="thead">
       <tr>
-        <th scope="col">Nombre</th>
         <th scope="col"></th>
+        <th scope="col">Nombre</th>
 
       </tr>
     </thead>
@@ -22,17 +30,24 @@
       {% for categoria in categorias %}
         {% if not categoria.enPapelera %}
           <tr>
-            <td>{{ categoria }}</td>
-            <td style="text-align: center">
-              <div >
-                <a   href="editar_categoria/{{ categoria.id }}" class="btn btn-info" role="button">
-                  <img  class="imageButtons" src="{% static '/svg/file-edit-line.svg' %}" />
+            <td>
+              <!-- Checkbox -->
+              <input type="checkbox" name="inputs" value="{{categoria.id}}" /> <br>
+    
+                <!-- Edit button -->
+                <a   href="editar_categoria/{{ categoria.id }}" class="text-info" role="button">
+                  <i class="fas fa-edit"></i>
                 </a>
-                <button onclick="return confirm('Está seguro de borrar?')"  type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ categoria.id }}"  name="deleteButton">             
-                  <img class="imageButtons" src="{% static '/svg/delete-bin-line.svg' %}" />
-                </button>
-              </div>
+    
+                <!-- Delete button -->
+                <a onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                class="text-danger" value="{{ categoria.id }}"  name="deleteButton">              
+                <i class="fas fa-trash-alt"></i>
+                </a>
+              
             </td>
+            <td>{{ categoria }}</td>
+            
           </tr>
         {% endif %}
       {% endfor %}

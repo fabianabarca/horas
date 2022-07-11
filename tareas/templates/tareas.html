@@ -1,95 +1,115 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %} {% load static %}
 <div class="container">
 </br>
-  <h1>Tareas</h1>
-  <a href="crear_tarea" class="btn btn-info" role="button">Agregar Tarea</a>
-  <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
+<!-- Título -->
+<h1 class="display-4">Tareas</h1>
+<p>
+  Las tareas pertenecen a un proyecto, que son parte de una categoría.
+</p>
+
+<!-- Botón para agregar tareas -->
+<a href="crear_tarea" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Tarea</a>
 </br>
 </br>
-<div id="filtrosdiv" style = 'display: none;'>
-<form method="post">
-  {% csrf_token %}
-  <input type="hidden" name="next" value="{{ next }}" />
-
- 
-  <div class="row">
-  {% for field in filtros_form  %}
-    <div class="col-sm-4">
-      <b>{{ field.label_tag }}</b> - {{ field}} 
-    </br>
-
-    </div>
-</br>
-  {% endfor %}
-
- 
-  </div>  
-  <button type="submit" style = 'width: 200px; height:40px;' class="btn btn-primary btn-block">Filtrar</button>
- 
 
   
-</form>
-</br>
-</div>
 
-
+<!-- Lista de tareas -->
 <form method="post">{% csrf_token %}
-  {% if tareas %}
-  <div class="table-responsive">
-    <table id="datatable" class="table table-striped table-bordered">
-    <thead class="thead">
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Descripción</th>
-        <th scope="col">Proyecto</th>
-        <th scope="col">Categorias</th>
-        <th scope="col">Carné</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Apellido</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for tarea in tareas %}
-         {% if not tarea.enPapelera %}
-      <tr>
-        <td>{{ tarea.nombre }}</td>
-        <td>{{ tarea.descripcion}}</td>
-        {% if not tarea.proyecto.enPapelera %}
-            <td>{{ tarea.proyecto}}</td>
-        {% else %}  
-            <td></td>
-        {% endif %}
-
-        <td>
-          {% for categoria in tarea.proyecto.categoria.all %}
-             {% if not categoria.enPapelera %}
-                 {{ categoria.nombre}}<br/>
-              {% endif %}
-          {% endfor %}
-        </td>
-        
-        <td>{{ tarea.estudiante.user.username}}</td>
-        <td>{{ tarea.estudiante.user.first_name}}</td>
-        <td>{{ tarea.estudiante.user.last_name}}</td>
-
-        <td style="text-align: center">
-          <div >
-            <a   href="editar_tarea/{{ tarea.id }}"class="btn btn-info" role="button">
-              <img  class="imageButtons" src="{% static '/svg/file-edit-line.svg' %}" />
-            </a>
-            <button onclick="return confirm('Está seguro de borrar?')"  type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ tarea.id }}"  name="deleteButton">              
-              <img class="imageButtons" src="{% static '/svg/delete-bin-line.svg' %}" />
-            </button>
+{% if tareas %}
+  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de tareas</h6>
+  <div class="card">
+    <div class="card-body">
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">Filtros</button>
+        <!-- Opciones de filtrado -->
+        <div id="filtrosdiv" style = 'display: none;' class="card">
+          <div class="card-body">
+          
+            <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="next" value="{{ next }}" />
+          
+                  <div class="row">
+                  {% for field in filtros_form  %}
+                    <div class="col-sm-4">
+                      <b>{{ field.label_tag }}</b> - {{ field}} 
+                      </br>
+                    </div>
+                    </br>
+                  {% endfor %}
+          
+                  </div>  
+              <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
+            </form>
           </div>
-        </td>
-      </tr>
-         {% endif %}
-      {% endfor %}
-  </tbody>
-    </table>
+          </br>
+        </div>
+       <!-- Tabla -->
+      <div class="table-responsive">
+        <table id="datatable" class="table align-items-center table-hover">
+        <thead class="thead">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Proyecto</th>
+            <th scope="col">Categorias</th>
+            <th scope="col">Carné</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tarea in tareas %}
+            {% if not tarea.enPapelera %}
+          <tr>
+            <td>
+              <!-- Checkbox -->
+              <input type="checkbox" name="inputs" value="{{actividad.id}}" /> <br>
+
+                <!-- Edit button -->
+                <a   href="editar_tarea/{{ tarea.id }}" class="text-info" role="button">
+                  <i class="fas fa-edit"></i>
+                </a>
+
+                <!-- Delete button -->
+                <a onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                class="text-danger" value="{{ tarea.id }}"  name="deleteButton">              
+                <i class="fas fa-trash-alt"></i>
+                </a>
+              
+            </td>
+
+            <td>{{ tarea.nombre }}</td>
+            <td>{{ tarea.descripcion}}</td>
+            {% if not tarea.proyecto.enPapelera %}
+                <td>{{ tarea.proyecto}}</td>
+            {% else %}  
+                <td></td>
+            {% endif %}
+
+            <td>
+              {% for categoria in tarea.proyecto.categoria.all %}
+                {% if not categoria.enPapelera %}
+                    {{ categoria.nombre}}<br/>
+                  {% endif %}
+              {% endfor %}
+            </td>
+            
+            <td>{{ tarea.estudiante.user.username}}</td>
+            <td>{{ tarea.estudiante.user.first_name}}</td>
+            <td>{{ tarea.estudiante.user.last_name}}</td>
+
+            
+          </tr>
+            {% endif %}
+          {% endfor %}
+      </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-    {% else %}
+{% else %}
   <strong>No hay tareas registradas</strong>
 {% endif %}
 </form>
