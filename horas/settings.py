@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -157,3 +158,15 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 MEDIA_URL = '/media/' # Adjuntar archivo
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Adjuntar archivo
+
+
+# Configuración para envio de correos
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'testertesrter3@gmail.com'
+EMAIL_HOST_PASSWORD = 'bwjfhwdsqwdnfwcv'
+
+# Custom setting. To email
+RECIPIENT_ADDRESS = 'testertesrter3@gmail.com'

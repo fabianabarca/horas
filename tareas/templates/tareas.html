@@ -81,6 +81,9 @@
             <button onclick="return confirm('Está seguro de borrar?')"  type="submit" style="background-color:crimson;" class="btn btn-info"  value="{{ tarea.id }}"  name="deleteButton">              
               <img class="imageButtons" src="{% static '/svg/delete-bin-line.svg' %}" />
             </button>
+            <button onclick="return confirm('Está seguro de enviar?')"  type="submit" style="background-color:green;" class="btn btn-info"  value="{{ tarea.id }}"  name="assignButton">              
+              <i class='fas fa-user-plus'></i>
+            </button>
           </div>
         </td>
       </tr>

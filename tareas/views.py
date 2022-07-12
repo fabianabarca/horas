@@ -6,6 +6,7 @@ from proyectos.models import *
 from horas.forms import TareasForm ,FiltrosTareaForm
 from django.contrib.auth.decorators import login_required
 import time
+from django.core.mail import send_mail
 
 # Create your views here.
 @login_required(login_url='/cuentas/login/')
@@ -18,6 +19,22 @@ def tareas_request(request):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Tarea( id = deleteButtonItemValue[0]) 
                 Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
+        
+        if request.POST.get('assignButton'):
+                asignButtonItemValue=request.POST.getlist('assignButton')
+                obj = Tarea( id = asignButtonItemValue[0]) 
+                tareaAsignar=Tarea.objects.filter(id = asignButtonItemValue[0])
+                send_mail(
+                            'Asignación de tarea',
+                            'Se te asigno la tarea: ' + tareaAsignar[0].nombre +'\n\n'
+                            + 'Descripción: '+ tareaAsignar[0].descripcion  +'\n\n'
+                            + 'Del proyecto: '+ tareaAsignar[0].proyecto.nombre  +'\n\n'
+                            ,
+                            'testertesrter3@gmail.com',
+                            [tareaAsignar[0].estudiante.user.email],
+                            fail_silently=False,
+                )
+                
         
         if form.is_valid():
             if form.cleaned_data.get('nombre'):
