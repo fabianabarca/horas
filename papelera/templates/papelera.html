@@ -17,6 +17,7 @@
       <thead class="thead" >
         <tr>
           <!--<th scope="col"></th>-->
+          <th scope="col"></th>
           <th scope="col">Descripcion</th>
           <th scope="col">Horas</th>
           <th scope="col">Fecha</th>
@@ -29,15 +30,30 @@
 
           {% endif %}
           <th scope="col">Estado</th>
-           <th scope="col"></th>
+          
 
         </tr>
       </thead>
       <tbody>
         {% for actividad in actividades %}
             {% if actividad.enPapelera %}
-        <tr>
-         <!-- <td> <input type="checkbox" name="inputs"  value="{{actividad.id}}"/> </td> -->
+          <tr>
+          <!-- <td> <input type="checkbox" name="inputs"  value="{{actividad.id}}"/> </td> -->
+          <td>
+            <!-- Checkbox -->
+            <input type="checkbox" name="inputs" value="{{actividad.id}}" /> <br>
+
+            <!-- Edit button -->
+            <a   type="submit" class="text-info"    value="{{ actividad.id }}"  name="returnButtonActividad">
+              <i class="fas fa-undo-alt"></i>
+            </a> <br>
+
+            <!-- Delete button -->
+            <a onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit"
+              class="text-danger" value="{{ actividad.id }}" name="deleteButton">
+              <i class="material-icons">delete_forever</i>
+            </a>
+          </td>
           <td>  {{ actividad.descripcion }}</td>
           <td>{{ actividad.horas }}</td>
           <td>{{ actividad.fecha }}</td>
@@ -52,16 +68,7 @@
           {% endif %}
           <td>{{ actividad.get_estado_display}}</td>
           
-          <td style="text-align: center">
-            <div >
-              <button  type="submit" class="btn btn-info "    value="{{ actividad.id }}"  name="returnButtonActividad">
-                <img  class="imageButtons"    src="{% static '/svg/arrow-go-back-line.svg' %}" />
-              </button>
-              <button class="btn btn-info" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;"   value="{{ actividad.id }}"  name="deleteButtonActividad">            
-                <img  class="imageButtons"   src="{% static '/svg/delete-bin-line.svg' %}" />
-              </button>
-            </div>
-          </td>
+         
           
 
         </tr>
@@ -84,19 +91,35 @@
     <table  class="table align-items-center table-hover">
     <thead class="thead">
       <tr>
+        <th scope="col"></th>
         <th scope="col">Nombre</th>
         <th scope="col">Descripción</th>
         <th scope="col">Proyecto</th>
         <th scope="col">Carné</th>
         <th scope="col">Nombre</th>
         <th scope="col">Apellido</th>
-        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
       {% for tarea in tareas %}
           {% if tarea.enPapelera %}
       <tr>
+        <td>
+          <!-- Checkbox -->
+          <input type="checkbox" name="inputs" value="{{tarea.id}}" /> <br>
+
+            <!-- Edit button -->
+            <a   type="submit" class="text-info"    value="{{ tarea.id }}"  name="returnButtonTarea">
+              <i class="fas fa-undo-alt"></i>
+            </a>
+
+            <!-- Delete button -->
+            <a onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+            class="text-danger" value="{{ tarea.id }}"  name="deleteButton">              
+            <i class="fas fa-trash-alt"></i>
+            </a>
+          
+        </td>
         <td>{{ tarea.nombre }}</td>
         <td>{{ tarea.descripcion}}</td>
         <td>{{ tarea.proyecto}}</td>
@@ -104,16 +127,7 @@
         <td>{{ tarea.estudiante.user.first_name}}</td>
         <td>{{ tarea.estudiante.user.last_name}}</td>
 
-        <td style="text-align: center">
-          <div >
-            <button  type="submit" class="btn btn-info "    value="{{ tarea.id }}"  name="returnButtonTarea">
-              <img  class="imageButtons"    src="{% static '/svg/arrow-go-back-line.svg' %}" />
-            </button>
-            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ tarea.id }}"  name="deleteButtonTarea">              
-              <img  class="imageButtons"   src="{% static '/svg/delete-bin-line.svg' %}" />
-            </button>
-          </div>
-        </td>
+        
       </tr>
           {% endif %}
       {% endfor %}
@@ -134,12 +148,13 @@
     <table  class="table align-items-center table-hover">
     <thead class="thead">
       <tr>
+        <th scope="col"></th>
         <th scope="col">Nombre</th>
         <th scope="col">Descripción</th>
         <th scope="col">Profesor</th>
         <th scope="col">Categorias</th>
         <th scope="col">Ubicación</th>
-        <th scope="col"></th>
+        
 
       </tr>
     </thead>
@@ -147,21 +162,28 @@
       {% for proyecto in proyectos %}
       {% if proyecto.enPapelera %}
       <tr>
+        <td>
+          <!-- Checkbox -->
+          <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
+
+            <!-- Edit button -->
+            <a   type="submit" class="text-info"    value="{{ proyecto.id }}"  name="returnButtonProyecto">
+              <i class="fas fa-undo-alt"></i>
+            </a>
+
+            <!-- Delete button -->
+            <a onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+            class="text-danger" value="{{ proyecto.id }}"  name="deleteButton">              
+            <i class="fas fa-trash-alt"></i>
+            </a>
+          
+        </td>
         <td>{{ proyecto.nombre }}</td>
         <td>{{ proyecto.descripcion }}</td>
         <td>{{ proyecto.profesor.user.first_name }}</td>
         <td>{% for categoria in proyecto.categoria.all %}{{ categoria.nombre}}<br/>{% endfor %}</td>
         <td>{{ proyecto.ubicacion }}</td>
-        <td style="text-align: center">
-          <div >
-            <button  type="submit" class="btn btn-info "    value="{{ proyecto.id }}"  name="returnButtonProyecto">
-              <img  class="imageButtons"    src="{% static '/svg/arrow-go-back-line.svg' %}" />
-            </button>
-            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ proyecto.id }}"  name="deleteButtonProyecto">             
-              <img  class="imageButtons"   src="{% static '/svg/delete-bin-line.svg' %}" />
-            </button>
-          </div>
-        </td>
+        
       </tr>
       {% endif %}
       {% endfor %}
@@ -181,8 +203,9 @@
   <table  class="table align-items-center table-hover">
   <thead class="thead">
     <tr>
-      <th scope="col">Nombre</th>
       <th scope="col"></th>
+      <th scope="col">Nombre</th>
+      
 
     </tr>
   </thead>
@@ -190,17 +213,24 @@
     {% for categoria in categorias %}
     {% if categoria.enPapelera %}
     <tr>
-      <td>{{ categoria }}</td>
-      <td style="text-align: center">
-        <div >
-          <button  type="submit" class="btn btn-info "    value="{{ categoria.id }}"  name="returnButtonCategoria">
-            <img  class="imageButtons"    src="{% static '/svg/arrow-go-back-line.svg' %}" />
-          </button>
-          <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ categoria.id }}"  name="deleteButtonCategoria">             
-            <img  class="imageButtons"   src="{% static '/svg/delete-bin-line.svg' %}" />
-          </button>
-        </div>
+      <td>
+        <!-- Checkbox -->
+        <input type="checkbox" name="inputs" value="{{categoria.id}}" /> <br>
+
+          <!-- Edit button -->
+          <a   type="submit" class="text-info"    value="{{ categoria.id }}"  name="returnButtonCategoria">
+            <i class="fas fa-undo-alt"></i>
+          </a>
+
+          <!-- Delete button -->
+          <a onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+          class="text-danger" value="{{ categoria.id }}"  name="deleteButton">              
+          <i class="fas fa-trash-alt"></i>
+          </a>
+        
       </td>
+      <td>{{ categoria }}</td>
+      
     </tr>
     {% endif %}
     {% endfor %}
@@ -221,6 +251,7 @@
     <thead class="thead">
       <tr>
       <!-- <th scope="col"></th>  -->
+        <th scope="col"></th>
         <th scope="col">Tipo</th>
         <th scope="col">Motivo</th>
         <th scope="col">Fecha</th>
@@ -232,7 +263,7 @@
         <th scope="col">Correo de estudiante</th>
         {% endif %}
         <th scope="col">Estado</th>
-        <th scope="col"></th>
+        
 
       </tr>
     </thead>
@@ -241,6 +272,22 @@
       {% if solicitud.enPapelera %}
       <tr>
        <!-- <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td> -->
+        <td>
+            <!-- Checkbox -->
+            <input type="checkbox" name="inputs" value="{{solicitud.id}}" /> <br>
+
+              <!-- Edit button -->
+              <a   type="submit" class="text-info"    value="{{ solicitud.id }}"  name="returnButtonSolicitud">
+                <i class="fas fa-undo-alt"></i>
+              </a>
+
+              <!-- Delete button -->
+              <a onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+              class="text-danger" value="{{ solicitud.id }}"  name="deleteButton">              
+                <i class="fas fa-trash-alt"></i>
+              </a>
+        
+        </td>
         <td>{{ solicitud.get_tipo_display }}</td>
 
         <td>{{ solicitud.motivo }}</td>
@@ -254,16 +301,7 @@
 
         {% endif %}
         <td>{{ solicitud.get_estado_display}}</td>
-        <td style="text-align: center">
-          <div >
-            <button  type="submit" class="btn btn-info "    value="{{ solicitud.id }}"  name="returnButtonSolicitud">
-              <img  class="imageButtons"    src="{% static '/svg/arrow-go-back-line.svg' %}" />
-            </button>
-            <button onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')" type="submit" style="background-color:crimson;" class="btn btn-info actionButtons"  value="{{ solicitud.id }}"  name="deleteButtonSolicitud">             
-              <img  class="imageButtons"   src="{% static '/svg/delete-bin-line.svg' %}" />
-            </button>
-          </div>
-        </td>
+        
       </tr>
       {% endif %}
       {% endfor %}
