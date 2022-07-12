@@ -9,7 +9,7 @@ from django.db import models
 
 class Tarea(Registro):
     nombre = models.CharField(max_length=500)
-    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE,blank=True, null=True)
+    estudiante = models.ManyToManyField(Estudiante)
     proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)
     descripcion = models.CharField(max_length=500)
 

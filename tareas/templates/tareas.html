@@ -60,7 +60,7 @@
         {% else %}  
             <td></td>
         {% endif %}
-
+        <!--Categorias multiples-->
         <td>
           {% for categoria in tarea.proyecto.categoria.all %}
              {% if not categoria.enPapelera %}
@@ -68,11 +68,35 @@
               {% endif %}
           {% endfor %}
         </td>
-        
+        <!--usuarios multiples-->
+        <td>
+          {% for estudiante in tarea.estudiante.all %}
+             
+                 {{ estudiante.user.username}}<br/>
+              
+          {% endfor %}
+        </td>
+        <!--nombres multiples-->
+        <td>
+          {% for estudiante in tarea.estudiante.all %}
+            
+                 {{ estudiante.user.first_name}}<br/>
+            
+          {% endfor %}
+        </td>
+        <!--apellidos multiples-->
+        <td>
+          {% for estudiante in tarea.estudiante.all %}
+            
+                 {{ estudiante.user.last_name}}<br/>
+         
+          {% endfor %}
+        </td>
+<!--
         <td>{{ tarea.estudiante.user.username}}</td>
         <td>{{ tarea.estudiante.user.first_name}}</td>
         <td>{{ tarea.estudiante.user.last_name}}</td>
-
+-->
         <td style="text-align: center">
           <div >
             <a   href="editar_tarea/{{ tarea.id }}"class="btn btn-info" role="button">
@@ -82,7 +106,7 @@
               <img class="imageButtons" src="{% static '/svg/delete-bin-line.svg' %}" />
             </button>
             <button onclick="return confirm('Está seguro de enviar?')"  type="submit" style="background-color:green;" class="btn btn-info"  value="{{ tarea.id }}"  name="assignButton">              
-              <i class='fas fa-user-plus'></i>
+              <img class="imageButtons" src="{% static '/svg/delete-bin-line.svg' %}" />
             </button>
           </div>
         </td>

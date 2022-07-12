@@ -16,24 +16,28 @@ def tareas_request(request):
            
         form = FiltrosTareaForm(request.POST or None)
         if request.POST.get('deleteButton'):
+                print("activado delete")
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Tarea( id = deleteButtonItemValue[0]) 
                 Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
+                
         
         if request.POST.get('assignButton'):
+                print("activado assign")
                 asignButtonItemValue=request.POST.getlist('assignButton')
                 obj = Tarea( id = asignButtonItemValue[0]) 
                 tareaAsignar=Tarea.objects.filter(id = asignButtonItemValue[0])
-                send_mail(
-                            'Asignación de tarea',
-                            'Se te asigno la tarea: ' + tareaAsignar[0].nombre +'\n\n'
-                            + 'Descripción: '+ tareaAsignar[0].descripcion  +'\n\n'
-                            + 'Del proyecto: '+ tareaAsignar[0].proyecto.nombre  +'\n\n'
-                            ,
-                            'testertesrter3@gmail.com',
-                            [tareaAsignar[0].estudiante.user.email],
-                            fail_silently=False,
-                )
+                for userAssign in tareaAsignar[0].estudiante.all():
+                    send_mail(
+                                'Asignación de tarea',
+                                'Se te asigno la tarea: ' + tareaAsignar[0].nombre +'\n\n'
+                                + 'Descripción: '+ tareaAsignar[0].descripcion  +'\n\n'
+                                + 'Del proyecto: '+ tareaAsignar[0].proyecto.nombre  +'\n\n'
+                                ,
+                                'testertesrter3@gmail.com',
+                                [userAssign.user.email],
+                                fail_silently=False,
+                    )
                 
         
         if form.is_valid():
