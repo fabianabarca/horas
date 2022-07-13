@@ -39,20 +39,23 @@
             {% if actividad.enPapelera %}
           <tr>
           <!-- <td> <input type="checkbox" name="inputs"  value="{{actividad.id}}"/> </td> -->
-          <td>
+          <td >
+            <div style="text-align: center;">
             <!-- Checkbox -->
-            <input type="checkbox" name="inputs" value="{{actividad.id}}" /> <br>
+            
+              <input type="checkbox" name="inputs" value="{{actividad.id}}" /> </br>
 
-            <!--Return button-->
-            <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ actividad.id }}"  name="returnButtonActividad">
-              <i class="fas fa-undo-alt"></i>
-            </button> <br>
+              <!--Return button-->
+              <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ actividad.id }}"  name="returnButtonActividad">
+                <i class="material-icons">undo</i>
+              </button>  </br>
 
-            <!-- Delete button -->
-            <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit"
-              class="text-danger" value="{{ actividad.id }}" name="deleteButton">
-              <i class="material-icons">delete_forever</i>
-            </button>
+              <!-- Delete button -->
+              <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit"
+                class="text-danger" value="{{ actividad.id }}" name="deleteButtonActividad">
+                <i class="material-icons">delete_forever</i>
+              </button>
+            </div>
           </td>
           <td>  {{ actividad.descripcion }}</td>
           <td>{{ actividad.horas }}</td>
@@ -105,20 +108,21 @@
           {% if tarea.enPapelera %}
       <tr>
         <td>
-          <!-- Checkbox -->
-          <input type="checkbox" name="inputs" value="{{tarea.id}}" /> <br>
+          <div style="text-align: center;">
+            <!-- Checkbox -->
+            <input type="checkbox" name="inputs" value="{{tarea.id}}" /> <br>
 
             <!--Return button-->
             <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ tarea.id }}"  name="returnButtonTarea">
-              <i class="fas fa-undo-alt"></i>
-            </button>
+              <i class="material-icons">undo</i>
+            </button></br>
 
             <!-- Delete button -->
             <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
-            class="text-danger" value="{{ tarea.id }}"  name="deleteButton">              
+            class="text-danger" value="{{ tarea.id }}"  name="deleteButtonTarea">              
             <i class="material-icons">delete_forever</i>
             </button>
-          
+          </div>
         </td>
         <td>{{ tarea.nombre }}</td>
         <td>{{ tarea.descripcion}}</td>
@@ -163,20 +167,21 @@
       {% if proyecto.enPapelera %}
       <tr>
         <td>
-          <!-- Checkbox -->
-          <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
+          <div style="text-align: center;">
+            <!-- Checkbox -->
+            <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
 
             <!--Return button-->
             <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ proyecto.id }}"  name="returnButtonProyecto">
-              <i class="fas fa-undo-alt"></i>
-            </button>
+              <i class="material-icons">undo</i>
+            </button> </br>
 
             <!-- Delete button -->
             <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
-            class="text-danger" value="{{ proyecto.id }}"  name="deleteButton">              
+            class="text-danger" value="{{ proyecto.id }}"  name="deleteButtonProyecto">              
             <i class="material-icons">delete_forever</i>
             </button>
-          
+          </div>
         </td>
         <td>{{ proyecto.nombre }}</td>
         <td>{{ proyecto.descripcion }}</td>
@@ -214,20 +219,21 @@
     {% if categoria.enPapelera %}
     <tr>
       <td>
-        <!-- Checkbox -->
-        <input type="checkbox" name="inputs" value="{{categoria.id}}" /> <br>
+        <div style="text-align: center;">
+          <!-- Checkbox -->
+          <input type="checkbox" name="inputs" value="{{categoria.id}}" /> <br>
 
           <!--Return button-->
           <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ categoria.id }}"  name="returnButtonCategoria">
-            <i class="fas fa-undo-alt"></i>
-          </button>
+            <i class="material-icons">undo</i>
+          </button> </br>
 
           <!-- Delete button -->
           <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
-          class="text-danger" value="{{ categoria.id }}"  name="deleteButton">              
+          class="text-danger" value="{{ categoria.id }}"  name="deleteButtonCategoria">              
           <i class="material-icons">delete_forever</i>
           </button>
-        
+        </div>
       </td>
       <td>{{ categoria }}</td>
       
@@ -273,20 +279,21 @@
       <tr>
        <!-- <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td> -->
         <td>
+          <div style="text-align: center;">
             <!-- Checkbox -->
             <input type="checkbox" name="inputs" value="{{solicitud.id}}" /> <br>
 
               <!--Return button-->
               <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ solicitud.id }}"  name="returnButtonSolicitud">
-                <i class="fas fa-undo-alt"></i>
-              </button>
+                <i class="material-icons">undo</i>
+              </button> </br>
 
               <!-- Delete button -->
               <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
-              class="text-danger" value="{{ solicitud.id }}"  name="deleteButton">              
+              class="text-danger" value="{{ solicitud.id }}"  name="deleteButtonSolicitud">              
                 <i class="material-icons">delete_forever</i>
               </button>
-        
+          </div>
         </td>
         <td>{{ solicitud.get_tipo_display }}</td>
 
