@@ -87,10 +87,11 @@
                     </a>
         
                     <!-- Delete button -->
-                    <a onclick="return confirm('Está seguro de borrar?')"  type="submit" 
-                    class="text-danger" value="{{ solicitud.id }}"  name="deleteButton">              
+                    <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                    class="text-danger" value="{{ solicitud.id }}"  name="deleteButton"
+                    style="background-color: transparent;  border: 0;">              
                     <i class="fas fa-trash-alt"></i>
-                    </a>
+                    </button>
                   
                 </td>
                 <td>{{ solicitud.get_tipo_display }}</td>

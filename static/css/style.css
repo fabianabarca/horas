@@ -33,3 +33,9 @@ h1 {
   width: 18px;
   
 }
+
+
+.bootstrapFitButtons{
+  background-color: transparent;  
+  border: 0;
+}

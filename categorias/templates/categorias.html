@@ -35,15 +35,16 @@
               <input type="checkbox" name="inputs" value="{{categoria.id}}" /> <br>
     
                 <!-- Edit button -->
-                <a   href="editar_categoria/{{ categoria.id }}" class="text-info" role="button">
+                <button   href="editar_categoria/{{ categoria.id }}" class="text-info" role="button">
                   <i class="fas fa-edit"></i>
                 </a>
     
                 <!-- Delete button -->
-                <a onclick="return confirm('Está seguro de borrar?')"  type="submit" 
-                class="text-danger" value="{{ categoria.id }}"  name="deleteButton">              
+                <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                class="text-danger" value="{{ categoria.id }}"  name="deleteButton"
+                style="background-color: transparent;  border: 0;">              
                 <i class="fas fa-trash-alt"></i>
-                </a>
+                </button>
               
             </td>
             <td>{{ categoria }}</td>
