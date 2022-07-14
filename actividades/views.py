@@ -4,6 +4,8 @@ from cuentas.models import Estudiante
 from horas.forms import *
 from django.contrib.auth.models import User
 from actividades.models import Actividad
+from tareas.models import Tarea
+from proyectos.models import Proyecto
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 import time
@@ -71,6 +73,7 @@ def crear_actividad(request):
 
     if request.method == "POST":
         form = ActividadesForm(request.POST or None)
+        
         if form.is_valid():
             post = form.save(commit=False)
             post.estudiante = estudiante_actual
@@ -83,6 +86,16 @@ def crear_actividad(request):
     form.fields['estudiante'].widget = forms.HiddenInput()
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
+
+    #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
+    proyectos_noborrados = Proyecto.objects.all()
+    tareas_noborradas = Tarea.objects.all()
+    
+    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
+    tareas_noborradas=tareas_noborradas.filter(enPapelera= False)
+
+    form.fields["proyecto"].queryset  = proyectos_noborrados
+    form.fields["tarea"].queryset = tareas_noborradas
     
     creacionOedicion = 1
     return render (request=request, template_name="../templates/crear_actividad.html", context={"tipoAccion":creacionOedicion,"form":form})
@@ -99,6 +112,17 @@ def editar_actividad(request, id):
     form.fields['estudiante'].widget = forms.HiddenInput()
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
+    
+    #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
+    proyectos_noborrados = Proyecto.objects.all()
+    tareas_noborradas = Tarea.objects.all()
+    
+    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
+    tareas_noborradas=tareas_noborradas.filter(enPapelera= False)
+
+    form.fields["proyecto"].queryset  = proyectos_noborrados
+    form.fields["tarea"].queryset = tareas_noborradas
+        
     
     if form.is_valid():
         form.save()

@@ -2,6 +2,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from horas.forms import CategoriasForm, FiltrosProyectoForm, ProyectosForm
 from proyectos.models import Proyecto
+from proyectos.models import Categoria
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django import forms
@@ -54,6 +55,12 @@ def crear_proyecto(request):
     form = ProyectosForm()
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
+
+    #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
+    categorias_noborrados = Categoria.objects.all()
+    categorias_noborrados=categorias_noborrados.filter(enPapelera= False)
+    form.fields["categoria"].queryset  = categorias_noborrados
+
     creacionOedicion = 1
     return render (request=request, template_name="../templates/crear_proyecto.html", context={"tipoAccion":creacionOedicion,"proyecto_form":form})
  
@@ -72,6 +79,9 @@ def crear_categoria(request):
     form = CategoriasForm()
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
+
+
+
     return render (request=request, template_name="../templates/crear_categoria.html", context={"categoria_form":form})
 
 
@@ -83,6 +93,11 @@ def editar_proyecto(request, id):
     form = ProyectosForm(request.POST or None, instance = obj)
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
+
+    #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
+    categorias_noborrados = Categoria.objects.all()
+    categorias_noborrados=categorias_noborrados.filter(enPapelera= False)
+    form.fields["categoria"].queryset  = categorias_noborrados
     
     if form.is_valid():
         form.save()
