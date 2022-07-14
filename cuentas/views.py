@@ -5,7 +5,10 @@ from actividades.views import *
 from django.contrib.auth import login, authenticate, logout #add this
 from cuentas.models import *
 from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import login_required
 
+
+@login_required(login_url='/cuentas/login/')
 def register_request(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
@@ -24,12 +27,18 @@ def register_request(request):
 			estudiante.carrera_id = Carrera.objects.get(nombre__contains=carrera)
 			estudiante.save()
 			
+			fechaInicioTCU = form.cleaned_data.get('fechaInicioTCU')
+			fechaFinTCU	= form.cleaned_data.get('fechaFinTCU')
+			estudiante.fechaInicioTCU=fechaInicioTCU
+			estudiante.fechaFinTCU=fechaFinTCU
+			estudiante.save()
 			
 
 			login(request, user)
-			messages.success(request, "Registro exitoso." )
+			messages.success(request, "Registro de " +user.username+" exitoso." )
 			return redirect(actividades_request)
-		messages.error(request, "Fallo el registro. Información inválida.")
+		else:
+			messages.error(request, "Falló el registro. Información inválida.")
 	form = NewUserForm()
 	return render (request=request, template_name="../templates/register.html", context={"register_form":form})
 

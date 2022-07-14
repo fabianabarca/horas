@@ -13,12 +13,14 @@ from django.forms import ClearableFileInput
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
     carrera = forms.CharField(required=False)
+    fechaInicioTCU = forms.DateField(required=False,widget=forms.DateInput(attrs={'type': 'date','style': 'width: 200px;', 'class': 'form-control'}))
+    fechaFinTCU = forms.DateField(required=False,widget=forms.DateInput(attrs={'type': 'date','style': 'width: 200px;', 'class': 'form-control'}))
 
     class Meta:
         model = User
          
         #fields = ("username", "first_name", "last_name", "email", "carrera","password1", "password2")
-        fields = UserCreationForm.Meta.fields + ('first_name', 'last_name', 'email','carrera')
+        fields = UserCreationForm.Meta.fields + ('first_name', 'last_name', 'email','carrera','is_staff','fechaInicioTCU','fechaFinTCU')
 
         
     def __init__(self, *args, **kwargs):
@@ -31,7 +33,8 @@ class NewUserForm(UserCreationForm):
         user = super(NewUserForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
         user.carrera = self.cleaned_data['carrera']
-    
+        user.fechaInicioTCU = self.cleaned_data['fechaInicioTCU']
+        user.fechaFinTCU = self.cleaned_data['fechaFinTCU']
         
         if commit:
             user.save()
