@@ -139,14 +139,19 @@ def editar_solicitud(request, id):
     obj = get_object_or_404(Solicitud, id = id) 
 
     form = SolicitudesForm(request.POST or None, instance = obj)
+    form_archivo = SolicitudesArchivoForm(request.POST or None, request.FILES) # Adjuntar archivo
+    archivos = request.FILES.getlist('archivo') #field name in model
     
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
-    if form.is_valid():
+    if form.is_valid() and form_archivo.is_valid():
+        for f in archivos:
+                instancia_archivo = SolicitudArchivo(archivo=f)
+                instancia_archivo.save()
         form.save()
         return HttpResponseRedirect("/solicitudes")
 
     creacionOedicion = 0
-    return render(request, "crear_solicitud.html", context={"tipoAccion":creacionOedicion,"solicitud_form":form})
+    return render(request, "crear_solicitud.html", context={"tipoAccion":creacionOedicion,"solicitud_form":form, "solicitudArchivo_form":form_archivo})

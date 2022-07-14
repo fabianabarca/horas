@@ -93,7 +93,12 @@
               {% for archivo in archivos %}
                     
                       {% if archivo.solicitud_id == solicitud.id %} 
-                         <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
+                         <!--
+                           Si se quiere abrir archivo en otra ventana:
+                           <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
+                        -->
+
+                         <a href="../media/{{ archivo.archivo}}" download >{{ archivo.archivo}}</a>
                          <br/>
                       {% endif %}
                     
