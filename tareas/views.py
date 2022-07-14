@@ -3,6 +3,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from tareas.models import *
 from proyectos.models import *
+from proyectos.models import Proyecto
 from horas.forms import TareasForm ,FiltrosTareaForm
 from django.contrib.auth.decorators import login_required
 import time
@@ -51,6 +52,12 @@ def crear_tarea(request):
     form = TareasForm()
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
+
+    #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
+    proyectos_noborrados = Proyecto.objects.all()
+    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
+    form.fields["proyecto"].queryset  = proyectos_noborrados
+
     creacionOedicion = 1
 
     return render (request=request, template_name="../templates/crear_tarea.html", context={"tipoAccion":creacionOedicion,"tarea_form":form})
@@ -66,6 +73,13 @@ def editar_tarea(request, id):
    # form.fields['proyecto'].widget = forms.HiddenInput()
    # form.fields['nombre'].widget = forms.HiddenInput()
    # form.fields['descripcion'].widget = forms.HiddenInput()
+
+
+    #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
+    proyectos_noborrados = Proyecto.objects.all()
+    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
+    form.fields["proyecto"].queryset  = proyectos_noborrados
+
     if form.is_valid():
         form.save()
         return HttpResponseRedirect("/tareas")
