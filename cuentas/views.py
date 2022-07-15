@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/cuentas/login/')
 def register_request(request):
+	form = NewUserForm(request.POST or None)
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
 		if form.is_valid():
@@ -36,10 +37,10 @@ def register_request(request):
 
 			login(request, user)
 			messages.success(request, "Registro de " +user.username+" exitoso." )
-			return redirect(actividades_request)
+			return redirect(register_request)
 		else:
 			messages.error(request, "Falló el registro. Información inválida.")
-	form = NewUserForm()
+	#form = NewUserForm()
 	return render (request=request, template_name="../templates/register.html", context={"register_form":form})
 
 
