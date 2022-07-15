@@ -47,7 +47,7 @@ def register_request(request):
 				profesor = Profesor(user_id=user.id)
 				profesor.save()
 
-			login(request, user)
+			#login(request, user)
 			messages.success(request, "Registro de " +user.username+" exitoso." )
 			return redirect(register_request)
 		else:
