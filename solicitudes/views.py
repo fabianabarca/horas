@@ -72,11 +72,31 @@ def solicitudes_request(request):
                 solicitudes_list =  solicitudes_list.filter(motivo__contains= form.cleaned_data.get('motivo'))
             if form.cleaned_data.get('fecha_inicio') or form.cleaned_data.get('fecha_final'):
                 solicitudes_list =  solicitudes_list.filter(fecha__range=[form.cleaned_data.get('fecha_inicio'), form.cleaned_data.get('fecha_final')])
-
     
+    
+    archivos_list = SolicitudArchivo.objects.all()
+    count = 0
+    for archivos in archivos_list:
+        
+        print(archivos_list[count].archivo)
+        count=count+1
+    '''
+    archivoSolicitudeslist = []
+    
+    for solicitud in solicitudes_list:
+    
+        for archivo in archivos_list:
+            
+            if actividad.estudiante.user.username == estudiante.user.username:
+                horasTotalesPorEstudiante+= actividad.horas
+
+        horasEstudianteslist.append(horasTotalesPorEstudiante)
+        
+    zipSolicitudesyArchivos= zip(solicitudes_list,archivos_list) 
+    '''   
     form = FiltrosGestionForm()
 
-    return render (request=request, template_name="../templates/solicitudes.html",context={"solicitudes":solicitudes_list, "filtros_form":form})
+    return render (request=request, template_name="../templates/solicitudes.html",context={"solicitudes":solicitudes_list,"archivos":archivos_list, "filtros_form":form})
 
 @login_required(login_url='/cuentas/login/')
 def crear_solicitud(request):
@@ -119,14 +139,19 @@ def editar_solicitud(request, id):
     obj = get_object_or_404(Solicitud, id = id) 
 
     form = SolicitudesForm(request.POST or None, instance = obj)
+    form_archivo = SolicitudesArchivoForm(request.POST or None, request.FILES) # Adjuntar archivo
+    archivos = request.FILES.getlist('archivo') #field name in model
     
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
-    if form.is_valid():
+    if form.is_valid() and form_archivo.is_valid():
+        for f in archivos:
+                instancia_archivo = SolicitudArchivo(archivo=f)
+                instancia_archivo.save()
         form.save()
         return HttpResponseRedirect("/solicitudes")
 
     creacionOedicion = 0
-    return render(request, "crear_solicitud.html", context={"tipoAccion":creacionOedicion,"solicitud_form":form})
+    return render(request, "crear_solicitud.html", context={"tipoAccion":creacionOedicion,"solicitud_form":form, "solicitudArchivo_form":form_archivo})

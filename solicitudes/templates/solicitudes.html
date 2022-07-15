@@ -1,4 +1,6 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
 <div class="container">
 </br>
@@ -53,16 +55,55 @@
       </br>
       </div>
 
-      <!-- Tabla -->
-      <div class="table-responsive">
-        <table id = "datatable" class="table align-items-center table-hover">
-        <thead class="thead">
+
+  
+</form>
+</br>
+</div>
+
+
+  {% if solicitudes %}
+  <form method="post">
+    {% csrf_token %}
+    {% if request.user.is_staff %}
+    <input type="submit" class="btn btn-success" value="Aprobar" name="aprobar">
+    <input type="submit" class="btn btn-danger " value="Rechazar" name="rechazar">
+    {% endif %}
+
+  </br>
+  </br>
+  <!-- Tabla -->
+  <div class="table-responsive">
+    <table id = "datatable" class="table align-items-center table-hover">
+    <thead class="thead">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Motivo</th>
+        <th scope="col">Fecha</th>
+        {% if request.user.is_staff %}
+        <th scope="col">Carné</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Correo de estudiante</th>
+        {% endif %}
+        <th scope="col">Archivo Adjunto</th>
+        <th scope="col">Estado</th>
+        <th scope="col"></th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for solicitud in solicitudes %}
+        {% if not solicitud.enPapelera %}
+
           <tr>
             <th scope="col"></th>
             <th scope="col">Tipo</th>
             <th scope="col">Motivo</th>
             <th scope="col">Fecha</th>
             {% if request.user.is_staff %}
+
             <th scope="col">Carné</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
@@ -106,6 +147,22 @@
                 <td>{{ solicitud.estudiante.user.email}}</td>
 
                 {% endif %}
+                <td>
+                  {% for archivo in archivos %}
+                        
+                          {% if archivo.solicitud_id == solicitud.id %} 
+                             <!--
+                               Si se quiere abrir archivo en otra ventana:
+                               <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
+                            -->
+    
+                             <a href="../media/{{ archivo.archivo}}" download >{{ archivo.archivo}}</a>
+                             <br/>
+                          {% endif %}
+                        
+                          
+                  {% endfor %}
+                </td>
                 <td>{{ solicitud.get_estado_display}}</td>
                 
               </tr>
@@ -118,6 +175,7 @@
 {% else %}
   <strong>No hay solicitudes creadas</strong>
 {% endif %}
+
 </form>
 </div>
 
