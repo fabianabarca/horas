@@ -6,9 +6,9 @@ from django.contrib.auth import login, authenticate, logout #add this
 from cuentas.models import *
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
-
-@login_required(login_url='/cuentas/login/')
+@staff_member_required(login_url='/cuentas/login/')
 def register_request(request):
 	form = NewUserForm(request.POST or None)
 	if request.method == "POST":
@@ -17,23 +17,35 @@ def register_request(request):
 			user = form.save()
 			
 			carrera = form.cleaned_data.get('carrera')
-
 			
 			if(not Carrera.objects.filter(nombre__contains=carrera).exists()):
 				
 				c = Carrera(nombre=carrera)
 				c.save()
+
 			
+			#Actualmente en la base de datos crear usuario significa crearlo como estudiante
+			#aqui diferencia entre asignar valores al estudiante creado o asignar estudiante como profesor tambien
 			estudiante = Estudiante.objects.get(id=user.id)
 			estudiante.carrera_id = Carrera.objects.get(nombre__contains=carrera)
-			estudiante.save()
-			
+			#estudiante.save()
 			fechaInicioTCU = form.cleaned_data.get('fechaInicioTCU')
 			fechaFinTCU	= form.cleaned_data.get('fechaFinTCU')
 			estudiante.fechaInicioTCU=fechaInicioTCU
 			estudiante.fechaFinTCU=fechaFinTCU
-			estudiante.save()
 			
+			estudiante.save()
+
+
+			is_staff = form.cleaned_data.get('is_staff')
+			
+			if ( is_staff):
+				user.is_staff=is_staff
+				user.is_superuser=is_staff
+				user.save()
+
+				profesor = Profesor(user_id=user.id)
+				profesor.save()
 
 			login(request, user)
 			messages.success(request, "Registro de " +user.username+" exitoso." )
@@ -46,7 +58,7 @@ def register_request(request):
 
 def login_request(request):
 
-
+	form = CustomAuthenticationForm(request.POST or None)
 	if request.method == "POST":
 		form = CustomAuthenticationForm(request, data=request.POST)
 		if form.is_valid():
