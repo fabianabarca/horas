@@ -22,5 +22,5 @@ class Solicitud(Registro):
     #archivo = models.FileField(upload_to='documents/', blank=True) # Adjuntar archivo
 
 class SolicitudArchivo(models.Model):
-    archivo = models.FileField(upload_to='documents/', blank=True) # Adjuntar archivo
+    archivo = models.FileField(upload_to='documents/', blank=True, null=True) # Adjuntar archivo
     solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)

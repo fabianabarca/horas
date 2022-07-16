@@ -147,8 +147,9 @@ def editar_solicitud(request, id):
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     if form.is_valid() and form_archivo.is_valid():
+        post = form.save(commit=False)
         for f in archivos:
-                instancia_archivo = SolicitudArchivo(archivo=f)
+                instancia_archivo = SolicitudArchivo(archivo=f, solicitud=post)
                 instancia_archivo.save()
         form.save()
         return HttpResponseRedirect("/solicitudes")
