@@ -24,7 +24,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for estudiante, horas in zipHoras %}
+      {% for estudiante, horas , porcentaje, porcentajeWidth in zipHoras %}
       <tr>
         <td>{{ estudiante.user.username }}</td>
         <td>{{ estudiante.user.first_name }}</td>
@@ -32,7 +32,38 @@
         <td>{{ estudiante.user.email }}</td>
         <td>{{ estudiante.carrera.nombre }}</td>
         <td>{{ estudiante.tutor}}</td>
-        <td>{{ horas}}</td>
+        <td>
+          <!--{{ horas}}-->
+          <div class="progress-wrapper">
+            <div class="progress-info">
+              <div class="progress-percentage">
+                <span class="text-sm font-weight-bold">{{ horas }} horas de 300</span>
+              </div>
+            </div>
+            <div class="progress">
+              <div class="progress-bar bg-gradient-primary" role="progressbar" aria-valuenow="66.0" aria-valuemin="0" aria-valuemax="100" style="width: 66.0%;">
+                <!--
+                 Permite aplicar script para el elemento actual del documento. Tomado y modificado de: https://stackoverflow.com/questions/9209823/what-is-the-current-element-in-javascript
+                  -->
+                <script>
+                  'use strict';
+                  var scriptTag = document.getElementsByTagName('script');
+                  scriptTag = scriptTag[scriptTag.length - 1];
+              
+                  var parent = scriptTag.parentNode;
+                  if(parent.className=="progress-bar bg-gradient-primary"){
+                    parent.setAttribute("aria-valuenow", "{{porcentaje}}");
+                    parent.setAttribute("style",  "width: {{porcentajeWidth}}%;");
+                  }
+                </script>
+              </div>
+              
+            </div>
+            
+          </div>
+
+
+        </td>
 
 
 
@@ -47,6 +78,7 @@
   <strong>No hay estudiantes registrados</strong>
 {% endif %}
 </div>
+  
 {% endblock %}
 
 

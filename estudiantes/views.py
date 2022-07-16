@@ -16,6 +16,9 @@ def estudiantes_request(request):
         actividades_list = Actividad.objects.all()
     Actividad.objects.raw('SELECT id, horas FROM myapp_actividad ')
     horasEstudianteslist = []
+    porcentajeEstudianteslist = []
+    porcentajeWidthEstudianteslist = []
+
     horasTotalesPorEstudiante=0
     for estudiante in estudiantes_list:
        
@@ -27,10 +30,15 @@ def estudiantes_request(request):
                 horasTotalesPorEstudiante+= actividad.horas
 
         horasEstudianteslist.append(horasTotalesPorEstudiante)
+        porcentaje= (100 / 300) * horasTotalesPorEstudiante
+        porcentajeEstudianteslist.append(porcentaje)
+        porcentajeWidthEstudianteslist.append(int(porcentaje))
 
-    zipHoras= zip(estudiantes_list,horasEstudianteslist)    
-    print(horasEstudianteslist)
-    return render (request=request, template_name="../templates/estudiantes.html", context={"zipHoras":zipHoras,"horaslist":horasEstudianteslist,"estudiantes":estudiantes_list,"actividades":actividades_list})
+    zipHoras= zip(estudiantes_list,horasEstudianteslist,porcentajeEstudianteslist,porcentajeWidthEstudianteslist)    
+    
+    return render (request=request, template_name="../templates/estudiantes.html", context={"zipHoras":zipHoras,"horaslist":horasEstudianteslist,
+    "estudiantes":estudiantes_list,"actividades":actividades_list,
+    "porcentajeList":porcentajeEstudianteslist,"porcentajeWidthList":porcentajeWidthEstudianteslist})
 
 @login_required(login_url='/cuentas/login/')
 def editar_estudiante(request, id):

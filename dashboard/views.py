@@ -26,14 +26,14 @@ def dashboard_request(request):
 
     my_actividades_list= Actividad.objects.raw('SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false")
     horasTotalesPorEstudiante=0      
-    print(str(estudiante_actual.id))
+    #print(str(estudiante_actual.id))
     for actividad in my_actividades_list:
             horasTotalesPorEstudiante+= actividad.horas
 
     #horasTotalesPorEstudiante=30  #para pruebas
     porcentaje= (100 / 300) * horasTotalesPorEstudiante
     porcentajeWidth = int(porcentaje)
-    print(horasTotalesPorEstudiante)
-    print(porcentaje)
+    #print(horasTotalesPorEstudiante)
+    #print(porcentaje)
 
     return render (request=request, template_name="../templates/dashboard.html", context={"progreso":horasTotalesPorEstudiante,"porcentaje":porcentaje,"width":porcentajeWidth,})
