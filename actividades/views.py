@@ -58,7 +58,7 @@ def actividades_request(request):
                 actividades_list =  actividades_list.filter(descripcion__contains= form.cleaned_data.get('descripcion'))
             if form.cleaned_data.get('fecha_inicio') or form.cleaned_data.get('fecha_final'):
                 actividades_list =  actividades_list.filter(fecha__range=[form.cleaned_data.get('fecha_inicio'), form.cleaned_data.get('fecha_final')])
-        
+        return HttpResponseRedirect("/actividades")    
     form = FiltrosForm()
 
     return render (request=request, template_name="../templates/actividades.html", context={"actividades":actividades_list, "filtros_form":form})

@@ -72,7 +72,8 @@ def solicitudes_request(request):
                 solicitudes_list =  solicitudes_list.filter(motivo__contains= form.cleaned_data.get('motivo'))
             if form.cleaned_data.get('fecha_inicio') or form.cleaned_data.get('fecha_final'):
                 solicitudes_list =  solicitudes_list.filter(fecha__range=[form.cleaned_data.get('fecha_inicio'), form.cleaned_data.get('fecha_final')])
-    
+        
+        return HttpResponseRedirect("/solicitudes")  
     
     archivos_list = SolicitudArchivo.objects.all()
     count = 0

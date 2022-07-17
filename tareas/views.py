@@ -53,7 +53,8 @@ def tareas_request(request):
             if form.cleaned_data.get('categoria'):
                 tareas_list =  tareas_list.filter(proyecto__categoria= form.cleaned_data.get('categoria'))
            
-    
+        return HttpResponseRedirect("/tareas")
+        
     form = FiltrosTareaForm()
 
     return render (request=request, template_name="../templates/tareas.html", context={"tareas":tareas_list,"filtros_form":form})

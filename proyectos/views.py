@@ -35,6 +35,8 @@ def proyectos_request(request):
                 obj = Proyecto( id = deleteButtonItemValue[0]) 
                 Proyecto.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
         
+        return HttpResponseRedirect("/proyectos")  
+        
     form = FiltrosProyectoForm()
 
     return render (request=request, template_name="../templates/proyectos.html", context={"proyectos":proyectos_list,"filtros_form":form})
