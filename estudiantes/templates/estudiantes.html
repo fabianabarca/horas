@@ -19,6 +19,8 @@
         <th scope="col">Correo</th>
         <th scope="col">Carrera</th>
         <th scope="col">Tutor</th>
+        <th scope="col">Inicio del TCU</th>
+        <th scope="col">Finalización del TCU</th>
         <th scope="col">Horas Totales</th>
         <th scope="col">Acciones</th>
       </tr>
@@ -32,6 +34,8 @@
         <td>{{ estudiante.user.email }}</td>
         <td>{{ estudiante.carrera.nombre }}</td>
         <td>{{ estudiante.tutor}}</td>
+        <td>{{ estudiante.fechaInicioTCU}}</td>
+        <td>{{ estudiante.fechaFinTCU}}</td>
         <td>
           <!--{{ horas}}-->
           <div class="progress-wrapper">
