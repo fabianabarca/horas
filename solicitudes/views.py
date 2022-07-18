@@ -76,25 +76,7 @@ def solicitudes_request(request):
         return HttpResponseRedirect("/solicitudes")  
     
     archivos_list = SolicitudArchivo.objects.all()
-    count = 0
-    for archivos in archivos_list:
-        
-        print(archivos_list[count].archivo)
-        count=count+1
-    '''
-    archivoSolicitudeslist = []
-    
-    for solicitud in solicitudes_list:
-    
-        for archivo in archivos_list:
-            
-            if actividad.estudiante.user.username == estudiante.user.username:
-                horasTotalesPorEstudiante+= actividad.horas
-
-        horasEstudianteslist.append(horasTotalesPorEstudiante)
-        
-    zipSolicitudesyArchivos= zip(solicitudes_list,archivos_list) 
-    '''   
+     
     form = FiltrosGestionForm()
 
     return render (request=request, template_name="../templates/solicitudes.html",context={"solicitudes":solicitudes_list,"archivos":archivos_list, "filtros_form":form})

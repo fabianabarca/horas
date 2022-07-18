@@ -1,6 +1,4 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 
 <div class="container">
   </br>
@@ -10,152 +8,151 @@
       Gestiones a realizar.
     </p>
     <a href="crear_solicitud" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Crear Gestion</a>
-  </br>
-  </br>
+    </br>
+    </br>
 
   <!-- Lista de solicitudes -->
   <form method="post">{% csrf_token %}
-  {% if solicitudes %}
-    <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de solicitudes</h6>
-    <div class="card">
-      <div class="card-body">
-        <!-- Opciones de aprobación -->
-        {% if request.user.is_staff %}
-          <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
-          <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
-        {% endif %}
+    {% if solicitudes %}
+      <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de solicitudes</h6>
+      <div class="card">
+        <div class="card-body">
+          <!-- Opciones de aprobación -->
+          {% if request.user.is_staff %}
+            <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
+            <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
+          {% endif %}
 
-        <!-- Opciones de selección -->
-        <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">Filtros</button>
-        {% if solicitudes %}
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">Seleccionar Todas</button>
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">Limpiar Selección</button>
-        {% endif %}
+          <!-- Opciones de selección -->
+          <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">
+            Filtros
+          </button>
+          {% if solicitudes %}
+              <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
+                Seleccionar Todas
+              </button>
+              <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
+                Limpiar Selección
+              </button>
+          {% endif %}
 
-        <!-- Opciones de filtrado -->
-        <div id="filtrosdiv" style='display: none;'  class="card">
-          <p>
-          <div class="card-body">
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}" />
-                <div class="row">
-                  {% for field in filtros_form %}
-                    <div class="col-sm-4">
-                      <b>{{ field.label_tag }}</b> - {{ field}} 
+          <!-- Opciones de filtrado -->
+          <div id="filtrosdiv" style='display: none;'  class="card">
+            <p>
+            <div class="card-body">
+              <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="next" value="{{ next }}" />
+                  <div class="row">
+                    {% for field in filtros_form %}
+                      <div class="col-sm-4">
+                        <b>{{ field.label_tag }}</b> - {{ field}} 
+                        </br>
+                      </div>
                       </br>
-                    </div>
-                    </br>
-                  {% endfor %}
-                </div>  
-                <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
-            </form>
-          </div>  
-          </p>
-        </br>
-        </div>
-  {% endif %}  
-  </form>
-  </br>
-</div>
-
-
-{% if solicitudes %}
-  <form method="post">
-    {% csrf_token %}
-    
-
-  </br>
-  </br>
-  <!-- Tabla -->
-      <div class="table-responsive">
-        <table id = "datatable" class="table align-items-center table-hover"> 
-          <thead class="thead">
-              
-
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">Tipo</th>
-                  <th scope="col">Motivo</th>
-                  <th scope="col">Fecha</th>
-                  {% if request.user.is_staff %}
-
-                    <th scope="col">Carné</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th>
-
-                    <th scope="col">Correo de estudiante</th>
-                  {% endif %}
-                  <th scope="col">Archivo Adjunto</th>
-                  <th scope="col">Estado</th>
-
-                </tr>
-              
-          </thead>
-          <tbody>
-            {% for solicitud in solicitudes %}
-              {% if not solicitud.enPapelera %}
-                <tr>
-                  <td>
-                    <!-- Checkbox -->
-                    <input type="checkbox" name="inputs" value="{{solicitud.id}}" /> <br>
-          
-                      <!-- Edit button -->
-                      <a   href="editar_solicitud/{{ solicitud.id }}" class="text-info" role="button">
-                        <i class="fas fa-edit"></i>
-                      </a>
-          
-                      <!-- Delete button -->
-                      <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
-                      class="text-danger" value="{{ solicitud.id }}"  name="deleteButton"
-                      style="background-color: transparent;  border: 0;">              
-                      <i class="fas fa-trash-alt"></i>
-                      </button>
-                    
-                  </td>
-                  <td>{{ solicitud.get_tipo_display }}</td>
-                  <td>{{ solicitud.motivo }}</td>
-                  <td>{{ solicitud.fecha }}</td>
-
-                  {% if request.user.is_staff %}
-
-                    <td>{{ solicitud.estudiante.user.username}}</td>
-                    <td>{{ solicitud.estudiante.user.first_name}}</td>
-                    <td>{{ solicitud.estudiante.user.last_name}}</td>
-                    <td>{{ solicitud.estudiante.user.email}}</td>
-
-                  {% endif %}
-                  <td>
-                    {% for archivo in archivos %}
-                          
-                            {% if archivo.solicitud_id == solicitud.id %} 
-                              <!--
-                                Si se quiere abrir archivo en otra ventana:
-                                <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
-                              -->
-      
-                              <a href="../media/{{ archivo.archivo}}" download >{{ archivo.archivo}}</a>
-                              <br/>
-                            {% endif %}
-                          
-                            
                     {% endfor %}
-                  </td>
-                  <td>{{ solicitud.get_estado_display}}</td>
+                  </div>  
+                  <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
+              </form>
+            </div>  
+            </p>
+          </br>
+          </div>
+
+            <!-- Tabla -->
+          <div class="table-responsive">
+            <table id = "datatable" class="table align-items-center table-hover"> 
+              <thead class="thead">
                   
-                </tr>
-              {% endif %}
-            {% endfor %}
-          </tbody>
-        </table>
+
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Motivo</th>
+                      <th scope="col">Fecha</th>
+                      {% if request.user.is_staff %}
+
+                        <th scope="col">Carné</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+
+                        <th scope="col">Correo de estudiante</th>
+                      {% endif %}
+                      <th scope="col">Archivo Adjunto</th>
+                      <th scope="col">Estado</th>
+
+                    </tr>
+                  
+              </thead>
+              <tbody>
+                {% for solicitud in solicitudes %}
+                  {% if not solicitud.enPapelera %}
+                    <tr>
+                      <td>
+                          <!-- Checkbox -->
+                          <input type="checkbox" name="inputs" value="{{solicitud.id}}" /> <br>
+              
+                          <!-- Edit button -->
+                          <a   href="editar_solicitud/{{ solicitud.id }}" class="text-info" role="button">
+                            <i class="fas fa-edit"></i>
+                          </a>
+              
+                          <!-- Delete button -->
+                          <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                          class="text-danger" value="{{ solicitud.id }}"  name="deleteButton"
+                          style="background-color: transparent;  border: 0;">              
+                          <i class="fas fa-trash-alt"></i>
+                          </button>
+                        
+                      </td>
+                      <td>{{ solicitud.get_tipo_display }}</td>
+                      <td>{{ solicitud.motivo }}</td>
+                      <td>{{ solicitud.fecha }}</td>
+
+                      {% if request.user.is_staff %}
+
+                        <td>{{ solicitud.estudiante.user.username}}</td>
+                        <td>{{ solicitud.estudiante.user.first_name}}</td>
+                        <td>{{ solicitud.estudiante.user.last_name}}</td>
+                        <td>{{ solicitud.estudiante.user.email}}</td>
+
+                      {% endif %}
+                      <td>
+                        {% for archivo in archivos %}
+                              
+                                {% if archivo.solicitud_id == solicitud.id %} 
+                                  <!--
+                                    Si se quiere abrir archivo en otra ventana:
+                                    <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
+                                  -->
+          
+                                  <a href="../media/{{ archivo.archivo}}" download >{{ archivo.archivo}}</a>
+                                  <br/>
+                                {% endif %}
+                              
+                                
+                        {% endfor %}
+                      </td>
+                      <td>{{ solicitud.get_estado_display}}</td>
+                      
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
+
+
 {% else %}
-  <strong>No hay solicitudes creadas</strong>
+    <p>
+      <strong>No hay solicitudes creadas</strong>
+    </p>
 {% endif %}
-
   </form>
-</div>
 
+</div>
 
 {% endblock %}
