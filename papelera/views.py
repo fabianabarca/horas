@@ -64,7 +64,7 @@ def papelera_request(request):
                 obj = Solicitud( id = deleteButtonItemValueList[0]) 
                 Solicitud.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
 
-       
+        return HttpResponseRedirect("/papelera")
 
     return render (request=request, template_name="../templates/papelera.html", context={"actividades":actividades_list,"tareas":tareas_list,"proyectos":proyectos_list,"categorias":categorias_list,"solicitudes":solicitudes_list})
 

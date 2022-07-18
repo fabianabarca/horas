@@ -7,6 +7,7 @@ from proyectos.models import Proyecto
 from horas.forms import TareasForm ,FiltrosTareaForm
 from django.contrib.auth.decorators import login_required
 import time
+from django.core.mail import send_mail
 
 # Create your views here.
 @login_required(login_url='/cuentas/login/')
@@ -16,9 +17,29 @@ def tareas_request(request):
            
         form = FiltrosTareaForm(request.POST or None)
         if request.POST.get('deleteButton'):
+                print("activado delete")
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Tarea( id = deleteButtonItemValue[0]) 
                 Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
+                
+        
+        if request.POST.get('assignButton'):
+                print("activado assign")
+                asignButtonItemValue=request.POST.getlist('assignButton')
+                obj = Tarea( id = asignButtonItemValue[0]) 
+                tareaAsignar=Tarea.objects.filter(id = asignButtonItemValue[0])
+                for userAssign in tareaAsignar[0].estudiante.all():
+                    send_mail(
+                                'Asignación de tarea',
+                                'Se te asigno la tarea: ' + tareaAsignar[0].nombre +'\n\n'
+                                + 'Descripción: '+ tareaAsignar[0].descripcion  +'\n\n'
+                                + 'Del proyecto: '+ tareaAsignar[0].proyecto.nombre  +'\n\n'
+                                ,
+                                'testertesrter3@gmail.com',
+                                [userAssign.user.email],
+                                fail_silently=False,
+                    )
+                
         
         if form.is_valid():
             if form.cleaned_data.get('nombre'):
@@ -33,7 +54,8 @@ def tareas_request(request):
             if form.cleaned_data.get('categoria'):
                 tareas_list =  tareas_list.filter(proyecto__categoria= form.cleaned_data.get('categoria'))
            
-    
+        return HttpResponseRedirect("/tareas")
+        
     form = FiltrosTareaForm()
 
     return render (request=request, template_name="../templates/tareas.html", context={"tareas":tareas_list,"filtros_form":form})
