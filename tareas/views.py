@@ -21,7 +21,7 @@ def tareas_request(request):
                 obj = Tarea( id = deleteButtonItemValue[0]) 
                 Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
                 
-        
+        '''
         if request.POST.get('assignButton'):
                 asignButtonItemValue=request.POST.getlist('assignButton')
                 obj = Tarea( id = asignButtonItemValue[0]) 
@@ -37,7 +37,7 @@ def tareas_request(request):
                                 [userAssign.user.email],
                                 fail_silently=False,
                     )
-                
+        '''        
         
         if form.is_valid():
             if form.cleaned_data.get('nombre'):
@@ -123,9 +123,9 @@ def editar_tarea(request, id):
                     
             if (mandarCorreo):
                 
-                print("se envió correo a "+ estudianteForm.user.first_name)
+                    print("se envió correo a "+ estudianteForm.user.first_name)
 
-                '''
+                
                     send_mail(
                                         'Asignación de tarea',
                                         'Se te asigno la tarea: ' + tareaAEditar[0].nombre +'\n\n'
@@ -137,7 +137,7 @@ def editar_tarea(request, id):
                                         fail_silently=False,
                             )
                     
-                '''	
+                
             '''
             if(tareaAEditar[0].filter(estudiante__contains = estudiante.id)):
                     print("no se manda correo a "+ estudiante.user.first_name)
