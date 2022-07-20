@@ -16,3 +16,8 @@ class Tarea(Registro):
     def __str__(self):
         return self.nombre
 
+
+class AsignacionesEnviadas(models.Model):
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.SET_NULL,null=True)
+    tarea = models.ForeignKey(Tarea, on_delete=models.SET_NULL,null=True)
+

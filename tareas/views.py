@@ -122,20 +122,33 @@ def editar_tarea(request, id):
                     #print("no se encontro: "+ estudianteForm.user.first_name)
                     
             if (mandarCorreo):
-                
-                    print("se envió correo a "+ estudianteForm.user.first_name)
+                    asignaciones_list = AsignacionesEnviadas.objects.all()
+                    boolYaFueAsignadoAntes=False
+                    for asignacion in asignaciones_list:
+                        if(asignacion.estudiante==estudianteForm):
+                                 boolYaFueAsignadoAntes=True
+                                 print("ya se le envió correo a "+ estudianteForm.user.first_name)
 
-                
-                    send_mail(
-                                        'Asignación de tarea',
-                                        'Se te asigno la tarea: ' + tareaAEditar[0].nombre +'\n\n'
-                                        + 'Descripción: '+ tareaAEditar[0].descripcion  +'\n\n'
-                                        + 'Del proyecto: '+ tareaAEditar[0].proyecto.nombre  +'\n\n'
-                                        ,
-                                        'testertesrter3@gmail.com',
-                                        [estudianteForm.user.email],
-                                        fail_silently=False,
-                            )
+                            
+                    if (not boolYaFueAsignadoAntes):
+                        ae = AsignacionesEnviadas(estudiante=estudianteForm,tarea=tareaAEditar[0])
+                        ae.save()
+                        print(AsignacionesEnviadas.objects.all())
+                        print("se envió correo a "+ estudianteForm.user.first_name)
+
+                    
+                        send_mail(
+                                            'Asignación de tarea',
+                                            'Se te asigno la tarea: ' + tareaAEditar[0].nombre +'\n\n'
+                                            + 'Descripción: '+ tareaAEditar[0].descripcion  +'\n\n'
+                                            + 'Del proyecto: '+ tareaAEditar[0].proyecto.nombre  +'\n\n'
+                                            ,
+                                            'testertesrter3@gmail.com',
+                                            [estudianteForm.user.email],
+                                            fail_silently=False,
+                                )
+                    
+
                     
                 
             '''
