@@ -13,21 +13,64 @@
     Cantidad de estudiante activos: <br>
     Cantidad de proyectos: <br>
 
-    {% else %}
-    Fecha de inicio del TCU: <br>
-    <br>
-    Progreso del periodo regular: <br>
-    <div class="progress">
-        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10"
-            aria-valuemin="0" aria-valuemax="100">10%</div>
-    </div>
-    Progreso de horas: <br>
-    <div class="progress">
-        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 50%" aria-valuenow="50"
-            aria-valuemin="0" aria-valuemax="100">50%</div>
-    </div>
-
     {% endif %}
+
+
+    
+{% if not request.user.is_staff %}
+<h2>Progreso de horas</h2>
+</br>
+
+  <div class="progress-wrapper">
+    <div class="progress-info">
+      <div class="progress-percentage">
+        <span class="text-sm font-weight-bold">{{ progreso }} horas de 300</span>
+      </div>
+    </div>
+    <div class="progress">
+      <div class="progress-bar bg-gradient-primary" role="progressbar" aria-valuenow="66.0" aria-valuemin="0" aria-valuemax="100" style="width: 66.0%;">
+       
+      </div>
+      {{porcentaje}} %
+    </div>
+    
+  </div>
+</br>
+
+
+<h2>Dias desde inicio del TCU</h2>
+</br>
+
+  <div class="progress-wrapper">
+    <div class="progress-info">
+      <div class="progress-percentage">
+        <span class="text-sm font-weight-bold">Fecha Inicio TCU:          {{ inicioTCU }} </span> </br>
+        <span class="text-sm font-weight-bold">Fecha Finalización TCU:    {{ finalTCU }} </span> </br></br>
+        <span class="text-sm font-weight-bold">{{ diasTCU }} dias de {{ totalDiasTCU }}</span>
+      </div>
+    </div>
+    <div class="progress">
+      <div class="progress-bar bg-gradient-primary" role="progressbar" aria-valuenow="66.0" aria-valuemin="0" aria-valuemax="100" style="width: 66.0%;">
+       
+    </div>
+    {{porcentajeWidthDaysYear}}%
+    </div>
+    
+  </div>
+</br>
+
+{% endif %}
+</div>
+<!--Script para barra de progreso de horas-->
+<script type="text/javascript">
+  const collection = document.getElementsByClassName("progress-bar bg-gradient-primary");
+  
+  collection[0].setAttribute("aria-valuenow", "{{porcentaje}}");
+  collection[0].setAttribute("style", "width: {{width}}%;");
+
+  collection[1].setAttribute("aria-valuenow", "");
+  collection[1].setAttribute("style", "width: {{porcentajeWidthDaysYear}}%;");
+</script>
 
 </div>
 
