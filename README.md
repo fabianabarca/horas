@@ -1,148 +1,123 @@
-# Horas de TCU
+# Sistema de registro de horas de TCU
 
-Sistema de registro de horas de trabajo de estudiantes en el TCU.
+> Un sistema de información en el que las personas estudiantes pueden registrar sus actividades de TCU, dentro de los proyectos respectivos. También permite la gestión de algunas solicitudes (prórrogas, oficios de finalización) y facilita el monitoreo tanto de estudiantes como de profesores del trabajo en cada proyecto y el nivel de avance.
 
-## Acciones por realizar
+- Es un sistema de 
+  - **registro** de actividades
+  - **clasificación** de actividades
+  - **asignación** de tareas 
+  - **visualización** (*digest*) del trabajo
+  - **solicitud** de gestiones administrativas
+  - **información** (abierta al público) de los proyectos del TCU
 
-**Nota**: existen "categorías" de "proyectos", los "proyectos" están compuestos de "tareas", las "tareas" están compuestas de "actividades". Las personas docentes pueden crear categorías y proyectos, las personas docentes y estudiantes pueden crear tareas, y las personas estudiantes pueden registrar actividades ligadas con las tareas específicas.
+**Nota**: No es un software de gestión de proyectos como Trello, Asana, etc. (al menos todavía no).
 
-[![](https://mermaid.ink/img/pako:eNpdj88KgkAQh19lmZOBHrp6CPzbNchb22FwJ11KV9Y1EPGReoperG1TouY0_L6PHzMTlEoQhFBp7GpWpLxldqJTgoYqpZ8P7M8sCHYs9g5ajVQaxbabjxU7kHgFasJ-CRMXpl5UGnmXAgWtJHIk-_a0C8gcyH97chfu_3rAh4Z0g1LYm6e3ycHU1BCH0K4C9ZUDb2frDZ2wP2RCGqUhvOCtJx9wMOo4tiWERg-0SqlE-3-zWPMLqmhVgQ)](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNpdj88KgkAQh19lmZOBHrp6CPzbNchb22FwJ11KV9Y1EPGReoperG1TouY0_L6PHzMTlEoQhFBp7GpWpLxldqJTgoYqpZ8P7M8sCHYs9g5ajVQaxbabjxU7kHgFasJ-CRMXpl5UGnmXAgWtJHIk-_a0C8gcyH97chfu_3rAh4Z0g1LYm6e3ycHU1BCH0K4C9ZUDb2frDZ2wP2RCGqUhvOCtJx9wMOo4tiWERg-0SqlE-3-zWPMLqmhVgQ)
+## Paneles de administración
 
-### Estudiantes
+### Para profesores
 
-- Registrar horas
-- Revisar horas realizadas
-- Hacer solicitudes de finalización o prórroga
-- Revisar o crear tareas
-- Enviar mensajes a profesor(a) (_baja prioridad_)
+#### Por cada proyecto, objetivo, meta o tarea
 
-### Profesores
+- ¿Cuántas personas y quiénes están trabajando?
+- ¿Cuántas horas se han dedicado?
+- ¿Cómo se distribuye el trabajo en el tiempo? Al estilo de GitHub, tal vez
+- ¿Quién le está dedicando más tiempo? Ránking de horas por estudiante
 
-- Revisar y aprobar o rechazar el registro de actividades
-- Consultar horas totales por estudiantes
-- Consultar horas totales por tarea
-- Consultar horas totales por proyecto
-- Consultar horas totales por categoría de proyecto
-- Crear categorías, proyectos y tareas
+#### Por cada estudiante
 
-## Vistas de personas usuarias
+- Horas totales
+- Avance del período de ejecución
+- "Factor de avance" (porcentaje de horas / porcentaje de período de ejecución)
+- Tareas (y metas, objetivos y proyectos) en las que está trabajando
+- Lista de actividades realizadas
 
-### Modo estudiantes
+También se puede seleccionar una categoría de estas y comparar una selección de estudiantes.
 
-**Menú principal**
-- **Registro de actividades**: enviar para revisión una actividad, indicando el día, las horas y una descripción.
-![Registro de actividades](DesignImages/Estudiantes/RegistroDeActividades.PNG)
-![AgregarActividad](DesignImages/Estudiantes/AgregarActividad.PNG)
-- **Gestiones administrativas**: hacer solicitudes de finalización, prórroga y corrección, explicando el motivo y adjuntando documentos si fuera necesario.
+### Para estudiantes
 
-![GestionesAdministrativas](DesignImages/Estudiantes/GestionesAdministrativas.PNG)
-![CrearGestion](DesignImages/Estudiantes/CrearGestion.PNG)
-- **Tareas**: ver lista de tareas asignadas o crear una nueva.
-![Tareas](DesignImages/Estudiantes/Tareas.PNG)
-![AgregarTarea](DesignImages/Estudiantes/AgregarTarea.PNG)
+- Horas totales
+- Avance del período de ejecución
+- Factor de avance (porcentaje de horas / porcentaje de período de ejecución)
+- Tareas (y metas, objetivos y proyectos) en las que está trabajando
+- Lista de actividades realizadas
 
-### Modo profesores
+## Jerarquía de objetivos para clasificación de tareas
 
-**Menú principal**
-- **Registro de actividades**: lista de todas las actividades registradas.
-![Registro de actividades](DesignImages/Profesores/RegistroDeActividades.PNG)
-![AgregarActividad](DesignImages/Profesores/AgregarActividad.PNG)
-- **Gestiones administrativas**: lista de solicitudes de gestiones administrativas.
-![GestionesAdministrativas](DesignImages/Profesores/GestionesAdministrativas.PNG)
-![CrearGestion](DesignImages/Profesores/CrearGestion.PNG)
-- **Tareas**: ver lista de tareas o crear una nueva con nombre, estudiante(s) asignado(s), proyecto asociado y descripción.
-![Tareas](DesignImages/Profesores/Tareas.PNG)
-![AgregarTarea](DesignImages/Profesores/AgregarTarea.PNG)
-- **Proyectos**: ver lista de proyectos o crear uno nuevo con nombre, descripción, profesor asignado, categoría y ubicación.
-![Proyectos](DesignImages/Profesores/Proyectos.PNG)
-![AgregarProyecto](DesignImages/Profesores/AgregarProyecto.PNG)
-- **Estudiantes**: lista de estudiantes activos.
-![Estudiantes](DesignImages/Profesores/Estudiantes.PNG)
+```mermaid
+flowchart TD
+    A[Categoría] --> B1[Proyecto 1] & B2[Proyecto 2]
+    B1 --> C1[Objetivo 1] & C2[Objetivo 2]
+    C1 --> D1[Meta 1] & D2[Meta 2]
+    D1 --> E1[Tarea 1] & E2[Tarea 2]
+    E1 -.- F1{{Actividad 1}} & F2{{Actividad 2}}
+```
 
-## Esbozo de modelos de la base de datos
+#### Ejemplo
 
-`class Estudiante`
+- **Proyecto**: ferias del agricultor
+- **Objetivo**: crear contenidos para la página web
+- **Meta**: crear blog de información nutricional
+- **Tarea**: crear un perfil nutricional del tomate
+- *Actividades*:
+  - Búsqueda de información en línea (actividad de 1 hora de persona X)
+  - Crear infográfico (actividad de 2 horas de persona Y)
+  - Encontrar una receta (actividad de 1 hora de persona Z)
+  - …
 
-- Carné
-- Correo
+### Categorías
+
+Editable solamente por profesores
+
+Divide los proyectos en categorías temáticas. Actualmente hay dos:
+
+- Sistemas de información (transporte público y ferias del agricultor)
+- Talleres y material educativo
+
+### Proyectos
+
+Editable solamente por profesores
+
+Unidad de trabajo que debe ser planteada formalmente con objetivo general y objetivos específicos.
+
+### Objetivos
+
+Editable solamente por profesores
+
+> Objetivo de primer orden
+
+Cada uno de los objetivos específicos del proyecto, que debe describir un resultado entregable.
+
+### Metas
+
+Editable solamente por profesores
+
+> Objetivo de segundo orden
+
+Cada una de las tareas mayores con las cuales se cumple un objetivo del proyecto.
+
+### Tareas
+
+Editable por profesores y estudiantes
+
+> Objetivo de tercer orden
+
+Cada una de las tareas menores (unidades mínimas de trabajo) que son necesarias para cumplir las metas del objetivo.
+
+## Registro de actividades
+
+Son un registro de las horas de trabajo de los estudiantes. Contiene una descripción del trabajo realizado y las horas dedicadas. No es un objetivo por sí mismo.
+
+Cada actividad está asociada con una tarea, que está asociada con una meta, asociada con un objetivo, asociado con un proyecto.
+
+## Páginas de proyecto
+
+Contenido:
+
 - Nombre
-- Apellido
-- Contraseña
-
-`class Categoría`
-
-- Nombre (por ejemplo: "desarrollo web", "prototipos", "talleres", "tutorías")
-
-`class Proyecto`
-
-- ID
-- Nombre
-- Descripción
-- `profesor.id` (foreign key) (pueden ser varios)
-- `categoria.id` (foreign key) (one to many)
+- Descripción (un texto con formato)
 - Ubicación
-- Notas
-
-`class Actividad`
-
-- `estudiante.carné` (foreign key)
-- `proyecto.id` (foreign key)
-- Descripción
-- Fecha
-- Horas
-
-`class Profesor`
-
-- ID
-- Correo
-- Nombre
-- Apellido
-- Contraseña
-
-`class Solicitud`
-
-- `estudiante.carné` (foreign key)
-- Tipo (finalización o prórroga o corrección de actividad)
-- Motivo
-- Fecha y hora
-
-### Siguientes pasos (menor prioridad)
-
-- Generación de documentos (oficios de finalización o prórroga, etc.)
-
-## Para ejecutar el proyecto localmente
-
-**Crear base de datos**
-- Eliminar las carpetas _migrations_ en cada folder
-- Eliminar _db.sqlite3_
-- Ejecutar `python manage.py makemigrations`
-- Ejecutar `python manage.py migrate --run-syncdb`
-
-**Instalar dependencias**
-- `python -m pip install django-crispy-forms`
-
-**Levantar servidor**
-- `python manage.py runserver`
-- Ir a pagina principal servidor http://127.0.0.1:8000/cuentas/login/ o http://127.0.0.1:8000/ si logueado
-
-Para despliegue en digital-ocean se uso https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-20-04-es
-que recomienda:
-
-**Cuando actualice su configuración o aplicación, es probable que necesite reiniciar los procesos para que asimilen sus cambios.**
-
-Si actualiza su aplicación de Django, puede reiniciar el proceso de Gunicorn para que incorpore los cambios escribiendo lo siguiente:
-
-- `sudo systemctl restart gunicorn`
-
-Si cambia los archivos de socket y servicio de Gunicorn, vuelva a cargar el demonio y reinicie el proceso escribiendo lo siguiente:
-
-- `sudo systemctl daemon-reload`
-- `sudo systemctl restart gunicorn.socket gunicorn.service`
-
-Si cambia la configuración de bloque del servidor de Nginx, pruébela y luego verifique Nginx escribiendo lo siguiente:
-
-- `sudo nginx -t && sudo systemctl restart nginx`
-
-Estos comandos son útiles para incorporar cambios cuando ajusta su configuración.
-
-
+- Categoría (link a categorías)
+- Objetivo general
+- Objetivos específicos (link a objetivos)
+- Metas (link a metas)
+- Tareas (link a tablas)
