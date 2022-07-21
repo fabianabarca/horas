@@ -291,7 +291,7 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Administración</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="../estudiantes">
+          <a class="nav-link {% if request.resolver_match.url_name == 'estudiantes' %}active{% endif %}" href="/estudiantes">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg class="text-dark" width="16px" height="16px" viewBox="0 0 46 42" version="1.1"
@@ -321,7 +321,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="../cuentas/register">
+          <a class="nav-link {% if request.resolver_match.url_name == 'cuentas/register' %}active{% endif %}" href="/cuentas/register">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg class="text-dark" width="16px" height="16px" viewBox="0 0 46 42" version="1.1"
@@ -351,7 +351,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="../categorias">
+          <a class="nav-link {% if request.resolver_match.url_name == 'categorias' %}active{% endif %}" href="/categorias">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg class="text-dark" width="16px" height="16px" viewBox="0 0 40 44" version="1.1"
