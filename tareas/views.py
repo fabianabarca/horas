@@ -3,7 +3,6 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from tareas.models import *
 from proyectos.models import *
-from proyectos.models import Proyecto
 from horas.forms import TareasForm ,FiltrosTareaForm
 from django.contrib.auth.decorators import login_required
 import time
@@ -46,8 +45,8 @@ def tareas_request(request):
                 tareas_list =  tareas_list.filter(estudiante = form.cleaned_data.get('estudiante'))
             if form.cleaned_data.get('descripcion'):
                 tareas_list =  tareas_list.filter(descripcion__contains = form.cleaned_data.get('descripcion'))
-            if form.cleaned_data.get('proyecto'):
-                tareas_list =  tareas_list.filter(proyecto = form.cleaned_data.get('proyecto'))
+            if form.cleaned_data.get('meta'):
+                tareas_list =  tareas_list.filter(meta = form.cleaned_data.get('meta'))
 
             if form.cleaned_data.get('categoria'):
                 tareas_list =  tareas_list.filter(proyecto__categoria= form.cleaned_data.get('categoria'))
@@ -74,9 +73,9 @@ def crear_tarea(request):
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    proyectos_noborrados = Proyecto.objects.all()
-    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
-    form.fields["proyecto"].queryset  = proyectos_noborrados
+    metas_noborradas = Meta.objects.all()
+    metas_noborradas=metas_noborradas.filter(enPapelera= False)
+    form.fields["meta"].queryset  = metas_noborradas
 
     creacionOedicion = 1
 
@@ -96,9 +95,9 @@ def editar_tarea(request, id):
 
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    proyectos_noborrados = Proyecto.objects.all()
-    proyectos_noborrados = proyectos_noborrados.filter(enPapelera= False)
-    form.fields["proyecto"].queryset  = proyectos_noborrados
+    metas_noborradas = Meta.objects.all()
+    metas_noborradas=metas_noborradas.filter(enPapelera= False)
+    form.fields["meta"].queryset  = metas_noborradas
 
     
     

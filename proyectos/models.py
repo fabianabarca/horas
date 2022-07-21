@@ -19,3 +19,18 @@ class Proyecto(Registro):
 
     def __unicode__(self):
         return self.nombre
+
+class Objetivo(Registro):
+    nombre = models.CharField(max_length=500)
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)
+    general = models.BooleanField(False)
+
+    def __str__(self):
+        return self.nombre
+
+class Meta(Registro):
+    nombre = models.CharField(max_length=500)
+    objetivo = models.ForeignKey(Objetivo, on_delete=models.SET_NULL,null=True)
+
+    def __str__(self):
+        return self.nombre

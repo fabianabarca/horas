@@ -1,0 +1,72 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
+<div class="container">
+</br>
+  <!-- Título -->
+  <h1 class="display-4">Metas</h1>
+  <p>
+    Pueden haber multiples metas por objetivo.
+  </p>
+  <a href="crear_meta" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Meta</a>
+</br>
+</br>
+
+<!-- Lista de metas -->
+<form method="post">{% csrf_token %}
+
+  {% if metas %}
+  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de metas</h6>
+  
+   <!-- Tabla -->
+  <div class="table-responsive">
+    <table id="datatable" class="table align-items-center table-hover">
+    <thead class="thead">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Objetivo</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for meta in metas %}
+        {% if not meta.enPapelera %}
+          <tr>
+            <td>
+              <!-- Checkbox -->
+              <input type="checkbox" name="inputs" value="{{meta.id}}" /> <br>
+    
+                <!-- Edit button -->
+                <a   href="editar_meta/{{ meta.id }}" class="text-info" role="button">
+                  <i class="fas fa-edit"></i>
+                </a>
+    
+                <!-- Delete button -->
+                <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                class="text-danger" value="{{ meta.id }}"  name="deleteButton"
+                style="background-color: transparent;  border: 0;">              
+                <i class="fas fa-trash-alt"></i>
+                </button>
+              
+            </td>
+            <td>{{ meta }}</td>
+            <td>
+              {% if not meta.objetivo.enPapelera %}
+                  {{ meta.objetivo }}
+              {% endif %}
+            </td>
+
+          </tr>
+        {% endif %}
+      {% endfor %}
+  </tbody>
+    </table>
+  </div>
+    {% else %}
+  <strong>No hay metas registrados</strong>
+{% endif %}
+</form>
+</div>
+{% endblock %}
+
+
+

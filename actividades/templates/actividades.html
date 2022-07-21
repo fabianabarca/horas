@@ -105,11 +105,11 @@
                     <i class="fas fa-trash-alt"></i>
                 </button>
                 </td>
-                <td>  {{ actividad.descripcion }}</td>
+                <td> {{ actividad.descripcion }}</td>
                 <td>{{ actividad.horas }}</td>
                 <td>{{ actividad.fecha }}</td>
-                {% if not actividad.proyecto.enPapelera %}
-                  <td>{{ actividad.proyecto.nombre}}</td>
+                {% if not actividad.tarea.meta.objetivo.proyecto.enPapelera %}
+                  <td>{{actividad.tarea.meta.objetivo.proyecto.nombre}}</td>
                 {% else %}  
                 <td></td>
                 {% endif %}

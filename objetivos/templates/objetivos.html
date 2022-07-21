@@ -1,0 +1,73 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
+<div class="container">
+</br>
+  <!-- Título -->
+  <h1 class="display-4">Objetivos</h1>
+  <p>
+    Pueden haber multiples objetivos por proyecto.
+  </p>
+  <a href="crear_objetivo" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Objetivo</a>
+</br>
+</br>
+
+<!-- Lista de objetivos -->
+<form method="post">{% csrf_token %}
+
+  {% if objetivos %}
+  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de objetivos</h6>
+  
+   <!-- Tabla -->
+  <div class="table-responsive">
+    <table id="datatable" class="table align-items-center table-hover">
+    <thead class="thead">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Proyecto</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for objetivo in objetivos %}
+        {% if not objetivo.enPapelera %}
+          <tr>
+            <td>
+              <!-- Checkbox -->
+              <input type="checkbox" name="inputs" value="{{objetivo.id}}" /> <br>
+    
+                <!-- Edit button -->
+                <a   href="editar_objetivo/{{ objetivo.id }}" class="text-info" role="button">
+                  <i class="fas fa-edit"></i>
+                </a>
+    
+                <!-- Delete button -->
+                <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                class="text-danger" value="{{ objetivo.id }}"  name="deleteButton"
+                style="background-color: transparent;  border: 0;">              
+                <i class="fas fa-trash-alt"></i>
+                </button>
+              
+            </td>
+            <td>{{ objetivo }}</td>
+            <td>
+              {% if not objetivo.proyecto.enPapelera %}
+                  {{ objetivo.proyecto }}
+              {% endif %}
+            </td>
+            
+
+          </tr>
+        {% endif %}
+      {% endfor %}
+  </tbody>
+    </table>
+  </div>
+    {% else %}
+  <strong>No hay objetivos registrados</strong>
+{% endif %}
+</form>
+</div>
+{% endblock %}
+
+
+

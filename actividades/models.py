@@ -15,7 +15,7 @@ class Actividad(Registro):
         ('P', 'En Revisión'),
     )
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
-    proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)
+    #proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)
     tarea = models.ForeignKey(Tarea, on_delete=models.SET_NULL,null=True)
     descripcion = models.CharField(max_length=500)
     fecha = models.DateField()

@@ -50,8 +50,8 @@ def actividades_request(request):
         if form.is_valid():
             if form.cleaned_data.get('estudiante'):
                 actividades_list =  actividades_list.filter(estudiante = form.cleaned_data.get('estudiante'))
-            if form.cleaned_data.get('proyecto'):
-                actividades_list =  actividades_list.filter(proyecto = form.cleaned_data.get('proyecto'))
+            #if form.cleaned_data.get('proyecto'):
+                #actividades_list =  actividades_list.filter(proyecto = form.cleaned_data.get('proyecto'))
             if form.cleaned_data.get('tarea'):
                 actividades_list =  actividades_list.filter(tarea = form.cleaned_data.get('tarea'))
             if form.cleaned_data.get('estado'):
@@ -88,13 +88,13 @@ def crear_actividad(request):
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    proyectos_noborrados = Proyecto.objects.all()
+    #proyectos_noborrados = Proyecto.objects.all()
     tareas_noborradas = Tarea.objects.all()
     
-    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
+    #proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
     tareas_noborradas=tareas_noborradas.filter(enPapelera= False)
 
-    form.fields["proyecto"].queryset  = proyectos_noborrados
+    #form.fields["proyecto"].queryset  = proyectos_noborrados
     form.fields["tarea"].queryset = tareas_noborradas
     
     creacionOedicion = 1
@@ -114,13 +114,14 @@ def editar_actividad(request, id):
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    proyectos_noborrados = Proyecto.objects.all()
+    #proyectos_noborrados = Proyecto.objects.all()
+
     tareas_noborradas = Tarea.objects.all()
     
-    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
+    #proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
     tareas_noborradas=tareas_noborradas.filter(enPapelera= False)
 
-    form.fields["proyecto"].queryset  = proyectos_noborrados
+   #form.fields["proyecto"].queryset  = proyectos_noborrados
     form.fields["tarea"].queryset = tareas_noborradas
         
     

@@ -53,6 +53,7 @@
             <th scope="col"></th>
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
+            <th scope="col">Meta</th>
             <th scope="col">Proyecto</th>
             <th scope="col">Categorias</th>
             <th scope="col">Carné</th>
@@ -93,44 +94,49 @@
 
             <td>{{ tarea.nombre }}</td>
             <td>{{ tarea.descripcion}}</td>
-            {% if not tarea.proyecto.enPapelera %}
-                <td>{{ tarea.proyecto}}</td>
+            <td>
+              {% if not tarea.meta.enPapelera %}
+                  {{ tarea.meta}}
+              {% endif %}
+            </td>
+            {% if not tarea.meta.objetivo.proyecto.enPapelera %}
+                <td>{{tarea.meta.objetivo.proyecto}}</td>
             {% else %}  
                 <td></td>
             {% endif %}
 
              <!--Categorias multiples-->
-        <td>
-          {% for categoria in tarea.proyecto.categoria.all %}
-             {% if not categoria.enPapelera %}
-                 {{ categoria.nombre}}<br/>
-              {% endif %}
-          {% endfor %}
-        </td>
-        <!--usuarios multiples-->
-        <td>
-          {% for estudiante in tarea.estudiante.all %}
-             
-                 {{ estudiante.user.username}}<br/>
-              
-          {% endfor %}
-        </td>
-        <!--nombres multiples-->
-        <td>
-          {% for estudiante in tarea.estudiante.all %}
+            <td>
+              {% for categoria in tarea.meta.objetivo.proyecto.categoria.all %}
+                {% if not categoria.enPapelera %}
+                    {{ categoria.nombre}}<br/>
+                  {% endif %}
+              {% endfor %}
+            </td>
+            <!--usuarios multiples-->
+            <td>
+              {% for estudiante in tarea.estudiante.all %}
+                
+                    {{ estudiante.user.username}}<br/>
+                  
+              {% endfor %}
+            </td>
+            <!--nombres multiples-->
+            <td>
+              {% for estudiante in tarea.estudiante.all %}
+                
+                    {{ estudiante.user.first_name}}<br/>
+                
+              {% endfor %}
+            </td>
+            <!--apellidos multiples-->
+            <td>
+              {% for estudiante in tarea.estudiante.all %}
+                
+                    {{ estudiante.user.last_name}}<br/>
             
-                 {{ estudiante.user.first_name}}<br/>
-            
-          {% endfor %}
-        </td>
-        <!--apellidos multiples-->
-        <td>
-          {% for estudiante in tarea.estudiante.all %}
-            
-                 {{ estudiante.user.last_name}}<br/>
-         
-          {% endfor %}
-        </td>
+              {% endfor %}
+            </td>
             
           </tr>
             {% endif %}

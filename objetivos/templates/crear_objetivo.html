@@ -1,0 +1,53 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% load static %}
+<script>
+  var formSubmitting = false;
+  var setFormSubmitting = function() { formSubmitting = true; };
+  
+  window.onload = function() {
+      window.addEventListener("beforeunload", function (e) {
+          if (formSubmitting) {
+              return undefined;
+          }
+  
+          var confirmationMessage = 'It looks like you have been editing something. '
+                                  + 'If you leave before saving, your changes will be lost.';
+          
+          (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+          return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+      });
+  };
+  </script>
+<script  type="text/javascript">
+  function confirmarRegistro(){
+    var creacion =  confirm('¿Está seguro/a de que desea crear el registro?');
+    if(creacion){
+      const collection = document.getElementsByClassName("alert alert-success");
+
+      collection[0].setAttribute("style", "display:block");
+    }
+    
+    return creacion
+  }
+</script>
+<div class="container">
+  <div class="alert alert-success" role="alert" style="display:none">
+    <img  src="{%static '/svg/check-line.svg'%}" /> El registro de objetivo se ha realizado exitosamente.
+  </div>
+</br>
+  <h1>Agregar Objetivo</h1>
+
+<form method="post" onsubmit="setFormSubmitting()">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />
+
+    {{objetivo_form|crispy }}
+   
+
+    <button type="submit" onClick = "return confirmarRegistro();" class="btn btn-primary btn-block">Continuar</button>
+</form>
+</div>
+
+
+
+{% endblock %}
