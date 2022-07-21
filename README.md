@@ -1,47 +1,23 @@
 # Sistema de registro de horas de TCU
 
-> Un sistema de información en el que las personas estudiantes pueden registrar sus actividades de TCU, dentro de los proyectos respectivos. También permite la gestión de algunas solicitudes (prórrogas, oficios de finalización) y facilita el monitoreo tanto de estudiantes como de profesores del trabajo en cada proyecto y el nivel de avance.
+Es un sistema de:
 
-- Es un sistema de 
-  - **registro** de actividades
-  - **clasificación** de actividades
-  - **asignación** de tareas 
-  - **visualización** (*digest*) del trabajo
-  - **solicitud** de gestiones administrativas
-  - **información** (abierta al público) de los proyectos del TCU
+1. **registro** de actividades
+1. **clasificación** de actividades según objetivos
+1. **asignación** de tareas 
+1. **visualización** (*digest*) del trabajo
+1. **solicitud** de gestiones administrativas
+1. **información** (abierta al público) de los proyectos
 
-**Nota**: No es un software de gestión de proyectos como Trello, Asana, etc. (al menos todavía no).
+**Nota**: No es un software de gestión de proyectos como Trello, Asana, etc., aunque comparte algunas características importantes y quizá pueda evolucionar hacia eso.
 
-## Paneles de administración
+## 1. Registro de actividades
 
-### Para profesores
+Son un registro de las horas de trabajo de los estudiantes. Contiene una descripción del trabajo realizado y las horas dedicadas. No es un objetivo por sí mismo.
 
-#### Por cada proyecto, objetivo, meta o tarea
+## 2. Jerarquía de objetivos para clasificación de tareas
 
-- ¿Cuántas personas y quiénes están trabajando?
-- ¿Cuántas horas se han dedicado?
-- ¿Cómo se distribuye el trabajo en el tiempo? Al estilo de GitHub, tal vez
-- ¿Quién le está dedicando más tiempo? Ránking de horas por estudiante
-
-#### Por cada estudiante
-
-- Horas totales
-- Avance del período de ejecución
-- "Factor de avance" (porcentaje de horas / porcentaje de período de ejecución)
-- Tareas (y metas, objetivos y proyectos) en las que está trabajando
-- Lista de actividades realizadas
-
-También se puede seleccionar una categoría de estas y comparar una selección de estudiantes.
-
-### Para estudiantes
-
-- Horas totales
-- Avance del período de ejecución
-- Factor de avance (porcentaje de horas / porcentaje de período de ejecución)
-- Tareas (y metas, objetivos y proyectos) en las que está trabajando
-- Lista de actividades realizadas
-
-## Jerarquía de objetivos para clasificación de tareas
+Cada actividad registrada está asociada con una tarea, que está asociada con la siguiente jerarquía de objetivos:
 
 ```mermaid
 flowchart TD
@@ -64,32 +40,34 @@ flowchart TD
   - Encontrar una receta (actividad de 1 hora de persona Z)
   - …
 
+La descripción de cada nivel está a continuación.
+
 ### Categorías
 
-Editable solamente por profesores
+*Editan: profesores*
 
 Divide los proyectos en categorías temáticas. Actualmente hay dos:
 
-- Sistemas de información (transporte público y ferias del agricultor)
+- Sistemas de información
 - Talleres y material educativo
 
 ### Proyectos
 
-Editable solamente por profesores
+*Editan: profesores*
 
-Unidad de trabajo que debe ser planteada formalmente con objetivo general y objetivos específicos.
+Unidad de trabajo. Es planteada formalmente con objetivo general, objetivos específicos y demás.
 
 ### Objetivos
 
-Editable solamente por profesores
+*Editan: profesores*
 
 > Objetivo de primer orden
 
-Cada uno de los objetivos específicos del proyecto, que debe describir un resultado entregable.
+Cada uno de los objetivos específicos del proyecto, que describe un resultado entregable.
 
 ### Metas
 
-Editable solamente por profesores
+*Editan: profesores*
 
 > Objetivo de segundo orden
 
@@ -97,19 +75,57 @@ Cada una de las tareas mayores con las cuales se cumple un objetivo del proyecto
 
 ### Tareas
 
-Editable por profesores y estudiantes
+*Editan: profesores y estudiantes*
 
 > Objetivo de tercer orden
 
 Cada una de las tareas menores (unidades mínimas de trabajo) que son necesarias para cumplir las metas del objetivo.
 
-## Registro de actividades
+## 3. Asignación de tareas
 
-Son un registro de las horas de trabajo de los estudiantes. Contiene una descripción del trabajo realizado y las horas dedicadas. No es un objetivo por sí mismo.
+Cada tarea debe tener una o más personas trabajando. Las tareas tienen varios estados: en progreso, ociosa (*idle*), terminada.
 
-Cada actividad está asociada con una tarea, que está asociada con una meta, asociada con un objetivo, asociado con un proyecto.
+## 4. Paneles de administración
 
-## Páginas de proyecto
+Es la componente de visualización de tareas, en forma de *digest* de la información o *dashboard* administrativo. Debe contestar a las siguientes preguntas de interés:
+
+### Para profesores
+
+#### Por cada proyecto, objetivo, meta o tarea
+
+- ¿Cuántas personas y quiénes están trabajando?
+- ¿Cuántas horas se han dedicado?
+- ¿Cómo se distribuye el trabajo en el tiempo? (ref. GitHub)
+- ¿Quién le está dedicando más tiempo? Ránking de horas por estudiante
+- ¿Cuáles tienen más trabajo (tiempo) dedicado? Ránking por horas
+
+#### Por cada estudiante
+
+- Horas totales
+- Avance del período de ejecución
+- "Factor de avance" (porcentaje de horas / porcentaje de período de ejecución)
+- Tareas (y metas, objetivos y proyectos) en las que está trabajando
+
+
+También se puede seleccionar una categoría de estas y comparar una selección de estudiantes.
+
+### Para estudiantes
+
+- Horas totales
+- Avance del período de ejecución
+- Factor de avance (porcentaje de horas / porcentaje de período de ejecución)
+- Tareas (y metas, objetivos y proyectos) en las que está trabajando
+
+## 5. Solicitudes de gestiones administrativas
+
+Hay dos momentos administrativamente importantes para los estudiantes durante el TCU:
+
+- Finalización de TCU
+- Solicitud de prórroga
+
+La página permite registrar estas solicitudes para que la coordinación haga los trámites respectivos (envío de oficios a las VAS).
+
+## 6. Páginas de proyecto
 
 Contenido:
 
