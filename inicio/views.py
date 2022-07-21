@@ -42,6 +42,11 @@ def index(request):
     porcentajeDaysYear= (100 / totalDiasTCU) * diasTCU
     porcentajeWidthDaysYear = int(porcentajeDaysYear)
 
+
+    factorDeAvance =  porcentaje / porcentajeDaysYear
+    redondeadoFactorDeAvance = int(factorDeAvance)
+
+
     return render (request=request, template_name="../templates/index.html", context={"progreso":horasTotalesPorEstudiante,
     "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
-    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,})
+    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,"factorDeAvance":factorDeAvance,})
