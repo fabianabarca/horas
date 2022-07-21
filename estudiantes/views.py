@@ -47,6 +47,8 @@ def editar_estudiante(request, id):
 
     form = EstudiantesForm(request.POST or None, instance = obj)
     form.fields['user'].widget = forms.HiddenInput()
+    form.fields['carrera'].widget = forms.HiddenInput()
+
     if form.is_valid():
         form.save()
         return HttpResponseRedirect("/estudiantes")
