@@ -6,7 +6,9 @@
   <p>
     Pueden haber multiples objetivos por proyecto.
   </p>
-  <a href="crear_objetivo" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Objetivo</a>
+  {% if request.user.is_staff %}
+    <a href="crear_objetivo" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Objetivo</a>
+  {% endif %}
 </br>
 </br>
 
@@ -21,7 +23,9 @@
     <table id="datatable" class="table align-items-center table-hover">
     <thead class="thead">
       <tr>
-        <th scope="col"></th>
+        {% if request.user.is_staff %}
+          <th scope="col"></th>
+        {% endif %}
         <th scope="col">Nombre</th>
         <th scope="col">Proyecto</th>
 
@@ -31,23 +35,25 @@
       {% for objetivo in objetivos %}
         {% if not objetivo.enPapelera %}
           <tr>
-            <td>
-              <!-- Checkbox -->
-              <input type="checkbox" name="inputs" value="{{objetivo.id}}" /> <br>
-    
-                <!-- Edit button -->
-                <a   href="editar_objetivo/{{ objetivo.id }}" class="text-info" role="button">
-                  <i class="fas fa-edit"></i>
-                </a>
-    
-                <!-- Delete button -->
-                <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
-                class="text-danger" value="{{ objetivo.id }}"  name="deleteButton"
-                style="background-color: transparent;  border: 0;">              
-                <i class="fas fa-trash-alt"></i>
-                </button>
-              
-            </td>
+            {% if request.user.is_staff %}
+              <td>
+                <!-- Checkbox -->
+                <input type="checkbox" name="inputs" value="{{objetivo.id}}" /> <br>
+      
+                  <!-- Edit button -->
+                  <a   href="editar_objetivo/{{ objetivo.id }}" class="text-info" role="button">
+                    <i class="fas fa-edit"></i>
+                  </a>
+      
+                  <!-- Delete button -->
+                  <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                  class="text-danger" value="{{ objetivo.id }}"  name="deleteButton"
+                  style="background-color: transparent;  border: 0;">              
+                  <i class="fas fa-trash-alt"></i>
+                  </button>
+                
+              </td>
+            {% endif %}
             <td>{{ objetivo }}</td>
             <td>
               {% if not objetivo.proyecto.enPapelera %}

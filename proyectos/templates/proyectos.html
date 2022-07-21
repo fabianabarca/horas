@@ -6,9 +6,10 @@
   <p>
     Los proyectos pueden pertenecer a varias categorias.
   </p>
-  <a href="crear_proyecto" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Proyecto</a>
-  <a href="crear_categoria" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Categoria</a>
-
+  {% if request.user.is_staff %}
+    <a href="crear_proyecto" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Proyecto</a>
+    <a href="crear_categoria" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Categoria</a>
+  {% endif %}
 
  
 </br>
@@ -51,7 +52,9 @@
         <table id="datatable" class="table align-items-center table-hover">
         <thead class="thead">
           <tr>
+            {% if request.user.is_staff %}
             <th scope="col"></th>
+            {% endif %}
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
             <th scope="col">Profesor</th>
@@ -65,23 +68,25 @@
             {% if not proyecto.enPapelera %}
 
               <tr>
-                <td>
-                  <!-- Checkbox -->
-                  <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
-        
-                    <!-- Edit button -->
-                    <a   href="editar_proyecto/{{ proyecto.id }}" class="text-info" role="button">
-                      <i class="fas fa-edit"></i>
-                    </a>
-        
-                    <!-- Delete button -->
-                    <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
-                    class="text-danger" value="{{ proyecto.id }}"  name="deleteButton"
-                    style="background-color: transparent;  border: 0;">              
-                    <i class="fas fa-trash-alt"></i>
-                    </button>
-                  
-                </td>
+                {% if request.user.is_staff %}
+                  <td>
+                    <!-- Checkbox -->
+                    <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
+          
+                      <!-- Edit button -->
+                      <a   href="editar_proyecto/{{ proyecto.id }}" class="text-info" role="button">
+                        <i class="fas fa-edit"></i>
+                      </a>
+          
+                      <!-- Delete button -->
+                      <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                      class="text-danger" value="{{ proyecto.id }}"  name="deleteButton"
+                      style="background-color: transparent;  border: 0;">              
+                      <i class="fas fa-trash-alt"></i>
+                      </button>
+                    
+                  </td>
+                {% endif %}
                 <td>{{ proyecto.nombre }}</td>
                 <td>{{ proyecto.descripcion }}</td>
                 <td>{{ proyecto.profesor.user.first_name }}</td>
