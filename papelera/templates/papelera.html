@@ -145,6 +145,119 @@
 </br>
 
 </br>
+<h1>Metas</h1>
+</br>
+
+  {% if metas %}
+  <div class="table-responsive">
+    <table  class="table align-items-center table-hover">
+    <thead class="thead">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Objetivo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for meta in metas %}
+          {% if meta.enPapelera %}
+      <tr>
+        <td>
+          <div style="text-align: center;">
+            <!-- Checkbox -->
+            <input type="checkbox" name="inputs" value="{{meta.id}}" /> <br>
+
+            <!--Return button-->
+            <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ meta.id }}"  name="returnButtonMeta">
+              <i class="material-icons">undo</i>
+            </button></br>
+
+            <!-- Delete button -->
+            <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+            class="text-danger" value="{{ meta.id }}"  name="deleteButtonMeta">              
+            <i class="material-icons">delete_forever</i>
+            </button>
+          </div>
+        </td>
+        <td>{{ meta }}</td>
+        <td>
+          {% if not meta.objetivo.enPapelera %}
+              {{ meta.objetivo }}
+          {% endif %}
+         </td>
+
+        
+      </tr>
+          {% endif %}
+      {% endfor %}
+  </tbody>
+    </table>
+  </div>
+  {% else %}
+  <strong>No hay metas borrados</strong>
+  {% endif %}
+
+</br>
+
+
+</br>
+<h1>Objetivos</h1>
+</br>
+
+  {% if objetivos %}
+  <div class="table-responsive">
+    <table  class="table align-items-center table-hover">
+    <thead class="thead">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Proyecto</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for objetivo in objetivos %}
+        {% if  objetivo.enPapelera %}
+      <tr>
+        <td>
+          <div style="text-align: center;">
+            <!-- Checkbox -->
+            <input type="checkbox" name="inputs" value="{{objetivo.id}}" /> <br>
+
+            <!--Return button-->
+            <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ objetivo.id }}"  name="returnButtonObjetivo">
+              <i class="material-icons">undo</i>
+            </button></br>
+
+            <!-- Delete button -->
+            <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+            class="text-danger" value="{{ objetivo.id }}"  name="deleteButtonObjetivo">              
+            <i class="material-icons">delete_forever</i>
+            </button>
+          </div>
+        </td>
+        <td>{{ objetivo }}</td>
+        <td>
+          {% if not objetivo.proyecto.enPapelera %}
+            {{ objetivo.proyecto }}
+          {% endif %}
+        </td>
+
+        
+      </tr>
+          {% endif %}
+      {% endfor %}
+  </tbody>
+    </table>
+  </div>
+  {% else %}
+  <strong>No hay objetivos borrados</strong>
+  {% endif %}
+
+</br>
+
+
+
+</br>
 <h1>Proyectos</h1>
 </br>
 {% if proyectos %}
