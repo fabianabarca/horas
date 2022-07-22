@@ -48,7 +48,7 @@
         <div id="filtrosdiv" style="display: none;" class="card">
           <p>
           <div class="card-body">
-            <form method="post">
+            <form id="filtro" method="post">
               {% csrf_token %}
               <input type="hidden" name="next" value="{{ next }}" />
               <div class="row">
@@ -88,48 +88,48 @@
             <tbody>
               {% for actividad in actividades %}
                 {% if not actividad.enPapelera %}
-              <tr>
-                <td>
-                  <!-- Checkbox -->
-                  <input type="checkbox" name="inputs" value="{{actividad.id}}" /> <br>
+                  <tr>
+                    <td>
+                      <!-- Checkbox -->
+                      <input type="checkbox" name="inputs" value="{{actividad.id}}" /> <br>
 
-                  <!-- Edit button -->
-                  <a  href="editar_actividad/{{ actividad.id }}" class="text-info" role="button">
-                    <i class="fas fa-edit"></i>
-                  </a>
+                      <!-- Edit button -->
+                      <a  href="editar_actividad/{{ actividad.id }}" class="text-info" role="button">
+                        <i class="fas fa-edit"></i>
+                      </a>
 
-                  <!-- Delete button -->
-                  <button onclick="return confirm('¿Está seguro de enviarlo a la papelera?')"  type="submit"
-                    class="text-danger" value="{{ actividad.id }}" name="deleteButton"
-                    style="background-color: transparent;  border: 0;">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-                </td>
-                <td> {{ actividad.descripcion }}</td>
-                <td>{{ actividad.horas }}</td>
-                <td>{{ actividad.fecha }}</td>
-                {% if not actividad.tarea.meta.objetivo.proyecto.enPapelera %}
-                  <td>{{actividad.tarea.meta.objetivo.proyecto.nombre}}</td>
-                {% else %}  
-                <td></td>
-                {% endif %}
-                {% if not actividad.tarea.enPapelera %}
-                  <td>{{ actividad.tarea.nombre}}</td>
-                {% else %}  
-                <td></td>
-                {% endif %}
-                
-                
+                      <!-- Delete button -->
+                      <button onclick="return confirm('¿Está seguro de enviarlo a la papelera?')"  type="submit"
+                        class="text-danger" value="{{ actividad.id }}" name="deleteButton"
+                        style="background-color: transparent;  border: 0;">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    </td>
+                    <td> {{ actividad.descripcion }}</td>
+                    <td>{{ actividad.horas }}</td>
+                    <td>{{ actividad.fecha }}</td>
+                    {% if not actividad.tarea.meta.objetivo.proyecto.enPapelera %}
+                      <td>{{actividad.tarea.meta.objetivo.proyecto.nombre}}</td>
+                    {% else %}  
+                    <td></td>
+                    {% endif %}
+                    {% if not actividad.tarea.enPapelera %}
+                      <td>{{ actividad.tarea.nombre}}</td>
+                    {% else %}  
+                    <td></td>
+                    {% endif %}
+                    
+                    
 
-                {% if request.user.is_staff %}
-                <td>{{ actividad.estudiante.user.username}}</td>
-                <td>{{ actividad.estudiante.user.first_name}}</td>
-                <td>{{ actividad.estudiante.user.last_name}}</td>
+                    {% if request.user.is_staff %}
+                    <td>{{ actividad.estudiante.user.username}}</td>
+                    <td>{{ actividad.estudiante.user.first_name}}</td>
+                    <td>{{ actividad.estudiante.user.last_name}}</td>
 
-                {% endif %}
-                <td>{{ actividad.get_estado_display}}</td>
+                    {% endif %}
+                    <td>{{ actividad.get_estado_display}}</td>
 
-              </tr>
+                  </tr>
                 {% endif %}
               {% endfor %}
             </tbody>

@@ -50,7 +50,7 @@ def tareas_request(request):
             if form.cleaned_data.get('categoria'):
                 tareas_list =  tareas_list.filter(meta__objetivo__proyecto__categoria= form.cleaned_data.get('categoria'))
            
-        return HttpResponseRedirect("/tareas")
+        #return HttpResponseRedirect("/tareas")
         
     form = FiltrosTareaForm()
 
