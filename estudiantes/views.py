@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required(login_url='/cuentas/login/')
 def estudiantes_request(request):
-    estudiantes_list = Estudiante.objects.all()
+    estudiantes_list = Estudiante.objects.all().filter(user__is_staff=False)
     if request.user.is_staff:
         actividades_list = Actividad.objects.all()
     Actividad.objects.raw('SELECT id, horas FROM myapp_actividad ')

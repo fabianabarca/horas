@@ -7,6 +7,8 @@ from dashboard.models import *
 import time
 from cuentas.models import *
 from actividades.models import Actividad
+from cuentas.models import Estudiante
+from proyectos.models import Proyecto
 import datetime
 
 # Create your views here.
@@ -15,6 +17,15 @@ import datetime
 def index(request):
     estudiantes_list = Estudiante.objects.all()
     estudiante_actual = Estudiante.objects.get(user = request.user)
+
+     
+    estudiantes_list = Estudiante.objects.all()
+
+    numeroEstudiantes=estudiantes_list.filter(user__is_staff=False).count
+
+    proyectos_list = Proyecto.objects.all()
+    numeroProyectos=proyectos_list.count
+    
 
     #Desde aqui se procesa la barra de progreso de horas por estudiante
     my_actividades_list= Actividad.objects.raw('SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false")
@@ -50,4 +61,5 @@ def index(request):
 
     return render (request=request, template_name="../templates/index.html", context={"progreso":horasTotalesPorEstudiante,
     "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
-    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,"factorDeAvance":factorDeAvance,})
+    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,"factorDeAvance":factorDeAvance,
+    "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,})
