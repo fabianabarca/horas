@@ -27,7 +27,8 @@ def estudiantes_request(request):
         for actividad in actividades_list:
             
             if actividad.estudiante.user.username == estudiante.user.username:
-                horasTotalesPorEstudiante+= actividad.horas
+                if actividad.estado == "A":
+                    horasTotalesPorEstudiante+= actividad.horas
 
         horasEstudianteslist.append(horasTotalesPorEstudiante)
         porcentaje= (100 / 300) * horasTotalesPorEstudiante

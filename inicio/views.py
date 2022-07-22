@@ -20,6 +20,7 @@ def index(request):
     my_actividades_list= Actividad.objects.raw('SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false")
     horasTotalesPorEstudiante=0      
     for actividad in my_actividades_list:
+        if actividad.estado == "A":
             horasTotalesPorEstudiante+= actividad.horas
 
     #horasTotalesPorEstudiante=30  #para pruebas
