@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %} {% load static %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
 <div class="container">
 </br>
@@ -44,6 +45,18 @@
   </div>
 </br>
 
+
+<div id="container" style="width: 75%;">
+  <canvas id="bar-chart"></canvas>
+</div>
+
+<div id="container" style="width: 75%;">
+  <canvas id="pie-chart"></canvas>
+</div>
+
+
+
+
 {% endif %}
 </div>
 <!--Script para barra de progreso de horas-->
@@ -57,7 +70,78 @@
   collection[1].setAttribute("style", "width: {{porcentajeWidthDaysYear}}%;");
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
 
+  const ctx = document.getElementById('bar-chart').getContext('2d');
+  var listData = "{{ data|safe }}"
+  var listLabels =  "{{ labels|safe }}"
+  var newlistData = listData.split(',')
+  var newlistLabels = listLabels.split(',')
+  const myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: newlistLabels,
+          datasets: [{
+              label: 'Actividades por tareas',
+              data: newlistData,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+             
+             
+          }]
+         
+      },
+      options: {
+         responsive: true,
+          
+      }
+  });
+</script>
+
+<script>
+
+  const ctx2 = document.getElementById('pie-chart').getContext('2d');
+  var listData = "{{ data|safe }}"
+  var listLabels =  "{{ labels|safe }}"
+  var newlistData = listData.split(',')
+  var newlistLabels = listLabels.split(',')
+  const myChart2 = new Chart(ctx2, {
+      type: 'pie',
+      data: {
+          
+          datasets: [{
+              
+              data: newlistData,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 65, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              label: 'Actividades por tareas'
+          
+             
+          }],
+          labels: newlistLabels
+          
+      },
+      options: {
+         responsive: true,
+          
+      }
+  });
+</script>
 {% endblock %}
 
 

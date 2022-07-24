@@ -7,6 +7,10 @@ from django.contrib.auth.decorators import login_required
 import time
 from cuentas.models import *
 from actividades.models import Actividad
+from proyectos.models import Proyecto
+from tareas.models import Tarea
+
+
 import datetime
 
 
@@ -43,6 +47,36 @@ def dashboard_request(request):
     porcentajeDaysYear= (100 / totalDiasTCU) * diasTCU
     porcentajeWidthDaysYear = int(porcentajeDaysYear)
 
+
+
+    #pie chart
+    labels = []
+    data = []
+
+    listaCantidadActividades = {}
+    querysetTareas = Tarea.objects.all()
+    for tarea in querysetTareas:
+       
+        listaCantidadActividades[tarea.nombre]=tarea.actividad_set.all().count()
+        #labels.append(proyecto.nombre)
+        #tquery=Tarea.objects.filter(proyecto=proyecto)
+        #data.append(tquery.count)
+   
+    sorted(listaCantidadActividades.items(), key=lambda x: x[1], reverse=True)
+
+    for element in listaCantidadActividades.values():
+        data.append(element)
+        
+    print(len(data))
+    for element2 in listaCantidadActividades.keys():
+        labels.append(element2)
+        
+    print(len(labels))
+    print(listaCantidadActividades)
     return render (request=request, template_name="../templates/dashboard.html", context={"progreso":horasTotalesPorEstudiante,
     "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
-    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,})
+    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,'labels': labels,'data': data,})
+
+
+
+    
