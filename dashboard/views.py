@@ -57,14 +57,31 @@ def dashboard_request(request):
     data = []
 
     listaCantidadActividades = {}
-    querysetTareas = Tarea.objects.all()
-    for tarea in querysetTareas:
-        if (tarea.enPapelera==False):
-            listaCantidadActividades[tarea.nombre]=tarea.actividad_set.all().count()
+    querysetProyectos = Proyecto.objects.all()
+    
+    for proyecto in querysetProyectos:
+        if (proyecto.enPapelera==False):
+            totalActividadesPorProyecto = 0
+            querysetObjetivos=proyecto.objetivo_set.all()
+
+            for objetivo in querysetObjetivos:
+                if (objetivo.enPapelera==False):
+                    querysetMetas=objetivo.meta_set.all()
+
+                    for meta in querysetMetas:
+                        if (meta.enPapelera==False):
+                            querysetTareas=meta.tarea_set.all()
+
+                            for tarea in querysetTareas:
+                                if (tarea.enPapelera==False):
+                                    totalActividadesPorProyecto = totalActividadesPorProyecto + tarea.actividad_set.filter(enPapelera=False).count()
+
         #labels.append(proyecto.nombre)
         #tquery=Tarea.objects.filter(proyecto=proyecto)
         #data.append(tquery.count)
-   
+
+            listaCantidadActividades[proyecto.nombre]=totalActividadesPorProyecto
+
     sorted(listaCantidadActividades.items(), key=lambda x: x[1], reverse=True)
 
     for element in listaCantidadActividades.values():
@@ -78,8 +95,8 @@ def dashboard_request(request):
     #Listas con los colores para los graficos desplegados
     colorList = []
     
-    alphaInitial= 0.1
-    opasityIncreaseRange= 0.03
+    alphaInitial= 1
+    opasityDecreaseRange= 0.2
     r  = str(159)
     g  = str(90)
     b  = str(253)
@@ -87,10 +104,10 @@ def dashboard_request(request):
     alpha = alphaInitial 
     count = 0
     for  i  in listaCantidadActividades:
-        alpha = alpha + (count)
+        alpha = alpha - (count)
         color = 'rgba(' + r + ','+ g + ','+ b + ','+ str(alpha) + ')'
         colorList.append(color)
-        count = count + opasityIncreaseRange
+        count = count + opasityDecreaseRange
 
     #Generar elementos de colores
     #print(len(labels))
