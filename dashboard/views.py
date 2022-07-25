@@ -70,12 +70,29 @@ def dashboard_request(request):
     #print(len(data))
     for element2 in listaCantidadActividades.keys():
         labels.append(element2)
-        
+    
+
+    #Listas con los colores para los graficos desplegados
+    colorList = []
+    
+    alphaInitial= 0.1
+    opasityIncreaseRange= 0.03
+    alpha = alphaInitial 
+    count = 0
+
+    for  i  in listaCantidadActividades:
+        alpha = alpha + (count)
+        color = 'rgba(' + str(159) + ','+ str(90) + ','+ str(253) + ','+ str(alpha) + ')'
+        colorList.append(color)
+        count = count + opasityIncreaseRange
+
+    #Generar elementos de colores
     #print(len(labels))
     #print(listaCantidadActividades)
     return render (request=request, template_name="../templates/dashboard.html", context={"progreso":horasTotalesPorEstudiante,
     "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
-    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,'labels': labels,'data': data,})
+    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,'labels': labels,'data': data,
+    'colorList': colorList})
 
 
 
