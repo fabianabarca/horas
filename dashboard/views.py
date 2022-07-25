@@ -56,8 +56,8 @@ def dashboard_request(request):
     listaCantidadActividades = {}
     querysetTareas = Tarea.objects.all()
     for tarea in querysetTareas:
-       
-        listaCantidadActividades[tarea.nombre]=tarea.actividad_set.all().count()
+        if (tarea.enPapelera==False):
+            listaCantidadActividades[tarea.nombre]=tarea.actividad_set.all().count()
         #labels.append(proyecto.nombre)
         #tquery=Tarea.objects.filter(proyecto=proyecto)
         #data.append(tquery.count)
@@ -66,13 +66,13 @@ def dashboard_request(request):
 
     for element in listaCantidadActividades.values():
         data.append(element)
-        
-    print(len(data))
+         
+    #print(len(data))
     for element2 in listaCantidadActividades.keys():
         labels.append(element2)
         
-    print(len(labels))
-    print(listaCantidadActividades)
+    #print(len(labels))
+    #print(listaCantidadActividades)
     return render (request=request, template_name="../templates/dashboard.html", context={"progreso":horasTotalesPorEstudiante,
     "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
     "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,'labels': labels,'data': data,})
