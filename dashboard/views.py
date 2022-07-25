@@ -77,12 +77,15 @@ def dashboard_request(request):
     
     alphaInitial= 0.1
     opasityIncreaseRange= 0.03
+    r  = str(159)
+    g  = str(90)
+    b  = str(253)
+
     alpha = alphaInitial 
     count = 0
-
     for  i  in listaCantidadActividades:
         alpha = alpha + (count)
-        color = 'rgba(' + str(159) + ','+ str(90) + ','+ str(253) + ','+ str(alpha) + ')'
+        color = 'rgba(' + r + ','+ g + ','+ b + ','+ str(alpha) + ')'
         colorList.append(color)
         count = count + opasityIncreaseRange
 
