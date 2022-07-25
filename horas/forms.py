@@ -1,7 +1,7 @@
 from cuentas.models import Estudiante, Profesor
 from solicitudes.models import Solicitud, SolicitudArchivo
 from actividades.models import Actividad
-from proyectos.models import Categoria, Proyecto
+from proyectos.models import *
 from tareas.models import Tarea
 from django import forms
 from django.contrib.auth.models import User
@@ -64,7 +64,7 @@ class FiltrosTareaForm(forms.Form):
     
     nombre = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     estudiante = forms.ModelChoiceField(queryset=Estudiante.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    proyecto = forms.ModelChoiceField(queryset=Proyecto.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    meta = forms.ModelChoiceField(queryset=Meta.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     descripcion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     categoria = forms.ModelChoiceField(queryset=Categoria.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
 
@@ -166,20 +166,34 @@ class SolicitudesArchivoForm(forms.ModelForm):
             'archivo': ClearableFileInput(attrs={'multiple': True}),
         }
 
+class CategoriasForm(forms.ModelForm):
+    class Meta:
+        model = Categoria
+        fields = "__all__"
+
 class ProyectosForm(forms.ModelForm):
     class Meta:
         model = Proyecto
         fields = "__all__"
-       
+        
+class ObjetivosForm(forms.ModelForm):
+    class Meta:
+        model = Objetivo
+        fields = "__all__"
+
+
+class MetasForm(forms.ModelForm):
+    class Meta:
+        model = Meta
+        fields = "__all__"
+
+
 class TareasForm(forms.ModelForm):
     class Meta:
         model = Tarea
         fields = "__all__"
 
-class CategoriasForm(forms.ModelForm):
-    class Meta:
-        model = Categoria
-        fields = "__all__"
+
        
 class EstudiantesForm(forms.ModelForm):
     class Meta:

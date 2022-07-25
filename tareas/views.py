@@ -3,7 +3,6 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from tareas.models import *
 from proyectos.models import *
-from proyectos.models import Proyecto
 from horas.forms import TareasForm ,FiltrosTareaForm
 from django.contrib.auth.decorators import login_required
 import time
@@ -17,14 +16,12 @@ def tareas_request(request):
            
         form = FiltrosTareaForm(request.POST or None)
         if request.POST.get('deleteButton'):
-                print("activado delete")
                 deleteButtonItemValue=request.POST.getlist('deleteButton')
                 obj = Tarea( id = deleteButtonItemValue[0]) 
                 Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
                 
-        
+        '''
         if request.POST.get('assignButton'):
-                print("activado assign")
                 asignButtonItemValue=request.POST.getlist('assignButton')
                 obj = Tarea( id = asignButtonItemValue[0]) 
                 tareaAsignar=Tarea.objects.filter(id = asignButtonItemValue[0])
@@ -39,7 +36,7 @@ def tareas_request(request):
                                 [userAssign.user.email],
                                 fail_silently=False,
                     )
-                
+        '''        
         
         if form.is_valid():
             if form.cleaned_data.get('nombre'):
@@ -48,13 +45,12 @@ def tareas_request(request):
                 tareas_list =  tareas_list.filter(estudiante = form.cleaned_data.get('estudiante'))
             if form.cleaned_data.get('descripcion'):
                 tareas_list =  tareas_list.filter(descripcion__contains = form.cleaned_data.get('descripcion'))
-            if form.cleaned_data.get('proyecto'):
-                tareas_list =  tareas_list.filter(proyecto = form.cleaned_data.get('proyecto'))
-
+            if form.cleaned_data.get('meta'):
+                tareas_list =  tareas_list.filter(meta = form.cleaned_data.get('meta'))
             if form.cleaned_data.get('categoria'):
-                tareas_list =  tareas_list.filter(proyecto__categoria= form.cleaned_data.get('categoria'))
+                tareas_list =  tareas_list.filter(meta__objetivo__proyecto__categoria= form.cleaned_data.get('categoria'))
            
-        return HttpResponseRedirect("/tareas")
+        #return HttpResponseRedirect("/tareas")
         
     form = FiltrosTareaForm()
 
@@ -76,9 +72,9 @@ def crear_tarea(request):
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    proyectos_noborrados = Proyecto.objects.all()
-    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
-    form.fields["proyecto"].queryset  = proyectos_noborrados
+    metas_noborradas = Meta.objects.all()
+    metas_noborradas=metas_noborradas.filter(enPapelera= False)
+    form.fields["meta"].queryset  = metas_noborradas
 
     creacionOedicion = 1
 
@@ -92,17 +88,78 @@ def editar_tarea(request, id):
     form = TareasForm(request.POST or None, instance = obj)
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
-   # form.fields['proyecto'].widget = forms.HiddenInput()
-   # form.fields['nombre'].widget = forms.HiddenInput()
-   # form.fields['descripcion'].widget = forms.HiddenInput()
+    # form.fields['proyecto'].widget = forms.HiddenInput()
+    # form.fields['nombre'].widget = forms.HiddenInput()
+    # form.fields['descripcion'].widget = forms.HiddenInput()
 
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    proyectos_noborrados = Proyecto.objects.all()
-    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
-    form.fields["proyecto"].queryset  = proyectos_noborrados
+    metas_noborradas = Meta.objects.all()
+    metas_noborradas=metas_noborradas.filter(enPapelera= False)
+    form.fields["meta"].queryset  = metas_noborradas
+
+    
+    
 
     if form.is_valid():
+        #Para enviar correos a estudiantes nuevamente asignados
+        tareas_list = Tarea.objects.all()
+        tareaAEditar = tareas_list.filter(id = id)
+        #print(tareaAEditar)
+        estudiantesActualesEnTarea = tareaAEditar[0].estudiante.all()
+        print(estudiantesActualesEnTarea)
+        for estudianteForm in form.cleaned_data.get('estudiante'):
+            mandarCorreo=True
+            for estudiante in estudiantesActualesEnTarea:
+                #print(estudiante)
+                if(estudianteForm == estudiante):
+                    #print("se encontro   "+ estudianteForm.user.first_name)
+                    mandarCorreo=False
+                    
+                #else:
+                    #print("no se encontro: "+ estudianteForm.user.first_name)
+                    
+            if (mandarCorreo):
+                    asignaciones_list = AsignacionesEnviadas.objects.all()
+                    boolYaFueAsignadoAntes=False
+                    for asignacion in asignaciones_list:
+                        if(asignacion.estudiante==estudianteForm):
+                                 boolYaFueAsignadoAntes=True
+                                 print("ya se le envió correo a "+ estudianteForm.user.first_name)
+
+                            
+                    if (not boolYaFueAsignadoAntes):
+                        ae = AsignacionesEnviadas(estudiante=estudianteForm,tarea=tareaAEditar[0])
+                        ae.save()
+                        print(AsignacionesEnviadas.objects.all())
+                        print("se envió correo a "+ estudianteForm.user.first_name)
+
+                    
+                        send_mail(
+                                            'Asignación de tarea',
+                                            'Se te asigno la tarea: ' + tareaAEditar[0].nombre +'\n\n'
+                                            + 'Descripción: '+ tareaAEditar[0].descripcion  +'\n\n'
+                                            + 'Del proyecto: '+ tareaAEditar[0].proyecto.nombre  +'\n\n'
+                                            ,
+                                            'testertesrter3@gmail.com',
+                                            [estudianteForm.user.email],
+                                            fail_silently=False,
+                                )
+                    
+
+                    
+                
+            '''
+            if(tareaAEditar[0].filter(estudiante__contains = estudiante.id)):
+                    print("no se manda correo a "+ estudiante.user.first_name)
+                
+
+            else:
+                    print("se manda correo a "+ estudiante.user.first_name)
+            '''
+    
+
+    
         form.save()
         return HttpResponseRedirect("/tareas")
 

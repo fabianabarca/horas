@@ -46,12 +46,12 @@ def actividades_request(request):
             deleteButtonItemValue=request.POST.getlist('deleteButton')
             Actividad.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
             
-                                                
-        if form.is_valid():
+                                      
+        if form.is_valid():     
             if form.cleaned_data.get('estudiante'):
                 actividades_list =  actividades_list.filter(estudiante = form.cleaned_data.get('estudiante'))
-            if form.cleaned_data.get('proyecto'):
-                actividades_list =  actividades_list.filter(proyecto = form.cleaned_data.get('proyecto'))
+            #if form.cleaned_data.get('proyecto'):
+                #actividades_list =  actividades_list.filter(proyecto = form.cleaned_data.get('proyecto'))
             if form.cleaned_data.get('tarea'):
                 actividades_list =  actividades_list.filter(tarea = form.cleaned_data.get('tarea'))
             if form.cleaned_data.get('estado'):
@@ -60,7 +60,8 @@ def actividades_request(request):
                 actividades_list =  actividades_list.filter(descripcion__contains= form.cleaned_data.get('descripcion'))
             if form.cleaned_data.get('fecha_inicio') or form.cleaned_data.get('fecha_final'):
                 actividades_list =  actividades_list.filter(fecha__range=[form.cleaned_data.get('fecha_inicio'), form.cleaned_data.get('fecha_final')])
-        return HttpResponseRedirect("/actividades")    
+            
+            #return HttpResponseRedirect("/actividades")    
     form = FiltrosForm()
 
     return render (request=request, template_name="../templates/actividades.html", context={"actividades":actividades_list, "filtros_form":form})
@@ -88,13 +89,13 @@ def crear_actividad(request):
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    proyectos_noborrados = Proyecto.objects.all()
+    #proyectos_noborrados = Proyecto.objects.all()
     tareas_noborradas = Tarea.objects.all()
     
-    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
+    #proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
     tareas_noborradas=tareas_noborradas.filter(enPapelera= False)
 
-    form.fields["proyecto"].queryset  = proyectos_noborrados
+    #form.fields["proyecto"].queryset  = proyectos_noborrados
     form.fields["tarea"].queryset = tareas_noborradas
     
     creacionOedicion = 1
@@ -114,13 +115,14 @@ def editar_actividad(request, id):
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    proyectos_noborrados = Proyecto.objects.all()
+    #proyectos_noborrados = Proyecto.objects.all()
+
     tareas_noborradas = Tarea.objects.all()
     
-    proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
+    #proyectos_noborrados=proyectos_noborrados.filter(enPapelera= False)
     tareas_noborradas=tareas_noborradas.filter(enPapelera= False)
 
-    form.fields["proyecto"].queryset  = proyectos_noborrados
+   #form.fields["proyecto"].queryset  = proyectos_noborrados
     form.fields["tarea"].queryset = tareas_noborradas
         
     

@@ -1,5 +1,7 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
 {% load static %}
+
+
 <script>
   var formSubmitting = false;
   var setFormSubmitting = function() { formSubmitting = true; };
@@ -35,7 +37,7 @@
 
 <div class="container">
   <div class="alert alert-success" role="alert" style="display:none">
-    <img  src="{%static '/svg/check-line.svg'%}" /> El registro de tarea se ha realizado exitosamente.
+    <i class="material-icons">done</i> El registro de tarea se ha realizado exitosamente.
   </div>
 </br>
 {% if tipoAccion %}

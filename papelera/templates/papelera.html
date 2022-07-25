@@ -126,7 +126,7 @@
         </td>
         <td>{{ tarea.nombre }}</td>
         <td>{{ tarea.descripcion}}</td>
-        <td>{{ tarea.proyecto}}</td>
+        <td>{{ tarea.meta.objetivo.proyecto}}</td>
         <td>{{ tarea.estudiante.user.username}}</td>
         <td>{{ tarea.estudiante.user.first_name}}</td>
         <td>{{ tarea.estudiante.user.last_name}}</td>
@@ -143,110 +143,226 @@
   {% endif %}
 
 </br>
+{% if request.user.is_staff %}
 
-</br>
-<h1>Proyectos</h1>
-</br>
-{% if proyectos %}
-  <div class="table-responsive">
-    <table  class="table align-items-center table-hover">
-    <thead class="thead">
-      <tr>
-        <th scope="col"></th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Descripción</th>
-        <th scope="col">Profesor</th>
-        <th scope="col">Categorias</th>
-        <th scope="col">Ubicación</th>
-        
+    </br>
+    <h1>Metas</h1>
+    </br>
 
-      </tr>
-    </thead>
-    <tbody>
-      {% for proyecto in proyectos %}
-      {% if proyecto.enPapelera %}
-      <tr>
-        <td>
-          <div style="text-align: center;">
-            <!-- Checkbox -->
-            <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
+      {% if metas %}
+      <div class="table-responsive">
+        <table  class="table align-items-center table-hover">
+        <thead class="thead">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Objetivo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for meta in metas %}
+              {% if meta.enPapelera %}
+          <tr>
+            <td>
+              <div style="text-align: center;">
+                <!-- Checkbox -->
+                <input type="checkbox" name="inputs" value="{{meta.id}}" /> <br>
 
-            <!--Return button-->
-            <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ proyecto.id }}"  name="returnButtonProyecto">
-              <i class="material-icons">undo</i>
-            </button> </br>
+                <!--Return button-->
+                <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ meta.id }}"  name="returnButtonMeta">
+                  <i class="material-icons">undo</i>
+                </button></br>
 
-            <!-- Delete button -->
-            <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
-            class="text-danger" value="{{ proyecto.id }}"  name="deleteButtonProyecto">              
-            <i class="material-icons">delete_forever</i>
-            </button>
-          </div>
-        </td>
-        <td>{{ proyecto.nombre }}</td>
-        <td>{{ proyecto.descripcion }}</td>
-        <td>{{ proyecto.profesor.user.first_name }}</td>
-        <td>{% for categoria in proyecto.categoria.all %}{{ categoria.nombre}}<br/>{% endfor %}</td>
-        <td>{{ proyecto.ubicacion }}</td>
-        
-      </tr>
+                <!-- Delete button -->
+                <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+                class="text-danger" value="{{ meta.id }}"  name="deleteButtonMeta">              
+                <i class="material-icons">delete_forever</i>
+                </button>
+              </div>
+            </td>
+            <td>{{ meta }}</td>
+            <td>
+              {% if not meta.objetivo.enPapelera %}
+                  {{ meta.objetivo }}
+              {% endif %}
+            </td>
+
+            
+          </tr>
+              {% endif %}
+          {% endfor %}
+      </tbody>
+        </table>
+      </div>
+      {% else %}
+      <strong>No hay metas borrados</strong>
       {% endif %}
-      {% endfor %}
-  </tbody>
-    </table>
-  </div>
-{% else %}
-  <strong>No hay proyectos borrados</strong>
-{% endif %}
-</br>
 
-</br>
-<h1>Categorias</h1>
-</br>
-{% if categorias %}
-<div class="table-responsive">
-  <table  class="table align-items-center table-hover">
-  <thead class="thead">
-    <tr>
-      <th scope="col"></th>
-      <th scope="col">Nombre</th>
-      
+    </br>
 
-    </tr>
-  </thead>
-  <tbody>
-    {% for categoria in categorias %}
-    {% if categoria.enPapelera %}
-    <tr>
-      <td>
-        <div style="text-align: center;">
-          <!-- Checkbox -->
-          <input type="checkbox" name="inputs" value="{{categoria.id}}" /> <br>
 
-          <!--Return button-->
-          <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ categoria.id }}"  name="returnButtonCategoria">
-            <i class="material-icons">undo</i>
-          </button> </br>
+    </br>
+    <h1>Objetivos</h1>
+    </br>
 
-          <!-- Delete button -->
-          <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
-          class="text-danger" value="{{ categoria.id }}"  name="deleteButtonCategoria">              
-          <i class="material-icons">delete_forever</i>
-          </button>
-        </div>
-      </td>
-      <td>{{ categoria }}</td>
-      
-    </tr>
+      {% if objetivos %}
+      <div class="table-responsive">
+        <table  class="table align-items-center table-hover">
+        <thead class="thead">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Proyecto</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for objetivo in objetivos %}
+            {% if  objetivo.enPapelera %}
+          <tr>
+            <td>
+              <div style="text-align: center;">
+                <!-- Checkbox -->
+                <input type="checkbox" name="inputs" value="{{objetivo.id}}" /> <br>
+
+                <!--Return button-->
+                <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ objetivo.id }}"  name="returnButtonObjetivo">
+                  <i class="material-icons">undo</i>
+                </button></br>
+
+                <!-- Delete button -->
+                <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+                class="text-danger" value="{{ objetivo.id }}"  name="deleteButtonObjetivo">              
+                <i class="material-icons">delete_forever</i>
+                </button>
+              </div>
+            </td>
+            <td>{{ objetivo }}</td>
+            <td>
+              {% if not objetivo.proyecto.enPapelera %}
+                {{ objetivo.proyecto }}
+              {% endif %}
+            </td>
+
+            
+          </tr>
+              {% endif %}
+          {% endfor %}
+      </tbody>
+        </table>
+      </div>
+      {% else %}
+      <strong>No hay objetivos borrados</strong>
+      {% endif %}
+
+    </br>
+
+
+
+    </br>
+    <h1>Proyectos</h1>
+    </br>
+    {% if proyectos %}
+      <div class="table-responsive">
+        <table  class="table align-items-center table-hover">
+        <thead class="thead">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Profesor</th>
+            <th scope="col">Categorias</th>
+            <th scope="col">Ubicación</th>
+            
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for proyecto in proyectos %}
+          {% if proyecto.enPapelera %}
+          <tr>
+            <td>
+              <div style="text-align: center;">
+                <!-- Checkbox -->
+                <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
+
+                <!--Return button-->
+                <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ proyecto.id }}"  name="returnButtonProyecto">
+                  <i class="material-icons">undo</i>
+                </button> </br>
+
+                <!-- Delete button -->
+                <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+                class="text-danger" value="{{ proyecto.id }}"  name="deleteButtonProyecto">              
+                <i class="material-icons">delete_forever</i>
+                </button>
+              </div>
+            </td>
+            <td>{{ proyecto.nombre }}</td>
+            <td>{{ proyecto.descripcion }}</td>
+            <td>{{ proyecto.profesor.user.first_name }}</td>
+            <td>{% for categoria in proyecto.categoria.all %}{{ categoria.nombre}}<br/>{% endfor %}</td>
+            <td>{{ proyecto.ubicacion }}</td>
+            
+          </tr>
+          {% endif %}
+          {% endfor %}
+      </tbody>
+        </table>
+      </div>
+    {% else %}
+      <strong>No hay proyectos borrados</strong>
     {% endif %}
-    {% endfor %}
-</tbody>
-  </table>
-</div>
-  {% else %}
-<strong>No hay categorias borradas</strong>
+    </br>
+
+    </br>
+    <h1>Categorias</h1>
+    </br>
+    {% if categorias %}
+    <div class="table-responsive">
+      <table  class="table align-items-center table-hover">
+      <thead class="thead">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Nombre</th>
+          
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for categoria in categorias %}
+        {% if categoria.enPapelera %}
+        <tr>
+          <td>
+            <div style="text-align: center;">
+              <!-- Checkbox -->
+              <input type="checkbox" name="inputs" value="{{categoria.id}}" /> <br>
+
+              <!--Return button-->
+              <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ categoria.id }}"  name="returnButtonCategoria">
+                <i class="material-icons">undo</i>
+              </button> </br>
+
+              <!-- Delete button -->
+              <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+              class="text-danger" value="{{ categoria.id }}"  name="deleteButtonCategoria">              
+              <i class="material-icons">delete_forever</i>
+              </button>
+            </div>
+          </td>
+          <td>{{ categoria }}</td>
+          
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+      </table>
+    </div>
+      {% else %}
+    <strong>No hay categorias borradas</strong>
+    {% endif %}
+    </br>
+
 {% endif %}
-</br>
 
 </br>
 <h1>Solicitudes</h1>
@@ -319,6 +435,8 @@
   <strong>No hay solicitudes borradas</strong>
 {% endif %}
 </br>
+
+
 </form>
 </div>
 {% endblock %}

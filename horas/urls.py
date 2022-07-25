@@ -20,12 +20,14 @@ from django.conf.urls.static import static # Ver los archivos desde admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('actividades.urls')),
+    path('', include('inicio.urls')),
     path('actividades/', include('actividades.urls')),
     path('cuentas/', include('cuentas.urls')),
     path('solicitudes/', include('solicitudes.urls')),
     path('proyectos/', include('proyectos.urls')),
     path('categorias/', include('categorias.urls')),
+    path('objetivos/', include('objetivos.urls')),
+    path('metas/', include('metas.urls')),
     path('estudiantes/', include('estudiantes.urls')),
     path('tareas/', include('tareas.urls')),
     path('papelera/', include('papelera.urls')),

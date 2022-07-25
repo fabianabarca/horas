@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required(login_url='/cuentas/login/')
 def estudiantes_request(request):
-    estudiantes_list = Estudiante.objects.all()
+    estudiantes_list = Estudiante.objects.all().filter(user__is_staff=False)
     if request.user.is_staff:
         actividades_list = Actividad.objects.all()
     Actividad.objects.raw('SELECT id, horas FROM myapp_actividad ')
@@ -27,7 +27,8 @@ def estudiantes_request(request):
         for actividad in actividades_list:
             
             if actividad.estudiante.user.username == estudiante.user.username:
-                horasTotalesPorEstudiante+= actividad.horas
+                if actividad.estado == "A":
+                    horasTotalesPorEstudiante+= actividad.horas
 
         horasEstudianteslist.append(horasTotalesPorEstudiante)
         porcentaje= (100 / 300) * horasTotalesPorEstudiante
@@ -47,6 +48,10 @@ def editar_estudiante(request, id):
 
     form = EstudiantesForm(request.POST or None, instance = obj)
     form.fields['user'].widget = forms.HiddenInput()
+    form.fields['carrera'].widget = forms.HiddenInput()
+    form.fields['fechaInicioTCU'].widget = forms.HiddenInput()
+    form.fields['fechaFinTCU'].widget = forms.HiddenInput()
+
     if form.is_valid():
         form.save()
         return HttpResponseRedirect("/estudiantes")

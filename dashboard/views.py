@@ -23,9 +23,12 @@ def dashboard_request(request):
 
     #Desde aqui se procesa la barra de progreso de horas por estudiante
     my_actividades_list= Actividad.objects.raw('SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false")
-    horasTotalesPorEstudiante=0      
+    horasTotalesPorEstudiante=0    
+   
     for actividad in my_actividades_list:
-            horasTotalesPorEstudiante+= actividad.horas
+           
+            if actividad.estado == "A":
+                horasTotalesPorEstudiante+= actividad.horas
 
     #horasTotalesPorEstudiante=30  #para pruebas
     porcentaje= (100 / 300) * horasTotalesPorEstudiante

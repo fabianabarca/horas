@@ -4,11 +4,11 @@
 <!-- Título -->
 <h1 class="display-4">Tareas</h1>
 <p>
-  Las tareas pertenecen a un proyecto, que son parte de una categoría.
+  Las tareas pertenecen a una meta, que son parte de un objetivo.
 </p>
 
 <!-- Botón para agregar tareas -->
-<a href="crear_tarea" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>Agregar Tarea</a>
+<a href="crear_tarea" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>    Agregar Tarea</a>
 </br>
 </br>
 
@@ -53,6 +53,7 @@
             <th scope="col"></th>
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
+            <th scope="col">Meta</th>
             <th scope="col">Proyecto</th>
             <th scope="col">Categorias</th>
             <th scope="col">Carné</th>
@@ -65,71 +66,77 @@
             {% if not tarea.enPapelera %}
           <tr>
             <td>
-              <!-- Checkbox -->
+              <!-- Checkbox 
               <input type="checkbox" name="inputs" value="{{actividad.id}}" /> <br>
-
+              -->
                 <!-- Edit button -->
                 <a   href="editar_tarea/{{ tarea.id }}" class="text-info" role="button">
                   <i class="fas fa-edit"></i>
                 </a>
 
                 <!-- Delete button -->
-                <button onclick="return confirm('Está seguro de borrar?')"  type="submit" 
+                <button onclick="return confirm('Está seguro de enviarlo a la papelera?')"  type="submit" 
                 class="text-danger" value="{{ tarea.id }}"  name="deleteButton"
                 style="background-color: transparent;  border: 0;">              
                 <i class="fas fa-trash-alt"></i>
                 </button>
 
                 <!-- Assign button -->
+                <!-- 
                 <button onclick="return confirm('Está seguro de enviar?')"  type="submit" 
                 class="text-danger" value="{{ tarea.id }}"  name="assignButton"
                 style="background-color: transparent;  border: 0;">              
                 <i class="fa fa-envelope" ></i>
-
                 </button>
+                -->
               
             </td>
 
             <td>{{ tarea.nombre }}</td>
             <td>{{ tarea.descripcion}}</td>
-            {% if not tarea.proyecto.enPapelera %}
-                <td>{{ tarea.proyecto}}</td>
+            <td>
+              {% if not tarea.meta.enPapelera %}
+                  {{ tarea.meta}}
+              {% endif %}
+            </td>
+            {% if not tarea.meta.objetivo.proyecto.enPapelera %}
+                <td>{{tarea.meta.objetivo.proyecto}}</td>
             {% else %}  
                 <td></td>
             {% endif %}
 
              <!--Categorias multiples-->
-        <td>
-          {% for categoria in tarea.proyecto.categoria.all %}
-             {% if not categoria.enPapelera %}
-                 {{ categoria.nombre}}<br/>
-              {% endif %}
-          {% endfor %}
-        </td>
-        <!--usuarios multiples-->
-        <td>
-          {% for estudiante in tarea.estudiante.all %}
-             
-                 {{ estudiante.user.username}}<br/>
-              
-          {% endfor %}
-        </td>
-        <!--nombres multiples-->
-        <td>
-          {% for estudiante in tarea.estudiante.all %}
+            <td>
+              {% for categoria in tarea.meta.objetivo.proyecto.categoria.all %}
+                {% if not categoria.enPapelera %}
+                    {{ categoria.nombre}}<br/>
+                  {% endif %}
+              {% endfor %}
+            </td>
+            <!--usuarios multiples-->
+            <td>
+              {% for estudiante in tarea.estudiante.all %}
+                
+                    {{ estudiante.user.username}}<br/>
+                  
+              {% endfor %}
+            </td>
+            <!--nombres multiples-->
+            <td>
+              {% for estudiante in tarea.estudiante.all %}
+                
+                    {{ estudiante.user.first_name}}<br/>
+                
+              {% endfor %}
+            </td>
+            <!--apellidos multiples-->
+            <td>
+              {% for estudiante in tarea.estudiante.all %}
+                
+                    {{ estudiante.user.last_name}}<br/>
             
-                 {{ estudiante.user.first_name}}<br/>
-            
-          {% endfor %}
-        </td>
-        <!--apellidos multiples-->
-        <td>
-          {% for estudiante in tarea.estudiante.all %}
-            
-                 {{ estudiante.user.last_name}}<br/>
-         
-          {% endfor %}
-        </td>
+              {% endfor %}
+            </td>
             
           </tr>
             {% endif %}
