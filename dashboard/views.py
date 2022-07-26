@@ -7,6 +7,10 @@ from django.contrib.auth.decorators import login_required
 import time
 from cuentas.models import *
 from actividades.models import Actividad
+from proyectos.models import Proyecto
+from tareas.models import Tarea
+
+
 import datetime
 
 
@@ -46,6 +50,73 @@ def dashboard_request(request):
     porcentajeDaysYear= (100 / totalDiasTCU) * diasTCU
     porcentajeWidthDaysYear = int(porcentajeDaysYear)
 
+
+
+    #pie chart
+    labels = []
+    data = []
+
+    listaCantidadActividades = {}
+    querysetProyectos = Proyecto.objects.all()
+    
+    for proyecto in querysetProyectos:
+        if (proyecto.enPapelera==False):
+            totalActividadesPorProyecto = 0
+            querysetObjetivos=proyecto.objetivo_set.all()
+
+            for objetivo in querysetObjetivos:
+                if (objetivo.enPapelera==False):
+                    querysetMetas=objetivo.meta_set.all()
+
+                    for meta in querysetMetas:
+                        if (meta.enPapelera==False):
+                            querysetTareas=meta.tarea_set.all()
+
+                            for tarea in querysetTareas:
+                                if (tarea.enPapelera==False):
+                                    totalActividadesPorProyecto = totalActividadesPorProyecto + tarea.actividad_set.filter(enPapelera=False).count()
+
+        #labels.append(proyecto.nombre)
+        #tquery=Tarea.objects.filter(proyecto=proyecto)
+        #data.append(tquery.count)
+
+            listaCantidadActividades[proyecto.nombre]=totalActividadesPorProyecto
+
+    sorted(listaCantidadActividades.items(), key=lambda x: x[1], reverse=True)
+
+    for element in listaCantidadActividades.values():
+        data.append(element)
+         
+    #print(len(data))
+    for element2 in listaCantidadActividades.keys():
+        labels.append(element2)
+    
+
+    #Listas con los colores para los graficos desplegados
+    colorList = []
+    
+    alphaInitial= 1
+    opasityDecreaseRange= 0.2
+    r  = str(159)
+    g  = str(90)
+    b  = str(253)
+
+    alpha = alphaInitial 
+    count = 0
+    for  i  in listaCantidadActividades:
+        alpha = alpha - (count)
+        color = 'rgba(' + r + ','+ g + ','+ b + ','+ str(alpha) + ')'
+        colorList.append(color)
+        count = count + opasityDecreaseRange
+
+    #Generar elementos de colores
+    #print(len(labels))
+    #print(listaCantidadActividades)
     return render (request=request, template_name="../templates/dashboard.html", context={"progreso":horasTotalesPorEstudiante,
     "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
-    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,})
+    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,'labels': labels,'data': data,
+    'colorList': colorList})
+
+
+
+    

@@ -15,6 +15,10 @@ import datetime
 
 @login_required(login_url='/cuentas/login/')
 def index(request):
+    #print("estudiante" + request.headers['estudiante'])
+
+
+
     estudiantes_list = Estudiante.objects.all()
     estudiante_actual = Estudiante.objects.get(user = request.user)
 
@@ -231,6 +235,10 @@ def index(request):
     
 
     zipDirectorio= zip(stringHierarchy,directorioActividades)    
+
+
+   
+            
 
 
     return render (request=request, template_name="../templates/index.html", context={"progreso":horasTotalesPorEstudiante,

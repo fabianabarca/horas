@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %} {% load static %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
 <div class="container">
 </br>
@@ -6,8 +7,127 @@
   <h1 class="display-4">Dashboard</h1>
 </br>
 
+{% if  request.user.is_staff %}
 
 
+<div id="container" style="width: 50%;">
+  <canvas id="bar-chart"></canvas>
+</div>
+</br></br>
+<div id="container" style="width: 25%;">
+  <canvas id="pie-chart"></canvas>
+</div>
+
+
+
+
+{% endif %}
+</div>
+
+<!--
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+  const ctx = document.getElementById('bar-chart').getContext('2d');
+  var listData = "{{ data|safe }}"
+  var listLabels =  "{{ labels|safe }}"
+  listData = listData.slice(1);
+  listData = listData.slice(0, listData.length - 1);
+  listLabels = listLabels.slice(1);
+  listLabels = listLabels.slice(0, listLabels.length - 1);
+  var newlistData = listData.split(',')
+  var newlistLabels = listLabels.split(',')
+ 
+  const myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: newlistLabels,
+          datasets: [{
+              
+              barThickness: 30,
+              label: 'Actividades por proyectos',
+              data: newlistData,
+              backgroundColor: ['rgba(159, 90, 253, 0.5)','rgba(159, 90, 253, 0.5)']
+          }],
+          //borderWidth: 20
+         
+      },
+      options: {
+        
+        //responsive: true,
+        indexAxis: 'y', 
+        scales: {
+           
+            y: {
+                  /*ticks: {
+                    
+                    beginAtZero: true,
+                    stepSize: 1
+                  },*/
+                  
+              },  
+        },
+        
+        
+        
+      }
+          
+  });
+</script>
+
+<script>
+
+  const ctx2 = document.getElementById('pie-chart').getContext('2d');
+  var listData = "{{ data|safe }}"
+  var listLabels =  "{{ labels|safe }}"
+  var colorList =  "{{ colorList|safe }}"
+  console.log(colorList)
+  colorList = colorList.slice(1);
+  colorList = colorList.slice(0, colorList.length - 1);
+
+  listData = listData.slice(1);
+  listData = listData.slice(0, listData.length - 1);
+  listLabels = listLabels.slice(1);
+  listLabels = listLabels.slice(0, listLabels.length - 1);
+
+  var newlistData = listData.split(',')
+  var newlistLabels = listLabels.split(',')
+  var newcolorList = colorList.split(', ')
+
+  console.log(newcolorList)
+  count=0
+  for (color in newcolorList){
+    
+    newcolorList[count] = newcolorList[count].slice(1)
+    newcolorList[count] = newcolorList[count].slice(0, newcolorList[count].length - 1)
+    console.log(newcolorList[count])
+    count = count + 1
+    
+  }
+  console.log(newcolorList)
+  const myChart2 = new Chart(ctx2, {
+      type: 'pie',
+      data: {
+          
+          datasets: [{
+              
+              data: newlistData,
+              backgroundColor: newcolorList,
+              label: 'Actividades por proyectos'
+          
+             
+          }],
+          labels: newlistLabels
+          
+      },
+      options: {
+         //responsive: true,
+          
+      }
+  });
+</script>
 {% endblock %}
 
 
