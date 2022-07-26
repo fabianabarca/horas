@@ -4,20 +4,39 @@
     </br>
     <h1>Página de registro de horas</h1>
     </br>
-    Usuario: {{user.username}} <br>
-    Nombre: {{user.first_name}} <br>
-    Apellido: {{user.last_name}} <br>
+    {% if not request.user.is_staff   %}
+
+        Usuario: {{user.username}} <br>
+        Nombre: {{user.first_name}} <br>
+        Apellido: {{user.last_name}} <br>
+        <br>
+
+    {% else %}
+        {% if request.user.is_staff and  estudiante_actual.user.id != request.user.id %}
+          Usuario: {{estudiante_actual.user.username}} <br>
+          Nombre: {{estudiante_actual.user.first_name}} <br>
+          Apellido: {{estudiante_actual.user.last_name}} <br>
+          <br>
+        {% else %}
+          Usuario: {{user.username}} <br>
+          Nombre: {{user.first_name}} <br>
+          Apellido: {{user.last_name}} <br>
+          <br>
+        {% endif %}
+      
+    {% endif %}
+
     <br>
-    <br>
-    {% if request.user.is_staff %}
-    Cantidad de estudiante activos: {{numeroEstudiantes}}<br>
-    Cantidad de proyectos: {{numeroProyectos}}<br>
+    {% if  request.user.is_staff %}
+  
+        Cantidad de estudiante activos: {{numeroEstudiantes}}<br>
+        Cantidad de proyectos: {{numeroProyectos}}<br><br>
 
     {% endif %}
 
 
     
-{% if not request.user.is_staff %}
+{% if  request.user.is_staff and estudiante_actual.user.id != request.user.id  or not request.user.is_staff %}
 <h2>Progreso de horas</h2>
 </br>
 

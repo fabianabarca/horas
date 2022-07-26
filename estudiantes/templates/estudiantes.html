@@ -33,9 +33,12 @@
           
           <td>
             <!-- A pagina de estudiante button -->
-            <button  class="text-info"  value="{{ estudiante.id }}" name="studentButton" type="submit">
+            <button  class="text-info"  value="{{ estudiante.user.id }}" name="studentButton" type="submit">
               <i class="	fa fa-address-card"></i>
             </button>
+            <a  class="text-info"  href="/index/{{estudiante.id }}" role="button">
+              <i class="	fa fa-address-card"></i>
+            </a>
           </td>
           
           <td>{{ estudiante.user.username }}</td>

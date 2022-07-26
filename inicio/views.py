@@ -14,13 +14,17 @@ import datetime
 # Create your views here.
 
 @login_required(login_url='/cuentas/login/')
-def index(request):
-    #print("estudiante" + request.headers['estudiante'])
-
+def index(request,id=9999):
+    
+    #en caso de que NO se redirige de página Estudiantes, uso el numero 9999 como default al llegar a
+    #página Inicio desde login o desde menu de navegación
+    if id == 9999:  
+                
+        id =request.user.id
 
 
     estudiantes_list = Estudiante.objects.all()
-    estudiante_actual = Estudiante.objects.get(user = request.user)
+    estudiante_actual = Estudiante.objects.get(user =  User.objects.filter(id=id)[0])
 
      
     estudiantes_list = Estudiante.objects.all()
@@ -70,4 +74,13 @@ def index(request):
     return render (request=request, template_name="../templates/index.html", context={"progreso":horasTotalesPorEstudiante,
     "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
     "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,"factorDeAvance":factorDeAvance,
-    "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,})
+    "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,"estudiante_actual":estudiante_actual,})
+
+'''
+@login_required(login_url='/cuentas/login/')
+def indexInicio(request):
+
+    index(request,request.user.id)
+    print("llegó aqui")
+    return render (request=request, template_name="../templates/index.html", context={})
+'''
