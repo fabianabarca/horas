@@ -184,7 +184,7 @@ def index(request):
     for proyecto in listaProyectosKeys: 
         print("Proyecto: " + proyecto + "\n")   
         directorioActividades0 = ""
-        directorioActividades0 = directorioActividades0 +"Proyecto: " + proyecto + "\n"  
+        directorioActividades0 = directorioActividades0 +"Proyecto:     " + proyecto + "\n"  
         directorioActividades.append(directorioActividades0)
         stringHierarchy.append("proyecto")
         listaObjetivosKeys = listaProyectos[proyecto].keys()
@@ -193,7 +193,7 @@ def index(request):
         for objetivo in listaObjetivosKeys:
             print("     objetivo: " +objetivo + "\n")  
             directorioActividades1 = ""
-            directorioActividades1 = directorioActividades1 +"     objetivo: " +objetivo + "\n"
+            directorioActividades1 = directorioActividades1 +"-Objetivo:   " +objetivo + "\n"
             directorioActividades.append(directorioActividades1)
             stringHierarchy.append("objetivo")
             listaMetasKeys = listaObjetivos[objetivo].keys()
@@ -202,7 +202,7 @@ def index(request):
             for meta in listaMetasKeys:
                 print("         meta: " +meta + "\n") 
                 directorioActividades2 = ""
-                directorioActividades2 = directorioActividades2 +"         "+"meta: " +meta + "\n"
+                directorioActividades2 = directorioActividades2 +"--        "+"Meta:     " +meta + "\n"
                 directorioActividades.append(directorioActividades2)
                 stringHierarchy.append("meta")
                 listaTareasKeys = listaMetas[meta].keys()
@@ -211,7 +211,7 @@ def index(request):
                 for tarea in listaTareasKeys:
                     print("             tarea: " +tarea + "\n")  
                     directorioActividades3 = ""
-                    directorioActividades3 = directorioActividades3 +"             tarea: " +tarea + "\n" 
+                    directorioActividades3 = directorioActividades3 +"-----             Tarea:     " +tarea + "\n" 
                     directorioActividades.append(directorioActividades3)
                     stringHierarchy.append("tarea")
                     #listaActividadesKeys = listaTareasKeys[actividad].keys()
@@ -221,7 +221,7 @@ def index(request):
                         if Actividad.objects.filter(descripcion=actividad)[0].estudiante==estudiante_actual:
                             print("                 actividad: " +actividad + "\n")  
                             directorioActividades4 = ""
-                            directorioActividades4 = directorioActividades4 +"                 actividad: " +actividad + "\n" 
+                            directorioActividades4 = directorioActividades4 +"------------                Actividad:   " +actividad + "\n" 
                             stringHierarchy.append("actividad")
                             directorioActividades.append(directorioActividades4)
                         

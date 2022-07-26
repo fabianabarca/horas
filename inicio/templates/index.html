@@ -66,13 +66,13 @@
       </br>
         <h3>Realizando:  </h3>
         </br>
-        {% for actividad in actividades_list %}
+<!--        {% for actividad in actividades_list %}
           <div>
               <p>{{actividad.descripcion}}</p>
           </div>
         {% endfor %}
         </br>
-<!--
+
         {% for proyecto in proyectos_list %}
           <div>
               <p>{{proyecto.descripcion}}</p>
@@ -80,7 +80,7 @@
           </div>
         {% endfor %}
         </br>
--->
+
         {% for lista in listaDirectorio %}
 
         <div>
@@ -95,45 +95,46 @@
 
         {% endfor %}
         </br>
-        
+      -->
         </br>
 
         <div>
-          <h2>Actividades actuales:</h2>
+          <h2 id="activeActivities">Actividades actuales:</h2>
           
           {% for hierarchy, dir in zipDirectorio %}
             {% if hierarchy == "proyecto" %}
               <h3>
+                
                 {{dir}}  
-              </h3></br>
+              </h3>
             {% endif %}
 
 
             {% if hierarchy == "objetivo" %}
               <h4>
                 {{dir}}  
-              </h4></br>
+              </h4>
             {% endif %}
 
 
             {% if hierarchy == "meta" %}
               <h5>
                 {{dir}}  
-              </h5></br>
+              </h5>
             {% endif %}
 
 
             {% if hierarchy == "tarea" %}
               <h6>
                 {{dir}}  
-              </h6></br>
+              </h6>
             {% endif %}
 
 
             {% if hierarchy == "actividad" %}
               <h7>
-                {{dir}}  
-              </h7></br>
+                {{dir}}  </br>
+              </h7>
             {% endif %}
             
 
@@ -152,6 +153,15 @@
 
   collection[1].setAttribute("aria-valuenow", "");
   collection[1].setAttribute("style", "width: {{porcentajeWidthDaysYear}}%;");
+</script>
+
+<!--Script para mostrar jerarquia de actividades del estudiante-->
+<script type="text/javascript">
+  const arbol = document.getElementById('activeActivities');
+  new_alert = document.createElement('h2');
+  new_alert.className = 'alert_window';
+  new_alert.innerHTML = `${message}`;
+
 </script>
 
 </div>
