@@ -54,12 +54,189 @@ def index(request):
     porcentajeDaysYear= (100 / totalDiasTCU) * diasTCU
     porcentajeWidthDaysYear = int(porcentajeDaysYear)
 
-
+    #Desde aqui se procesa el factor de avance
     factorDeAvance =  porcentaje / porcentajeDaysYear
     redondeadoFactorDeAvance = int(factorDeAvance)
+
+      
+    #Desde aqui se procesan los registros que esta realizando actualmente
+    actividades_list = Actividad.objects.filter(estudiante = estudiante_actual)
+    proyectos_list = Proyecto.objects.filter(objetivo__meta__tarea__actividad__estudiante = estudiante_actual)
+
+    listaDirectorio = []
+
+    for actividad in actividades_list:
+        listaHaciaActividad = []
+        listaHaciaActividad.append(actividad.descripcion)
+        tarea = actividad.tarea
+
+        listaHaciaActividad.append(tarea.nombre)
+        meta = tarea.meta            
+
+        listaHaciaActividad.append(meta.nombre)
+        objetivo = meta.objetivo
+
+        listaHaciaActividad.append(objetivo.nombre)
+        proyecto = objetivo.proyecto
+
+        listaHaciaActividad.append(proyecto.nombre)
+        listaDirectorio.append(listaHaciaActividad)
+
+    listaProyectos = {}
+    listaObjetivos = {}
+    listaMetas = {}
+    listaTareas = {}
+    listaActividades = {}
+
+
+
+    for listaCamino in listaDirectorio:
+       
+        #si no existe  en diccionario, se agrega con lista vacia
+        if not listaCamino[4] in listaProyectos:
+            listaProyectos[listaCamino[4]] = list[""]
+            #con el proyecto agregado ahora se agrega objetivo respectivo
+            #formato de elementos de diccionarios: {"nombreproyecto",sublistaObjetivos["",dic{nombreObjetivo,list[""}]}]}
+        
+        else:
+        #si  existe  en diccionario, se le agrega la subcategoria
+            listaObjetivos
+            if not listaCamino[3] in listaObjetivos:
+                 listaObjetivos[listaCamino[3]] = list[""]
+
+            else:
+                listaMetas
+                if not listaCamino[2] in listaMetas:
+                    listaMetas[listaCamino[2]] = list[""]
+
+                
+                else:
+                    listaTareas
+                    if not listaCamino[1] in listaTareas:
+                        listaTareas[listaCamino[1]] = list[""]
+
+                    else:
+                        listaActividades
+                        if not listaCamino[0] in listaActividades:
+                            listaActividades[listaCamino[0]] = list[""]
+
+                        else:
+
+                            updateList=  listaProyectos[listaCamino[4]]
+                            updateList.append(listaCamino[3]) 
+                            #car.update({"brand": "White"})
+
+                            listaProyectos[listaCamino[4]] 
+
+
+    #Creando formato de directorio para actividades de estudiante actual
+    listaProyectos = {}
+    listaObjetivos = {}
+    listaMetas = {}
+    listaTareas = {}
+    listaActividades = []        
+    querysetProyectos=Proyecto.objects.filter(objetivo__meta__tarea__actividad__estudiante = estudiante_actual)       
+    for proyecto in querysetProyectos:
+        if (proyecto.enPapelera==False):
+            totalActividadesPorProyecto = 0
+            querysetObjetivos=proyecto.objetivo_set.all()
+
+            listaProyectos[proyecto.nombre] = listaObjetivos
+            listaObjetivos = {}
+            for objetivo in querysetObjetivos:
+                if (objetivo.enPapelera==False):
+                    querysetMetas=objetivo.meta_set.all()
+
+                    listaMetas = {}
+                    for meta in querysetMetas:
+                       if (meta.enPapelera==False):
+                            querysetTareas=meta.tarea_set.all()
+
+                           
+                            listaTareas = {}
+                            for tarea in querysetTareas:
+                                if (tarea.enPapelera==False):
+                                    print("testing actividad descripcion " + actividad.descripcion)
+                                    querysetActividades=tarea.actividad_set.all()
+
+                                    #if tarea.nombre in listaTareas:
+                                    listaActividades = [] 
+                                    for actividad in querysetActividades:
+                                            if (actividad.enPapelera==False):
+                                                print("testing actividad descripcion" + actividad.descripcion)
+                                                listaActividades.append(actividad.descripcion)
+                                        
+                                    listaTareas[tarea.nombre] = listaActividades
+
+                            listaMetas[meta.nombre] = listaTareas
+
+                    listaObjetivos[objetivo.nombre] = listaMetas
+                
+            listaProyectos[proyecto.nombre] = listaObjetivos
+   
+
+
+    #Creando string de directorios de actividades
+    print("probando")
+    directorioActividades = []
+    stringHierarchy = []
+    listaProyectosKeys = listaProyectos.keys()
+    for proyecto in listaProyectosKeys: 
+        print("Proyecto: " + proyecto + "\n")   
+        directorioActividades0 = ""
+        directorioActividades0 = directorioActividades0 +"Proyecto: " + proyecto + "\n"  
+        directorioActividades.append(directorioActividades0)
+        stringHierarchy.append("proyecto")
+        listaObjetivosKeys = listaProyectos[proyecto].keys()
+        listaObjetivos = listaProyectos[proyecto]
+
+        for objetivo in listaObjetivosKeys:
+            print("     objetivo: " +objetivo + "\n")  
+            directorioActividades1 = ""
+            directorioActividades1 = directorioActividades1 +"     objetivo: " +objetivo + "\n"
+            directorioActividades.append(directorioActividades1)
+            stringHierarchy.append("objetivo")
+            listaMetasKeys = listaObjetivos[objetivo].keys()
+            listaMetas = listaObjetivos[objetivo]
+
+            for meta in listaMetasKeys:
+                print("         meta: " +meta + "\n") 
+                directorioActividades2 = ""
+                directorioActividades2 = directorioActividades2 +"         "+"meta: " +meta + "\n"
+                directorioActividades.append(directorioActividades2)
+                stringHierarchy.append("meta")
+                listaTareasKeys = listaMetas[meta].keys()
+                listaTareas = listaMetas[meta]
+
+                for tarea in listaTareasKeys:
+                    print("             tarea: " +tarea + "\n")  
+                    directorioActividades3 = ""
+                    directorioActividades3 = directorioActividades3 +"             tarea: " +tarea + "\n" 
+                    directorioActividades.append(directorioActividades3)
+                    stringHierarchy.append("tarea")
+                    #listaActividadesKeys = listaTareasKeys[actividad].keys()
+                    listaActividades = listaTareas[tarea]
+
+                    for actividad in listaActividades:
+                        if Actividad.objects.filter(descripcion=actividad)[0].estudiante==estudiante_actual:
+                            print("                 actividad: " +actividad + "\n")  
+                            directorioActividades4 = ""
+                            directorioActividades4 = directorioActividades4 +"                 actividad: " +actividad + "\n" 
+                            stringHierarchy.append("actividad")
+                            directorioActividades.append(directorioActividades4)
+                        
+                        
+                                                
+    print("chequeo string")
+    
+
+    zipDirectorio= zip(stringHierarchy,directorioActividades)    
 
 
     return render (request=request, template_name="../templates/index.html", context={"progreso":horasTotalesPorEstudiante,
     "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
     "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,"factorDeAvance":factorDeAvance,
-    "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,})
+    "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,
+    "proyectos_list":proyectos_list,"listaDirectorio":listaDirectorio,"actividades_list":actividades_list,
+    "zipDirectorio":zipDirectorio,
+    })
