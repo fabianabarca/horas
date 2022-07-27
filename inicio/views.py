@@ -144,17 +144,22 @@ def index(request):
         if (proyecto.enPapelera==False):
             totalActividadesPorProyecto = 0
             querysetObjetivos=proyecto.objetivo_set.all()
+            querysetObjetivos=querysetObjetivos.filter(meta__tarea__actividad__estudiante = estudiante_actual)  
 
             listaProyectos[proyecto.nombre] = listaObjetivos
             listaObjetivos = {}
             for objetivo in querysetObjetivos:
                 if (objetivo.enPapelera==False):
                     querysetMetas=objetivo.meta_set.all()
+                    querysetMetas=querysetMetas.filter(tarea__actividad__estudiante = estudiante_actual)  
+
 
                     listaMetas = {}
                     for meta in querysetMetas:
                        if (meta.enPapelera==False):
                             querysetTareas=meta.tarea_set.all()
+                            querysetTareas=querysetTareas.filter(actividad__estudiante = estudiante_actual)  
+
 
                            
                             listaTareas = {}
@@ -162,6 +167,7 @@ def index(request):
                                 if (tarea.enPapelera==False):
                                     print("testing actividad descripcion " + actividad.descripcion)
                                     querysetActividades=tarea.actividad_set.all()
+                                    querysetActividades=querysetActividades.filter(estudiante = estudiante_actual)  
 
                                     #if tarea.nombre in listaTareas:
                                     listaActividades = [] 
@@ -185,7 +191,8 @@ def index(request):
     directorioActividades = []
     stringHierarchy = []
     listaProyectosKeys = listaProyectos.keys()
-    for proyecto in listaProyectosKeys: 
+    for proyecto in listaProyectosKeys:
+     
         print("Proyecto: " + proyecto + "\n")   
         directorioActividades0 = ""
         directorioActividades0 = directorioActividades0 +"Proyecto:     " + proyecto + "\n"  
