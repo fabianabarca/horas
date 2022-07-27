@@ -10,7 +10,7 @@
 {% if  request.user.is_staff %}
 
 
-<h2 >Ranking de estudiantes por cantidad de actividades</h2>
+<h2 >Ranking de estudiantes por cantidad de horas</h2>
 
 <div id="container" style="width: 50%;">
   <canvas id="ranking-estudiantes-actividades"></canvas>
@@ -18,7 +18,7 @@
 </br></br>
 
 
-<h2 >Pie chart actividades por proyecto</h2>
+<h2 >Pie chart horas por proyecto</h2>
 
 <div id="container" style="width: 25%;">
   <canvas id="pie-chart"></canvas>
@@ -26,7 +26,7 @@
 
 
 
-<h2 >Ranking actividades por proyecto</h2>
+<h2 >Ranking horas por proyecto</h2>
 
 <div id="container" style="width: 50%;">
   <canvas id="bar-chart"></canvas>
@@ -75,7 +75,7 @@
           datasets: [{
               
               barThickness: 30,
-              label: 'Actividades por estudiantes',
+              label: 'Horas por estudiantes',
               data: newlistData,
               backgroundColor: newcolorList
           }],
@@ -141,7 +141,7 @@
           datasets: [{
               
               barThickness: 30,
-              label: 'Actividades por proyectos',
+              label: 'Horas por proyectos',
               data: newlistData,
               backgroundColor: newcolorList
           }],
@@ -210,7 +210,7 @@
               
               data: newlistData,
               backgroundColor: newcolorList,
-              label: 'Actividades por proyectos'
+              label: 'Horas por proyectos'
           
              
           }],

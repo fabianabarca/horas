@@ -55,41 +55,42 @@ def dashboard_request(request):
     #Datos para pie chart y horizontal bar chart con relación proyectos y actividades
     labels = []
     data = []
-    dictCantidadActividades = {}
+    dictCantidadActividadesHoras = {}
     querysetProyectos = Proyecto.objects.filter(enPapelera=False)
     
     
     for proyecto in querysetProyectos:
-        if (proyecto.enPapelera==False):
-            totalActividadesPorProyecto = 0
-            querysetObjetivos=proyecto.objetivo_set.all()
+       
+            totalActividadesHorasPorProyecto = 0
+            querysetObjetivos=proyecto.objetivo_set.filter(enPapelera=False)
 
-            for objetivo in querysetObjetivos:
-                if (objetivo.enPapelera==False):
-                    querysetMetas=objetivo.meta_set.all()
+            for objetivo in querysetObjetivos:               
+                    querysetMetas=objetivo.meta_set.filter(enPapelera=False)
 
-                    for meta in querysetMetas:
-                        if (meta.enPapelera==False):
-                            querysetTareas=meta.tarea_set.all()
+                    for meta in querysetMetas:                        
+                            querysetTareas=meta.tarea_set.filter(enPapelera=False)
 
-                            for tarea in querysetTareas:
-                                if (tarea.enPapelera==False):
-                                    totalActividadesPorProyecto = totalActividadesPorProyecto + tarea.actividad_set.filter(enPapelera=False).count()
+                            for tarea in querysetTareas:                              
+                                    querysetActividades= tarea.actividad_set.filter(enPapelera=False)
+
+                                    for actividad in querysetActividades:
+                                         totalActividadesHorasPorProyecto = totalActividadesHorasPorProyecto + actividad.horas
+
 
         #labels.append(proyecto.nombre)
         #tquery=Tarea.objects.filter(proyecto=proyecto)
         #data.append(tquery.count)
 
-            dictCantidadActividades[proyecto.nombre]=totalActividadesPorProyecto
+            dictCantidadActividadesHoras[proyecto.nombre]=totalActividadesHorasPorProyecto
 
-    sorteddictCantidadActividades = sorted(dictCantidadActividades.items(), key=lambda x: x[1], reverse=True)
+    sorteddictCantidadActividades = sorted(dictCantidadActividadesHoras.items(), key=lambda x: x[1], reverse=True)
     
     for element in sorteddictCantidadActividades:
         labels.append(element[0])
         data.append(element[1])
     
     #Listas con los colores para los graficos desplegados
-    colorList = color_list(dictCantidadActividades)
+    colorList = color_list(dictCantidadActividadesHoras)
 
     #A partir de aquí datos para grafico de barras ranking de estudiantes por actividades
     labelsRankingEstudiante = []
@@ -98,7 +99,11 @@ def dashboard_request(request):
     rankingEstudiantesList = Estudiante.objects.filter(user__is_staff=False)
 
     for estudiante in rankingEstudiantesList:
-        mapEstudianteCantidadActividades[estudiante.user.username] = Actividad.objects.filter(estudiante=estudiante,enPapelera=False).count()
+        horasActividades= Actividad.objects.filter(estudiante=estudiante,enPapelera=False)
+        horasEstudiante = 0
+        for actividad in horasActividades:
+            horasEstudiante =  horasEstudiante + actividad.horas
+        mapEstudianteCantidadActividades[estudiante.user.username] = horasEstudiante
     
     sortedmapEstudianteCantidadActividades=sorted(mapEstudianteCantidadActividades.items(), key=lambda x: x[1], reverse=True)
 
