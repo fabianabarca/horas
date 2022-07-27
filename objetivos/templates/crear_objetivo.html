@@ -35,8 +35,11 @@
     <i class="material-icons">done</i>  El registro de objetivo se ha realizado exitosamente.
   </div>
 </br>
+  {% if tipoAccion %}
   <h1>Agregar Objetivo</h1>
-
+  {% else %}
+  <h1>Editar Objetivo</h1>
+  {% endif %}
 <form method="post" onsubmit="setFormSubmitting()">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />

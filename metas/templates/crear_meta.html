@@ -35,8 +35,12 @@
     <i class="material-icons">done</i>  El registro de meta se ha realizado exitosamente.
   </div>
 </br>
+  
+  {% if tipoAccion %}
   <h1>Agregar Meta</h1>
-
+  {% else %}
+  <h1>Editar Meta</h1>
+  {% endif %}
 <form method="post" onsubmit="setFormSubmitting()">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />
