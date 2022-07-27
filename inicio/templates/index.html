@@ -28,7 +28,7 @@
     {% endif %}
 
     <br>
-    {% if  request.user.is_staff %}
+    {% if  request.user.is_staff and  estudiante_actual.user.id == request.user.id %}
   
         Cantidad de estudiante activos: {{numeroEstudiantes}}<br>
         Cantidad de proyectos: {{numeroProyectos}}<br><br>
