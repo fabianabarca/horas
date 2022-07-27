@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %} {% load static %}
 
 <div class="container">
+
     </br>
     <h1>Página de registro de horas</h1>
     </br>
@@ -83,86 +84,61 @@
         {{factorDeAvance}}
         </div>
       </br>
-        <h3>Realizando:  </h3>
+        
         </br>
-<!--        {% for actividad in actividades_list %}
-          <div>
-              <p>{{actividad.descripcion}}</p>
-          </div>
-        {% endfor %}
-        </br>
+<form method="post">
+    {% csrf_token %}        
+          
+            <button type="submit"   name="actividadListButton"  value="{{ user.id }}" class="btn btn-primary btn-block">Mostrar Actividades Actuales</button>
 
-        {% for proyecto in proyectos_list %}
-          <div>
-              <p>{{proyecto.descripcion}}</p>
+            <div id="activeActivities" >
+             
               
-          </div>
-        {% endfor %}
-        </br>
+              {% for hierarchy, dir in zipDirectorio %}
+                {% if hierarchy == "proyecto" %}
+                  <h3>
+                    
+                    {{dir}}  
+                  </h3>
+                {% endif %}
 
-        {% for lista in listaDirectorio %}
 
-        <div>
-          <p>
-          {% for elemento in lista %}
-      
-              {{elemento}},  
+                {% if hierarchy == "objetivo" %}
+                  <h4>
+                    {{dir}}  
+                  </h4>
+                {% endif %}
 
-          {% endfor %}
-        </p>
-        </div>
 
-        {% endfor %}
-        </br>
-      -->
-        </br>
+                {% if hierarchy == "meta" %}
+                  <h5>
+                    {{dir}}  
+                  </h5>
+                {% endif %}
 
-        <div>
-          <h2 id="activeActivities">Actividades actuales:</h2>
-          
-          {% for hierarchy, dir in zipDirectorio %}
-            {% if hierarchy == "proyecto" %}
-              <h3>
+
+                {% if hierarchy == "tarea" %}
+                  <h6>
+                    {{dir}}  
+                  </h6>
+                {% endif %}
+
+
+                {% if hierarchy == "actividad" %}
+                  <h7>
+                    {{dir}}  </br>
+                  </h7>
+                {% endif %}
                 
-                {{dir}}  
-              </h3>
-            {% endif %}
 
-
-            {% if hierarchy == "objetivo" %}
-              <h4>
-                {{dir}}  
-              </h4>
-            {% endif %}
-
-
-            {% if hierarchy == "meta" %}
-              <h5>
-                {{dir}}  
-              </h5>
-            {% endif %}
-
-
-            {% if hierarchy == "tarea" %}
-              <h6>
-                {{dir}}  
-              </h6>
-            {% endif %}
-
-
-            {% if hierarchy == "actividad" %}
-              <h7>
-                {{dir}}  </br>
-              </h7>
-            {% endif %}
-            
-
-          {% endfor %}
-          
-        </div>
-
+              {% endfor %}
+              
+            </div>
+</form>        
 {% endif %}
+
 </div>
+
 <!--Script para barra de progreso de horas-->
 <script type="text/javascript">
   const collection = document.getElementsByClassName("progress-bar bg-gradient-primary");
@@ -174,7 +150,16 @@
   collection[1].setAttribute("style", "width: {{porcentajeWidthDaysYear}}%;");
 </script>
 
+<script  type="text/javascript">
+  function confirmarMostrarActividades(){
+   
+      const actividadDisplay = document.getElementById('activeActivities');
 
+      actividadDisplay.setAttribute("style", "display:block");
+    
+  }
+</script>
+ 
 
 </div>
 
