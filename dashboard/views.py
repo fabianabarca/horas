@@ -52,12 +52,12 @@ def dashboard_request(request):
 
 
 
-    #pie chart
+    #Datos para pie chart y horizontal bar chart con relación proyectos y actividades
     labels = []
     data = []
-
-    listaCantidadActividades = {}
-    querysetProyectos = Proyecto.objects.all()
+    dictCantidadActividades = {}
+    querysetProyectos = Proyecto.objects.filter(enPapelera=False)
+    
     
     for proyecto in querysetProyectos:
         if (proyecto.enPapelera==False):
@@ -80,19 +80,45 @@ def dashboard_request(request):
         #tquery=Tarea.objects.filter(proyecto=proyecto)
         #data.append(tquery.count)
 
-            listaCantidadActividades[proyecto.nombre]=totalActividadesPorProyecto
+            dictCantidadActividades[proyecto.nombre]=totalActividadesPorProyecto
 
-    sorted(listaCantidadActividades.items(), key=lambda x: x[1], reverse=True)
+    sorteddictCantidadActividades = sorted(dictCantidadActividades.items(), key=lambda x: x[1], reverse=True)
+    
+    for element in sorteddictCantidadActividades:
+        labels.append(element[0])
+        data.append(element[1])
+    
+    #Listas con los colores para los graficos desplegados
+    colorList = color_list(dictCantidadActividades)
 
-    for element in listaCantidadActividades.values():
-        data.append(element)
-         
-    #print(len(data))
-    for element2 in listaCantidadActividades.keys():
-        labels.append(element2)
+    #A partir de aquí datos para grafico de barras ranking de estudiantes por actividades
+    labelsRankingEstudiante = []
+    dataRankingEstudiante = []
+    mapEstudianteCantidadActividades = {}
+    rankingEstudiantesList = Estudiante.objects.filter(user__is_staff=False)
+
+    for estudiante in rankingEstudiantesList:
+        mapEstudianteCantidadActividades[estudiante.user.username] = Actividad.objects.filter(estudiante=estudiante,enPapelera=False).count()
+    
+    sortedmapEstudianteCantidadActividades=sorted(mapEstudianteCantidadActividades.items(), key=lambda x: x[1], reverse=True)
+
+    for element in sortedmapEstudianteCantidadActividades:
+        labelsRankingEstudiante.append(element[0])
+        dataRankingEstudiante.append(element[1])
     
 
-    #Listas con los colores para los graficos desplegados
+    colorListRankingEstudiante = color_list(mapEstudianteCantidadActividades)
+
+    return render (request=request, template_name="../templates/dashboard.html", context={"progreso":horasTotalesPorEstudiante,
+    "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
+    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,'labels': labels,'data': data,
+    'colorList': colorList,'labelsRankingEstudiante': labelsRankingEstudiante,'dataRankingEstudiante': dataRankingEstudiante,
+    'colorListRankingEstudiante': colorListRankingEstudiante,})
+
+
+
+
+def color_list(listaCantidadMiembros):
     colorList = []
     
     alphaInitial= 1
@@ -103,20 +129,12 @@ def dashboard_request(request):
 
     alpha = alphaInitial 
     count = 0
-    for  i  in listaCantidadActividades:
+    for  i  in listaCantidadMiembros:
         alpha = alpha - (count)
         color = 'rgba(' + r + ','+ g + ','+ b + ','+ str(alpha) + ')'
         colorList.append(color)
         count = count + opasityDecreaseRange
 
-    #Generar elementos de colores
-    #print(len(labels))
-    #print(listaCantidadActividades)
-    return render (request=request, template_name="../templates/dashboard.html", context={"progreso":horasTotalesPorEstudiante,
-    "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
-    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,'labels': labels,'data': data,
-    'colorList': colorList})
-
-
+    return colorList
 
     

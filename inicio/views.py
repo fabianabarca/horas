@@ -26,9 +26,6 @@ def index(request,id=9999):
     estudiantes_list = Estudiante.objects.all()
     estudiante_actual = Estudiante.objects.get(user =  User.objects.filter(id=id)[0])
 
-     
-    estudiantes_list = Estudiante.objects.all()
-
     numeroEstudiantes=estudiantes_list.filter(user__is_staff=False).count
 
     proyectos_list = Proyecto.objects.all()
