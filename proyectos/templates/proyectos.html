@@ -20,7 +20,7 @@
 
 <!-- Lista de proyectos -->
 <form method="post">{% csrf_token %}
-  {% if proyectos %}
+ 
   <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h6>
   <div class="card">
     <div class="card-body">
@@ -47,6 +47,7 @@
         </div> 
         </br>
       </div>
+{% if proyectos %}
       <!-- Tabla -->
       <div class="table-responsive">
         <table id="datatable" class="table align-items-center table-hover">

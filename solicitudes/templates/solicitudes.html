@@ -13,7 +13,7 @@
 
   <!-- Lista de solicitudes -->
   <form method="post">{% csrf_token %}
-    {% if solicitudes %}
+
       <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de solicitudes</h6>
       <div class="card">
         <div class="card-body">
@@ -58,7 +58,7 @@
             </p>
           </br>
           </div>
-
+{% if solicitudes %}
             <!-- Tabla -->
           <div class="table-responsive">
             <table id = "datatable" class="table align-items-center table-hover"> 
