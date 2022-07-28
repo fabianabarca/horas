@@ -8,5 +8,6 @@ urlpatterns = [
     path('crear_categoria', crear_categoria, name='crear_categoria'),
     path('editar_proyecto/<int:id>', editar_proyecto, name='editar_proyecto'),
     path('proyectosInfo', proyectosInfo, name='proyectosInfo'),
+    path('proyectoIndividual/<int:id>', proyectoIndividual, name='proyectoIndividual'),
 
 ]

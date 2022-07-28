@@ -111,7 +111,19 @@ def editar_proyecto(request, id):
 
 def proyectosInfo(request):
     listaProyectos = Proyecto.objects.all()
-    for proyecto in listaProyectos:
-        print(proyecto.nombre)
-
+   
     return render(request=request,  template_name="../templates/proyectosInfo.html", context={"listaProyectos":listaProyectos})
+
+def proyectoIndividual(request,id):
+    proyecto = Proyecto.objects.filter(id=id)
+    proyectoHoras=1
+    objetivos = proyecto[0].objetivo_set.filter(enPapelera=False)
+    
+    listametas = []
+    for objetivo in objetivos:
+        metas = objetivo.meta_set.filter(enPapelera=False)
+        for meta in metas:
+            listametas.append(meta.nombre)
+
+    return render(request=request,  template_name="../templates/proyectoIndividual.html", context={"proyecto":proyecto[0],
+    "proyectoHoras":proyectoHoras, "objetivos":objetivos, "metas":listametas})

@@ -13,8 +13,13 @@
 <!-- Lista de proyectos -->
 <h2 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h2>
  
-{% for proyecto in listaproyectos %}
-  <h3>{{ proyecto.nombre }}</h3>
+{% for proyecto in listaProyectos %}
+<div>
+  <a  class="text-info"  href="proyectoIndividual/{{ proyecto.id }}" role="button">
+    <i class="	fa fa-address-card"></i>
+  </a>
+  <p>{{ proyecto.nombre }}</p>
+</div>
 {% endfor %}
 </div>
 {% endblock %}
