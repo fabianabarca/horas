@@ -1,0 +1,23 @@
+{% extends 'sitio.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
+<div class="container">
+</br>
+  <!-- Título -->
+  <h1 >Proyectos</h1>
+  <p>
+    Los proyectos pueden pertenecer a varias categorias.
+  </p>
+ 
+</br>
+</br>
+
+<!-- Lista de proyectos -->
+<h2 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h2>
+ 
+{% for proyecto in listaproyectos %}
+  <h3>{{ proyecto.nombre }}</h3>
+{% endfor %}
+</div>
+{% endblock %}
+
+
+

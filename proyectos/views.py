@@ -107,3 +107,11 @@ def editar_proyecto(request, id):
 
     creacionOedicion = 0
     return render(request, "crear_proyecto.html", context={"tipoAccion":creacionOedicion,"proyecto_form":form})
+
+
+def proyectosInfo(request):
+    listaProyectos = Proyecto.objects.all()
+    for proyecto in listaProyectos:
+        print(proyecto.nombre)
+
+    return render(request=request,  template_name="../templates/proyectosInfo.html", context={"listaProyectos":listaProyectos})

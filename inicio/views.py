@@ -193,11 +193,9 @@ def index(request,id=9999):
      "proyectos_list":proyectos_list,"listaDirectorio":listaDirectorio,"actividades_list":actividades_list,
     "zipDirectorio":zipDirectorio,})
 
-'''
-@login_required(login_url='/cuentas/login/')
-def indexInicio(request):
 
-    index(request,request.user.id)
-    print("llegó aqui")
-    return render (request=request, template_name="../templates/index.html", context={})
-'''
+
+def inicio(request):
+
+    
+    return render (request=request, template_name="../templates/inicio.html", context={})
