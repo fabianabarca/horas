@@ -65,6 +65,7 @@ class FiltrosTareaForm(forms.Form):
     nombre = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     estudiante = forms.ModelChoiceField(queryset=Estudiante.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     tareaSuperior = forms.ModelChoiceField(queryset=Tarea.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    objetivo = forms.ModelChoiceField(queryset=Objetivo.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     descripcion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     categoria = forms.ModelChoiceField(queryset=Categoria.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
 
@@ -179,12 +180,6 @@ class ProyectosForm(forms.ModelForm):
 class ObjetivosForm(forms.ModelForm):
     class Meta:
         model = Objetivo
-        fields = "__all__"
-
-
-class MetasForm(forms.ModelForm):
-    class Meta:
-        model = Meta
         fields = "__all__"
 
 

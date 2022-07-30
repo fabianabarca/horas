@@ -4,7 +4,7 @@
 <!-- Título -->
 <h1 class="display-4">Tareas</h1>
 <p>
-  Las tareas pertenecen a una meta, que son parte de un objetivo.
+  Las tareas pertenecen a un objetivo, que son parte de un proyecto.
 </p>
 
 <!-- Botón para agregar tareas -->
@@ -56,6 +56,7 @@
             <th scope="col">Descripción</th>
             <th scope="col">Subordinada a</th>
             <th scope="col">Subtareas</th>
+            <th scope="col">Objetivo</th>
             <th scope="col">Proyecto</th>
             <th scope="col">Categorias</th>
             <th scope="col">Carné</th>
@@ -96,27 +97,40 @@
 
             <td>{{ tarea.nombre }}</td>
             <td>{{ tarea.descripcion}}</td>
+            
+            <!--Tarea superior-->
             <td>
               {% if not tarea.tareaSuperior.enPapelera %}
                   {{ tarea.tareaSuperior}}
               {% endif %}
             </td>
+
+            <!--Subtareas-->
             <td>
               {% for tarea in tarea.tarea_set.all %}
-                {% if not tarea.tarea_set.all %}
+                {% if not tarea.enPapelera %}
                     {{ tarea.nombre}}<br/>
                 {% endif %}
               {% endfor %}
             </td>
-            {% if not tarea.meta.objetivo.proyecto.enPapelera %}
-                <td>{{tarea.meta.objetivo.proyecto}}</td>
+
+            <!--Objetivo-->
+            {% if not tarea.objetivo.enPapelera %}
+            <td>{{tarea.objetivo}}</td>
+            {% else %}  
+                <td></td>
+            {% endif %}
+
+            <!--Proyecto-->
+            {% if not tarea.objetivo.proyecto.enPapelera %}
+                <td>{{tarea.objetivo.proyecto}}</td>
             {% else %}  
                 <td></td>
             {% endif %}
 
              <!--Categorias multiples-->
             <td>
-              {% for categoria in tarea.meta.objetivo.proyecto.categoria.all %}
+              {% for categoria in tarea.objetivo.proyecto.categoria.all %}
                 {% if not categoria.enPapelera %}
                     {{ categoria.nombre}}<br/>
                   {% endif %}

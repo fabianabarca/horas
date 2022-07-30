@@ -1,4 +1,4 @@
-from proyectos.models import Meta
+from proyectos.models import Objetivo
 from cuentas.models import Estudiante
 from inicio.models import Registro
 from django.db import models
@@ -11,6 +11,7 @@ class Tarea(Registro):
     nombre = models.CharField(max_length=500)
     estudiante = models.ManyToManyField(Estudiante)
     tareaSuperior = models.ForeignKey('self', on_delete=models.SET_NULL,null=True,blank=True)
+    objetivo = models.ForeignKey(Objetivo, on_delete=models.SET_NULL,null=True)
     descripcion = models.CharField(max_length=500)
 
     def __str__(self):

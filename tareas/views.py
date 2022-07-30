@@ -45,10 +45,10 @@ def tareas_request(request):
                 tareas_list =  tareas_list.filter(estudiante = form.cleaned_data.get('estudiante'))
             if form.cleaned_data.get('descripcion'):
                 tareas_list =  tareas_list.filter(descripcion__contains = form.cleaned_data.get('descripcion'))
-            if form.cleaned_data.get('meta'):
-                tareas_list =  tareas_list.filter(meta = form.cleaned_data.get('meta'))
+            if form.cleaned_data.get('objetivo'):
+                tareas_list =  tareas_list.filter(objetivo = form.cleaned_data.get('objetivo'))
             if form.cleaned_data.get('categoria'):
-                tareas_list =  tareas_list.filter(meta__objetivo__proyecto__categoria= form.cleaned_data.get('categoria'))
+                tareas_list =  tareas_list.filter(objetivo__proyecto__categoria= form.cleaned_data.get('categoria'))
            
         #return HttpResponseRedirect("/tareas")
         
@@ -95,11 +95,18 @@ def editar_tarea(request, id):
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
     tareas_noborradas= Tarea.objects.filter(enPapelera= False)
     form.fields["tareaSuperior"].queryset  = tareas_noborradas
+    
 
+    
     
     
 
     if form.is_valid():
+        #intentar que en la creacion/edicion de tareas tome en cuenta la subordinacion de tareas para seleccion de objetivos
+        #if form.cleaned_data.get('tareaSuperior'):
+                #objetivos_list =  Objetivo.objects.filter(tarea = form.cleaned_data.get('tareaSuperior'))
+                #form.fields["objetivo"].queryset = objetivos_list
+
         #Para enviar correos a estudiantes nuevamente asignados
         tareas_list = Tarea.objects.all()
         tareaAEditar = tareas_list.filter(id = id)

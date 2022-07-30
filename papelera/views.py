@@ -12,7 +12,7 @@ from solicitudes.models import Solicitud
 def papelera_request(request):
     actividades_list = Actividad.objects.all()
     tareas_list = Tarea.objects.all()
-    metas_list = Meta.objects.all()
+    
     objetivos_list = Objetivo.objects.all()
     proyectos_list = Proyecto.objects.all()
     categorias_list = Categoria.objects.all()
@@ -27,10 +27,7 @@ def papelera_request(request):
                 deleteButtonItemValueList=request.POST.getlist('deleteButtonTarea')
                 obj = Tarea( id = deleteButtonItemValueList[0]) 
                 obj.delete()
-        if request.POST.get('deleteButtonMeta'):
-                deleteButtonItemValueList=request.POST.getlist('deleteButtonMeta')
-                obj = Meta( id = deleteButtonItemValueList[0]) 
-                obj.delete()
+        #cambio meta tareas
         if request.POST.get('deleteButtonObjetivo'):
                 deleteButtonItemValueList=request.POST.getlist('deleteButtonObjetivo')
                 obj = Objetivo( id = deleteButtonItemValueList[0]) 
@@ -59,10 +56,7 @@ def papelera_request(request):
                 obj = Tarea( id = deleteButtonItemValueList[0]) 
                 Tarea.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
         
-        if request.POST.get('returnButtonMeta'):
-                deleteButtonItemValueList=request.POST.getlist('returnButtonMeta')
-                obj = Meta( id = deleteButtonItemValueList[0]) 
-                Meta.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
+        #cambio meta tareas
 
         if request.POST.get('returnButtonObjetivo'):
                 deleteButtonItemValueList=request.POST.getlist('returnButtonObjetivo')
@@ -86,5 +80,5 @@ def papelera_request(request):
 
         return HttpResponseRedirect("/papelera")
 
-    return render (request=request, template_name="../templates/papelera.html", context={"actividades":actividades_list,"tareas":tareas_list,"metas":metas_list,"objetivos":objetivos_list,"proyectos":proyectos_list,"categorias":categorias_list,"solicitudes":solicitudes_list})
+    return render (request=request, template_name="../templates/papelera.html", context={"actividades":actividades_list,"tareas":tareas_list,"objetivos":objetivos_list,"proyectos":proyectos_list,"categorias":categorias_list,"solicitudes":solicitudes_list})
 

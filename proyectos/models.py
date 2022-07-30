@@ -27,10 +27,3 @@ class Objetivo(Registro):
 
     def __str__(self):
         return self.nombre
-
-class Meta(Registro):
-    nombre = models.CharField(max_length=500)
-    objetivo = models.ForeignKey(Objetivo, on_delete=models.SET_NULL,null=True)
-
-    def __str__(self):
-        return self.nombre

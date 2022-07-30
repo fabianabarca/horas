@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'papelera',
     'crispy_forms',
     'dashboard',
-    'metas',
     'objetivos',
     
 ]
