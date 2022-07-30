@@ -10,7 +10,7 @@ from django.db import models
 class Tarea(Registro):
     nombre = models.CharField(max_length=500)
     estudiante = models.ManyToManyField(Estudiante)
-    meta = models.ForeignKey(Meta, on_delete=models.SET_NULL,null=True)
+    tareaSuperior = models.ForeignKey('self', on_delete=models.SET_NULL,null=True,blank=True)
     descripcion = models.CharField(max_length=500)
 
     def __str__(self):
