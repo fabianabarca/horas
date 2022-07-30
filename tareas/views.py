@@ -72,9 +72,8 @@ def crear_tarea(request):
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    metas_noborradas = Meta.objects.all()
-    metas_noborradas=metas_noborradas.filter(enPapelera= False)
-    form.fields["meta"].queryset  = metas_noborradas
+    tareas_noborradas=Tarea.objects.filter(enPapelera= False)
+    form.fields["tareaSuperior"].queryset  = tareas_noborradas
 
     creacionOedicion = 1
 
@@ -94,9 +93,8 @@ def editar_tarea(request, id):
 
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    metas_noborradas = Meta.objects.all()
-    metas_noborradas=metas_noborradas.filter(enPapelera= False)
-    form.fields["meta"].queryset  = metas_noborradas
+    tareas_noborradas= Tarea.objects.filter(enPapelera= False)
+    form.fields["tareaSuperior"].queryset  = tareas_noborradas
 
     
     
