@@ -22,6 +22,7 @@ def tareas_request(request):
                 Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
                 
         '''
+        #parte de implementación de asignación de tareas por boton
         if request.POST.get('assignButton'):
                 asignButtonItemValue=request.POST.getlist('assignButton')
                 obj = Tarea( id = asignButtonItemValue[0]) 
@@ -79,6 +80,7 @@ def crear_tarea(request):
     #para filtrar usuarios y que solo se puedan asignar estudiantes a tareas
     estudiantes_nostaff=Estudiante.objects.filter(user__is_staff=False)
     form.fields["estudiante"].queryset  = estudiantes_nostaff
+
 
     creacionOedicion = 1
 
@@ -172,6 +174,14 @@ def editar_tarea(request, id):
     
         form.save()
         return HttpResponseRedirect("/tareas")
-
+    
     creacionOedicion = 0
     return render(request, "crear_tarea.html", context={"tipoAccion":creacionOedicion,"tarea_form":form})
+
+
+# AJAX
+def load_objetivos(request):
+    tarea_id = request.GET.get('tarea_id')
+    objetivos = Objetivo.objects.filter(tarea_id=tarea_id).all()
+    return render(request, '../templates/objetivo_dropdown_list_options.html', {'objetivos': objetivos})
+    # return JsonResponse(list(cities.values('id', 'name')), safe=False)

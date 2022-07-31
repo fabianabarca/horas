@@ -188,8 +188,22 @@ class TareasForm(forms.ModelForm):
         model = Tarea
         fields = "__all__"
 
-
-       
+    def __init__(self ,*args , **kwargs):
+        super().__init__(*args , **kwargs)
+        self.fields['objetivo'].queryset = Objetivo.objects.none()
+        
+        for value in self.data.keys():
+            print(value)
+        if 'tareasuperior' in self.data:
+                try:
+                    tareasuperior_id = int(self.data.get('tareasuperior'))
+                    print("forms: " + Objetivo.objects.filter(tarea__id=tareasuperior_id).order_by('name'))
+                    self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea__id=tareasuperior_id).order_by('name')
+                except (ValueError, TypeError):
+                    pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['objetivo'].queryset = self.instance.tarea.objetivo.order_by('name')
+        
 class EstudiantesForm(forms.ModelForm):
     class Meta:
         model = Estudiante

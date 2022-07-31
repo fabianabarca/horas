@@ -46,15 +46,48 @@
   <h1>Editar Tarea</h1>
 {% endif %}
 
-<form method="post" onsubmit="setFormSubmitting()">
+<form method="post" onsubmit="setFormSubmitting()" id="tareasForm" data-objetivos-url="{% url 'load_objetivos' %}">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />
 
     {{tarea_form|crispy }}
+    
    
 
     <button type="submit"  onClick = "return confirmarRegistro();" class="btn btn-primary btn-block">Continuar</button>
 </form>
+<!--Usando código modificado de https://github.com/akjasim/cb_dj_dependent_dropdown-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>
+  $("#id_tareasuperior").change(function () {
+      console.log("activado accion tarea");
+      const url = $("#tareasForm").attr("data-objetivos-url");  // get the url of the `load_cities` view
+      const tareaId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+          url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+          data: {
+              'tarea_id': tareaId       // add the country id to the GET parameters
+          },
+          success: function (data) {   // `data` is the return of the `load_cities` view function
+              $("#id_objetivo").html(data);  // replace the contents of the city input with the data that came from the server
+              
+
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (objetivo) {
+                  html_data += `<option value="${objetivo.id}">${objetivo.name}</option>`
+              });
+              console.log(html_data);
+              $("#id_objetivo").html(html_data);
+
+            
+          }
+      });
+
+  });
+</script>
+
+
 </div>
 
 
