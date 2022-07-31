@@ -182,6 +182,8 @@ def editar_tarea(request, id):
 # AJAX
 def load_objetivos(request):
     tarea_id = request.GET.get('tarea_id')
-    objetivos = Objetivo.objects.filter(tarea_id=tarea_id).all()
+    print(tarea_id)
+    objetivos = Objetivo.objects.filter(tarea__id=tarea_id).all()
+    print(objetivos)
     return render(request, '../templates/objetivo_dropdown_list_options.html', {'objetivos': objetivos})
     # return JsonResponse(list(cities.values('id', 'name')), safe=False)

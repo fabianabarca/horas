@@ -190,7 +190,7 @@ class TareasForm(forms.ModelForm):
 
     def __init__(self ,*args , **kwargs):
         super().__init__(*args , **kwargs)
-        self.fields['objetivo'].queryset = Objetivo.objects.none()
+        #self.fields['objetivo'].queryset = Objetivo.objects.none()
         
         for value in self.data.keys():
             print(value)
