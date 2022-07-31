@@ -6,12 +6,7 @@
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <!-- JavaScript -->
-  <!-- Core -->
-  <script src="{% static 'js/core/popper.min.js' %}"></script>
-  <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
-  <!-- Theme JS -->
-  <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
+
 
 
   <!-- JQuery -->
@@ -452,6 +447,15 @@
           <h6 class="font-weight-bolder mb-0">Sistema de registro de horas</h6>
         </nav>
         <ul class="navbar-nav  justify-content-end">
+          <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+              <div class="sidenav-toggler-inner">
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+              </div>
+            </a>
+          </li>
           <li class="nav-item d-flex align-items-center">
             <a class="btn bg-gradient-primary mb-0 me-3" target="_blank" href="#">
               <i class="fas fa-user"></i> &nbsp; {{user.username}}
@@ -506,7 +510,27 @@
       </footer>
     </div>
   </main>
-
+<!-- JavaScript -->
+  <!-- Core -->
+  <script src="{% static 'js/core/popper.min.js' %}"></script>
+  <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+  <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+ 
+  <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+   <!-- Github buttons -->
+   <script async defer src="https://buttons.github.io/buttons.js"></script>
+   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+   <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
   
 
 </body>
