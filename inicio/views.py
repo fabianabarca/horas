@@ -77,7 +77,6 @@ def index(request,id=9999):
                 #Creando formato de directorio para actividades de estudiante actual
                 listaProyectos = {}
                 listaObjetivos = {}
-                listaMetas = {}
                 listaTareas = {}
                 listaActividades = []        
                 querysetProyectos=Proyecto.objects.filter(objetivo__tarea__actividad__estudiante = estudiante_actual,enPapelera=False)       
@@ -90,8 +89,10 @@ def index(request,id=9999):
                                 querysetTareas=objetivo.tarea_set.filter(actividad__estudiante = estudiante_actual,enPapelera=False) 
 
                                 listaTareas = {}
+                                
                                 for tarea in querysetTareas:
                                     querysetActividades=tarea.actividad_set.filter(estudiante = estudiante_actual,enPapelera=False) 
+                                    
 
                                     listaActividades = [] 
                                     for actividad in querysetActividades:
@@ -99,8 +100,13 @@ def index(request,id=9999):
                                                     
                                         #listaTareas[tarea.nombre] = listaActividades
 
-                                    listaTareas[tarea.nombre] = listaActividades
+                                    querysetTareasSubordinadas=tarea.tarea_set.filter(actividad__estudiante = estudiante_actual,enPapelera=False)
 
+                                    #if(querysetTareasSubordinadas.exists()):
+                                        #indexandoTareasSubordinadasRecursivas(querysetTareasSubordinadas)
+
+                                    listaTareas[tarea.nombre] = listaActividades
+                                
                                 listaObjetivos[objetivo.nombre] = listaTareas
                             
                         listaProyectos[proyecto.nombre] = listaObjetivos
@@ -160,6 +166,26 @@ def index(request,id=9999):
     "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,"estudiante_actual":estudiante_actual,
      "proyectos_list":proyectos_list,"listaDirectorio":listaDirectorio,"actividades_list":actividades_list,
     "zipDirectorio":zipDirectorio,})
+
+def indexandoTareasSubordinadasRecursivas(tareasDict):
+    
+    listaTareasSubordinadas = {}
+    for tareaSubordinada in tareasDict:
+        listaTareasSubordinadas.append(actividad.descripcion)
+
+        listaActividades = [] 
+        for actividad in querysetActividades:
+            listaActividades.append(actividad.descripcion)   
+    
+
+    for tarea in tareasDict.keys():
+        print("value: " + tarea)
+
+
+        
+    return tareasDict
+
+
 
 '''
 @login_required(login_url='/cuentas/login/')
