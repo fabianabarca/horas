@@ -3,6 +3,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from tareas.models import *
 from proyectos.models import *
+from cuentas.models import Estudiante
 from horas.forms import TareasForm ,FiltrosTareaForm
 from django.contrib.auth.decorators import login_required
 import time
@@ -74,6 +75,10 @@ def crear_tarea(request):
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
     tareas_noborradas=Tarea.objects.filter(enPapelera= False)
     form.fields["tareaSuperior"].queryset  = tareas_noborradas
+
+    #para filtrar usuarios y que solo se puedan asignar estudiantes a tareas
+    estudiantes_nostaff=Estudiante.objects.filter(user__is_staff=False)
+    form.fields["estudiante"].queryset  = estudiantes_nostaff
 
     creacionOedicion = 1
 
