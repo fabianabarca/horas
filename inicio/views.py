@@ -166,7 +166,8 @@ def index(request,id=9999):
     "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,"estudiante_actual":estudiante_actual,
      "proyectos_list":proyectos_list,"listaDirectorio":listaDirectorio,"actividades_list":actividades_list,
     "zipDirectorio":zipDirectorio,})
-
+    
+'''
 def indexandoTareasSubordinadasRecursivas(tareasDict):
     
     listaTareasSubordinadas = {}
@@ -180,11 +181,9 @@ def indexandoTareasSubordinadasRecursivas(tareasDict):
 
     for tarea in tareasDict.keys():
         print("value: " + tarea)
-
-
-        
+ 
     return tareasDict
-
+'''
 
 
 '''

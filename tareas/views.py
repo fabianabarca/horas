@@ -144,7 +144,7 @@ def editar_tarea(request, id):
                                             [estudianteForm.user.email],
                                             fail_silently=False,
                                 )
-
+        #para cambio de objetivos de tareas subordinadas si tarea las tiene
         tareasSubordinadas = tareaAEditar[0].tarea_set.all()
         if tareasSubordinadas:
             print("0")
@@ -153,13 +153,25 @@ def editar_tarea(request, id):
             cambio_objetivos_tareasrecursivas(form,tareaAEditar[0])
 
 
+
+
               
         form.save()
         return HttpResponseRedirect("/tareas")
-    
+
+    #para no incluir en opciones de tareas superiores a subordinas o a si mismo
+    tareaAEditar =Tarea.objects.filter(id = id)
+    listaTareasNoSubordinadas = []
+    listaTareasNoSubordinadas=seleccion_tarea_superior_tareasrecursivas(form,tareaAEditar[0],listaTareasNoSubordinadas)
+   
+    querysetTareasNoSubordinadas = Tarea.objects.all().exclude(id__in=listaTareasNoSubordinadas)
+    querysetTareasNoSubordinadas = querysetTareasNoSubordinadas.exclude(id=id)
+    form.fields["tareaSuperior"].queryset = querysetTareasNoSubordinadas
+
     creacionOedicion = 0
     return render(request, "crear_tarea.html", context={"tipoAccion":creacionOedicion,"tarea_form":form})
 
+#para cambio de objetivos de tareas subordinadas si tarea las tiene
 def cambio_objetivos_tareasrecursivas(form,tareaAEditar):
     tareasSubordinadas = tareaAEditar.tarea_set.all()
     print("nivel")
@@ -172,8 +184,21 @@ def cambio_objetivos_tareasrecursivas(form,tareaAEditar):
             tarea.objetivo=form.cleaned_data.get('objetivo')
             tarea.save()
             cambio_objetivos_tareasrecursivas(form,tarea)
+
+#para solo seleccion de tareas no subordinadas como tarea superior  
+def seleccion_tarea_superior_tareasrecursivas(form,tareaAEditar,listaTareasNoSubordinadas):
+    tareasSubordinadas = tareaAEditar.tarea_set.all()
+    print("nivel")
+    print(tareasSubordinadas)
     
-        
+    if  tareasSubordinadas:
+        for tarea in tareasSubordinadas.all():
+            listaTareasNoSubordinadas.append(tarea.id)
+            print("nivelrec")
+            print(tarea.nombre)
+           
+            listaTareasNoSubordinadas= seleccion_tarea_superior_tareasrecursivas(form,tarea,listaTareasNoSubordinadas)
+    return listaTareasNoSubordinadas       
 
 # AJAX
 def load_objetivos(request):
@@ -186,4 +211,4 @@ def load_objetivos(request):
          objetivos = Objetivo.objects.filter(tarea__id=tarea_id)
     #print(objetivos)
     return render(request, '../templates/objetivo_dropdown_list_options.html', {'objetivos': objetivos})
-    # return JsonResponse(list(cities.values('id', 'name')), safe=False)
+    # return JsonResponse(list(objetivos.values('id', 'nombre')), safe=False)
