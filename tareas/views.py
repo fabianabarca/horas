@@ -144,13 +144,36 @@ def editar_tarea(request, id):
                                             [estudianteForm.user.email],
                                             fail_silently=False,
                                 )
-                    
+
+        tareasSubordinadas = tareaAEditar[0].tarea_set.all()
+        if tareasSubordinadas:
+            print("0")
+            print(tareaAEditar[0])
+            print(tareasSubordinadas)
+            cambio_objetivos_tareasrecursivas(form,tareaAEditar[0])
+
+
+              
         form.save()
         return HttpResponseRedirect("/tareas")
     
     creacionOedicion = 0
     return render(request, "crear_tarea.html", context={"tipoAccion":creacionOedicion,"tarea_form":form})
 
+def cambio_objetivos_tareasrecursivas(form,tareaAEditar):
+    tareasSubordinadas = tareaAEditar.tarea_set.all()
+    print("nivel")
+    print(tareasSubordinadas)
+    
+    if  tareasSubordinadas:
+        for tarea in tareasSubordinadas.all():
+            print("nivelrec")
+            print(tareaAEditar.objetivo)
+            tarea.objetivo=form.cleaned_data.get('objetivo')
+            tarea.save()
+            cambio_objetivos_tareasrecursivas(form,tarea)
+    
+        
 
 # AJAX
 def load_objetivos(request):
