@@ -119,11 +119,11 @@ def proyectoIndividual(request,id):
     proyectoHoras=1
     objetivos = proyecto[0].objetivo_set.filter(enPapelera=False)
     
-    listametas = []
+    listatareas = []
     for objetivo in objetivos:
-        metas = objetivo.meta_set.filter(enPapelera=False)
-        for meta in metas:
-            listametas.append(meta.nombre)
+        tareas = objetivo.tarea_set.filter(enPapelera=False)
+        for tarea in tareas:
+            listatareas.append(tarea.nombre)
 
     return render(request=request,  template_name="../templates/proyectoIndividual.html", context={"proyecto":proyecto[0],
-    "proyectoHoras":proyectoHoras, "objetivos":objetivos, "metas":listametas})
+    "proyectoHoras":proyectoHoras, "objetivos":objetivos, "tareas":listatareas})

@@ -191,7 +191,7 @@ def indexandoTareasSubordinadasRecursivas(tareasDict):
 @login_required(login_url='/cuentas/login/')
 def indexInicio(request):
 
-
+'''
 def inicio(request):
 
     
