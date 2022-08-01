@@ -107,3 +107,23 @@ def editar_proyecto(request, id):
 
     creacionOedicion = 0
     return render(request, "crear_proyecto.html", context={"tipoAccion":creacionOedicion,"proyecto_form":form})
+
+
+def proyectosInfo(request):
+    listaProyectos = Proyecto.objects.all()
+   
+    return render(request=request,  template_name="../templates/proyectosInfo.html", context={"listaProyectos":listaProyectos})
+
+def proyectoIndividual(request,id):
+    proyecto = Proyecto.objects.filter(id=id)
+    proyectoHoras=1
+    objetivos = proyecto[0].objetivo_set.filter(enPapelera=False)
+    
+    listametas = []
+    for objetivo in objetivos:
+        metas = objetivo.meta_set.filter(enPapelera=False)
+        for meta in metas:
+            listametas.append(meta.nombre)
+
+    return render(request=request,  template_name="../templates/proyectoIndividual.html", context={"proyecto":proyecto[0],
+    "proyectoHoras":proyectoHoras, "objetivos":objetivos, "metas":listametas})
