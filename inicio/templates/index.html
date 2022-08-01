@@ -138,12 +138,13 @@
 <!--Script para barra de progreso de horas-->
 <script type="text/javascript">
   const collection = document.getElementsByClassName("progress-bar bg-gradient-primary");
-  
-  collection[0].setAttribute("aria-valuenow", "{{porcentaje}}");
-  collection[0].setAttribute("style", "width: {{width}}%;");
+  if (collection.length!=0){
+    collection[0].setAttribute("aria-valuenow", "{{porcentaje}}");
+    collection[0].setAttribute("style", "width: {{width}}%;");
 
-  collection[1].setAttribute("aria-valuenow", "");
-  collection[1].setAttribute("style", "width: {{porcentajeWidthDaysYear}}%;");
+    collection[1].setAttribute("aria-valuenow", "");
+    collection[1].setAttribute("style", "width: {{porcentajeWidthDaysYear}}%;");
+  }
 </script>
 
 <script  type="text/javascript">
