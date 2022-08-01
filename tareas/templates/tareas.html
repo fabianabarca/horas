@@ -54,8 +54,8 @@
             <th scope="col"></th>
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
-            <th scope="col">Subordinada a</th>
             <th scope="col">Subtareas</th>
+            <th scope="col">Subordinada a</th>
             <th scope="col">Objetivo</th>
             <th scope="col">Proyecto</th>
             <th scope="col">Categorias</th>
@@ -98,13 +98,6 @@
             <td>{{ tarea.nombre }}</td>
             <td>{{ tarea.descripcion}}</td>
             
-            <!--Tarea superior-->
-            <td>
-              {% if not tarea.tareaSuperior.enPapelera %}
-                  {{ tarea.tareaSuperior}}
-              {% endif %}
-            </td>
-
             <!--Subtareas-->
             <td>
               {% for tarea in tarea.tarea_set.all %}
@@ -113,6 +106,15 @@
                 {% endif %}
               {% endfor %}
             </td>
+
+            <!--Tarea superior-->
+            <td>
+              {% if not tarea.tareaSuperior.enPapelera %}
+                  {{ tarea.tareaSuperior}}
+              {% endif %}
+            </td>
+
+            
 
             <!--Objetivo-->
             {% if not tarea.objetivo.enPapelera %}

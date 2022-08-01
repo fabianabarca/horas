@@ -202,7 +202,8 @@ class TareasForm(forms.ModelForm):
                 except (ValueError, TypeError):
                     pass  # invalid input from the client; ignore and fallback to empty City queryset
         elif self.instance.pk:
-            self.fields['objetivo'].queryset = self.instance.tarea.objetivo.order_by('name')
+            #self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea=self.instance)
+            self.fields['objetivo'].queryset = Objetivo.objects.filter(enPapelera=False)
         
 class EstudiantesForm(forms.ModelForm):
     class Meta:

@@ -94,32 +94,19 @@ def editar_tarea(request, id):
     form = TareasForm(request.POST or None, instance = obj)
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
-    # form.fields['proyecto'].widget = forms.HiddenInput()
-    # form.fields['nombre'].widget = forms.HiddenInput()
-    # form.fields['descripcion'].widget = forms.HiddenInput()
-
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
     tareas_noborradas= Tarea.objects.filter(enPapelera= False)
     form.fields["tareaSuperior"].queryset  = tareas_noborradas
-    
-
-    
-    
-    
 
     if form.is_valid():
-        #intentar que en la creacion/edicion de tareas tome en cuenta la subordinacion de tareas para seleccion de objetivos
-        #if form.cleaned_data.get('tareaSuperior'):
-                #objetivos_list =  Objetivo.objects.filter(tarea = form.cleaned_data.get('tareaSuperior'))
-                #form.fields["objetivo"].queryset = objetivos_list
 
         #Para enviar correos a estudiantes nuevamente asignados
         tareas_list = Tarea.objects.all()
         tareaAEditar = tareas_list.filter(id = id)
         #print(tareaAEditar)
         estudiantesActualesEnTarea = tareaAEditar[0].estudiante.all()
-        print(estudiantesActualesEnTarea)
+        #print(estudiantesActualesEnTarea)
         for estudianteForm in form.cleaned_data.get('estudiante'):
             mandarCorreo=True
             for estudiante in estudiantesActualesEnTarea:
@@ -137,14 +124,14 @@ def editar_tarea(request, id):
                     for asignacion in asignaciones_list:
                         if(asignacion.estudiante==estudianteForm):
                                  boolYaFueAsignadoAntes=True
-                                 print("ya se le envió correo a "+ estudianteForm.user.first_name)
+                                 #print("ya se le envió correo a "+ estudianteForm.user.first_name)
 
                             
                     if (not boolYaFueAsignadoAntes):
                         ae = AsignacionesEnviadas(estudiante=estudianteForm,tarea=tareaAEditar[0])
                         ae.save()
-                        print(AsignacionesEnviadas.objects.all())
-                        print("se envió correo a "+ estudianteForm.user.first_name)
+                        #print(AsignacionesEnviadas.objects.all())
+                        #print("se envió correo a "+ estudianteForm.user.first_name)
 
                     
                         send_mail(
@@ -158,20 +145,6 @@ def editar_tarea(request, id):
                                             fail_silently=False,
                                 )
                     
-
-                    
-                
-            '''
-            if(tareaAEditar[0].filter(estudiante__contains = estudiante.id)):
-                    print("no se manda correo a "+ estudiante.user.first_name)
-                
-
-            else:
-                    print("se manda correo a "+ estudiante.user.first_name)
-            '''
-    
-
-    
         form.save()
         return HttpResponseRedirect("/tareas")
     
@@ -182,8 +155,12 @@ def editar_tarea(request, id):
 # AJAX
 def load_objetivos(request):
     tarea_id = request.GET.get('tarea_id')
-    print(tarea_id)
-    objetivos = Objetivo.objects.filter(tarea__id=tarea_id).all()
-    print(objetivos)
+    #print(tarea_id)
+    
+    if (tarea_id==''):
+         objetivos = Objetivo.objects.filter(enPapelera=False)
+    else:
+         objetivos = Objetivo.objects.filter(tarea__id=tarea_id)
+    #print(objetivos)
     return render(request, '../templates/objetivo_dropdown_list_options.html', {'objetivos': objetivos})
     # return JsonResponse(list(cities.values('id', 'name')), safe=False)
