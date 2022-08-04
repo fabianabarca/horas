@@ -128,7 +128,7 @@
         </td>
         <td>{{ tarea.nombre }}</td>
         <td>{{ tarea.descripcion}}</td>
-        <td>{{ tarea.meta.objetivo.proyecto}}</td>
+        <td>{{ tarea.objetivo.proyecto}}</td>
         <td>{{ tarea.estudiante.user.username}}</td>
         <td>{{ tarea.estudiante.user.first_name}}</td>
         <td>{{ tarea.estudiante.user.last_name}}</td>
@@ -147,61 +147,6 @@
 </br>
 {% if request.user.is_staff %}
 
-    </br>
-    <h1>Metas</h1>
-    </br>
-
-      {% if metas %}
-      <div class="table-responsive">
-        <table  class="table align-items-center table-hover">
-        <thead class="thead">
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Objetivo</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for meta in metas %}
-              {% if meta.enPapelera %}
-          <tr>
-            <td>
-              <div style="text-align: center;">
-                <!-- Checkbox -->
-                <input type="checkbox" name="inputs" value="{{meta.id}}" /> <br>
-
-                <!--Return button-->
-                <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ meta.id }}"  name="returnButtonMeta">
-                  <i class="material-icons">undo</i>
-                </button></br>
-
-                <!-- Delete button 
-                <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
-                class="text-danger" value="{{ meta.id }}"  name="deleteButtonMeta">              
-                <i class="material-icons">delete_forever</i>
-                </button>
-                -->
-              </div>
-            </td>
-            <td>{{ meta }}</td>
-            <td>
-              {% if not meta.objetivo.enPapelera %}
-                  {{ meta.objetivo }}
-              {% endif %}
-            </td>
-
-            
-          </tr>
-              {% endif %}
-          {% endfor %}
-      </tbody>
-        </table>
-      </div>
-      {% else %}
-      <strong>No hay metas borrados</strong>
-      {% endif %}
-
-    </br>
 
 
     </br>

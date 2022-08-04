@@ -65,16 +65,13 @@ def dashboard_request(request):
             querysetObjetivos=proyecto.objetivo_set.filter(enPapelera=False)
 
             for objetivo in querysetObjetivos:               
-                    querysetMetas=objetivo.meta_set.filter(enPapelera=False)
+                    querysetTareas=objetivo.tarea_set.filter(enPapelera=False)
+                    #cambioMetasATareas
+                    for tarea in querysetTareas:                              
+                            querysetActividades= tarea.actividad_set.filter(enPapelera=False)
 
-                    for meta in querysetMetas:                        
-                            querysetTareas=meta.tarea_set.filter(enPapelera=False)
-
-                            for tarea in querysetTareas:                              
-                                    querysetActividades= tarea.actividad_set.filter(enPapelera=False)
-
-                                    for actividad in querysetActividades:
-                                         totalActividadesHorasPorProyecto = totalActividadesHorasPorProyecto + actividad.horas
+                            for actividad in querysetActividades:
+                                    totalActividadesHorasPorProyecto = totalActividadesHorasPorProyecto + actividad.horas
 
 
         #labels.append(proyecto.nombre)

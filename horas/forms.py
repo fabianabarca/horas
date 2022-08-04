@@ -64,7 +64,8 @@ class FiltrosTareaForm(forms.Form):
     
     nombre = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     estudiante = forms.ModelChoiceField(queryset=Estudiante.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    meta = forms.ModelChoiceField(queryset=Meta.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    tareaSuperior = forms.ModelChoiceField(queryset=Tarea.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    objetivo = forms.ModelChoiceField(queryset=Objetivo.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     descripcion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     categoria = forms.ModelChoiceField(queryset=Categoria.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
 
@@ -182,19 +183,28 @@ class ObjetivosForm(forms.ModelForm):
         fields = "__all__"
 
 
-class MetasForm(forms.ModelForm):
-    class Meta:
-        model = Meta
-        fields = "__all__"
-
-
 class TareasForm(forms.ModelForm):
     class Meta:
         model = Tarea
         fields = "__all__"
 
-
-       
+    def __init__(self ,*args , **kwargs):
+        super().__init__(*args , **kwargs)
+        #self.fields['objetivo'].queryset = Objetivo.objects.none()
+        
+        for value in self.data.keys():
+            print(value)
+        if 'tareasuperior' in self.data:
+                try:
+                    tareasuperior_id = int(self.data.get('tareasuperior'))
+                    print("forms: " + Objetivo.objects.filter(tarea__id=tareasuperior_id).order_by('name'))
+                    self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea__id=tareasuperior_id).order_by('name')
+                except (ValueError, TypeError):
+                    pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            #self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea=self.instance)
+            self.fields['objetivo'].queryset = Objetivo.objects.filter(enPapelera=False)
+        
 class EstudiantesForm(forms.ModelForm):
     class Meta:
         model = Estudiante

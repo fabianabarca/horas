@@ -72,59 +72,42 @@ def index(request,id=9999):
       
                 #Desde aqui se procesan los registros que esta realizando actualmente
                 actividades_list = Actividad.objects.filter(estudiante = estudiante_actual)
-                proyectos_list = Proyecto.objects.filter(objetivo__meta__tarea__actividad__estudiante = estudiante_actual)
+                proyectos_list = Proyecto.objects.filter(objetivo__tarea__actividad__estudiante = estudiante_actual)
 
                 #Creando formato de directorio para actividades de estudiante actual
                 listaProyectos = {}
                 listaObjetivos = {}
-                listaMetas = {}
                 listaTareas = {}
                 listaActividades = []        
-                querysetProyectos=Proyecto.objects.filter(objetivo__meta__tarea__actividad__estudiante = estudiante_actual)       
+                querysetProyectos=Proyecto.objects.filter(objetivo__tarea__actividad__estudiante = estudiante_actual,enPapelera=False)       
                 for proyecto in querysetProyectos:
-                    if (proyecto.enPapelera==False):
                         totalActividadesPorProyecto = 0
-                        #querysetObjetivos=proyecto.objetivo_set.all()
-                        #querysetObjetivos=querysetObjetivos.filter(meta__tarea__actividad__estudiante = estudiante_actual)
-                        querysetObjetivos=proyecto.objetivo_set.filter(meta__tarea__actividad__estudiante = estudiante_actual)
+                        querysetObjetivos=proyecto.objetivo_set.filter(tarea__actividad__estudiante = estudiante_actual,enPapelera=False)
 
-                        listaProyectos[proyecto.nombre] = listaObjetivos
                         listaObjetivos = {}
                         for objetivo in querysetObjetivos:
-                            if (objetivo.enPapelera==False):
-                                #querysetMetas=objetivo.meta_set.all()
-                                #querysetMetas=querysetMetas.filter(tarea__actividad__estudiante = estudiante_actual)  
-                                querysetMetas=objetivo.meta_set.filter(tarea__actividad__estudiante = estudiante_actual) 
+                                querysetTareas=objetivo.tarea_set.filter(actividad__estudiante = estudiante_actual,enPapelera=False) 
 
-                                listaMetas = {}
-                                for meta in querysetMetas:
-                                    if (meta.enPapelera==False):
-                                        #querysetTareas=meta.tarea_set.all()
-                                        #querysetTareas=querysetTareas.filter(actividad__estudiante = estudiante_actual)  
-                                        querysetTareas=meta.tarea_set.filter(actividad__estudiante = estudiante_actual)  
-
-
+                                listaTareas = {}
+                                
+                                for tarea in querysetTareas:
+                                    querysetActividades=tarea.actividad_set.filter(estudiante = estudiante_actual,enPapelera=False) 
                                     
-                                        listaTareas = {}
-                                        for tarea in querysetTareas:
-                                            if (tarea.enPapelera==False):
-                                                #print("testing actividad descripcion " + actividad.descripcion)
-                                                #querysetActividades=tarea.actividad_set.all()
-                                                #querysetActividades=querysetActividades.filter(estudiante = estudiante_actual) 
-                                                querysetActividades=tarea.actividad_set.filter(estudiante = estudiante_actual) 
 
-                                                #if tarea.nombre in listaTareas:
-                                                listaActividades = [] 
-                                                for actividad in querysetActividades:
-                                                        if (actividad.enPapelera==False):
-                                                            #print("testing actividad descripcion" + actividad.descripcion)
-                                                            listaActividades.append(actividad.descripcion)
+                                    listaActividades = [] 
+                                    for actividad in querysetActividades:
+                                        listaActividades.append(actividad.descripcion)
                                                     
-                                                listaTareas[tarea.nombre] = listaActividades
+                                        #listaTareas[tarea.nombre] = listaActividades
 
-                                        listaMetas[meta.nombre] = listaTareas
+                                    querysetTareasSubordinadas=tarea.tarea_set.filter(actividad__estudiante = estudiante_actual,enPapelera=False)
 
-                                listaObjetivos[objetivo.nombre] = listaMetas
+                                    #if(querysetTareasSubordinadas.exists()):
+                                        #indexandoTareasSubordinadasRecursivas(querysetTareasSubordinadas)
+
+                                    listaTareas[tarea.nombre] = listaActividades
+                                
+                                listaObjetivos[objetivo.nombre] = listaTareas
                             
                         listaProyectos[proyecto.nombre] = listaObjetivos
             
@@ -150,19 +133,10 @@ def index(request,id=9999):
                         directorioActividades1 = directorioActividades1 +"-Objetivo:   " +objetivo + "\n"
                         directorioActividades.append(directorioActividades1)
                         stringHierarchy.append("objetivo")
-                        listaMetasKeys = listaObjetivos[objetivo].keys()
-                        listaMetas = listaObjetivos[objetivo]
-
-                        for meta in listaMetasKeys:
-                            #print("         meta: " +meta + "\n") 
-                            directorioActividades2 = ""
-                            directorioActividades2 = directorioActividades2 +"--        "+"Meta:     " +meta + "\n"
-                            directorioActividades.append(directorioActividades2)
-                            stringHierarchy.append("meta")
-                            listaTareasKeys = listaMetas[meta].keys()
-                            listaTareas = listaMetas[meta]
-
-                            for tarea in listaTareasKeys:
+                        listaTareasKeys = listaObjetivos[objetivo].keys()
+                        listaTareas = listaObjetivos[objetivo]
+                        
+                        for tarea in listaTareasKeys:
                                 #print("             tarea: " +tarea + "\n")  
                                 directorioActividades3 = ""
                                 directorioActividades3 = directorioActividades3 +"-----             Tarea:     " +tarea + "\n" 
@@ -192,6 +166,26 @@ def index(request,id=9999):
     "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,"estudiante_actual":estudiante_actual,
      "proyectos_list":proyectos_list,"listaDirectorio":listaDirectorio,"actividades_list":actividades_list,
     "zipDirectorio":zipDirectorio,})
+
+def indexandoTareasSubordinadasRecursivas(tareasDict):
+    
+    listaTareasSubordinadas = {}
+    for tareaSubordinada in tareasDict:
+        listaTareasSubordinadas.append(actividad.descripcion)
+
+        listaActividades = [] 
+        for actividad in querysetActividades:
+            listaActividades.append(actividad.descripcion)   
+    
+
+    for tarea in tareasDict.keys():
+        print("value: " + tarea)
+
+
+        
+    return tareasDict
+
+
 
 '''
 @login_required(login_url='/cuentas/login/')

@@ -108,8 +108,8 @@
                     <td>{{ actividad.descripcion }}</td>
                     <td>{{ actividad.horas }}</td>
                     <td>{{ actividad.fecha }}</td>
-                    {% if not actividad.tarea.meta.objetivo.proyecto.enPapelera %}
-                      <td>{{actividad.tarea.meta.objetivo.proyecto.nombre}}</td>
+                    {% if not actividad.tarea.objetivo.proyecto.enPapelera %}
+                      <td>{{actividad.tarea.objetivo.proyecto.nombre}}</td>
                     {% else %}  
                     <td></td>
                     {% endif %}
