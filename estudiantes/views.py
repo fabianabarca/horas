@@ -74,3 +74,5 @@ def editar_estudiante(request, id):
 
  
     return render(request, "editar_estudiante.html", context={"estudiante_form":form})
+
+

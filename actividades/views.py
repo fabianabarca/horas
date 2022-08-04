@@ -132,3 +132,17 @@ def editar_actividad(request, id):
 
     creacionOedicion = 0
     return render(request, "crear_actividad.html", context={"tipoAccion":creacionOedicion,"form":form})
+
+
+# AJAX
+def load_tareas(request):
+    proyecto_id = request.GET.get('proyecto_id')
+    #print(tarea_id)
+    
+    if (proyecto_id==''):
+         tareas = Tarea.objects.filter(enPapelera=False)
+    else:
+         tareas = Tarea.objects.filter(objetivo__proyecto__id=proyecto_id)
+    #print(objetivos)
+    return render(request, '../templates/tarea_dropdown_list_options.html', {'tareas': tareas})
+    # return JsonResponse(list(objetivos.values('id', 'nombre')), safe=False)

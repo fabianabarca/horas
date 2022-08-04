@@ -54,8 +54,8 @@ class FiltrosForm(forms.Form):
     )
     descripcion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     estudiante = forms.ModelChoiceField(queryset=Estudiante.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    proyecto = forms.ModelChoiceField(queryset=Proyecto.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    tarea = forms.ModelChoiceField(queryset=Tarea.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    proyecto = forms.ModelChoiceField(queryset=Proyecto.objects.filter(enPapelera=False), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    tarea = forms.ModelChoiceField(queryset=Tarea.objects.filter(enPapelera=False), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     fecha_inicio= forms.DateField(required=False,widget=forms.DateInput(attrs={'type': 'date','style': 'width: 200px;', 'class': 'form-control'}))
     fecha_final= forms.DateField(required=False,widget=forms.DateInput(attrs={'type': 'date','style': 'width: 200px;', 'class': 'form-control'}))
     estado = forms.ChoiceField(required=False, choices= ESTADOS,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
@@ -64,10 +64,10 @@ class FiltrosTareaForm(forms.Form):
     
     nombre = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     estudiante = forms.ModelChoiceField(queryset=Estudiante.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    tareaSuperior = forms.ModelChoiceField(queryset=Tarea.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    objetivo = forms.ModelChoiceField(queryset=Objetivo.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    tareaSuperior = forms.ModelChoiceField(queryset=Tarea.objects.filter(enPapelera=False), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    objetivo = forms.ModelChoiceField(queryset=Objetivo.objects.filter(enPapelera=False), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     descripcion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    area = forms.ModelChoiceField(queryset=Area.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    area = forms.ModelChoiceField(queryset=Area.objects.filter(enPapelera=False), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
 
 
 
@@ -81,7 +81,7 @@ class FiltrosProyectoForm(forms.Form):
     nombre = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     descripcion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     profesor = forms.ModelChoiceField(queryset=Profesor.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    area = forms.ModelChoiceField(queryset=Area.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    area = forms.ModelChoiceField(queryset=Area.objects.filter(enPapelera=False), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     ubicacion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
 
 class FiltrosGestionForm(forms.Form):
@@ -113,27 +113,46 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 
 class ActividadesForm(forms.ModelForm):
-
+    proyecto = forms.ModelChoiceField(queryset=Proyecto.objects.filter(enPapelera=False), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    objetivo = forms.ModelChoiceField(queryset=Objetivo.objects.filter(enPapelera=False), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    field_order = ['proyecto', 'objetivo', 'tarea', 'descripcion', 'horas', 'fecha']
     class Meta:
         model = Actividad
         fields = "__all__"
         widgets = {
             'fecha': DateInput(
-                                 format=('%Y-%m-%d'),
-                                 attrs={'class': 'form-control', 
+                                    format=('%Y-%m-%d'),
+                                    attrs={'class': 'form-control', 
                                         'placeholder': 'Select a date',
                                         'type': 'date'}
-                               ),
+                                ),
 
         }
+        
+        
 
         
     def __init__(self, *args, **kwargs):
         super(ActividadesForm, self).__init__(*args, **kwargs)
+        
         self.fields['estudiante'].initial = Estudiante.objects.get(user = User.objects.get(id = 1))
         self.fields['estado'].initial = "P"
+        #self.fields['objetivo'].queryset = Objetivo.objects.none()
+        
+        for value in self.data.keys():
+            print(value)
+        if 'proyecto' in self.data:
+                try:
+                    proyecto_id = int(self.data.get('proyecto'))
+                    print("forms: " + Tarea.objects.filter(objetivo__proyecto__id=proyecto_id).order_by('nombre'))
+                    self.fields['tarea'].queryset = Tarea.objects.filter(objetivo__proyecto__id=proyecto_id).order_by('nombre')
+                except (ValueError, TypeError):
+                    pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            #self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea=self.instance)
+            self.fields['tarea'].queryset = Tarea.objects.filter(enPapelera=False)
 
-
+        
 
 
 
