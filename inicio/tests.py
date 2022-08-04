@@ -28,8 +28,11 @@ class SimpleTest(TestCase):
         self.factory = RequestFactory()
         self.user = User.objects.create_user(
             username='a232323', email='tt2936082@gmail.com', password='admin2323')
-        Estudiante.objects.create(user=self.user,fechaInicioTCU='2022-08-10',fechaFinTCU='2023-08-17')
+        estudiante = Estudiante.objects.get(user=self.user)
         
+        estudiante.fechaInicioTCU ='2022-08-10'
+        estudiante.fechaFinTCU='2023-08-17'
+        estudiante.save()
 
     def test_All_Views_UsuarioEstudianteRegular(self):
         #Probando pagina inicio__________________________________________________
