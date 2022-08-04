@@ -79,7 +79,7 @@ Sistema de registro de horas de trabajo de estudiantes en el TCU.
 - Nombre
 - Descripción
 - `profesor.id` (foreign key) (pueden ser varios)
-- `categoria.id` (foreign key) (one to many)
+- `area.id` (foreign key) (one to many)
 - Ubicación
 - Notas
 

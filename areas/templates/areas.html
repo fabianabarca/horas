@@ -2,21 +2,21 @@
 <div class="container">
 </br>
   <!-- Título -->
-  <h1 class="display-4">Categorias</h1>
+  <h1 class="display-4">Areas</h1>
   <p>
-    Pueden haber multiples categorias por proyecto.
+    Pueden haber multiples areas por proyecto.
   </p>
   {% if request.user.is_staff %}
-      <a href="crear_categoria" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>    Agregar Categoria</a>
+      <a href="crear_area" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>    Agregar Area</a>
   {% endif %}
 </br>
 </br>
 
-<!-- Lista de categorias -->
+<!-- Lista de areas -->
 <form method="post">{% csrf_token %}
 
-  {% if categorias %}
-  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de categorias</h6>
+  {% if areas %}
+  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de areas</h6>
   
    <!-- Tabla -->
   <div class="table-responsive">
@@ -31,29 +31,29 @@
       </tr>
     </thead>
     <tbody>
-      {% for categoria in categorias %}
-        {% if not categoria.enPapelera %}
+      {% for area in areas %}
+        {% if not area.enPapelera %}
           <tr>
             {% if request.user.is_staff %}
               <td>
                 <!-- Checkbox
-                <input type="checkbox" name="inputs" value="{{categoria.id}}" /> <br>
+                <input type="checkbox" name="inputs" value="{{area.id}}" /> <br>
                 -->
                   <!-- Edit button -->
-                  <a   href="editar_categoria/{{ categoria.id }}" class="text-info" role="button">
+                  <a   href="editar_area/{{ area.id }}" class="text-info" role="button">
                     <i class="fas fa-edit"></i>
                   </a>
       
                   <!-- Delete button -->
                   <button onclick="return confirm('Está seguro de enviarlo a la papelera?')"  type="submit" 
-                  class="text-danger" value="{{ categoria.id }}"  name="deleteButton"
+                  class="text-danger" value="{{ area.id }}"  name="deleteButton"
                   style="background-color: transparent;  border: 0;">              
                   <i class="fas fa-trash-alt"></i>
                   </button>
                 
               </td>
             {% endif %}
-            <td>{{ categoria }}</td>
+            <td>{{ area }}</td>
             
           </tr>
         {% endif %}
@@ -62,7 +62,7 @@
     </table>
   </div>
     {% else %}
-  <strong>No hay categorias registrados</strong>
+  <strong>No hay areas registrados</strong>
 {% endif %}
 </form>
 </div>

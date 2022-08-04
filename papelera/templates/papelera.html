@@ -219,7 +219,7 @@
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
             <th scope="col">Profesor</th>
-            <th scope="col">Categorias</th>
+            <th scope="col">Areas</th>
             <th scope="col">Ubicación</th>
             
 
@@ -250,7 +250,7 @@
             <td>{{ proyecto.nombre }}</td>
             <td>{{ proyecto.descripcion }}</td>
             <td>{{ proyecto.profesor.user.first_name }}</td>
-            <td>{% for categoria in proyecto.categoria.all %}{{ categoria.nombre}}<br/>{% endfor %}</td>
+            <td>{% for area in proyecto.area.all %}{{ area.nombre}}<br/>{% endfor %}</td>
             <td>{{ proyecto.ubicacion }}</td>
             
           </tr>
@@ -265,9 +265,9 @@
     </br>
 
     </br>
-    <h1>Categorias</h1>
+    <h1>Areas</h1>
     </br>
-    {% if categorias %}
+    {% if areas %}
     <div class="table-responsive">
       <table  class="table align-items-center table-hover">
       <thead class="thead">
@@ -279,28 +279,28 @@
         </tr>
       </thead>
       <tbody>
-        {% for categoria in categorias %}
-        {% if categoria.enPapelera %}
+        {% for area in areas %}
+        {% if area.enPapelera %}
         <tr>
           <td>
             <div style="text-align: center;">
               <!-- Checkbox -->
-              <input type="checkbox" name="inputs" value="{{categoria.id}}" /> <br>
+              <input type="checkbox" name="inputs" value="{{area.id}}" /> <br>
 
               <!--Return button-->
-              <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ categoria.id }}"  name="returnButtonCategoria">
+              <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ area.id }}"  name="returnButtonArea">
                 <i class="material-icons">undo</i>
               </button> </br>
 
               <!-- Delete button 
               <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
-              class="text-danger" value="{{ categoria.id }}"  name="deleteButtonCategoria">              
+              class="text-danger" value="{{ area.id }}"  name="deleteButtonArea">              
               <i class="material-icons">delete_forever</i>
               </button>
               -->
             </div>
           </td>
-          <td>{{ categoria }}</td>
+          <td>{{ area }}</td>
           
         </tr>
         {% endif %}
@@ -309,7 +309,7 @@
       </table>
     </div>
       {% else %}
-    <strong>No hay categorias borradas</strong>
+    <strong>No hay areas borradas</strong>
     {% endif %}
     </br>
 

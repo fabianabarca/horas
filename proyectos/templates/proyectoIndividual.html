@@ -10,9 +10,9 @@
 
     <p>Profesor: {{ proyecto.profesor }}</p>
 
-    <p>Categorias: </p>
-      {% for categoria in proyecto.categoria.all %}
-        <p>- {{categoria.nombre }}</p>
+    <p>Areas: </p>
+      {% for area in proyecto.area.all %}
+        <p>- {{area.nombre }}</p>
       {% endfor %}
     <p>Ubicación: {{ proyecto.ubicacion }}</p>
 

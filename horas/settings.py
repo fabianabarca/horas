@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'actividades',
     'solicitudes',
     'proyectos',
-    'categorias',
+    'areas',
     'estudiantes',
     'tareas',
     'papelera',
