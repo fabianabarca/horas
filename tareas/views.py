@@ -49,8 +49,8 @@ def tareas_request(request):
                 tareas_list =  tareas_list.filter(descripcion__contains = form.cleaned_data.get('descripcion'))
             if form.cleaned_data.get('objetivo'):
                 tareas_list =  tareas_list.filter(objetivo = form.cleaned_data.get('objetivo'))
-            if form.cleaned_data.get('categoria'):
-                tareas_list =  tareas_list.filter(objetivo__proyecto__categoria= form.cleaned_data.get('categoria'))
+            if form.cleaned_data.get('area'):
+                tareas_list =  tareas_list.filter(objetivo__proyecto__area= form.cleaned_data.get('area'))
            
         #return HttpResponseRedirect("/tareas")
         

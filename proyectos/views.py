@@ -1,8 +1,8 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from horas.forms import CategoriasForm, FiltrosProyectoForm, ProyectosForm
+from horas.forms import AreasForm, FiltrosProyectoForm, ProyectosForm
 from proyectos.models import Proyecto
-from proyectos.models import Categoria
+from proyectos.models import Area
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django import forms
@@ -25,8 +25,8 @@ def proyectos_request(request):
                 proyectos_list =  proyectos_list.filter(descripcion__contains= form.cleaned_data.get('descripcion'))
             if form.cleaned_data.get('profesor'):
                 proyectos_list =  proyectos_list.filter(profesor = form.cleaned_data.get('profesor'))
-            if form.cleaned_data.get('categoria'):
-                proyectos_list =  proyectos_list.filter(categoria= form.cleaned_data.get('categoria'))
+            if form.cleaned_data.get('area'):
+                proyectos_list =  proyectos_list.filter(area= form.cleaned_data.get('area'))
             if form.cleaned_data.get('ubicacion'):
                 proyectos_list =  proyectos_list.filter(ubicacion__contains= form.cleaned_data.get('ubicacion'))
 
@@ -59,18 +59,18 @@ def crear_proyecto(request):
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    categorias_noborrados = Categoria.objects.all()
-    categorias_noborrados=categorias_noborrados.filter(enPapelera= False)
-    form.fields["categoria"].queryset  = categorias_noborrados
+    areas_noborrados = Area.objects.all()
+    areas_noborrados=areas_noborrados.filter(enPapelera= False)
+    form.fields["area"].queryset  = areas_noborrados
 
     creacionOedicion = 1
     return render (request=request, template_name="../templates/crear_proyecto.html", context={"tipoAccion":creacionOedicion,"proyecto_form":form})
  
 @login_required(login_url='/cuentas/login/')
-def crear_categoria(request):
+def crear_area(request):
 
     if request.method == "POST":
-        form = CategoriasForm(request.POST)
+        form = AreasForm(request.POST)
         if form.is_valid():
             form.save()
             time.sleep(1)#para que mensaje de que se creo pueda verse
@@ -78,13 +78,13 @@ def crear_categoria(request):
             return HttpResponseRedirect("/proyectos")
 	
     
-    form = CategoriasForm()
+    form = AreasForm()
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
 
 
-    return render (request=request, template_name="../templates/crear_categoria.html", context={"categoria_form":form})
+    return render (request=request, template_name="../templates/crear_area.html", context={"area_form":form})
 
 
 @login_required(login_url='/cuentas/login/')
@@ -97,9 +97,9 @@ def editar_proyecto(request, id):
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
     #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    categorias_noborrados = Categoria.objects.all()
-    categorias_noborrados=categorias_noborrados.filter(enPapelera= False)
-    form.fields["categoria"].queryset  = categorias_noborrados
+    areas_noborrados = Area.objects.all()
+    areas_noborrados=areas_noborrados.filter(enPapelera= False)
+    form.fields["area"].queryset  = areas_noborrados
     
     if form.is_valid():
         form.save()

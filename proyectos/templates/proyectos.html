@@ -4,11 +4,11 @@
   <!-- Título -->
   <h1 class="display-4">Proyectos</h1>
   <p>
-    Los proyectos pueden pertenecer a varias categorias.
+    Los proyectos pueden pertenecer a varias areas.
   </p>
   {% if request.user.is_staff %}
     <a href="crear_proyecto" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>   Agregar Proyecto</a>
-    <a href="crear_categoria" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>   Agregar Categoria</a>
+    <a href="crear_area" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>   Agregar Area</a>
   {% endif %}
 
  
@@ -59,7 +59,7 @@
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
             <th scope="col">Profesor</th>
-            <th scope="col">Categorias</th>
+            <th scope="col">Areas</th>
             <th scope="col">Ubicación</th>
 
           </tr>
@@ -93,9 +93,9 @@
                 <td>{{ proyecto.profesor.user.first_name }}</td>
                 
                 <td>
-                    {% for categoria in proyecto.categoria.all %}
-                      {% if not categoria.enPapelera %}
-                          {{ categoria.nombre}}<br/>
+                    {% for area in proyecto.area.all %}
+                      {% if not area.enPapelera %}
+                          {{ area.nombre}}<br/>
                         {% endif %}
                     {% endfor %}
                 </td>

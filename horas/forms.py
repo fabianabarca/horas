@@ -67,7 +67,7 @@ class FiltrosTareaForm(forms.Form):
     tareaSuperior = forms.ModelChoiceField(queryset=Tarea.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     objetivo = forms.ModelChoiceField(queryset=Objetivo.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     descripcion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    categoria = forms.ModelChoiceField(queryset=Categoria.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    area = forms.ModelChoiceField(queryset=Area.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
 
 
 
@@ -81,7 +81,7 @@ class FiltrosProyectoForm(forms.Form):
     nombre = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     descripcion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     profesor = forms.ModelChoiceField(queryset=Profesor.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    categoria = forms.ModelChoiceField(queryset=Categoria.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    area = forms.ModelChoiceField(queryset=Area.objects.all(), required=False,widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     ubicacion = forms.CharField(required=False,widget=forms.TextInput(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
 
 class FiltrosGestionForm(forms.Form):
@@ -167,9 +167,9 @@ class SolicitudesArchivoForm(forms.ModelForm):
             'archivo': ClearableFileInput(attrs={'multiple': True}),
         }
 
-class CategoriasForm(forms.ModelForm):
+class AreasForm(forms.ModelForm):
     class Meta:
-        model = Categoria
+        model = Area
         fields = "__all__"
 
 class ProyectosForm(forms.ModelForm):

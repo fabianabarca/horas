@@ -58,7 +58,7 @@
             <th scope="col">Subordinada a</th>
             <th scope="col">Objetivo</th>
             <th scope="col">Proyecto</th>
-            <th scope="col">Categorias</th>
+            <th scope="col">Areas</th>
             <th scope="col">Carné</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
@@ -130,11 +130,11 @@
                 <td></td>
             {% endif %}
 
-             <!--Categorias multiples-->
+             <!--Areas multiples-->
             <td>
-              {% for categoria in tarea.objetivo.proyecto.categoria.all %}
-                {% if not categoria.enPapelera %}
-                    {{ categoria.nombre}}<br/>
+              {% for area in tarea.objetivo.proyecto.area.all %}
+                {% if not area.enPapelera %}
+                    {{ area.nombre}}<br/>
                   {% endif %}
               {% endfor %}
             </td>

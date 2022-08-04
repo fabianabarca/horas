@@ -15,7 +15,7 @@ def papelera_request(request):
     
     objetivos_list = Objetivo.objects.all()
     proyectos_list = Proyecto.objects.all()
-    categorias_list = Categoria.objects.all()
+    areas_list = Area.objects.all()
     solicitudes_list = Solicitud.objects.all()
     if request.method == "POST":
         #Implementación de boton de borrado de la base de datos de los registros
@@ -36,9 +36,9 @@ def papelera_request(request):
                 deleteButtonItemValueList=request.POST.getlist('deleteButtonProyecto')
                 obj = Proyecto( id = deleteButtonItemValueList[0]) 
                 obj.delete()
-        if request.POST.get('deleteButtonCategoria'):
-                deleteButtonItemValueList=request.POST.getlist('deleteButtonCategoria')
-                obj = Categoria( id = deleteButtonItemValueList[0]) 
+        if request.POST.get('deleteButtonArea'):
+                deleteButtonItemValueList=request.POST.getlist('deleteButtonArea')
+                obj = Area( id = deleteButtonItemValueList[0]) 
                 obj.delete()
         if request.POST.get('deleteButtonSolicitud'):
                 deleteButtonItemValueList=request.POST.getlist('deleteButtonSolicitud')
@@ -68,10 +68,10 @@ def papelera_request(request):
                 obj = Proyecto( id = deleteButtonItemValueList[0]) 
                 Proyecto.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
 
-        if request.POST.get('returnButtonCategoria'):
-                deleteButtonItemValueList=request.POST.getlist('returnButtonCategoria')
-                obj = Categoria( id = deleteButtonItemValueList[0]) 
-                Categoria.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
+        if request.POST.get('returnButtonArea'):
+                deleteButtonItemValueList=request.POST.getlist('returnButtonArea')
+                obj = Area( id = deleteButtonItemValueList[0]) 
+                Area.objects.filter(id = deleteButtonItemValueList[0]).update(enPapelera='False')
 
         if request.POST.get('returnButtonSolicitud'):
                 deleteButtonItemValueList=request.POST.getlist('returnButtonSolicitud')
@@ -80,5 +80,5 @@ def papelera_request(request):
 
         return HttpResponseRedirect("/papelera")
 
-    return render (request=request, template_name="../templates/papelera.html", context={"actividades":actividades_list,"tareas":tareas_list,"objetivos":objetivos_list,"proyectos":proyectos_list,"categorias":categorias_list,"solicitudes":solicitudes_list})
+    return render (request=request, template_name="../templates/papelera.html", context={"actividades":actividades_list,"tareas":tareas_list,"objetivos":objetivos_list,"proyectos":proyectos_list,"areas":areas_list,"solicitudes":solicitudes_list})
 
