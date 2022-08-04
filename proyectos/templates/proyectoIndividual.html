@@ -1,0 +1,38 @@
+{% extends 'sitio.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
+<div class="container">
+</br>
+  <!-- Título -->
+  <h1>Proyecto</h1>
+  
+    <p>Nombre: {{ proyecto.nombre }}</p>
+  
+    <p>Descripción: {{ proyecto.descripcion }}</p>
+
+    <p>Profesor: {{ proyecto.profesor }}</p>
+
+    <p>Categorias: </p>
+      {% for categoria in proyecto.categoria.all %}
+        <p>- {{categoria.nombre }}</p>
+      {% endfor %}
+    <p>Ubicación: {{ proyecto.ubicacion }}</p>
+
+
+    <p>Objetivos: </p>
+    {% for objetivo in objetivos %}
+      <p>- {{objetivo.nombre }}</p>
+    {% endfor %}
+
+
+    <p>Tareas: </p>
+      {% for tarea in tareas %}
+        <p>- {{tarea}}</p>
+      {% endfor %}
+    
+</br>
+</br>
+
+</div>
+{% endblock %}
+
+
+

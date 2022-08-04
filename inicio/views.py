@@ -166,7 +166,8 @@ def index(request,id=9999):
     "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,"estudiante_actual":estudiante_actual,
      "proyectos_list":proyectos_list,"listaDirectorio":listaDirectorio,"actividades_list":actividades_list,
     "zipDirectorio":zipDirectorio,})
-
+    
+'''
 def indexandoTareasSubordinadasRecursivas(tareasDict):
     
     listaTareasSubordinadas = {}
@@ -180,18 +181,17 @@ def indexandoTareasSubordinadasRecursivas(tareasDict):
 
     for tarea in tareasDict.keys():
         print("value: " + tarea)
-
-
-        
+ 
     return tareasDict
-
+'''
 
 
 '''
 @login_required(login_url='/cuentas/login/')
 def indexInicio(request):
 
-    index(request,request.user.id)
-    print("llegó aqui")
-    return render (request=request, template_name="../templates/index.html", context={})
 '''
+def inicio(request):
+
+    
+    return render (request=request, template_name="../templates/inicio.html", context={})
