@@ -147,7 +147,7 @@ class ActividadesForm(forms.ModelForm):
                 #print('alla')
                 try:
                     proyecto_id = int(self.data.get('proyecto'))
-                    print("forms: " + Objetivo.objects.filter(proyecto__id=proyecto_id).order_by('nombre'))
+                    #print("forms: " + Objetivo.objects.filter(proyecto__id=proyecto_id).order_by('nombre'))
                     self.fields['objetivo'].queryset = Objetivo.objects.filter(proyecto__id=proyecto_id).order_by('nombre')
                 except (ValueError, TypeError):
                     pass  # invalid input from the client; ignore and fallback to empty City queryset
@@ -159,7 +159,7 @@ class ActividadesForm(forms.ModelForm):
         if 'objetivo' in self.data:
                 try:
                     objetivo_id = int(self.data.get('objetivo'))
-                    print("forms: " + Tarea.objects.filter(objetivo__id=objetivo_id).order_by('nombre'))
+                    #print("forms: " + Tarea.objects.filter(objetivo__id=objetivo_id).order_by('nombre'))
                     self.fields['tarea'].queryset = Tarea.objects.filter(objetivo__id=objetivo_id,enPapelera=False).order_by('nombre')
                 except (ValueError, TypeError):
                     pass  # invalid input from the client; ignore and fallback to empty City queryset
@@ -232,11 +232,11 @@ class TareasForm(forms.ModelForm):
         #self.fields['objetivo'].queryset = Objetivo.objects.none()
         
         for value in self.data.keys():
-            print(value)
+            #print(value)
         if 'tareasuperior' in self.data:
                 try:
                     tareasuperior_id = int(self.data.get('tareasuperior'))
-                    print("forms: " + Objetivo.objects.filter(tarea__id=tareasuperior_id).order_by('name'))
+                    #print("forms: " + Objetivo.objects.filter(tarea__id=tareasuperior_id).order_by('name'))
                     self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea__id=tareasuperior_id).order_by('name')
                 except (ValueError, TypeError):
                     pass  # invalid input from the client; ignore and fallback to empty City queryset

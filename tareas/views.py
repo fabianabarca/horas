@@ -147,9 +147,9 @@ def editar_tarea(request, id):
         #para cambio de objetivos de tareas subordinadas si tarea las tiene
         tareasSubordinadas = tareaAEditar[0].tarea_set.all()
         if tareasSubordinadas:
-            print("0")
-            print(tareaAEditar[0])
-            print(tareasSubordinadas)
+            #print("0")
+            #print(tareaAEditar[0])
+            #print(tareasSubordinadas)
             cambio_objetivos_tareasrecursivas(form,tareaAEditar[0])
 
 
@@ -174,13 +174,13 @@ def editar_tarea(request, id):
 #para cambio de objetivos de tareas subordinadas si tarea las tiene
 def cambio_objetivos_tareasrecursivas(form,tareaAEditar):
     tareasSubordinadas = tareaAEditar.tarea_set.all()
-    print("nivel")
-    print(tareasSubordinadas)
+    #print("nivel")
+    #print(tareasSubordinadas)
     
     if  tareasSubordinadas:
         for tarea in tareasSubordinadas.all():
-            print("nivelrec")
-            print(tareaAEditar.objetivo)
+            #print("nivelrec")
+            #print(tareaAEditar.objetivo)
             tarea.objetivo=form.cleaned_data.get('objetivo')
             tarea.save()
             cambio_objetivos_tareasrecursivas(form,tarea)
@@ -188,14 +188,14 @@ def cambio_objetivos_tareasrecursivas(form,tareaAEditar):
 #para solo seleccion de tareas no subordinadas como tarea superior  
 def seleccion_tarea_superior_tareasrecursivas(form,tareaAEditar,listaTareasNoSubordinadas):
     tareasSubordinadas = tareaAEditar.tarea_set.all()
-    print("nivel")
-    print(tareasSubordinadas)
+    #print("nivel")
+    #print(tareasSubordinadas)
     
     if  tareasSubordinadas:
         for tarea in tareasSubordinadas.all():
             listaTareasNoSubordinadas.append(tarea.id)
-            print("nivelrec")
-            print(tarea.nombre)
+            #print("nivelrec")
+            #print(tarea.nombre)
            
             listaTareasNoSubordinadas= seleccion_tarea_superior_tareasrecursivas(form,tarea,listaTareasNoSubordinadas)
     return listaTareasNoSubordinadas       
