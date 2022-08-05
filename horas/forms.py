@@ -231,7 +231,7 @@ class TareasForm(forms.ModelForm):
         super().__init__(*args , **kwargs)
         #self.fields['objetivo'].queryset = Objetivo.objects.none()
         
-        for value in self.data.keys():
+        #for value in self.data.keys():
             #print(value)
         if 'tareasuperior' in self.data:
                 try:
