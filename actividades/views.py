@@ -134,15 +134,37 @@ def editar_actividad(request, id):
     return render(request, "crear_actividad.html", context={"tipoAccion":creacionOedicion,"form":form})
 
 
+
 # AJAX
-def load_tareas(request):
+def load_objetivosActividades(request):
     proyecto_id = request.GET.get('proyecto_id')
-    #print(tarea_id)
+    #print(proyecto_id)
     
     if (proyecto_id==''):
+         #print("aqui")
+
+         objetivos = Objetivo.objects.filter(enPapelera=False)
+    else:
+         #print("aca")
+
+         objetivos = Objetivo.objects.filter(proyecto__id=proyecto_id,enPapelera=False)
+    #print(objetivos)
+    return render(request, '../templates/objetivoActividad_dropdown_list_options.html', {'objetivos': objetivos})
+    # return JsonResponse(list(objetivos.values('id', 'nombre')), safe=False)
+
+
+
+# AJAX
+def load_tareas(request):
+    objetivo_id = request.GET.get('objetivo_id')
+    #print(tarea_id)
+    
+    if (objetivo_id==''):
          tareas = Tarea.objects.filter(enPapelera=False)
     else:
-         tareas = Tarea.objects.filter(objetivo__proyecto__id=proyecto_id)
+         tareas = Tarea.objects.filter(objetivo__id=objetivo_id,enPapelera=False)
     #print(objetivos)
     return render(request, '../templates/tarea_dropdown_list_options.html', {'tareas': tareas})
     # return JsonResponse(list(objetivos.values('id', 'nombre')), safe=False)
+
+

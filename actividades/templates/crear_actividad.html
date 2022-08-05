@@ -47,7 +47,7 @@
     <h1>Editar Actividad</h1>
   {% endif %}
 
-<form method="post" onsubmit="setFormSubmitting()" id="actividadesForm" data-tareas-url="{% url 'load_tareas' %}">
+<form method="post" onsubmit="setFormSubmitting()" id="actividadesForm" data-objetivos-url="{% url 'load_objetivosActividades' %}" data-tareas-url="{% url 'load_tareas' %}" >
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />
 
@@ -62,14 +62,45 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
     $("#id_proyecto").change(function () {
-        console.log("activado accion proyecto");
+      console.log("activado accion proyecto");
+      const url = $("#actividadesForm").attr("data-objetivos-url");  // get the url of the `load_cities` view
+      const proyectoId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+          url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+          data: {
+              'proyecto_id': proyectoId       // add the country id to the GET parameters
+          },
+          success: function (data) {   // `data` is the return of the `load_cities` view function
+              $("#id_objetivo").html(data);  // replace the contents of the city input with the data that came from the server
+              /*
+
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (objetivo) {
+                  html_data += `<option value="${objetivo.id}">${objetivo.nombre}</option>`
+              });
+              console.log(html_data);
+              $("#id_objetivo").html(html_data);
+    */
+        
+      }
+  });
+      });
+      
+</script>
+
+
+
+  <script>
+    $("#id_objetivo").change(function () {
+        console.log("activado accion objetivo");
         const url = $("#actividadesForm").attr("data-tareas-url");  // get the url of the `load_cities` view
-        const proyectoId = $(this).val();  // get the selected country ID from the HTML input
+        const objetivoId = $(this).val();  // get the selected country ID from the HTML input
   
         $.ajax({                       // initialize an AJAX request
             url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
             data: {
-                'proyecto_id': proyectoId       // add the country id to the GET parameters
+                'objetivo_id': objetivoId       // add the country id to the GET parameters
             },
             success: function (data) {   // `data` is the return of the `load_cities` view function
                 $("#id_tarea").html(data);  // replace the contents of the city input with the data that came from the server
@@ -88,6 +119,9 @@
   
     });
   </script>
+
+
+ 
 </div>
 
 

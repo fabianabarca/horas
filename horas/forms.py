@@ -131,26 +131,46 @@ class ActividadesForm(forms.ModelForm):
         
         
 
-        
+    #Parte de implementación de restringir seleccion de tarea por proyecto
     def __init__(self, *args, **kwargs):
         super(ActividadesForm, self).__init__(*args, **kwargs)
         
         self.fields['estudiante'].initial = Estudiante.objects.get(user = User.objects.get(id = 1))
         self.fields['estado'].initial = "P"
+
         #self.fields['objetivo'].queryset = Objetivo.objects.none()
+        #self.fields['tarea'].queryset = Tarea.objects.none()
         
-        for value in self.data.keys():
-            print(value)
+        #for value in self.data.keys():
+            #print('aqui')
         if 'proyecto' in self.data:
+                #print('alla')
                 try:
                     proyecto_id = int(self.data.get('proyecto'))
-                    print("forms: " + Tarea.objects.filter(objetivo__proyecto__id=proyecto_id).order_by('nombre'))
-                    self.fields['tarea'].queryset = Tarea.objects.filter(objetivo__proyecto__id=proyecto_id).order_by('nombre')
+                    print("forms: " + Objetivo.objects.filter(proyecto__id=proyecto_id).order_by('nombre'))
+                    self.fields['objetivo'].queryset = Objetivo.objects.filter(proyecto__id=proyecto_id).order_by('nombre')
+                except (ValueError, TypeError):
+                    pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            #print('acaa')
+            #self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea=self.instance)
+            self.fields['objetivo'].queryset = Objetivo.objects.filter(enPapelera=False)
+        
+        if 'objetivo' in self.data:
+                try:
+                    objetivo_id = int(self.data.get('objetivo'))
+                    print("forms: " + Tarea.objects.filter(objetivo__id=objetivo_id).order_by('nombre'))
+                    self.fields['tarea'].queryset = Tarea.objects.filter(objetivo__id=objetivo_id,enPapelera=False).order_by('nombre')
                 except (ValueError, TypeError):
                     pass  # invalid input from the client; ignore and fallback to empty City queryset
         elif self.instance.pk:
             #self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea=self.instance)
             self.fields['tarea'].queryset = Tarea.objects.filter(enPapelera=False)
+        
+
+
+        
+    
 
         
 
