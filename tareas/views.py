@@ -21,24 +21,47 @@ def tareas_request(request):
                 obj = Tarea( id = deleteButtonItemValue[0]) 
                 Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
                 
-        '''
+        
         #parte de implementación de asignación de tareas por boton
         if request.POST.get('assignButton'):
                 asignButtonItemValue=request.POST.getlist('assignButton')
                 obj = Tarea( id = asignButtonItemValue[0]) 
                 tareaAsignar=Tarea.objects.filter(id = asignButtonItemValue[0])
-                for userAssign in tareaAsignar[0].estudiante.all():
-                    send_mail(
-                                'Asignación de tarea',
-                                'Se te asigno la tarea: ' + tareaAsignar[0].nombre +'\n\n'
-                                + 'Descripción: '+ tareaAsignar[0].descripcion  +'\n\n'
-                                + 'Del proyecto: '+ tareaAsignar[0].proyecto.nombre  +'\n\n'
-                                ,
-                                'testertesrter3@gmail.com',
-                                [userAssign.user.email],
-                                fail_silently=False,
-                    )
-        '''        
+
+                estudiantesAsignadosATareaActual = tareaAsignar[0].estudiante.all()
+                for estudiante in estudiantesAsignadosATareaActual:
+                    asignaciones_list = AsignacionesEnviadas.objects.all()
+                    boolYaFueAsignadoAntes=False
+                    for asignacion in asignaciones_list:
+                        
+                        if(asignacion.estudiante==estudiante):
+                            print(asignacion.estudiante)
+                            print(asignacion.tarea)
+                            if(asignacion.tarea==tareaAsignar[0]):
+                                 boolYaFueAsignadoAntes=True
+                                 print("no se le envió correo a "+ estudiante.user.first_name)
+
+                            
+                    if (not boolYaFueAsignadoAntes):
+                        ae = AsignacionesEnviadas(estudiante=estudiante,tarea=tareaAsignar[0])
+                        ae.save()
+                        #print(AsignacionesEnviadas.objects.all())
+                        
+
+                        #aqui se manda el correo
+                        
+                        send_mail(
+                                            'Asignación de tarea',
+                                            'Se te asigno la tarea: ' + tareaAsignar[0].nombre +'\n\n'
+                                            + 'Descripción: '+ tareaAsignar[0].descripcion  +'\n\n'
+                                            + 'Del proyecto: '+ tareaAsignar[0].objetivo.proyecto.nombre  +'\n\n'
+                                            ,
+                                            'testertesrter3@gmail.com',
+                                            [estudiante.user.email],
+                                            fail_silently=False,
+                                )
+                        print("se envió correo a "+ estudiante.user.first_name)
+                        print( estudiante.user.email)
         
         if form.is_valid():
             if form.cleaned_data.get('nombre'):
@@ -104,9 +127,13 @@ def editar_tarea(request, id):
         #Para enviar correos a estudiantes nuevamente asignados
         tareas_list = Tarea.objects.all()
         tareaAEditar = tareas_list.filter(id = id)
-        #print(tareaAEditar)
+        
         estudiantesActualesEnTarea = tareaAEditar[0].estudiante.all()
-        #print(estudiantesActualesEnTarea)
+        
+        #Parte de código que al asignar estudiante nuevo al crear o editar una tarea 
+        #manda correo de asignación para los estudiantes nuevos y evita mandar a estudiantes ya asignados
+        #previamente a la tarea, con ayuda del modelo creado en la base de datos AsignacionesEnviadas
+        '''
         for estudianteForm in form.cleaned_data.get('estudiante'):
             mandarCorreo=True
             for estudiante in estudiantesActualesEnTarea:
@@ -124,9 +151,9 @@ def editar_tarea(request, id):
                     for asignacion in asignaciones_list:
                         if(asignacion.estudiante==estudianteForm):
                                  boolYaFueAsignadoAntes=True
-                                 #print("ya se le envió correo a "+ estudianteForm.user.first_name)
+                                 #print("no se le envió correo a "+ estudianteForm.user.first_name)
 
-                            
+                           
                     if (not boolYaFueAsignadoAntes):
                         ae = AsignacionesEnviadas(estudiante=estudianteForm,tarea=tareaAEditar[0])
                         ae.save()
@@ -144,16 +171,13 @@ def editar_tarea(request, id):
                                             [estudianteForm.user.email],
                                             fail_silently=False,
                                 )
+        '''            
         #para cambio de objetivos de tareas subordinadas si tarea las tiene
         tareasSubordinadas = tareaAEditar[0].tarea_set.all()
+
+        #para asignar objetivo de tarea superior a tareas subordinadas
         if tareasSubordinadas:
-            #print("0")
-            #print(tareaAEditar[0])
-            #print(tareasSubordinadas)
             cambio_objetivos_tareasrecursivas(form,tareaAEditar[0])
-
-
-
 
               
         form.save()
