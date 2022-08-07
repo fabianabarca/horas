@@ -32,11 +32,12 @@ def tareas_request(request):
                 for estudiante in estudiantesAsignadosATareaActual:
                     asignaciones_list = AsignacionesEnviadas.objects.all()
                     boolYaFueAsignadoAntes=False
+                    print("estudiante: " + estudiante.user.first_name)
                     for asignacion in asignaciones_list:
                         
                         if(asignacion.estudiante==estudiante):
-                            print(asignacion.estudiante)
-                            print(asignacion.tarea)
+                            #print(asignacion.estudiante)
+                            print("tarea ya asignada: "+asignacion.tarea.nombre)
                             if(asignacion.tarea==tareaAsignar[0]):
                                  boolYaFueAsignadoAntes=True
                                  print("no se le envió correo a "+ estudiante.user.first_name)
