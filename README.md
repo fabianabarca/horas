@@ -3,21 +3,21 @@
 Es un sistema de:
 
 1. **registro** de actividades
-1. **clasificación** de actividades según objetivos
-1. **asignación** de tareas 
+1. **clasificación** de tareas según objetivos
+1. **asignación** de tareas a estudiantes
 1. **visualización** (*digest*) del trabajo
 1. **solicitud** de gestiones administrativas
-1. **información** (abierta al público) de los proyectos
+1. **información** de los proyectos (abierta al público)
 
 **Nota**: No es un software de gestión de proyectos como Trello, Asana, etc., aunque comparte algunas características importantes y quizá pueda evolucionar hacia eso.
 
 ## 1. Registro de actividades
 
-Son un registro de las horas de trabajo de los estudiantes. Contiene una descripción del trabajo realizado y las horas dedicadas. No es un objetivo por sí mismo.
+Son un registro de las horas de trabajo de los estudiantes. Contiene una descripción del trabajo realizado y las horas dedicadas.
 
 ## 2. Jerarquía de objetivos para clasificación de tareas
 
-Cada actividad registrada está asociada con una tarea, que está asociada con la siguiente jerarquía de objetivos y tareas:
+Cada **actividad** registrada está asociada con una **tarea**, que está asociada con la siguiente jerarquía de objetivos y tareas:
 
 ```mermaid
 flowchart LR
@@ -28,7 +28,7 @@ flowchart LR
   D -.- E{{Actividad}}
 ```
 
-Aquí, el TCU se divide en áreas de trabajo (por ejemplo: sistemas de información y talleres educativos) en donde hay proyectos. Cada proyecto tiene objetivos. Para completar los objetivos es necesario realizar tareas, las cuales pueden agruparse en tareas relacionadas con otras tareas.
+De esta forma, el TCU se divide en **áreas de trabajo** (por ejemplo: sistemas de información y talleres educativos) en donde hay **proyectos**. Cada proyecto tiene **objetivos**. Para completar los objetivos es necesario realizar **tareas**, las cuales pueden agruparse en tareas relacionadas con otras tareas. A cada tarea se asocian **actividades** hechas por los estudiantes (horas de TCU).
 
 El siguiente es un ejemplo de la jerarquía de objetivos y tareas:
 
@@ -49,7 +49,7 @@ flowchart TD
 - **Proyecto**: ferias del agricultor
 - **Objetivo**: crear contenidos para la página web
 - **Tarea**: crear blog de información nutricional
-- **Subtarea**: crear un perfil nutricional del tomate
+- **Tarea subordinada**: crear un perfil nutricional del tomate
 - **Actividades**:
   - Búsqueda de información en línea (actividad de 1 hora de persona X)
   - Crear infográfico (actividad de 2 horas de persona Y)
@@ -71,7 +71,7 @@ Divide los proyectos en áreas temáticas. Actualmente hay dos:
 
 - *Editan: profesores*
 
-Unidad de trabajo. Es planteada formalmente con objetivo general, objetivos específicos y demás. Por ejemplo:
+Planificación que consiste en un conjunto de objetivos que se encuentran interrelacionados y coordinados (Wikipedia). Por ejemplo:
 
 - Sistema de información de transporte público
 - Sistema de información de ferias del agricultor
@@ -101,17 +101,73 @@ flowchart LR
 
 ### Actividades
 
-Es la unidad mínima de trabajo, la forma en que se registran horas de TCU, pero no es una tarea por sí misma (una tarea se realiza con una o más actividades). Debe estar asociada con una tarea, que a su vez está asociada con otra tarea o con un objetivo y este con un proyecto. Por ejemplo:
+Es la unidad mínima de trabajo, la forma en que se registran horas de TCU. No es una tarea por sí misma, ya que una tarea puede realizarse con una o más actividades. Cada actividad debe estar asociada con una tarea, que a su vez está asociada con otra tarea o con un objetivo y este con un proyecto. Por ejemplo:
 
-- Actividad: 3 horas de reunión con la comunidad de San Gabriel, para la tarea de recopilación de historia de los buses en el pueblo, en el objetivo de creación de contenido para la página web del proyecto de sistemas de información de transporte público.
+- Actividad: 3 horas de reunión con la comunidad de San Gabriel, para la *tarea* de recopilación de historia de los buses en el pueblo, en el *objetivo* de creación de contenido para la página web del *proyecto* de sistemas de información de transporte público.
 
 ## 3. Asignación y estado de tareas
 
-Una tarea puede tener cero, una o más personas trabajando. Las tareas tienen varios estados: en progreso, ociosa (*idle*), terminada.
+Una tarea puede tener cero, una o más personas trabajando. Las tareas tienen varios estados: en progreso, ociosa (*idle*), finalizada.
 
 ## 4. Paneles de administración
 
-Es la componente de visualización de tareas, en forma de *digest* de la información o *dashboard* administrativo. Debe contestar a las siguientes preguntas de interés:
+Es la componente de visualización de tareas, en forma de *digest* de la información o panel (*dashboard*) administrativo. Debe contestar a las siguientes preguntas de interés:
+
+### Para profesores
+
+##### Por cada proyecto, objetivo, meta o tarea
+
+- ¿Cuántas personas y quiénes están trabajando?
+- ¿Cuántas horas se han dedicado?
+- ¿Cómo se distribuye el trabajo en el tiempo? (ref. GitHub)
+- ¿Quién le está dedicando más tiempo? Ránking de horas por estudiante
+- ¿Cuáles tienen más trabajo (tiempo) dedicado? Ránking por horas
+
+##### Por cada estudiante
+
+- Horas totales
+- Avance del período de ejecución
+- "Factor de avance" (porcentaje de horas / porcentaje de período de ejecución)
+- Tareas (y metas, objetivos y proyectos) en las que está trabajando
+
+También se puede seleccionar una categoría de estas y comparar una selección de estudiantes.
+
+### Para estudiantes
+
+Pueden conocer información como:
+
+- Horas totales
+- Avance del período de ejecución
+- Factor de avance (porcentaje de horas / porcentaje de período de ejecución)
+- Tareas (y metas, objetivos y proyectos) en las que está trabajando
+
+## 5. Solicitudes de gestiones administrativas
+
+Hay varias gestiones administrativas importantes para los estudiantes durante el TCU:
+
+- Solicitud de pasantía en otro TCU
+- Solicitud de finalización de TCU
+- Solicitud de prórroga
+- (Otros que disponga el reglamento)
+
+La página permite registrar estas solicitudes para que la coordinación haga los trámites respectivos (envío de oficios a las VAS).
+
+## 6. Páginas de proyectos
+
+Son páginas de acceso público que muestran los proyectos en los que trabaja el TCU. 
+
+Podrían tener una sección privada donde hay más estadísticas sobre el trabajo hecho en cada proyecto.
+
+- Nombre
+- Descripción (un texto con formato)
+- Ubicación
+- Área (link a áreas)
+- Objetivo general
+- Objetivos específicos (link a objetivos)
+- Tareas (link a tareas)
+- Fotografías
+
+## 7. Páginas del sitio
 
 ### Para profesores
 
@@ -138,23 +194,6 @@ graph TD
 
 **Nota**: C (crear, *create*), R (leer, *read*), U (actualizar, *update*), D (eliminar, *delete*).
 
-#### Por cada proyecto, objetivo, meta o tarea
-
-- ¿Cuántas personas y quiénes están trabajando?
-- ¿Cuántas horas se han dedicado?
-- ¿Cómo se distribuye el trabajo en el tiempo? (ref. GitHub)
-- ¿Quién le está dedicando más tiempo? Ránking de horas por estudiante
-- ¿Cuáles tienen más trabajo (tiempo) dedicado? Ránking por horas
-
-#### Por cada estudiante
-
-- Horas totales
-- Avance del período de ejecución
-- "Factor de avance" (porcentaje de horas / porcentaje de período de ejecución)
-- Tareas (y metas, objetivos y proyectos) en las que está trabajando
-
-También se puede seleccionar una categoría de estas y comparar una selección de estudiantes.
-
 ### Para estudiantes
 
 Este es el acceso que tienen las y los estudiantes en el sitio:
@@ -177,40 +216,6 @@ graph TD
 
 **Nota**: C (crear, *create*), R (ver, *read*), U (actualizar, *update*), D (eliminar, *delete*).
 
-Y pueden conocer información como:
-
-- Horas totales
-- Avance del período de ejecución
-- Factor de avance (porcentaje de horas / porcentaje de período de ejecución)
-- Tareas (y metas, objetivos y proyectos) en las que está trabajando
-
-## 5. Solicitudes de gestiones administrativas
-
-Hay varias gestiones administras importantes para los estudiantes durante el TCU:
-
-- Solicitud de pasantía en otro TCU
-- Solicitud de finalización de TCU
-- Solicitud de prórroga
-- (Otros que disponga el reglamento)
-
-La página permite registrar estas solicitudes para que la coordinación haga los trámites respectivos (envío de oficios a las VAS).
-
-## 6. Páginas de proyectos
-
-Son páginas de acceso público que muestran los proyectos en los que trabaja el TCU. 
-
-Podrían tener una sección privada donde hay más estadísticas sobre el trabajo hecho en cada proyecto.
-
-- Nombre
-- Descripción (un texto con formato)
-- Ubicación
-- Área (link a áreas)
-- Objetivo general
-- Objetivos específicos (link a objetivos)
-- Metas (link a metas)
-- Tareas (link a tablas)
-- Fotografías
-
 # Base de datos
 
 La base de datos está hecha con SQLite3 (por defecto en Django) que para su capacidad de almacenamiento y las demandas del sistema parece suficiente.
@@ -222,38 +227,50 @@ erDiagram
   Objetivos ||--o{ Tareas : "realizados con"
   Tareas ||--o{ Tareas : "subordinadas a otras"
   Tareas ||--o{ Actividades : "donde se registran"
-  
-  Areas {
-    int nombre
-  }
-  Proyectos {
-    int nombre
-  }
-  Objetivos {
-    int nombre
-  }
-  Tareas {
-    string nombre
-    string estudiante FK
-  }
-  Actividades {
-    string estudiante FK
-    string tarea FK
-    string descripcion
-    date fecha
-    int horas
-    string estado
-  }
-  
   Estudiantes ||--o{ Actividades : "realizan"
   Estudiantes }o--o{ Tareas : "asignadas a"
-  
+ 
+  Areas {
+    CharField nombre
+    CharField descripcion
+  }
+  Proyectos {
+    CharField nombre
+    TextField descripcion
+    ForeignKey profesor FK
+    ForeignKey area FK
+    CharField ubicacion
+  }
+  Objetivos {
+    CharField nombre
+    ForeignKey proyecto FK
+    BooleanField general
+  }
+  Tareas {
+    CharField nombre
+    ManyToManyField descripcion
+    ForeignKey estudiante FK
+    ForeignKey subordinado_a FK
+    ForeignKey objetivo FK
+    ForeignKey creado_por FK
+    DateField fecha_creacion
+    CharField estado
+  }
+  Actividades {
+    ForeignKey estudiante FK
+    ForeignKey tarea FK
+    TextField descripcion
+    DateField fecha
+    IntegerField horas
+    CharField estado
+  }
   Estudiantes {
-    string carrera FK
-    string tutor FK
+    CharField nombre
+    ForeignKey carrera FK
+    ForeignKey tutor FK
+    DateField fecha_inicio
+    DateField fecha_final
   }
 ```
 
-Para tomar en cuenta:
-
-- Hacer respaldos regulares.
+**Nota**: algunos de los campos indicados en este diagrama no están implementados todavía.
