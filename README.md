@@ -115,6 +115,29 @@ Es la componente de visualización de tareas, en forma de *digest* de la informa
 
 ### Para profesores
 
+Este es el acceso que tienen las y los profesores en el sitio:
+
+```mermaid
+graph TD
+    A[Página del TCU] -->|Login: Profesor| B(Resumen del sistema de horas)
+    B --> C{Menú}
+    C --> D(Actividades)
+    C --> E(Tareas)
+    C --> F(Proyectos)
+    C --> G(Áreas)
+    C --> H(Trámites)
+    C --> I(Estudiantes)
+
+    D -->|registradas| J(CRUD)
+    E -->|registradas| K(CR)
+    F -->|existentes| L(CRU)
+    G -->|existentes| M(CRUD)
+    H -->|creados| N(CRUD)
+    I -->|matriculados| O(CRUD)
+```
+
+**Nota**: C (crear, *create*), R (leer, *read*), U (actualizar, *update*), D (eliminar, *delete*).
+
 #### Por cada proyecto, objetivo, meta o tarea
 
 - ¿Cuántas personas y quiénes están trabajando?
@@ -130,10 +153,31 @@ Es la componente de visualización de tareas, en forma de *digest* de la informa
 - "Factor de avance" (porcentaje de horas / porcentaje de período de ejecución)
 - Tareas (y metas, objetivos y proyectos) en las que está trabajando
 
-
 También se puede seleccionar una categoría de estas y comparar una selección de estudiantes.
 
 ### Para estudiantes
+
+Este es el acceso que tienen las y los estudiantes en el sitio:
+
+```mermaid
+graph TD
+    A[Página del TCU] -->|Login: Estudiante| B(Resumen del sistema de horas)
+    B --> R{{Registro de actividades}}
+    B --> C{Menú}
+    C --> D(Actividades)
+    C --> E(Tareas)
+    C --> F(Proyectos)
+    C --> G(Trámites)
+
+    D -->|registradas| H(CRUD)
+    E -->|asignadas| I(CRU)
+    F -->|existentes| J(R)
+    G -->|creados| K(CR)
+```
+
+**Nota**: C (crear, *create*), R (ver, *read*), U (actualizar, *update*), D (eliminar, *delete*).
+
+Y pueden conocer información como:
 
 - Horas totales
 - Avance del período de ejecución
@@ -213,8 +257,3 @@ erDiagram
 Para tomar en cuenta:
 
 - Hacer respaldos regulares.
-
-# Requerimientos del servidor
-
-- Ubuntu 22.04 LTS
-- Acceso SSH con VPN
