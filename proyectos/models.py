@@ -13,7 +13,7 @@ class Area(Registro):
 class Proyecto(Registro):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True, null=True)
-    profesor = models.ForeignKey(Profesor, on_delete=models.CASCADE)
+    profesor = models.ManyToManyField(Profesor)
     area = models.ManyToManyField(Area)
     ubicacion = models.CharField(max_length=500)
  
