@@ -14,15 +14,15 @@ class Tarea(Registro):
         ('F', 'Finalizada'),
     )
     nombre = models.CharField(max_length=500)
-    estudiante = models.ManyToManyField(Estudiante)
-    tareaSuperior = models.ForeignKey('self', on_delete=models.SET_NULL, null=True,blank=True)
-    objetivo = models.ForeignKey(Objetivo, on_delete=models.SET_NULL, null=True)
     descripcion = models.TextField(blank=True, null=True)
-    estado = models.CharField(blank=True, null=True, choices=ESTADOS, max_length=1, default='A')
-    urgente = models.BooleanField(default=False)
+    estudiante = models.ManyToManyField(Estudiante)
+    objetivo = models.ForeignKey(Objetivo, on_delete=models.SET_NULL, null=True)
+    tareaSuperior = models.ForeignKey('self', on_delete=models.SET_NULL, null=True,blank=True)
+    creado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     fecha_creacion = models.DateField(auto_now_add=True, blank=True, null=True)
     fecha_limite = models.DateField(blank=True, null=True)
-    creado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    urgente = models.BooleanField(default=False)
+    estado = models.CharField(blank=True, null=True, choices=ESTADOS, max_length=1, default='A')
 
     def __str__(self):
         return self.nombre

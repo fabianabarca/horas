@@ -33,11 +33,11 @@ class Estudiante(models.Model):
         ('I', 'Incompleto'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    tutor = models.ForeignKey(Profesor, blank=True, null=True, on_delete=models.SET_NULL)
     carrera = models.ForeignKey(Carrera, blank=True, null=True, on_delete=models.SET_NULL)
     fechaInicioTCU = models.DateField(blank=True, null=True)
     fechaFinTCU = models.DateField(blank=True, null=True)
     estado = models.CharField(blank=False, null=True, choices=ESTADOS, max_length=1, default='A')
+    tutor = models.ForeignKey(Profesor, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.user.first_name
