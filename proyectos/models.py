@@ -15,7 +15,7 @@ class Proyecto(Registro):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True, null=True)
     profesor = models.ManyToManyField(Profesor)
-    area = models.ManyToManyField(Area)
+    area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True)
     ubicacion = models.CharField(max_length=500)
  
     def __str__(self):
