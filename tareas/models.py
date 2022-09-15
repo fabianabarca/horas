@@ -17,7 +17,7 @@ class Tarea(Registro):
     descripcion = models.TextField(blank=True, null=True)
     estudiante = models.ManyToManyField(Estudiante)
     objetivo = models.ForeignKey(Objetivo, on_delete=models.SET_NULL, null=True)
-    tareaSuperior = models.ForeignKey('self', on_delete=models.SET_NULL, null=True,blank=True)
+    tareaSuperior = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
     creado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     fecha_creacion = models.DateField(auto_now_add=True, blank=True, null=True)
     fecha_limite = models.DateField(blank=True, null=True)
@@ -25,6 +25,8 @@ class Tarea(Registro):
     estado = models.CharField(blank=True, null=True, choices=ESTADOS, max_length=1, default='A')
 
     def __str__(self):
+        if self.nombre==None:
+            return 'Hay un problema aquí'
         return self.nombre
 
 
