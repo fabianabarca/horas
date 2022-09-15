@@ -20,6 +20,7 @@ class Tarea(Registro):
     descripcion = models.CharField(max_length=500)
     estado = models.CharField(blank=True, null=True, choices=ESTADOS, max_length=1, default='A')
     urgente = models.BooleanField(default=False)
+    fecha_limite = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
