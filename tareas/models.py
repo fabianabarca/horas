@@ -17,7 +17,7 @@ class Tarea(Registro):
     estudiante = models.ManyToManyField(Estudiante)
     tareaSuperior = models.ForeignKey('self', on_delete=models.SET_NULL, null=True,blank=True)
     objetivo = models.ForeignKey(Objetivo, on_delete=models.SET_NULL, null=True)
-    descripcion = models.CharField(max_length=500)
+    descripcion = models.TextField(blank=True, null=True)
     estado = models.CharField(blank=True, null=True, choices=ESTADOS, max_length=1, default='A')
     urgente = models.BooleanField(default=False)
     fecha_creacion = models.DateField(auto_now_add=True, blank=True, null=True)
