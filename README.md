@@ -232,28 +232,30 @@ erDiagram
  
   Areas {
     CharField nombre
-    CharField descripcion
+    TextField descripcion
   }
   Proyectos {
+    ForeignKey area FK
     CharField nombre
     TextField descripcion
     ForeignKey profesor FK
-    ForeignKey area FK
     CharField ubicacion
   }
   Objetivos {
-    CharField nombre
+    TextField descripcion
     ForeignKey proyecto FK
     BooleanField general
   }
   Tareas {
     CharField nombre
-    ManyToManyField descripcion
-    ForeignKey estudiante FK
-    ForeignKey subordinado_a FK
+    TextField descripcion
+    ManyToManyField estudiante FK
     ForeignKey objetivo FK
+    ForeignKey subordinado_a FK
     ForeignKey creado_por FK
     DateField fecha_creacion
+    DateField fecha_limite
+    BooleanField urgente
     CharField estado
   }
   Actividades {
@@ -267,9 +269,10 @@ erDiagram
   Estudiantes {
     CharField nombre
     ForeignKey carrera FK
-    ForeignKey tutor FK
     DateField fecha_inicio
     DateField fecha_final
+    CharField estado
+    ForeignKey tutor FK
   }
 ```
 
