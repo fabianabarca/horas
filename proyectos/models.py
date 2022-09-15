@@ -25,9 +25,9 @@ class Proyecto(Registro):
         return self.nombre
 
 class Objetivo(Registro):
-    nombre = models.CharField(max_length=500)
+    descripcion = models.TextField(blank=True, null=True)
     proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)
     general = models.BooleanField(False)
 
     def __str__(self):
-        return self.nombre
+        return self.descripcion
