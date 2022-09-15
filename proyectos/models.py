@@ -10,6 +10,7 @@ class Area(Registro):
     
     def __str__(self):
         return self.nombre
+
 class Proyecto(Registro):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True, null=True)
