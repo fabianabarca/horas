@@ -17,7 +17,7 @@ class Actividad(Registro):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     #proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)
     tarea = models.ForeignKey(Tarea, on_delete=models.SET_NULL,null=True)
-    descripcion = models.CharField(max_length=500)
+    descripcion = models.TextField(blank=True, null=True)
     fecha = models.DateField()
     horas = models.IntegerField()
     estado = models.CharField(max_length=1, choices=ESTADOS, default= "En Revisión")

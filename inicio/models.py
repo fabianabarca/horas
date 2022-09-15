@@ -4,8 +4,8 @@ from django.db import models
 
 class Registro(models.Model):
     enPapelera = models.BooleanField(default='False')
-    fechaPapelera = models.DateField( blank=True,null=True)
-    fechaCreacion = models.DateField(auto_now_add=True,null=True)
+    fechaPapelera = models.DateField( blank=True, null=True)
+    fechaCreacion = models.DateField(auto_now_add=True, null=True)
 
     class Meta:
         abstract = True
