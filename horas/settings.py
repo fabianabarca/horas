@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'dashboard',
     'objetivos',
     
-    
 ]
 
 MIDDLEWARE = [
@@ -155,20 +154,16 @@ DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'staticFiles'),) 
 STATIC_URL = '/static/'
-#STATIC_ROOT  se necesita en desliegue para digital-ocean, puede afectar  que corra  en desarrollo
-#Asi que puede removerse y devolverse según la máquina en  la que  corre
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'staticfiles'),) 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-#STATIC_URL = '/static/'
-#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-#STATIC_ROOT = (os.path.join(BASE_DIR, 'staticfiles'),)
+
 
 MEDIA_URL = '/media/' # Adjuntar archivo
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Adjuntar archivo
 
 
-# Configuración para envio de correos
+# Configuración para envío de correos
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

@@ -6,11 +6,10 @@
  * Licensed under MIT (https://coreui.io/license)
  * --------------------------------------------------------------------------
  */
-
 document.querySelectorAll('.theme-color').forEach(element => {
-  const color = getComputedStyle(element, null).getPropertyValue('background-color')
-  const table = document.createElement('table')
-  table.classList.add('w-100')
+  const color = getComputedStyle(element, null).getPropertyValue('background-color');
+  const table = document.createElement('table');
+  table.classList.add('w-100');
   table.innerHTML = `
       <table class="w-100">
         <tr>
@@ -22,6 +21,7 @@ document.querySelectorAll('.theme-color').forEach(element => {
           <td class="font-weight-bold">${color}</td>
         </tr>
       </table>
-    `
-  element.parentNode.append(table)
-})
+    `;
+  element.parentNode.append(table);
+});
+//# sourceMappingURL=colors.js.map
