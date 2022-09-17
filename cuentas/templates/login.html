@@ -1,33 +1,77 @@
-{% extends 'accounts_base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% extends 'accounts_base.html' %}
 
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Iniciar Sesión</h4>
-    
-    <form method="post">
-     
+{% load static %}
 
-      {% csrf_token %}
+{% load crispy_forms_tags %}
 
-      {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-      
-      <input type="hidden" name="next" value="{{ next }}" />
+{% block main %}
 
-      {{login_form|crispy }}
+<form method="post">
 
-      <button type="submit" class="btn btn-primary btn-block">Continuar</button>
+  {% csrf_token %}
 
-      
-    </form>
-
-    
+  <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card-group d-block d-md-flex row">
+            {% if messages %}
+              {% for message in messages %}
+              <div class="alert alert-danger" role="alert">
+                {{ message }}
+              </div>
+              {% endfor %}
+            {% endif %}
+            <div class="card col-md-7 p-4 mb-0">
+              <div class="card-body">
+                <h1>Inicio de sesión</h1>
+                <p class="text-medium-emphasis">Ingresar a su cuenta</p>
+                <!-- Formulario -->
+                <div class="input-group mb-3"><span class="input-group-text">
+                    <svg class="icon">
+                      <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                    </svg></span>
+                  <input class="form-control" type="text" placeholder="Identificación">
+                </div>
+                <div class="input-group mb-4"><span class="input-group-text">
+                    <svg class="icon">
+                      <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                    </svg></span>
+                  <input class="form-control" type="password" placeholder="Contraseña">
+                </div>
+                <!-- Formulario viejo por adaptar -->
+                <p>Falta esto de adaptar:</p>
+                <input type="hidden" name="next" value="{{ next }}" />
+                {{ login_form|crispy }}
+                <p>Hasta aquí.</p>
+                <!-- Formulario viejo por adaptar -->
+                <div class="row">
+                  <div class="col-6">
+                    <button class="btn btn-dark px-4" type="submit">Continuar</button>
+                  </div>
+                  <div class="col-6 text-end">
+                    <button class="btn btn-link px-0" type="button">¿Olvidó la contraseña?</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card col-md-5 text-white bg-dark py-5">
+              <div class="card-body text-center">
+                <div>
+                  <img src="{% static 'img/tcu_color.png' %}" alt="Logo TCU" width="100">
+                  <h2>Tropicalización <br> de la tecnología</h2>
+                  <p>Este es un sistema de registro de horas y asignación de tareas para estudiantes
+                    matriculados en el proyecto TC-691.</p>
+                  <button class="btn btn-lg btn-outline-light mt-3" type="button">Solicitar registro</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+
+</form>
 
 {% endblock %}
