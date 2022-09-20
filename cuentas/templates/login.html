@@ -2,8 +2,6 @@
 
 {% load static %}
 
-{% load crispy_forms_tags %}
-
 {% block main %}
 
 <form method="post">
@@ -16,35 +14,31 @@
         <div class="col-lg-8">
           <div class="card-group d-block d-md-flex row">
             {% if messages %}
-              {% for message in messages %}
-              <div class="alert alert-danger" role="alert">
-                {{ message }}
-              </div>
-              {% endfor %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">
+              {{ message }}
+            </div>
+            {% endfor %}
             {% endif %}
             <div class="card col-md-7 p-4 mb-0">
               <div class="card-body">
                 <h1>Inicio de sesión</h1>
-                <p class="text-medium-emphasis">Ingresar a su cuenta</p>
+                <p class="text-medium-emphasis">Ingresar a la cuenta creada para estudiantes matriculados y profesores.</p>
                 <!-- Formulario -->
                 <div class="input-group mb-3"><span class="input-group-text">
                     <svg class="icon">
-                      <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                      <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-user"></use>
                     </svg></span>
-                  <input class="form-control" type="text" placeholder="Identificación">
+                  <input class="form-control" type="text" name="username" required id="id_username"
+                    placeholder="Identificación" autofocus>
                 </div>
                 <div class="input-group mb-4"><span class="input-group-text">
                     <svg class="icon">
-                      <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                      <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-lock-locked"></use>
                     </svg></span>
-                  <input class="form-control" type="password" placeholder="Contraseña">
+                  <input class="form-control" type="password" name="password" required id="id_password"
+                    placeholder="Contraseña">
                 </div>
-                <!-- Formulario viejo por adaptar -->
-                <p>Falta esto de adaptar:</p>
-                <input type="hidden" name="next" value="{{ next }}" />
-                {{ login_form|crispy }}
-                <p>Hasta aquí.</p>
-                <!-- Formulario viejo por adaptar -->
                 <div class="row">
                   <div class="col-6">
                     <button class="btn btn-dark px-4" type="submit">Continuar</button>
@@ -61,8 +55,9 @@
                   <img src="{% static 'img/tcu_color.png' %}" alt="Logo TCU" width="100">
                   <h2>Tropicalización <br> de la tecnología</h2>
                   <p>Este es un sistema de registro de horas y asignación de tareas para estudiantes
-                    matriculados en el proyecto TC-691.</p>
-                  <button class="btn btn-lg btn-outline-light mt-3" type="button">Solicitar registro</button>
+                    matriculados en el proyecto TC-691.
+                  </p>
+                  <a class="btn btn-outline-light" href="mailto:tropicalizacion@ucr.ac.cr" target="_blank" role="button">Contacto</a>
                 </div>
               </div>
             </div>
