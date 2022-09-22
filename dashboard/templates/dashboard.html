@@ -9,7 +9,40 @@
 
 {% if  request.user.is_staff %}
 
+<div class="body flex-grow-1 px-3">
+  <div class="container-lg">
+  
+        <div class="card mb-4">
+          <div class="card-header"><strong>Ranking de estudiantes por cantidad de horas</strong></div>
+            <div class="card-body">
+              <div class="c-chart-wrapper">
+                <canvas id="ranking-estudiantes-actividades"></canvas>
+              </div>
+            </div>
+        </div>
 
+        <div class="card mb-4">
+          <div class="card-header"><strong>Horas por proyecto</strong></div>
+            <div class="card-body">
+              <div class="c-chart-wrapper">
+                <canvas id="pie-chart"></canvas>
+              </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header"><strong>Ranking horas por proyecto</strong></div>
+            <div class="card-body">
+              <div class="c-chart-wrapper">
+                <canvas id="bar-chart"></canvas>
+              </div>
+            </div>
+        </div>
+  </div>
+</div>
+
+
+<!--
 <h2 >Ranking de estudiantes por cantidad de horas</h2>
 
 <div id="container" style="width: 50%;">
@@ -32,6 +65,8 @@
   <canvas id="bar-chart"></canvas>
 </div>
 </br></br>
+-->
+
 
 {% endif %}
 </div>
@@ -218,6 +253,7 @@
           
       },
       options: {
+        maintainAspectRatio: false,
          //responsive: true,
           
       }
