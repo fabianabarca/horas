@@ -1,61 +1,67 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% extends 'base.html' %}
+
 {% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block main %}
+
 <script>
   var formSubmitting = false;
-  var setFormSubmitting = function() {  formSubmitting = true; };
+  var setFormSubmitting = function () { formSubmitting = true; };
 
-  window.onload = function() {
-      window.addEventListener("beforeunload", function (e) {
-          if (formSubmitting) {
-              return undefined;
-          }
-  
-          var confirmationMessage = 'It looks like you have been editing something. '
-                                  + 'If you leave before saving, your changes will be lost.';
-          
-          (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-          return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-      });
-      
+  window.onload = function () {
+    window.addEventListener("beforeunload", function (e) {
+      if (formSubmitting) {
+        return undefined;
+      }
+
+      var confirmationMessage = 'It looks like you have been editing something. '
+        + 'If you leave before saving, your changes will be lost.';
+
+      (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+      return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
+
   };
- 
-  </script>
-<script  type="text/javascript">
-  function confirmarRegistro(){
-    var creacion =  confirm('¿Está seguro/a de que desea crear el registro?');
-    if(creacion){
+
+</script>
+<script type="text/javascript">
+  function confirmarRegistro() {
+    var creacion = confirm('¿Está seguro/a de que desea crear el registro?');
+    if (creacion) {
       const collection = document.getElementsByClassName("alert alert-success");
 
       collection[0].setAttribute("style", "display:block");
     }
-    
+
     return creacion
   }
 </script>
 <div class="container">
 
   <div class="alert alert-success" role="alert" style="display:none">
-    <i class="material-icons">done</i>  El registro de actividad se ha realizado exitosamente.
+    <i class="material-icons">done</i> El registro de actividad se ha realizado exitosamente.
   </div>
 
 
-</br>
-  
+  </br>
+
   {% if tipoAccion %}
-    <h1>Agregar Actividad</h1>
+  <h1>Agregar actividad</h1>
   {% else %}
-    <h1>Editar Actividad</h1>
+  <h1>Editar actividad</h1>
   {% endif %}
 
-<form method="post" onsubmit="setFormSubmitting()" id="actividadesForm" data-objetivos-url="{% url 'load_objetivosActividades' %}" data-tareas-url="{% url 'load_tareas' %}" >
+  <form method="post" onsubmit="setFormSubmitting()" id="actividadesForm"
+    data-objetivos-url="{% url 'load_objetivosActividades' %}" data-tareas-url="{% url 'load_tareas' %}">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />
 
-    {{form|crispy }}
-   
+    {{ form|crispy }}
 
-    <button type="submit" onClick = "return confirmarRegistro();"  class="btn btn-primary btn-block">Continuar</button>
-</form>
+    <button type="submit" onClick="return confirmarRegistro();" class="btn btn-primary btn-block">Continuar</button>
+  </form>
   <!--Usando código modificado de https://github.com/akjasim/cb_dj_dependent_dropdown
   Para permitir que el dropdown sea limitado por la eleccion de proyecto
   -->
@@ -67,64 +73,57 @@
       const proyectoId = $(this).val();  // get the selected country ID from the HTML input
 
       $.ajax({                       // initialize an AJAX request
-          url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
-          data: {
-              'proyecto_id': proyectoId       // add the country id to the GET parameters
-          },
-          success: function (data) {   // `data` is the return of the `load_cities` view function
-              $("#id_objetivo").html(data);  // replace the contents of the city input with the data that came from the server
-              /*
+        url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+        data: {
+          'proyecto_id': proyectoId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_objetivo").html(data);  // replace the contents of the city input with the data that came from the server
+          /*
 
-              let html_data = '<option value="">---------</option>';
-              data.forEach(function (objetivo) {
-                  html_data += `<option value="${objetivo.id}">${objetivo.nombre}</option>`
-              });
-              console.log(html_data);
-              $("#id_objetivo").html(html_data);
-    */
-        
-      }
-  });
+          let html_data = '<option value="">---------</option>';
+          data.forEach(function (objetivo) {
+              html_data += `<option value="${objetivo.id}">${objetivo.nombre}</option>`
+          });
+          console.log(html_data);
+          $("#id_objetivo").html(html_data);
+*/
+
+        }
       });
-      
-</script>
+    });
+
+  </script>
 
 
 
   <script>
     $("#id_objetivo").change(function () {
-        console.log("activado accion objetivo");
-        const url = $("#actividadesForm").attr("data-tareas-url");  // get the url of the `load_cities` view
-        const objetivoId = $(this).val();  // get the selected country ID from the HTML input
-  
-        $.ajax({                       // initialize an AJAX request
-            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
-            data: {
-                'objetivo_id': objetivoId       // add the country id to the GET parameters
-            },
-            success: function (data) {   // `data` is the return of the `load_cities` view function
-                $("#id_tarea").html(data);  // replace the contents of the city input with the data that came from the server
-                /*
-  
-                let html_data = '<option value="">---------</option>';
-                data.forEach(function (objetivo) {
-                    html_data += `<option value="${objetivo.id}">${objetivo.nombre}</option>`
-                });
-                console.log(html_data);
-                $("#id_objetivo").html(html_data);
-  */
-              
-            }
-        });
-  
+      console.log("activado accion objetivo");
+      const url = $("#actividadesForm").attr("data-tareas-url");  // get the url of the `load_cities` view
+      const objetivoId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+        data: {
+          'objetivo_id': objetivoId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_tarea").html(data);  // replace the contents of the city input with the data that came from the server
+          /*
+ 
+          let html_data = '<option value="">---------</option>';
+          data.forEach(function (objetivo) {
+              html_data += `<option value="${objetivo.id}">${objetivo.nombre}</option>`
+          });
+          console.log(html_data);
+          $("#id_objetivo").html(html_data);
+*/
+        }
+      });
     });
   </script>
 
-
- 
 </div>
-
-
-
 
 {% endblock %}

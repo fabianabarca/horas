@@ -20,17 +20,17 @@ from django.conf.urls.static import static # Ver los archivos desde admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('inicio.urls')),
-    path('actividades/', include('actividades.urls')),
-    path('cuentas/', include('cuentas.urls')),
-    path('solicitudes/', include('solicitudes.urls')),
-    path('proyectos/', include('proyectos.urls')),
-    path('areas/', include('areas.urls')),
-    path('objetivos/', include('objetivos.urls')),
-    path('estudiantes/', include('estudiantes.urls')),
-    path('tareas/', include('tareas.urls')),
-    path('papelera/', include('papelera.urls')),
-    path('dashboard/', include('dashboard.urls')),
+    path('', include('inicio.urls'), name='inicio'),
+    path('actividades/', include('actividades.urls'), name='actividades'),
+    path('cuentas/', include('cuentas.urls'), name='cuentas'),
+    path('solicitudes/', include('solicitudes.urls'), name='solicitudes'),
+    path('proyectos/', include('proyectos.urls'), name='proyectos'),
+    path('areas/', include('areas.urls'), name='areas'),
+    path('objetivos/', include('objetivos.urls'), name='objetivos'),
+    path('estudiantes/', include('estudiantes.urls'), name='estudiantes'),
+    path('tareas/', include('tareas.urls'), name='tareas'),
+    path('papelera/', include('papelera.urls'), name='papelera'),
+    path('dashboard/', include('dashboard.urls'), name='dashboard'),
 
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Ver los archivos desde admin

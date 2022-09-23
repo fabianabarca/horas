@@ -20,7 +20,7 @@
     content="Sistema de registro de horas y asignación de tareas del trabajo comunal universitario TC-691 Tropicalización de la tecnología.">
   <meta name="author" content="TCU Tropicalización de la tecnología">
   <meta name="keyword" content="TCU, UCR, Tropicalización, Tecnología">
-  <title>Prueba de plantilla</title>
+  <title>{% block page_title %}{% endblock %} | TCU Tropicalización</title>
   <link rel="icon" type="image/png" sizes="192x192" href="{% static 'assets/favicon/android-icon-192x192.png' %}">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon/favicon-32x32.png' %}">
   <link rel="icon" type="image/png" sizes="96x96" href="{% static 'assets/favicon/favicon-96x96.png' %}">
@@ -59,16 +59,16 @@
           </svg> <button type="button" class="btn btn-outline-info">Nuevo registro</button></a></li>
       <li class="nav-divider"></li>
       <li class="nav-title">Horas</li>
-      <li class="nav-item"><a class="nav-link" href="index.html">
+      <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-chart"></use>
           </svg> Resumen</a></li>
-      <li class="nav-item"><a class="nav-link" href="colors.html">
+      <li class="nav-item"><a class="nav-link" href="{% url 'actividades' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-task"></use>
           </svg> Actividades</a></li>
       <li class="nav-title">Proyectos</li>
-      <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+      <li class="nav-group"><a class="nav-link nav-group-toggle" href="{% url 'tareas' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-playlist-add"></use>
           </svg> Tareas</a>
@@ -82,17 +82,17 @@
                 <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-list"></use>
               </svg> Todas las tareas</a></li>
         </ul>
-      <li class="nav-item"><a class="nav-link" href="typography.html">
+      <li class="nav-item"><a class="nav-link" href="{% url 'proyectos' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-library"></use>
           </svg> Proyectos</a></li>
-      <li class="nav-item"><a class="nav-link" href="typography.html">
+      <li class="nav-item"><a class="nav-link" href="{% url 'areas' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-folder-open"></use>
           </svg> Áreas</a></li>
       <li class="nav-divider"></li>
       <li class="nav-title">Trámites</li>
-      <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+      <li class="nav-group"><a class="nav-link nav-group-toggle" href="{% url 'solicitudes' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-description"></use>
           </svg> Solicitudes</a>
@@ -117,7 +117,7 @@
       </li>
       <li class="nav-divider"></li>
       <li class="nav-title">Administración</li>
-      <li class="nav-item"><a class="nav-link" href="index.html">
+      <li class="nav-item"><a class="nav-link" href="{% url 'estudiantes' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-people"></use>
           </svg> Estudiantes</a></li>

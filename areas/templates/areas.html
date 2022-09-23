@@ -1,72 +1,77 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
+{% extends 'base.html' %} 
+
+{% load static %}
+
+{% load crispy_forms_tags %} 
+
+{% block main %} 
+
 <div class="container">
-</br>
+
   <!-- Título -->
-  <h1 class="display-4">Areas</h1>
+  <h1 class="display-4">Áreas</h1>
   <p>
-    Pueden haber multiples areas por proyecto.
+    Las áreas describen temáticas generales de trabajo dentro del TCU, y puede haber uno o más proyectos asociados con
+    cada área.
   </p>
   {% if request.user.is_staff %}
-      <a href="crear_area" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>    Agregar Area</a>
+  <a href="crear_area" type="button" class="btn btn-primary"><i class="cil-energy icon"></i> Agregar nueva área</a>
   {% endif %}
-</br>
-</br>
 
-<!-- Lista de areas -->
-<form method="post">{% csrf_token %}
+  <!-- Lista de áreas -->
+  <form method="post">
+    {% csrf_token %}
 
-  {% if areas %}
-  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de areas</h6>
-  
-   <!-- Tabla -->
-  <div class="table-responsive">
-    <table id="datatable" class="table align-items-center table-hover">
-    <thead class="thead">
-      <tr>
-        {% if request.user.is_staff %}
-            <th scope="col"></th>
-        {% endif %}
-        <th scope="col">Nombre</th>
+    {% if areas %}
+    <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de áreas</h6>
 
-      </tr>
-    </thead>
-    <tbody>
-      {% for area in areas %}
-        {% if not area.enPapelera %}
+    <!-- Tabla -->
+    <div class="table-responsive">
+      <table id="datatable" class="table align-items-center table-hover">
+        <thead class="thead">
           <tr>
             {% if request.user.is_staff %}
-              <td>
-                <!-- Checkbox
+            <th scope="col"></th>
+            {% endif %}
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for area in areas %}
+          {% if not area.enPapelera %}
+          <tr>
+            {% if request.user.is_staff %}
+            <td>
+              <!-- Checkbox
                 <input type="checkbox" name="inputs" value="{{area.id}}" /> <br>
                 -->
-                  <!-- Edit button -->
-                  <a   href="editar_area/{{ area.id }}" class="text-info" role="button">
-                    <i class="fas fa-edit"></i>
-                  </a>
-      
-                  <!-- Delete button -->
-                  <button onclick="return confirm('Está seguro de enviarlo a la papelera?')"  type="submit" 
-                  class="text-danger" value="{{ area.id }}"  name="deleteButton"
-                  style="background-color: transparent;  border: 0;">              
-                  <i class="fas fa-trash-alt"></i>
-                  </button>
-                
-              </td>
+              <!-- Edit button -->
+              <a href="editar_area/{{ area.id }}" class="text-info" role="button">
+                <i class="fas fa-edit"></i>
+              </a>
+
+              <!-- Delete button -->
+              <button onclick="return confirm('Está seguro de enviarlo a la papelera?')" type="submit"
+                class="text-danger" value="{{ area.id }}" name="deleteButton"
+                style="background-color: transparent;  border: 0;">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+
+            </td>
             {% endif %}
             <td>{{ area }}</td>
-            
+            <td>{{ area.descripcion }}</td>
           </tr>
-        {% endif %}
-      {% endfor %}
-  </tbody>
-    </table>
-  </div>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     {% else %}
-  <strong>No hay areas registrados</strong>
-{% endif %}
-</form>
+    <strong>No hay áreas registradas</strong>
+    {% endif %}
+  </form>
 </div>
+
 {% endblock %}
-
-
-
