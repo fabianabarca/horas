@@ -1,150 +1,158 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
+{% extends 'base.html' %}
 
-<div class="container" align-items="stretch">
-</br>
-  <!-- Título -->
-  {% if request.user.is_staff %}
-  <h1 class="display-4">Actividades</h1>
-  {% else %}
-  <h1 class="display-4">Registro de actividades</h1>
-  {% endif %}
-  <p>
-    Las actividades pertenecen a una tarea específica, que son parte de un proyecto.
-  </p>
+{% load static %}
 
-  <!-- Botón para agregar actividades -->
-  {% if request.user.is_staff %}
-  {% else %}
-  <a href="crear_actividad" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>    Agregar actividad</a>
-  {% endif %}
+{% load crispy_forms_tags %}
 
+{% block page_title %} Actividades {% endblock %}
 
-  <!-- Lista de actividades -->
-  <form method="post">{% csrf_token %}
-  
-    <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de actividades</h6>
-    <div class="card">
-      <div class="card-body">
-        <!-- Opciones de aprobación -->
-        {% if request.user.is_staff %}
-        <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
-        <input type="submit" class="btn btn-outline-danger btn-sm" value="Rechazar" name="rechazar">
-        {% endif %}
+{% block main %}
 
-        <!-- Opciones de selección -->
-        <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">
-          Filtros
-        </button>
-        {% if actividades %}
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
-              Seleccionar Todas
-            </button>
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
-              Limpiar Selección
-            </button>
-        {% endif %}
+<!-- Título y descripción -->
+<h1 class="display-4">Actividades</h1>
+<p class="lead">
+  Las horas de trabajo comunal están registradas como actividades asociadas a tareas dentro de los proyectos.
+</p>
 
-        <!-- Opciones de filtrado -->
-        <div id="filtrosdiv" style="display: none;" class="card">
-          <p>
-          <div class="card-body">
-            <form id="filtro" method="post">
-              {% csrf_token %}
-              <input type="hidden" name="next" value="{{ next }}" />
-              <div class="row">
-                {% for field in filtros_form %}
-                <div class="col-sm-4">
-                  <b>{{ field.label_tag }}</b> - {{ field}}
-                  </br>
-                </div>
+<!-- Botón para agregar actividades -->
+<p>
+  <a href="crear_actividad" type="button" class="btn btn-outline-info">Nueva actividad</a>
+</p>
+
+<!-- Lista de actividades -->
+<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de actividades</h6>
+
+<form method="post">
+
+  {% csrf_token %}
+
+  <div class="card">
+    <div class="card-body">
+
+      <!-- Opciones de aprobación -->
+      {% if request.user.is_staff %}
+      <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
+      <input type="submit" class="btn btn-outline-danger btn-sm" value="Rechazar" name="rechazar">
+      {% endif %}
+
+      <!-- Opciones de selección -->
+      <a class="btn btn-outline-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
+        aria-expanded="false" aria-controls="verFiltros">
+        Mostrar filtros
+      </a>
+      {% if actividades %}
+      <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
+        Seleccionar todo
+      </button>
+      <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
+        Limpiar selección
+      </button>
+      {% endif %}
+
+      <!-- Opciones de filtrado -->
+      <div class="collapse" id="verFiltros">
+        <p>
+        <div class="card card-body">
+          <form id="filtro" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div class="row">
+              {% for field in filtros_form %}
+              <div class="col-sm-4">
+                <b>{{ field.label_tag }}</b> {{ field }}
                 </br>
-                {% endfor %}
               </div>
-              <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
-            </form>
-          </div>
-          </p>
-        </div>
-{% if actividades %}
-        <!-- Tabla -->
-        <div class="table-responsive ">
-          <table id="datatable" class="table align-items-center table-hover">
-            <thead class="thead">
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Horas</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Proyecto</th>
-                <th scope="col">Tarea</th>
-                {% if request.user.is_staff %}
-                <th scope="col">Carné</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-                {% endif %}
-                <th scope="col">Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for actividad in actividades %}
-                {% if not actividad.enPapelera %}
-                  <tr>
-                    <td>
-                      <!-- Checkbox -->
-                      <input type="checkbox" name="inputs" value="{{actividad.id}}" /> <br>
-
-                      <!-- Edit button -->
-                      <a  href="editar_actividad/{{ actividad.id }}" class="text-info" role="button">
-                        <i class="fas fa-edit"></i>
-                      </a>
-
-                      <!-- Delete button -->
-                      <button onclick="return confirm('¿Está seguro de enviarlo a la papelera?')"  type="submit"
-                        class="text-danger" value="{{ actividad.id }}" name="deleteButton"
-                        style="background-color: transparent;  border: 0;">
-                        <i class="fas fa-trash-alt"></i>
-                      </button>
-                    </td>
-                    <td>{{ actividad.descripcion }}</td>
-                    <td>{{ actividad.horas }}</td>
-                    <td>{{ actividad.fecha }}</td>
-                    {% if not actividad.tarea.objetivo.proyecto.enPapelera %}
-                      <td>{{actividad.tarea.objetivo.proyecto.nombre}}</td>
-                    {% else %}  
-                    <td></td>
-                    {% endif %}
-                    {% if not actividad.tarea.enPapelera %}
-                      <td>{{ actividad.tarea.nombre}}</td>
-                    {% else %}  
-                    <td></td>
-                    {% endif %}
-                    
-                    
-
-                    {% if request.user.is_staff %}
-                    <td>{{ actividad.estudiante.user.username}}</td>
-                    <td>{{ actividad.estudiante.user.first_name}}</td>
-                    <td>{{ actividad.estudiante.user.last_name}}</td>
-
-                    {% endif %}
-                    <td>{{ actividad.get_estado_display}}</td>
-
-                  </tr>
-                {% endif %}
+              </br>
               {% endfor %}
-            </tbody>
-          </table>
+            </div>
+            <button type="submit" class="btn btn-light">Filtrar</button>
+          </form>
         </div>
+        </p>
+      </div>
+
+      {% if actividades %}
+
+      <!-- Tabla de actividades -->
+      <div class="table">
+        <table id="datatable" class="table align-items-center table-hover">
+          <thead class="thead">
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Horas</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Proyecto</th>
+              <th scope="col">Tarea</th>
+              {% if request.user.is_staff %}
+              <th scope="col">Carné</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Apellido</th>
+              {% endif %}
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for actividad in actividades %}
+            {% if not actividad.enPapelera %}
+            <tr>
+              <td>
+                <!-- Seleccionar -->
+                <input class="form-check-input" type="checkbox" name="inputs" value="{{ actividad.id }}" />
+
+                <!-- Editar -->
+                <a href="editar_actividad/{{ actividad.id }}" class="text-warning" role="button">
+                  <svg class="nav-icon" width="16" height="16">
+                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
+                  </svg>
+                </a>
+
+                <!-- Eliminar -->
+                <a onclick="return confirm('¿Está seguro de enviarlo a la papelera?')" type="submit"
+                  class="text-danger" value="{{ actividad.id }}" name="deleteButton">
+                  <svg class="nav-icon" width="16" height="16">
+                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-trash"></use>
+                  </svg>
+                </a>
+              </td>
+              <td>{{ actividad.descripcion }}</td>
+              <td>{{ actividad.horas }}</td>
+              <td><span class="text-lowercase">{{ actividad.fecha }}</span></td>
+              {% if not actividad.tarea.objetivo.proyecto.enPapelera %}
+              <td>{{actividad.tarea.objetivo.proyecto.nombre}}</td>
+              {% else %}
+              <td></td>
+              {% endif %}
+              {% if not actividad.tarea.enPapelera %}
+              <td>{{ actividad.tarea.nombre }}</td>
+              {% else %}
+              <td></td>
+              {% endif %}
+
+              {% if request.user.is_staff %}
+              <td>{{ actividad.estudiante.user.username }}</td>
+              <td>{{ actividad.estudiante.user.first_name }}</td>
+              <td>{{ actividad.estudiante.user.last_name }}</td>
+              {% endif %}
+
+              <td>{{ actividad.get_estado_display }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
-    
-  {% else %}
-    <p>
-      <strong>No hay actividades registradas</strong>
-    </p>
-  {% endif %}
-  </form>
+  </div>
 
-</div>
+  {% else %}
+  <p>
+    <strong>No hay actividades registradas.</strong>
+  </p>
+  {% endif %}
+
+</form>
+
+<br>
 
 {% endblock %}
