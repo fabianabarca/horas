@@ -1,3 +1,6 @@
+# Secrets
+horas/secrets/
+
 ### Django ###
 *.log
 *.pot

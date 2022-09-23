@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-
+import secrets/secrets.py
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,12 +22,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#(cc)eq+&ml&%0v6fcgyhts+&9fsdl)u9*&k0*uo)zw+&$nxh1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['146.190.48.253', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['146.190.48.253', 'localhost',
+		'127.0.0.1', '192.168.11.130',
+		'tropicalizacion.eie.ucr.ac.cr']
 
 
 # Application definition
@@ -163,13 +164,7 @@ MEDIA_URL = '/media/' # Adjuntar archivo
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Adjuntar archivo
 
 
-# Configuración para envío de correos
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'testertesrter3@gmail.com'
-EMAIL_HOST_PASSWORD = 'xqemaiswwdlqmsdk'
+# Configuracion de correos (secrets.py)
 
 # Custom setting. To email
 RECIPIENT_ADDRESS = 'testertesrter3@gmail.com'
