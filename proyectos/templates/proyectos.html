@@ -13,9 +13,11 @@
 </p>
 
 {% if request.user.is_staff %}
-<a href="crear_proyecto" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i> Agregar
-  Proyecto</a>
-<a href="crear_area" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i> Agregar Area</a>
+<div class="mb-3">
+  <a href="crear_proyecto" type="button" class="btn btn-outline-info"><i class="fas fa-plus-circle"></i> Agregar
+    Proyecto</a>
+  <a href="crear_area" type="button" class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> Agregar Area</a>
+</div>
 {% endif %}
 
 <!-- Lista de proyectos -->
@@ -75,15 +77,19 @@
                     <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
                     -->
                 <!-- Edit button -->
-                <a href="editar_proyecto/{{ proyecto.id }}" class="text-info" role="button">
-                  <i class="fas fa-edit"></i>
+                <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button">
+                  <svg class="nav-icon" width="16" height="16">
+                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
+                  </svg>
                 </a>
 
                 <!-- Delete button -->
                 <button onclick="return confirm('Está seguro de enviarlo a la papelera?')" type="submit"
                   class="text-danger" value="{{ proyecto.id }}" name="deleteButton"
                   style="background-color: transparent;  border: 0;">
-                  <i class="fas fa-trash-alt"></i>
+                  <svg class="nav-icon" width="16" height="16">
+                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-trash"></use>
+                  </svg>
                 </button>
 
               </td>
