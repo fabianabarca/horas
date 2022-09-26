@@ -144,8 +144,8 @@ class CustomAuthenticationForm(AuthenticationForm):
 class ActividadesForm(forms.ModelForm):
     proyecto = forms.ModelChoiceField(queryset=Proyecto.objects.filter(
         enPapelera=False), required=False, widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    objetivo = forms.ModelChoiceField(queryset=Objetivo.objects.filter(
-        enPapelera=False), required=False, widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    #objetivo = forms.ModelChoiceField(queryset=Objetivo.objects.filter(
+    #    enPapelera=False), required=False, widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     field_order = ['proyecto', 'objetivo',
                    'tarea', 'descripcion', 'horas', 'fecha']
 
