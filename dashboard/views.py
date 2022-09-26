@@ -15,9 +15,10 @@ import datetime
 # Create your views here.
 
 @login_required(login_url='/cuentas/login/')
-def dashboard_request(request):
-
-    estudiantes_list = Estudiante.objects.all()
+def resumen(request):
+    '''Recopilación de información y creación de gráficas
+    para el resumen de actividades de estudiantes.
+    '''
     estudiante_actual = Estudiante.objects.get(user=request.user)
 
     # Desde aqui se procesa la barra de progreso de horas por estudiante
@@ -127,6 +128,18 @@ def dashboard_request(request):
     }
 
     return render(request, 'resumen.html', context)
+
+
+@login_required(login_url='/cuentas/login/')
+def panel(request):
+
+    estudiantes_list = Estudiante.objects.all()
+
+    context = {
+        "estudiantes": estudiantes_list,
+    }
+
+    return render(request, 'panel.html', context)
 
 
 def color_list(listaCantidadMiembros):

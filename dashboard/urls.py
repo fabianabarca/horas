@@ -3,5 +3,6 @@ from django.contrib.auth import views
 from django.urls import path
 
 urlpatterns = [
-    path('', dashboard_request, name='dashboard')
+    path('resumen/', resumen, name='resumen'),
+    path('panel/', panel, name='panel')
 ]
