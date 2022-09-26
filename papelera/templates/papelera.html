@@ -1,0 +1,397 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %} {% load static %}
+<div class="container">
+</br>
+  <!-- Título -->
+  <h1 class="display-4">Papelera de archivos borrados</h1>
+</br>
+</br>
+<form method="post">{% csrf_token %}
+</br>
+<h1>Actividades</h1>
+</br>
+{% if actividades %}
+  
+<!-- Tabla -->
+<div class="table-responsive">
+  <table  class="table align-items-center table-hover">
+      <thead class="thead" >
+        <tr>
+          <!--<th scope="col"></th>-->
+          <th scope="col"></th>
+          <th scope="col">Descripcion</th>
+          <th scope="col">Horas</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Proyecto</th>
+          <th scope="col">Tarea</th>
+          {% if request.user.is_staff %}
+          <th scope="col">Carné</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+
+          {% endif %}
+          <th scope="col">Estado</th>
+          
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for actividad in actividades %}
+            {% if actividad.enPapelera %}
+          <tr>
+          <!-- <td> <input type="checkbox" name="inputs"  value="{{actividad.id}}"/> </td> -->
+          <td >
+            <div style="text-align: center;">
+            <!-- Checkbox -->
+            
+              <input type="checkbox" name="inputs" value="{{actividad.id}}" /> </br>
+
+              <!--Return button-->
+              <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ actividad.id }}"  name="returnButtonActividad">
+                <i class="material-icons">undo</i>
+              </button>  </br>
+
+              <!-- Delete button 
+              <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit"
+                class="text-danger" value="{{ actividad.id }}" name="deleteButtonActividad">
+                <i class="material-icons">delete_forever</i>
+              </button>
+              -->
+            </div>
+          </td>
+          <td>  {{ actividad.descripcion }}</td>
+          <td>{{ actividad.horas }}</td>
+          <td>{{ actividad.fecha }}</td>
+          <td>{{ actividad.proyecto.nombre}}</td>
+          <td>{{ actividad.tarea.nombre}}</td>
+
+          {% if request.user.is_staff %}
+          <td>{{ actividad.estudiante.user.username}}</td>
+          <td>{{ actividad.estudiante.user.first_name}}</td>
+          <td>{{ actividad.estudiante.user.last_name}}</td>
+
+          {% endif %}
+          <td>{{ actividad.get_estado_display}}</td>
+          
+         
+          
+
+        </tr>
+            {% endif %}
+        {% endfor %}
+      </tbody>
+  </table>
+</div>
+{% else %}
+  <strong>No hay actividades borradas</strong>
+{% endif %}
+</br>
+
+</br>
+<h1>Tareas</h1>
+</br>
+
+  {% if tareas %}
+  <div class="table-responsive">
+    <table  class="table align-items-center table-hover">
+    <thead class="thead">
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Proyecto</th>
+        <th scope="col">Carné</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tarea in tareas %}
+          {% if tarea.enPapelera %}
+      <tr>
+        <td>
+          <div style="text-align: center;">
+            <!-- Checkbox -->
+            <input type="checkbox" name="inputs" value="{{tarea.id}}" /> <br>
+
+            <!--Return button-->
+            <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ tarea.id }}"  name="returnButtonTarea">
+              <i class="material-icons">undo</i>
+            </button></br>
+
+            <!-- Delete button 
+            <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+            class="text-danger" value="{{ tarea.id }}"  name="deleteButtonTarea">              
+            <i class="material-icons">delete_forever</i>
+            </button>
+            -->
+          </div>
+        </td>
+        <td>{{ tarea.nombre }}</td>
+        <td>{{ tarea.descripcion}}</td>
+        <td>{{ tarea.objetivo.proyecto}}</td>
+        <td>{{ tarea.estudiante.user.username}}</td>
+        <td>{{ tarea.estudiante.user.first_name}}</td>
+        <td>{{ tarea.estudiante.user.last_name}}</td>
+
+        
+      </tr>
+          {% endif %}
+      {% endfor %}
+  </tbody>
+    </table>
+  </div>
+  {% else %}
+  <strong>No hay tareas borrados</strong>
+  {% endif %}
+
+</br>
+{% if request.user.is_staff %}
+
+
+
+    </br>
+    <h1>Objetivos</h1>
+    </br>
+
+      {% if objetivos %}
+      <div class="table-responsive">
+        <table  class="table align-items-center table-hover">
+        <thead class="thead">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Proyecto</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for objetivo in objetivos %}
+            {% if  objetivo.enPapelera %}
+          <tr>
+            <td>
+              <div style="text-align: center;">
+                <!-- Checkbox -->
+                <input type="checkbox" name="inputs" value="{{objetivo.id}}" /> <br>
+
+                <!--Return button-->
+                <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ objetivo.id }}"  name="returnButtonObjetivo">
+                  <i class="material-icons">undo</i>
+                </button></br>
+
+                <!-- Delete button 
+                <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+                class="text-danger" value="{{ objetivo.id }}"  name="deleteButtonObjetivo">              
+                <i class="material-icons">delete_forever</i>
+                </button>
+                -->
+              </div>
+            </td>
+            <td>{{ objetivo }}</td>
+            <td>
+              {% if not objetivo.proyecto.enPapelera %}
+                {{ objetivo.proyecto }}
+              {% endif %}
+            </td>
+
+            
+          </tr>
+              {% endif %}
+          {% endfor %}
+      </tbody>
+        </table>
+      </div>
+      {% else %}
+      <strong>No hay objetivos borrados</strong>
+      {% endif %}
+
+    </br>
+
+
+
+    </br>
+    <h1>Proyectos</h1>
+    </br>
+    {% if proyectos %}
+      <div class="table-responsive">
+        <table  class="table align-items-center table-hover">
+        <thead class="thead">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Profesor</th>
+            <th scope="col">Areas</th>
+            <th scope="col">Ubicación</th>
+            
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for proyecto in proyectos %}
+          {% if proyecto.enPapelera %}
+          <tr>
+            <td>
+              <div style="text-align: center;">
+                <!-- Checkbox -->
+                <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
+
+                <!--Return button-->
+                <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ proyecto.id }}"  name="returnButtonProyecto">
+                  <i class="material-icons">undo</i>
+                </button> </br>
+
+                <!-- Delete button 
+                <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+                class="text-danger" value="{{ proyecto.id }}"  name="deleteButtonProyecto">              
+                <i class="material-icons">delete_forever</i>
+                </button>
+                -->
+              </div>
+            </td>
+            <td>{{ proyecto.nombre }}</td>
+            <td>{{ proyecto.descripcion }}</td>
+            <td>{{ proyecto.profesor.user.first_name }}</td>
+            <td>{% for area in proyecto.area.all %}{{ area.nombre}}<br/>{% endfor %}</td>
+            <td>{{ proyecto.ubicacion }}</td>
+            
+          </tr>
+          {% endif %}
+          {% endfor %}
+      </tbody>
+        </table>
+      </div>
+    {% else %}
+      <strong>No hay proyectos borrados</strong>
+    {% endif %}
+    </br>
+
+    </br>
+    <h1>Areas</h1>
+    </br>
+    {% if areas %}
+    <div class="table-responsive">
+      <table  class="table align-items-center table-hover">
+      <thead class="thead">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Nombre</th>
+          
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for area in areas %}
+        {% if area.enPapelera %}
+        <tr>
+          <td>
+            <div style="text-align: center;">
+              <!-- Checkbox -->
+              <input type="checkbox" name="inputs" value="{{area.id}}" /> <br>
+
+              <!--Return button-->
+              <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ area.id }}"  name="returnButtonArea">
+                <i class="material-icons">undo</i>
+              </button> </br>
+
+              <!-- Delete button 
+              <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+              class="text-danger" value="{{ area.id }}"  name="deleteButtonArea">              
+              <i class="material-icons">delete_forever</i>
+              </button>
+              -->
+            </div>
+          </td>
+          <td>{{ area }}</td>
+          
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+      </table>
+    </div>
+      {% else %}
+    <strong>No hay areas borradas</strong>
+    {% endif %}
+    </br>
+
+{% endif %}
+
+</br>
+<h1>Solicitudes</h1>
+</br>
+{% if solicitudes %}
+  <div class="table-responsive">
+    <table id = "datatable" class="table align-items-center table-hover">
+    <thead class="thead">
+      <tr>
+      <!-- <th scope="col"></th>  -->
+        <th scope="col"></th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Motivo</th>
+        <th scope="col">Fecha</th>
+        {% if request.user.is_staff %}
+        <th scope="col">Carné</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+
+        <th scope="col">Correo de estudiante</th>
+        {% endif %}
+        <th scope="col">Estado</th>
+        
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for solicitud in solicitudes %}
+      {% if solicitud.enPapelera %}
+      <tr>
+       <!-- <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td> -->
+        <td>
+          <div style="text-align: center;">
+            <!-- Checkbox -->
+            <input type="checkbox" name="inputs" value="{{solicitud.id}}" /> <br>
+
+              <!--Return button-->
+              <button style="background-color: transparent;  border: 0;"   type="submit" class="text-info"    value="{{ solicitud.id }}"  name="returnButtonSolicitud">
+                <i class="material-icons">undo</i>
+              </button> </br>
+
+              <!-- Delete button 
+              <button style="background-color: transparent;  border: 0;" onclick="return confirm('¿Está seguro de borrar este registro permanentemente\?')"  type="submit" 
+              class="text-danger" value="{{ solicitud.id }}"  name="deleteButtonSolicitud">              
+                <i class="material-icons">delete_forever</i>
+              </button>
+              -->
+          </div>
+        </td>
+        <td>{{ solicitud.get_tipo_display }}</td>
+
+        <td>{{ solicitud.motivo }}</td>
+        <td>{{ solicitud.fecha }}</td>
+        {% if request.user.is_staff %}
+        <td>{{ solicitud.estudiante.user.username}}</td>
+        <td>{{ solicitud.estudiante.user.first_name}}</td>
+        <td>{{ solicitud.estudiante.user.last_name}}</td>
+
+        <td>{{ solicitud.estudiante.user.email}}</td>
+
+        {% endif %}
+        <td>{{ solicitud.get_estado_display}}</td>
+        
+      </tr>
+      {% endif %}
+      {% endfor %}
+  </tbody>
+    </table>
+  </div>
+{% else %}
+  <strong>No hay solicitudes borradas</strong>
+{% endif %}
+</br>
+
+
+</form>
+</div>
+{% endblock %}
+
+
+

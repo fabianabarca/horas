@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import secrets/secrets.py
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,12 +22,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#(cc)eq+&ml&%0v6fcgyhts+&9fsdl)u9*&k0*uo)zw+&$nxh1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['146.190.48.253', 'localhost',
+		'127.0.0.1', '192.168.11.130',
+		'tropicalizacion.eie.ucr.ac.cr']
 
 
 # Application definition
@@ -43,9 +45,13 @@ INSTALLED_APPS = [
     'actividades',
     'solicitudes',
     'proyectos',
+    'areas',
     'estudiantes',
     'tareas',
-    'crispy_forms'
+    'papelera',
+    'crispy_forms',
+    'dashboard',
+    'objetivos',
     
 ]
 
@@ -142,13 +148,23 @@ USE_TZ = True
 
 LOGIN_REDIRECT_URL =  '/'
 
-DATE_INPUT_FORMATS = ('%d-%m-%Y')
+#DATE_INPUT_FORMATS = ('%d-%m-%Y')
+DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'staticfiles'),) 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 MEDIA_URL = '/media/' # Adjuntar archivo
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Adjuntar archivo
+
+
+# Configuracion de correos (secrets.py)
+
+# Custom setting. To email
+RECIPIENT_ADDRESS = 'testertesrter3@gmail.com'

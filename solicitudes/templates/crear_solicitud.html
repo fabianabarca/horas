@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% load static %}
 <script>
   var formSubmitting = false;
   var setFormSubmitting = function() { formSubmitting = true; };
@@ -17,9 +18,31 @@
       });
   };
   </script>
+
+<script  type="text/javascript">
+  function confirmarRegistro(){
+    
+    var creacion =  confirm('¿Está seguro/a de que desea crear el registro?');
+    if(creacion){
+      const collection = document.getElementsByClassName("alert alert-success");
+
+      collection[0].setAttribute("style", "display:block");
+    }
+    
+    return creacion
+  }
+</script>
 <div class="container">
+  <div class="alert alert-success" role="alert" style="display:none">
+    <i class="material-icons">done</i>  El registro de solicitud se ha realizado exitosamente.
+  </div>
 </br>
-  <h1>Crear Gestion</h1>
+  
+  {% if tipoAccion %}
+    <h1>Crear Solicitud</h1>
+  {% else %}
+    <h1>Editar Solicitud</h1>
+  {% endif %}
 
 <form enctype="multipart/form-data" method="post" onsubmit="setFormSubmitting()">
     {% csrf_token %}
@@ -29,7 +52,7 @@
     {{solicitudArchivo_form|crispy }}
    
 
-    <button type="submit" class="btn btn-primary btn-block">Continuar</button>
+    <button type="submit"  onClick = "return confirmarRegistro();" class="btn btn-primary btn-block">Continuar</button>
 </form>
 </div>
 

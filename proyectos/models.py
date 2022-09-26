@@ -1,15 +1,21 @@
 from cuentas.models import Profesor
+from inicio.models import Registro
 from django.db import models
-class Categoria(models.Model):
+
+# Create your models here.
+
+class Area(Registro):
     nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True, null=True)
     
     def __str__(self):
         return self.nombre
-class Proyecto(models.Model):
+
+class Proyecto(Registro):
     nombre = models.CharField(max_length=100)
-    descripcion = models.CharField(max_length=500)
-    profesor = models.ForeignKey(Profesor, on_delete=models.CASCADE)
-    categoria = models.ManyToManyField(Categoria)
+    descripcion = models.TextField(blank=True, null=True)
+    profesor = models.ManyToManyField(Profesor)
+    area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True)
     ubicacion = models.CharField(max_length=500)
  
     def __str__(self):
@@ -18,3 +24,11 @@ class Proyecto(models.Model):
 
     def __unicode__(self):
         return self.nombre
+
+class Objetivo(Registro):
+    descripcion = models.TextField(blank=True, null=True)
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)
+    general = models.BooleanField(False)
+
+    def __str__(self):
+        return self.descripcion

@@ -1,12 +1,14 @@
 from cuentas.models import Estudiante
+from inicio.models import Registro
 from django.db import models
 
 # Create your models here.
-class Solicitud(models.Model):
+class Solicitud(Registro):
     TIPOS = (
         ('F', 'Finalización'),
-        ('M', 'Prórroga'),
-        ('C', 'Corrección'),
+        ('P', 'Prórroga'),
+        ('A', 'Pasantía'),
+        ('O', 'Otros'),
     )
     ESTADOS = (
         ('A', 'Aprobado'),
@@ -21,5 +23,5 @@ class Solicitud(models.Model):
     #archivo = models.FileField(upload_to='documents/', blank=True) # Adjuntar archivo
 
 class SolicitudArchivo(models.Model):
-    archivo = models.FileField(upload_to='documents/', blank=True) # Adjuntar archivo
+    archivo = models.FileField(upload_to='documents/', blank=True, null=True) # Adjuntar archivo
     solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)

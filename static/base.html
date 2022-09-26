@@ -1,79 +1,259 @@
 {% load static %}
+
 <!DOCTYPE html>
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v4.2.1
+* @link https://coreui.io
+* Copyright (c) 2022 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://coreui.io/license)
+-->
+<!-- Breadcrumb-->
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="{%  static  'css/style.css'  %}" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    <script
-      type="text/javascript"
-      src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
-    ></script>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css"
-    />
-    <script
-      type="text/javascript"
-      charset="utf8"
-      src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"
-    ></script>
-    <base href="http://127.0.0.1:8000/" />
-  </head>
-  <body>
-    <!--Navbar-->
-    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-      <a class="navbar-brand" href="#">Registro de Actividades TCU-691</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarText"
-        aria-controls="navbarText"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarText">
-        {% if user.is_authenticated %}
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="">Registro de Actividades</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/solicitudes/"
-              >Gestiones Administrativas</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/tareas/">Tareas</a>
-          </li>
-          {% if request.user.is_staff %}
-          <li class="nav-item">
-            <a class="nav-link" href="/proyectos/">Proyectos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/estudiantes/">Estudiantes</a>
-          </li>
-          {% endif %}
+
+<head>
+  <base href="./">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta name="description"
+    content="Sistema de registro de horas y asignación de tareas del trabajo comunal universitario TC-691 Tropicalización de la tecnología.">
+  <meta name="author" content="TCU Tropicalización de la tecnología">
+  <meta name="keyword" content="TCU, UCR, Tropicalización, Tecnología">
+  <title>{% block page_title %}{% endblock %} | TCU Tropicalización</title>
+  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'assets/favicon/android-icon-192x192.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="96x96" href="{% static 'assets/favicon/favicon-96x96.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/favicon/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'assets/favicon/manifest.json' %}">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="{% static 'assets/favicon/ms-icon-144x144.png' %}">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Vendors styles-->
+  <link rel="stylesheet" href="{% static 'vendors/simplebar/css/simplebar.css' %}">
+  <link rel="stylesheet" href="{% static 'css/vendors/simplebar.css' %}">
+  <!-- Main styles for this application -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <!-- We use those styles to show code examples, you should remove them in your application.-->
+  <link href="{% static 'css/examples.css' %}" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Menú lateral -->
+  <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+    <div class="sidebar-brand d-none d-md-flex">
+      <img class="sidebar-brand-full" src="{% static 'img/tcu_color.png' %}" width="90" alt="Logo TCU">
+      <small><strong>Tropicalización</strong> <br> de la tecnología</small>
+      <!--
+        <svg class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
+          <use xlink:href="{% static 'assets/brand/coreui.svg' %}#full"></use>
+        </svg>-->
+      <svg class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
+        <use xlink:href="{% static 'assets/brand/coreui.svg' %}#signet"></use>
+      </svg>
+    </div>
+    <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
+      <li class="nav-item"><a class="nav-link" href="{% url 'crear_actividad' %}">
+          <svg class="nav-icon">
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-plus"></use>
+          </svg> <button type="button" class="btn btn-outline-info">Nuevo registro</button></a></li>
+      <li class="nav-divider"></li>
+      <li class="nav-title">Horas</li>
+      {% if request.user.is_staff %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'panel' %}">
+          <svg class="nav-icon">
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-chart"></use>
+          </svg> Panel</a></li>
+      {% else %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'resumen' %}">
+        <svg class="nav-icon">
+          <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-chart"></use>
+        </svg> Resumen</a></li>
+      {% endif %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'actividades' %}">
+          <svg class="nav-icon">
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-task"></use>
+          </svg> Actividades</a></li>
+      <li class="nav-title">Proyectos</li>
+      <li class="nav-group"><a class="nav-link nav-group-toggle" href="{% url 'tareas' %}">
+          <svg class="nav-icon">
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-playlist-add"></use>
+          </svg> Tareas</a>
+        <ul class="nav-group-items">
+          <li class="nav-item"><a class="nav-link" href="login.html" target="_top">
+              <svg class="nav-icon">
+                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-bookmark"></use>
+              </svg> Mis tareas</a></li>
+          <li class="nav-item"><a class="nav-link" href="register.html" target="_top">
+              <svg class="nav-icon">
+                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-list"></use>
+              </svg> Todas las tareas</a></li>
         </ul>
-        <ul class="navbar-nav ml-auto">
-          <span class="navbar-text"> Bienvenido, {{user.username}} </span>
-          <li class="nav-item">
-            <a class="nav-link" href="cuentas/logout/">Logout</a>
+      <li class="nav-item"><a class="nav-link" href="{% url 'proyectos' %}">
+          <svg class="nav-icon">
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-library"></use>
+          </svg> Proyectos</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'areas' %}">
+          <svg class="nav-icon">
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-folder-open"></use>
+          </svg> Áreas</a></li>
+      <li class="nav-divider"></li>
+      <li class="nav-title">Trámites</li>
+      <li class="nav-group"><a class="nav-link nav-group-toggle" href="{% url 'solicitudes' %}">
+          <svg class="nav-icon">
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-description"></use>
+          </svg> Solicitudes</a>
+        <ul class="nav-group-items">
+          <li class="nav-item"><a class="nav-link" href="login.html" target="_top">
+              <svg class="nav-icon">
+                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-clock"></use>
+              </svg> Prórroga</a></li>
+          <li class="nav-item"><a class="nav-link" href="register.html" target="_top">
+              <svg class="nav-icon">
+                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-transfer"></use>
+              </svg> Pasantía</a></li>
+          <li class="nav-item"><a class="nav-link" href="404.html" target="_top">
+              <svg class="nav-icon">
+                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-check"></use>
+              </svg> Finalización</a></li>
+          <li class="nav-item"><a class="nav-link" href="500.html" target="_top">
+              <svg class="nav-icon">
+                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-speech"></use>
+              </svg> Otros</a></li>
+        </ul>
+      </li>
+      <li class="nav-divider"></li>
+      <li class="nav-title">Administración</li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'estudiantes' %}">
+          <svg class="nav-icon">
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-people"></use>
+          </svg> Estudiantes</a></li>
+    </ul>
+    <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
+  </div>
+  <!-- Menú superior -->
+  <div class="wrapper d-flex flex-column min-vh-100 bg-light">
+    <header class="header header-sticky mb-4">
+      <div class="container-fluid">
+        <button class="header-toggler px-md-0 me-md-3" type="button"
+          onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
+          <svg class="icon icon-lg">
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-menu"></use>
+          </svg>
+        </button><a class="header-brand d-md-none" href="#">
+          <svg width="118" height="46" alt="CoreUI Logo">
+            <use xlink:href="{% static 'assets/brand/coreui.svg' %}#full"></use>
+          </svg></a>
+        <ul class="header-nav d-none d-md-flex">
+          <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+        </ul>
+        <ul class="header-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">
+              <svg class="icon icon-lg">
+                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-bell"></use>
+              </svg></a></li>
+          <li class="nav-item"><a class="nav-link" href="#">
+              <svg class="icon icon-lg">
+                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-envelope-open"></use>
+              </svg></a></li>
+        </ul>
+        <ul class="header-nav ms-3">
+          <li class="nav-item dropdown"><a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button"
+              aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-dark btn-sm">{{ user.username }}</button>
+              <!--
+              <div class="avatar avatar-md"><img class="avatar-img" src="{% static 'assets/img/avatars/5.jpg' %}"
+                  alt="user@email.com"></div>-->
+            </a>
+            <div class="dropdown-menu dropdown-menu-end pt-0">
+              <div class="dropdown-header bg-light py-2">
+                <div class="fw-semibold">Account</div>
+              </div><a class="dropdown-item" href="#">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-bell"></use>
+                </svg> Updates<span class="badge badge-sm bg-info ms-2">42</span></a><a class="dropdown-item" href="#">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-envelope-open"></use>
+                </svg> Messages<span class="badge badge-sm bg-success ms-2">42</span></a><a class="dropdown-item"
+                href="#">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-task"></use>
+                </svg> Tasks<span class="badge badge-sm bg-danger ms-2">42</span></a><a class="dropdown-item" href="#">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-comment-square"></use>
+                </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span></a>
+              <div class="dropdown-header bg-light py-2">
+                <div class="fw-semibold">Settings</div>
+              </div><a class="dropdown-item" href="#">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-user"></use>
+                </svg> Profile</a><a class="dropdown-item" href="#">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-settings"></use>
+                </svg> Settings</a><a class="dropdown-item" href="#">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-credit-card"></use>
+                </svg> Payments<span class="badge badge-sm bg-secondary ms-2">42</span></a><a class="dropdown-item"
+                href="#">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-file"></use>
+                </svg> Projects<span class="badge badge-sm bg-primary ms-2">42</span></a>
+              <div class="dropdown-divider"></div><a class="dropdown-item" href="#">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-lock-locked"></use>
+                </svg> Lock Account</a><a class="dropdown-item" href="{% url 'logout' %}">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-account-logout"></use>
+                </svg> Cerrar sesión</a>
+            </div>
           </li>
         </ul>
       </div>
-    </nav>
-    {% block main %} {% endblock %} {% endif %}
-  </body>
+      <div class="header-divider"></div>
+      <div class="container-fluid">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+              <!-- if breadcrumb is single--><a href="#">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <!-- if breadcrumb is single--><a href="#">Theme</a>
+            </li>
+            <li class="breadcrumb-item active"><span>Colors</span></li>
+          </ol>
+        </nav>
+      </div>
+    </header>
+
+    {% if user.is_authenticated %}
+
+
+    <div class="body flex-grow-1 px-3">
+      <div class="container-lg">
+
+        {% block main %}
+
+        {% endblock %}
+
+      </div>
+    </div>
+
+    {% endif %}
+    <footer class="footer">
+      <div>© 2022 TC-691 <a href="/acerca/" target="_blank">Tropicalización de la tecnología</a></div>
+      <div class="ms-auto"><a href="https://www.ucr.ac.cr/" target="_blank">Universidad de Costa Rica</a></div>
+    </footer>
+  </div>
+  <!-- CoreUI and necessary plugins-->
+  <script src="{% static 'vendors/@coreui/coreui/js/coreui.bundle.min.js' %}"></script>
+  <script src="{% static 'vendors/simplebar/js/simplebar.min.js' %}"></script>
+  <!-- Plugins and scripts required by this view-->
+  <script src="{% static 'vendors/@coreui/utils/js/coreui-utils.js' %}"></script>
+  <script src="{% static 'js/colors.js' %}"></script>
   <script type="text/javascript">
+
     // Select all check boxes : Setting the checked property to true in checkAll() function
     function checkAll() {
       var items = document.getElementsByName("inputs");
@@ -89,6 +269,37 @@
       }
     }
 
+    function toggleCheck() {
+      var items = document.getElementsByName("inputs");
+      var checktoggle = false;
+      var checkBoxCounter = 0;
+      var checkCounter = 0;
+      for (var i = 0; i < items.length; i++) {
+
+        if (items[i].type == "checkbox") {
+          checkBoxCounter++;
+          if (items[i].checked == true) {
+            checkCounter++;
+          }
+        }
+        console.log(checkBoxCounter);
+        console.log(checkCounter);
+
+      }
+      if (checkCounter > 0 && checkCounter < checkBoxCounter) {
+        checkAll();
+      }
+
+      if (checkCounter == checkBoxCounter) {
+        uncheckAll();
+      }
+
+      if (checkCounter == 0) {
+        checkAll();
+      }
+
+    }
+
     function esconderFiltros() {
       var x = document.getElementById("filtrosdiv");
       if (x.style.display === "none") {
@@ -98,8 +309,13 @@
       }
     }
 
+    function borrarRegistro(value) {
+      Entry.objects.all();
+      console.log(value);
+    }
+
     $(document).ready(function () {
-      $("#datatable").DataTable({
+      $("table.table").DataTable({
         language: {
           lengthMenu: "Mostrar _MENU_ filas por página",
           zeroRecords: "No hay datos disponibles - sorry",
@@ -119,4 +335,7 @@
       });
     });
   </script>
+
+</body>
+
 </html>

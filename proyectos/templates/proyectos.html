@@ -1,65 +1,125 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
-<div class="container">
-</br>
-  <h1>Proyectos</h1>
-  <a href="proyectos\crear_proyecto" class="btn btn-info" role="button">Agregar Proyecto</a>
-  <a href="proyectos\crear_categoria" class="btn btn-info" role="button">Agregar Categoria</a>
-  <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
-</br>
-</br>
-<div id="filtrosdiv" style = 'display: none;'>
-<form method="post">
-  {% csrf_token %}
-  <input type="hidden" name="next" value="{{ next }}" />
+{% extends 'base.html' %}
 
- 
-  <div class="row">
-  {% for field in filtros_form  %}
-    <div class="col-sm-4">
-      <b>{{ field.label_tag }}</b> - {{ field}} 
-    </br>
+{% load crispy_forms_tags %}
 
-    </div>
-</br>
-  {% endfor %}
+{% block main %}
 
- 
-  </div>  
-  <button type="submit" style = 'width: 200px; height:40px;' class="btn btn-primary btn-block">Filtrar</button>
- 
+{% load static %}
 
-  
-</form>
-</br>
+<!-- Título -->
+<h1 class="display-4">Proyectos</h1>
+<p class="lead">
+  Los proyectos pueden pertenecer a varias áreas.
+</p>
+
+{% if request.user.is_staff %}
+<div class="mb-3">
+  <a href="crear_proyecto" type="button" class="btn btn-outline-info"><i class="fas fa-plus-circle"></i> Agregar
+    proyecto</a>
+  <a href="crear_area" type="button" class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> Agregar área</a>
 </div>
-  {% if proyectos %}
-  <table id="datatable" class="table table-striped table-bordered">
-    <thead class="thead">
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Descripción</th>
-        <th scope="col">Profesor</th>
-        <th scope="col">Categorias</th>
-        <th scope="col">Ubicación</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for proyecto in proyectos %}
-      <tr>
-        <td>{{ proyecto.nombre }}</td>
-        <td>{{ proyecto.descripcion }}</td>
-        <td>{{ proyecto.profesor.user.first_name }}</td>
-        <td>{% for categoria in proyecto.categoria.all %}{{ categoria.nombre}}<br/>{% endfor %}</td>
-        <td>{{ proyecto.ubicacion }}</td>
-      </tr>
-      {% endfor %}
-  </tbody>
-    </table>
-    {% else %}
-  <strong>No hay proyectos registrados</strong>
 {% endif %}
-</div>
+
+<!-- Lista de proyectos -->
+<form method="post">{% csrf_token %}
+
+  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h6>
+  <div class="card">
+    <div class="card-body">
+      <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">Mostrar filtros</button>
+      <!-- Opciones de filtrado -->
+      <div id="filtrosdiv" style='display: none;' class="card">
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div class="row">
+              {% for field in filtros_form %}
+              <div class="col-sm-4">
+                <b>{{ field.label_tag }}</b> - {{ field}}
+                </br>
+              </div>
+              </br>
+              {% endfor %}
+            </div>
+
+            <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
+
+          </form>
+        </div>
+        </br>
+      </div>
+      {% if proyectos %}
+      <!-- Tabla -->
+      <div class="table-responsive">
+        <table id="datatable" class="table align-items-center table-hover">
+          <thead class="thead">
+            <tr>
+              {% if request.user.is_staff %}
+              <th scope="col"></th>
+              {% endif %}
+              <th scope="col">Nombre</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Profesor</th>
+              <th scope="col">Áreas</th>
+              <th scope="col">Ubicación</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for proyecto in proyectos %}
+            {% if not proyecto.enPapelera %}
+
+            <tr>
+              {% if request.user.is_staff %}
+              <td>
+                <!-- Checkbox 
+                    <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
+                    -->
+                <!-- Edit button -->
+                <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button">
+                  <svg class="nav-icon" width="16" height="16">
+                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
+                  </svg>
+                </a>
+
+                <!-- Delete button -->
+                <button onclick="return confirm('Está seguro de enviarlo a la papelera?')" type="submit"
+                  class="text-danger" value="{{ proyecto.id }}" name="deleteButton"
+                  style="background-color: transparent;  border: 0;">
+                  <svg class="nav-icon" width="16" height="16">
+                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-trash"></use>
+                  </svg>
+                </button>
+
+              </td>
+              {% endif %}
+              <td>{{ proyecto.nombre }}</td>
+              <td>{{ proyecto.descripcion }}</td>
+              <td>{{ proyecto.profesor.user.first_name }}</td>
+
+              <td>
+                {% for area in proyecto.area.all %}
+                {% if not area.enPapelera %}
+                {{ area.nombre}}<br />
+                {% endif %}
+                {% endfor %}
+              </td>
+
+              <td>{{ proyecto.ubicacion }}</td>
+
+            </tr>
+            {% endif %}
+
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <strong>No hay proyectos registrados</strong>
+  {% endif %}
+</form>
+
 {% endblock %}
-
-
-

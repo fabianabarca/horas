@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block main %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+<h1 class="display-4">Panel de resumen de horas</h1>
+
+{% if request.user.is_staff %}
+
+<h3>Ranking de estudiantes por cantidad de horas</h3>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Horas de estudiantes</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Ránking por cantidad de horas</h6>
+    <div id="container" style="width: 50%;">
+      <canvas id="ranking-estudiantes-actividades"></canvas>
+    </div>
+  </div>
+</div>
+
+<h3>Horas por proyecto</h3>
+
+<div id="container" style="width: 25%;">
+  <canvas id="pie-chart"></canvas>
+</div>
+
+<h3>Ranking horas por proyecto</h3>
+
+<div id="container" style="width: 50%;">
+  <canvas id="bar-chart"></canvas>
+</div>
+</br></br>
+
+{% endif %}
+
+<!--
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+  const ctxRanking = document.getElementById('ranking-estudiantes-actividades').getContext('2d');
+  var listData = "{{ dataRankingEstudiante|safe }}"
+  var listLabels = "{{ labelsRankingEstudiante|safe }}"
+  var colorList = "{{ colorListRankingEstudiante|safe }}"
+
+  listData = listData.slice(1);
+  listData = listData.slice(0, listData.length - 1);
+  listLabels = listLabels.slice(1);
+  listLabels = listLabels.slice(0, listLabels.length - 1);
+  colorList = colorList.slice(1);
+  colorList = colorList.slice(0, colorList.length - 1);
+
+  var newlistData = listData.split(',')
+  var newlistLabels = listLabels.split(',')
+  var newcolorList = colorList.split(', ')
+
+  count = 0
+  for (color in newcolorList) {
+
+    newcolorList[count] = newcolorList[count].slice(1)
+    newcolorList[count] = newcolorList[count].slice(0, newcolorList[count].length - 1)
+    console.log(newcolorList[count])
+    count = count + 1
+
+  }
+
+  const myChartRanking = new Chart(ctxRanking, {
+    type: 'bar',
+    data: {
+      labels: newlistLabels,
+      datasets: [{
+
+        barThickness: 30,
+        label: 'Horas por estudiantes',
+        data: newlistData,
+        backgroundColor: newcolorList
+      }],
+      //borderWidth: 20
+
+    },
+    options: {
+
+      //responsive: true,
+      indexAxis: 'y',
+      scales: {
+
+        y: {
+          /*ticks: {
+            
+            beginAtZero: true,
+            stepSize: 1
+          },*/
+
+        },
+      },
+
+
+
+    }
+
+  });
+</script>
+
+
+<script>
+
+  const ctx = document.getElementById('bar-chart').getContext('2d');
+  var listData = "{{ data|safe }}"
+  var listLabels = "{{ labels|safe }}"
+  var colorList = "{{ colorList|safe }}"
+
+  listData = listData.slice(1);
+  listData = listData.slice(0, listData.length - 1);
+  listLabels = listLabels.slice(1);
+  listLabels = listLabels.slice(0, listLabels.length - 1);
+  colorList = colorList.slice(1);
+  colorList = colorList.slice(0, colorList.length - 1);
+
+  var newlistData = listData.split(',')
+  var newlistLabels = listLabels.split(',')
+  var newcolorList = colorList.split(', ')
+
+  count = 0
+  for (color in newcolorList) {
+
+    newcolorList[count] = newcolorList[count].slice(1)
+    newcolorList[count] = newcolorList[count].slice(0, newcolorList[count].length - 1)
+    console.log(newcolorList[count])
+    count = count + 1
+
+  }
+
+  const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: newlistLabels,
+      datasets: [{
+
+        barThickness: 30,
+        label: 'Horas por proyectos',
+        data: newlistData,
+        backgroundColor: newcolorList
+      }],
+      //borderWidth: 20
+
+    },
+    options: {
+
+      //responsive: true,
+      indexAxis: 'y',
+      scales: {
+
+        y: {
+          /*ticks: {
+            
+            beginAtZero: true,
+            stepSize: 1
+          },*/
+
+        },
+      },
+
+
+
+    }
+
+  });
+</script>
+
+<script>
+
+  const ctx2 = document.getElementById('pie-chart').getContext('2d');
+  var listData = "{{ data|safe }}"
+  var listLabels = "{{ labels|safe }}"
+  var colorList = "{{ colorList|safe }}"
+
+  console.log(colorList)
+  colorList = colorList.slice(1);
+  colorList = colorList.slice(0, colorList.length - 1);
+
+  listData = listData.slice(1);
+  listData = listData.slice(0, listData.length - 1);
+  listLabels = listLabels.slice(1);
+  listLabels = listLabels.slice(0, listLabels.length - 1);
+
+  var newlistData = listData.split(',')
+  var newlistLabels = listLabels.split(',')
+  var newcolorList = colorList.split(', ')
+
+  console.log(newcolorList)
+  count = 0
+  for (color in newcolorList) {
+
+    newcolorList[count] = newcolorList[count].slice(1)
+    newcolorList[count] = newcolorList[count].slice(0, newcolorList[count].length - 1)
+    console.log(newcolorList[count])
+    count = count + 1
+
+  }
+  console.log(newcolorList)
+  const myChart2 = new Chart(ctx2, {
+    type: 'pie',
+    data: {
+
+      datasets: [{
+
+        data: newlistData,
+        backgroundColor: newcolorList,
+        label: 'Horas por proyectos'
+
+
+      }],
+      labels: newlistLabels
+
+    },
+    options: {
+      //responsive: true,
+
+    }
+  });
+</script>
+{% endblock %}

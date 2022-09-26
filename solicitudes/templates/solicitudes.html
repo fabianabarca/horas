@@ -1,98 +1,150 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
 
-<div class="container">
-</br>
-  <h1>Gestiones Administrativas</h1>
- 
-  <a href="solicitudes\crear_solicitud" class="btn btn-info" role="button">Crear Gestion</a>
-  <button type="button" class="btn btn-info" onclick="esconderFiltros()">Ver Filtros</button>
-  {% if solicitudes %}
-  <button type="button" class="btn btn-info" onclick="checkAll()">Seleccionar Todas</button>
-  <button type="button" class="btn btn-info" onclick="uncheckAll()">Limpiar</button>
+  <!-- Título -->
+  <h1 class="display-4">Gestiones Administrativas</h1>
+  <p class="lead">
+    Gestiones a realizar.
+  </p>
+  <div class="my-3">
+    <a href="crear_solicitud" type="button" class="btn btn-outline-info">Crear gestión</a>
+  </div>
 
-  {% endif %}
-</br>
-</br>
-<div id="filtrosdiv" style = 'display: none;'>
-<form method="post">
-  {% csrf_token %}
-  <input type="hidden" name="next" value="{{ next }}" />
+<!-- Lista de solicitudes -->
+<form method="post">{% csrf_token %}
 
- 
-  <div class="row">
-  {% for field in filtros_form  %}
-    <div class="col-sm-4">
-      <b>{{ field.label_tag }}</b> - {{ field}} 
-    </br>
+    <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de solicitudes</h6>
+    <div class="card">
+      <div class="card-body">
+        <!-- Opciones de aprobación -->
+        {% if request.user.is_staff %}
+          <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
+          <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
+        {% endif %}
 
+        <!-- Opciones de selección -->
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">
+          Mostrar filtros
+        </button>
+        {% if solicitudes %}
+            <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
+              Seleccionar todo
+            </button>
+            <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
+              Limpiar selección
+            </button>
+        {% endif %}
+
+        <!-- Opciones de filtrado -->
+        <div id="filtrosdiv" style='display: none;'  class="card">
+          <p>
+          <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}" />
+                <div class="row">
+                  {% for field in filtros_form %}
+                    <div class="col-sm-4">
+                      <b>{{ field.label_tag }}</b> - {{ field}} 
+                      </br>
+                    </div>
+                    </br>
+                  {% endfor %}
+                </div>  
+                <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
+            </form>
+          </div>  
+          </p>
+          </br>
+        </div>
+        {% if solicitudes %}
+          <!-- Tabla -->
+        <div class="table">
+          <table id = "datatable" class="table align-items-center table-hover"> 
+            <thead class="thead">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Motivo</th>
+                <th scope="col">Fecha</th>
+                {% if request.user.is_staff %}
+                <th scope="col">Carné</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Correo de estudiante</th>
+                {% endif %}
+                <th scope="col">Archivo Adjunto</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for solicitud in solicitudes %}
+                {% if not solicitud.enPapelera %}
+                  <tr>
+                    <td>
+                      <!-- Checkbox -->
+                      <input class="form-check-input" type="checkbox" name="inputs" value="{{solicitud.id}}" />
+          
+                      <!-- Edit button -->
+                      <br>
+                      <a href="editar_solicitud/{{ solicitud.id }}" class="text-warning" role="button">
+                        <svg class="nav-icon" width="16" height="16">
+                          <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
+                        </svg>
+                      </a>
+          
+                      <!-- Delete button -->
+                      <a onclick="return confirm('Está seguro de enviarlo a la papelera?')"  type="submit" 
+                      class="text-danger" value="{{ solicitud.id }}"  name="deleteButton"
+                      style="background-color: transparent;  border: 0;">              
+                        <svg class="nav-icon" width="16" height="16">
+                          <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-trash"></use>
+                        </svg>
+                      </a>  
+                    </td>
+                    <td>{{ solicitud.get_tipo_display }}</td>
+                    <td>{{ solicitud.motivo }}</td>
+                    <td>{{ solicitud.fecha }}</td>
+
+                    {% if request.user.is_staff %}
+
+                      <td>{{ solicitud.estudiante.user.username}}</td>
+                      <td>{{ solicitud.estudiante.user.first_name}}</td>
+                      <td>{{ solicitud.estudiante.user.last_name}}</td>
+                      <td>{{ solicitud.estudiante.user.email}}</td>
+
+                    {% endif %}
+                    <td>
+                      {% for archivo in archivos %}
+                            
+                              {% if archivo.solicitud_id == solicitud.id %} 
+                                <!--
+                                  Si se quiere abrir archivo en otra ventana:
+                                  <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
+                                -->
+        
+                                <a href="../media/{{ archivo.archivo}}" download >{{ archivo.archivo}}</a>
+                                <br/>
+                              {% endif %}
+                            
+                              
+                      {% endfor %}
+                    </td>
+                    <td>{{ solicitud.get_estado_display}}</td>
+                    
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-</br>
-  {% endfor %}
 
- 
-  </div>  
-  <button type="submit" style = 'width: 200px; height:40px;' class="btn btn-primary btn-block">Filtrar</button>
- 
-
-  
-</form>
-</br>
-</div>
-
-
-  {% if solicitudes %}
-  <form method="post">
-    {% csrf_token %}
-    {% if request.user.is_staff %}
-    <input type="submit" class="btn btn-success" value="Aprobar" name="aprobar">
-    <input type="submit" class="btn btn-danger " value="Rechazar" name="rechazar">
-    {% endif %}
-
-  </br>
-  </br>
-  <table id = "datatable" class="table table-striped table-bordered">
-    <thead class="thead">
-      <tr>
-        <th scope="col"></th>
-        <th scope="col">Tipo</th>
-        <th scope="col">Motivo</th>
-        <th scope="col">Fecha</th>
-        {% if request.user.is_staff %}
-        <th scope="col">Carné</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Apellido</th>
-
-        <th scope="col">Correo de estudiante</th>
-        {% endif %}
-        <th scope="col">Estado</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for solicitud in solicitudes %}
-      <tr>
-        <td><input type="checkbox" name="inputs"  value="{{solicitud.id}}"/></td>
-        <td>{{ solicitud.get_tipo_display }}</td>
-
-        <td>{{ solicitud.motivo }}</td>
-        <td>{{ solicitud.fecha }}</td>
-        {% if request.user.is_staff %}
-        <td>{{ solicitud.estudiante.user.username}}</td>
-        <td>{{ solicitud.estudiante.user.first_name}}</td>
-        <td>{{ solicitud.estudiante.user.last_name}}</td>
-
-        <td>{{ solicitud.estudiante.user.email}}</td>
-
-        {% endif %}
-        <td>{{ solicitud.get_estado_display}}</td>
-      </tr>
-      {% endfor %}
-  </tbody>
-    </table>
     {% else %}
-  <strong>No hay solicitudes creadas</strong>
-{% endif %}
-</form>
-</div>
-
+    <p>
+      <strong>No hay solicitudes creadas</strong>
+    </p>
+    {% endif %}
+  </form>
 
 {% endblock %}
