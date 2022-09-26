@@ -47,7 +47,7 @@
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />
 
-    {{proyecto_form|crispy }}
+    {{proyecto_form.as_p }}
    
 
     <button type="submit"  onClick = "return confirmarRegistro();" class="btn btn-primary btn-block">Continuar</button>
