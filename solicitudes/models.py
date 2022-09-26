@@ -6,8 +6,9 @@ from django.db import models
 class Solicitud(Registro):
     TIPOS = (
         ('F', 'Finalización'),
-        ('M', 'Prórroga'),
-        ('C', 'Corrección'),
+        ('P', 'Prórroga'),
+        ('A', 'Pasantía'),
+        ('O', 'Otros'),
     )
     ESTADOS = (
         ('A', 'Aprobado'),
