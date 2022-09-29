@@ -34,17 +34,9 @@
           </thead>
           <tbody>
             {% for estudiante, horas , porcentaje, porcentajeWidth in zipHoras %}
-            <tr>
+              
+            <tr class="fila_tabla">
               <td>
-                <!-- A pagina de estudiante button
-                <button  class="text-info"  value="{{ estudiante.user.id }}" name="studentButton" type="submit">
-                  <i class="	fa fa-address-card"></i>
-                </button> -->
-                <!--
-                <a  class="text-info"  href="/index/{{estudiante.id }}" role="button">
-                  <i class="	fa fa-address-card"></i>
-                </a>
-                -->
                 <!-- Editar -->
                 <a href="editar_estudiante/{{ estudiante.id }}" class="text-warning" role="button">
                   <svg class="nav-icon" width="16" height="16">
@@ -53,9 +45,9 @@
                 </a>
               </td>
               <td>{{ estudiante.user.username }}</td>
-              <td class="m">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</td>
-              <td>{{ estudiante.user.email }}</td>
-              <td>{{ estudiante.carrera.nombre }}</td>
+              <td>{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</td>
+              <td><span class="label Correo">{{ estudiante.user.email }}</span></td>
+              <td><span class="label Carrera">{{ estudiante.carrera.nombre }}</span></td>
               <td>{{ estudiante.tutor}}</td>
               <td>{{ estudiante.fechaInicioTCU}}</td>
               <td>{{ estudiante.fechaFinTCU}}</td>
@@ -102,6 +94,38 @@
     </div>
   </div>
 </form>
+
+<!--Modal-->
+<div id="myModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="p_correo"></p>
+        <p id="p_carrera"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(".fila_tabla").click(function(){
+    $('#myModal').modal('show')
+    var row = $(this).closest("tr");
+    var correo = row.find(".label.Correo").html()
+    var carrera = row.find(".label.Carrera").html()
+    console.log(correo)
+    $('#p_correo').text(correo)
+    $('#p_carrera').text(carrera)
+  });
+</script>
 
 {% endblock %}
 
