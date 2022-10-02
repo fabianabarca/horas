@@ -24,8 +24,8 @@
               <th scope="col"></th>
               <th scope="col">Carné</th>
               <th scope="col">Nombre</th>
-              <th scope="col">Correo</th>
-              <th scope="col">Carrera</th>
+              <th scope="col" >Correo</th>
+              <th scope="col" >Carrera</th>
               <th scope="col">Tutor</th>
               <th scope="col">Inicio del TCU</th>
               <th scope="col">Finalización del TCU</th>
@@ -100,7 +100,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">Información adicional</h5>
         <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -108,23 +108,24 @@
         <p id="p_carrera"></p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
 </div>
 
+<!--JQuery para el modal-->
 <script>
   $(".fila_tabla").click(function(){
     $('#myModal').modal('show')
     var row = $(this).closest("tr");
     var correo = row.find(".label.Correo").html()
     var carrera = row.find(".label.Carrera").html()
-    console.log(correo)
-    $('#p_correo').text(correo)
-    $('#p_carrera').text(carrera)
+    $('#p_correo').text("Correo: " + correo)
+    $('#p_carrera').text("Carrera: " + carrera)
   });
+
+  $('td:nth-child(4),th:nth-child(4)').hide();
+  $('td:nth-child(5),th:nth-child(5)').hide();
 </script>
 
 {% endblock %}
