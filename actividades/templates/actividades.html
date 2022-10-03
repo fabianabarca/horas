@@ -94,7 +94,7 @@
           <tbody>
             {% for actividad in actividades %}
             {% if not actividad.enPapelera %}
-            <tr class="fila_tabla">
+            <tr>
               <td>
                 <!-- Seleccionar -->
                 <input class="form-check-input" type="checkbox" name="inputs" value="{{ actividad.id }}" />
@@ -115,25 +115,25 @@
                 </a>
               </td>
               <td><span class="label Descripcion">{{ actividad.descripcion }}</span></td>
-              <td>{{ actividad.horas }}</td>
-              <td><span class="text-lowercase">{{ actividad.fecha }}</span></td>
+              <td class="fila_tabla">{{ actividad.horas }}</td>
+              <td class="fila_tabla"><span class="text-lowercase">{{ actividad.fecha }}</span></td>
               {% if not actividad.tarea.objetivo.proyecto.enPapelera %}
-              <td>{{actividad.tarea.objetivo.proyecto.nombre}}</td>
+              <td class="fila_tabla">{{actividad.tarea.objetivo.proyecto.nombre}}</td>
               {% else %}
               <td></td>
               {% endif %}
               {% if not actividad.tarea.enPapelera %}
-              <td>{{ actividad.tarea.nombre }}</td>
+              <td class="fila_tabla">{{ actividad.tarea.nombre }}</td>
               {% else %}
               <td></td>
               {% endif %}
 
               {% if request.user.is_staff %}
               <td><span class="label Carne">{{ actividad.estudiante.user.username }}</span></td>
-              <td>{{ actividad.estudiante.user.first_name }} {{ actividad.estudiante.user.last_name }}</td>
+              <td class="fila_tabla">{{ actividad.estudiante.user.first_name }} {{ actividad.estudiante.user.last_name }}</td>
               {% endif %}
 
-              <td>{{ actividad.get_estado_display }}</td>
+              <td class="fila_tabla">{{ actividad.get_estado_display }}</td>
             </tr>
             {% endif %}
             {% endfor %}

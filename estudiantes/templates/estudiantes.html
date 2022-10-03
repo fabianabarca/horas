@@ -33,9 +33,8 @@
             </tr>
           </thead>
           <tbody>
-            {% for estudiante, horas , porcentaje, porcentajeWidth in zipHoras %}
-              
-            <tr class="fila_tabla">
+            {% for estudiante, horas , porcentaje, porcentajeWidth in zipHoras %}   
+            <tr>
               <td>
                 <!-- Editar -->
                 <a href="editar_estudiante/{{ estudiante.id }}" class="text-warning" role="button">
@@ -44,14 +43,14 @@
                   </svg>
                 </a>
               </td>
-              <td>{{ estudiante.user.username }}</td>
-              <td>{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</td>
+              <td class="fila_tabla">{{ estudiante.user.username }}</td>
+              <td class="fila_tabla">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</td>
               <td><span class="label Correo">{{ estudiante.user.email }}</span></td>
               <td><span class="label Carrera">{{ estudiante.carrera.nombre }}</span></td>
-              <td>{{ estudiante.tutor}}</td>
-              <td>{{ estudiante.fechaInicioTCU}}</td>
-              <td>{{ estudiante.fechaFinTCU}}</td>
-              <td>
+              <td class="fila_tabla">{{ estudiante.tutor}}</td>
+              <td class="fila_tabla">{{ estudiante.fechaInicioTCU}}</td>
+              <td class="fila_tabla">{{ estudiante.fechaFinTCU}}</td>
+              <td class="fila_tabla">
                 <!--{{ horas}}-->
                 <div class="progress-wrapper">
                   <div class="progress-info">
@@ -76,12 +75,8 @@
                         }
                       </script>
                     </div>
-                    
                   </div>
-                  
                 </div>
-    
-    
               </td>
             </tr>
             {% endfor %}

@@ -101,33 +101,33 @@
                         </svg>
                       </a>  
                     </td>
-                    <td>{{ solicitud.motivo }}</td>
-                    <td>{{ solicitud.fecha|date:"d, M, Y" }}</td>
+                    <td class="fila_tabla">{{ solicitud.motivo }}</td>
+                    <td class="fila_tabla">{{ solicitud.fecha|date:"d, M, Y" }}</td>
 
                     {% if request.user.is_staff %}
 
-                      <td>{{ solicitud.estudiante.user.username}}</td>
-                      <td>{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
-                      <td>{{ solicitud.estudiante.user.email}}</td>
+                    <td><span class="label Carne">{{ solicitud.estudiante.user.username}}</span></td>
+                    <td class="fila_tabla">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
+                    <td class="fila_tabla">{{ solicitud.estudiante.user.email}}</td>
 
                     {% endif %}
                     <td>
                       {% for archivo in archivos %}
                             
-                              {% if archivo.solicitud_id == solicitud.id %} 
-                                <!--
-                                  Si se quiere abrir archivo en otra ventana:
-                                  <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
-                                -->
-        
-                                <a href="../media/{{ archivo.archivo}}" download >{{ archivo.archivo}}</a>
-                                <br/>
-                              {% endif %}
-                            
-                              
+                        {% if archivo.solicitud_id == solicitud.id %} 
+                          <!--
+                            Si se quiere abrir archivo en otra ventana:
+                            <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
+                          -->
+                          
+                            <a href="../media/{{ archivo.archivo}}" download >{{ archivo.archivo}}</a>
+                          <br/>
+                        {% endif %}
+                    
+                      
                       {% endfor %}
                     </td>
-                    <td>{{ solicitud.get_estado_display}}</td>
+                    <td class="fila_tabla">{{ solicitud.get_estado_display}}</td>
                     
                   </tr>
                 {% endif %}
@@ -240,14 +240,14 @@
                         </svg>
                       </a>  
                     </td>
-                    <td>{{ solicitud.motivo }}</td>
-                    <td>{{ solicitud.fecha|date:"d, M, Y" }}</td>
+                    <td class="fila_tabla">{{ solicitud.motivo }}</td>
+                    <td class="fila_tabla">{{ solicitud.fecha|date:"d, M, Y" }}</td>
 
                     {% if request.user.is_staff %}
 
-                      <td>{{ solicitud.estudiante.user.username}}</td>
-                      <td>{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
-                      <td>{{ solicitud.estudiante.user.email}}</td>
+                    <td><span class="label Carne">{{ solicitud.estudiante.user.username}}</span></td>
+                    <td class="fila_tabla">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
+                    <td class="fila_tabla">{{ solicitud.estudiante.user.email}}</td>
 
                     {% endif %}
                     <td>
@@ -266,7 +266,7 @@
                               
                       {% endfor %}
                     </td>
-                    <td>{{ solicitud.get_estado_display}}</td>
+                    <td class="fila_tabla">{{ solicitud.get_estado_display}}</td>
                     
                   </tr>
                 {% endif %}
@@ -379,14 +379,14 @@
                         </svg>
                       </a>  
                     </td>
-                    <td>{{ solicitud.motivo }}</td>
-                    <td>{{ solicitud.fecha|date:"d, M, Y" }}</td>
+                    <td class="fila_tabla">{{ solicitud.motivo }}</td>
+                    <td class="fila_tabla">{{ solicitud.fecha|date:"d, M, Y" }}</td>
   
                     {% if request.user.is_staff %}
   
-                      <td>{{ solicitud.estudiante.user.username}}</td>
-                      <td>{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
-                      <td>{{ solicitud.estudiante.user.email}}</td>
+                    <td>{{ solicitud.estudiante.user.username}}</td>
+                    <td class="fila_tabla">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
+                    <td class="fila_tabla">{{ solicitud.estudiante.user.email}}</td>
   
                     {% endif %}
                     <td>
@@ -405,7 +405,7 @@
                               
                       {% endfor %}
                     </td>
-                    <td>{{ solicitud.get_estado_display}}</td>
+                    <td class="fila_tabla">{{ solicitud.get_estado_display}}</td>
                     
                   </tr>
                 {% endif %}
@@ -519,14 +519,14 @@
                         </svg>
                       </a>  
                     </td>
-                    <td>{{ solicitud.motivo }}</td>
-                    <td>{{ solicitud.fecha|date:"d, M, Y" }}</td>
+                    <td class="fila_tabla">{{ solicitud.motivo }}</td>
+                    <td class="fila_tabla">{{ solicitud.fecha|date:"d, M, Y" }}</td>
   
                     {% if request.user.is_staff %}
   
-                      <td>{{ solicitud.estudiante.user.username}}</td>
-                      <td>{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
-                      <td>{{ solicitud.estudiante.user.email}}</td>
+                    <td>{{ solicitud.estudiante.user.username}}</td>
+                    <td class="fila_tabla">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
+                    <td class="fila_tabla">{{ solicitud.estudiante.user.email}}</td>
   
                     {% endif %}
                     <td>
@@ -545,7 +545,7 @@
                               
                       {% endfor %}
                     </td>
-                    <td>{{ solicitud.get_estado_display}}</td>
+                    <td class="fila_tabla">{{ solicitud.get_estado_display}}</td>
                     
                   </tr>
                 {% endif %}
@@ -563,5 +563,43 @@
     {% endif %}
   </form>
 </div>
+
+
+<!--Modal-->
+<div id="myModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Información adicional</h5>
+        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="p_carne"></p>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--JQuery para el modal de finalizacion-->
+<script>
+  $(".fila_tabla").click(function(){
+    $('#myModal').modal('show')
+    var row = $(this).closest("tr");
+    var carne = row.find(".label.Carne").html()
+    //var carrera = row.find(".label.Carrera").html()
+    $('#p_carne').text(carne)
+    //$('#p_carrera').text("Carrera: " + carrera)
+  });
+
+  /* Separar para cada una de las tablas
+  * Cada tabla debe de tener un id
+  * Usar el id para ocultar las filas especificas de cada tabla
+  * 
+  */
+  $('td:nth-child(4),th:nth-child(4)').hide();
+  //$('td:nth-child(5),th:nth-child(5)').hide();
+</script>
 
 {% endblock %}
