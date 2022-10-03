@@ -17,14 +17,13 @@
     <div class="card-body">
       {% if estudiantes %}
       <!--Tabla de estudiantes-->
-      <div class="table">
+      <div class="table table-responsive">
         <table id="estudiantes-table" class="table align-items-center table-hover">
           <thead>
             <tr>
               <th scope="col"></th>
               <th scope="col">Carné</th>
               <th scope="col">Nombre</th>
-              <th scope="col">Apellidos</th>
               <th scope="col">Correo</th>
               <th scope="col">Carrera</th>
               <th scope="col">Tutor</th>
@@ -54,8 +53,7 @@
                 </a>
               </td>
               <td>{{ estudiante.user.username }}</td>
-              <td>{{ estudiante.user.first_name }}</td>
-              <td>{{ estudiante.user.last_name }}</td>
+              <td class="m">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</td>
               <td>{{ estudiante.user.email }}</td>
               <td>{{ estudiante.carrera.nombre }}</td>
               <td>{{ estudiante.tutor}}</td>
