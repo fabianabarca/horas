@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block page_title %} Perfil {% endblock %}
+
+{% block main %}
+
+<!-- Título y descripción -->
+<h1 class="display-4">Perfil</h1>
+<p class="lead">
+  Persona estudiante matriculada en TC-691 "Tropicalización de la tecnología".
+</p>
+
+<!-- Datos personales -->
+<h6 class="text-uppercase font-weight-bolder opacity-6">Datos personales</h6>
+
+<dl>
+    <dt>Carné</dt>
+    <dd>D12345</dd>
+    <dt>Nombre</dt>
+    <dd>María Rodríguez</dd>
+</dl>
+
+<h3 id="ajustes">Ajustes</h3>
+
+Aquí van los ajustes... de algún tipo.
+
+<br>
+
+{% endblock %}

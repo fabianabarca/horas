@@ -1,25 +1,33 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}  {% load static %}
+{% extends 'base.html' %}
 
-  <!-- Título -->
-  <h1 class="display-4">Gestiones Administrativas</h1>
-  <p class="lead">
-    Gestiones a realizar.
-  </p>
-  <div class="my-3">
-    <a href="crear_solicitud" type="button" class="btn btn-outline-info">Crear gestión</a>
-  </div>
+{% load static %}
+
+{% block page_title %} Gestiones {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block main %}
+
+<!-- Título -->
+<h1 class="display-4">Gestiones administrativas</h1>
+<p class="lead">
+  Solicitudes de estudiantes para los trámites de finalización, prórroga, pasantía y otros.
+</p>
+<div class="my-3">
+  <a href="crear_solicitud" type="button" class="btn btn-outline-info">Crear gestión</a>
+</div>
 
 <!-- Lista de solicitudes: Finalizacion -->
 <div class="mt-5" id="finalizacion">
-  <form method="post" >
+  <form method="post">
     {% csrf_token %}
     <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de solicitudes de finalización</h6>
     <div class="card">
       <div class="card-body">
         <!-- Opciones de aprobación -->
         {% if request.user.is_staff %}
-          <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
-          <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
+        <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
+        <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
         {% endif %}
 
         <!-- Opciones de selección -->
@@ -27,40 +35,40 @@
           Mostrar filtros
         </button>
         {% if solicitudes %}
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
-              Seleccionar todo
-            </button>
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
-              Limpiar selección
-            </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
+          Seleccionar todo
+        </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
+          Limpiar selección
+        </button>
         {% endif %}
 
         <!-- Opciones de filtrado -->
-        <div id="filtrosdiv" style='display: none;'  class="card">
+        <div id="filtrosdiv" style='display: none;' class="card">
           <p>
           <div class="card-body">
             <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}" />
-                <div class="row">
-                  {% for field in filtros_form %}
-                    <div class="col-sm-4">
-                      <b>{{ field.label_tag }}</b> - {{ field}} 
-                      </br>
-                    </div>
-                    </br>
-                  {% endfor %}
-                </div>  
-                <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ next }}" />
+              <div class="row">
+                {% for field in filtros_form %}
+                <div class="col-sm-4">
+                  <b>{{ field.label_tag }}</b> - {{ field}}
+                  </br>
+                </div>
+                </br>
+                {% endfor %}
+              </div>
+              <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
             </form>
-          </div>  
+          </div>
           </p>
           </br>
         </div>
         {% if solicitudes %}
-          <!-- Tabla -->
-          <div class="table table-responsive">
-          <table id = "datatable" class="table align-items-center table-hover"> 
+        <!-- Tabla -->
+        <div class="table table-responsive">
+          <table id="datatable" class="table align-items-center table-hover">
             <thead class="thead">
               <tr>
                 <th scope="col"></th>
@@ -148,7 +156,7 @@
 
 
 
-<!-- Lista de solicitudes: Prorroga -->
+<!-- Lista de solicitudes: Prórroga -->
 <div class="mt-5" id="prorroga">
   <form method="post">
     {% csrf_token %}
@@ -157,8 +165,8 @@
       <div class="card-body">
         <!-- Opciones de aprobación -->
         {% if request.user.is_staff %}
-          <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
-          <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
+        <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
+        <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
         {% endif %}
 
         <!-- Opciones de selección -->
@@ -166,40 +174,40 @@
           Mostrar filtros
         </button>
         {% if solicitudes %}
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
-              Seleccionar todo
-            </button>
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
-              Limpiar selección
-            </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
+          Seleccionar todo
+        </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
+          Limpiar selección
+        </button>
         {% endif %}
 
         <!-- Opciones de filtrado -->
-        <div id="filtrosdiv" style='display: none;'  class="card">
+        <div id="filtrosdiv" style='display: none;' class="card">
           <p>
           <div class="card-body">
             <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}" />
-                <div class="row">
-                  {% for field in filtros_form %}
-                    <div class="col-sm-4">
-                      <b>{{ field.label_tag }}</b> - {{ field}} 
-                      </br>
-                    </div>
-                    </br>
-                  {% endfor %}
-                </div>  
-                <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ next }}" />
+              <div class="row">
+                {% for field in filtros_form %}
+                <div class="col-sm-4">
+                  <b>{{ field.label_tag }}</b> - {{ field}}
+                  </br>
+                </div>
+                </br>
+                {% endfor %}
+              </div>
+              <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
             </form>
-          </div>  
+          </div>
           </p>
           </br>
         </div>
         {% if solicitudes %}
-          <!-- Tabla -->
+        <!-- Tabla -->
         <div class="table table-responsive">
-          <table id = "datatable" class="table align-items-center table-hover"> 
+          <table id="datatable" class="table align-items-center table-hover">
             <thead class="thead">
               <tr>
                 <th scope="col"></th>
@@ -296,49 +304,49 @@
       <div class="card-body">
         <!-- Opciones de aprobación -->
         {% if request.user.is_staff %}
-          <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
-          <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
+        <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
+        <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
         {% endif %}
-  
+
         <!-- Opciones de selección -->
         <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">
           Mostrar filtros
         </button>
         {% if solicitudes %}
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
-              Seleccionar todo
-            </button>
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
-              Limpiar selección
-            </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
+          Seleccionar todo
+        </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
+          Limpiar selección
+        </button>
         {% endif %}
-  
+
         <!-- Opciones de filtrado -->
-        <div id="filtrosdiv" style='display: none;'  class="card">
+        <div id="filtrosdiv" style='display: none;' class="card">
           <p>
           <div class="card-body">
             <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}" />
-                <div class="row">
-                  {% for field in filtros_form %}
-                    <div class="col-sm-4">
-                      <b>{{ field.label_tag }}</b> - {{ field}} 
-                      </br>
-                    </div>
-                    </br>
-                  {% endfor %}
-                </div>  
-                <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ next }}" />
+              <div class="row">
+                {% for field in filtros_form %}
+                <div class="col-sm-4">
+                  <b>{{ field.label_tag }}</b> - {{ field}}
+                  </br>
+                </div>
+                </br>
+                {% endfor %}
+              </div>
+              <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
             </form>
-          </div>  
+          </div>
           </p>
           </br>
         </div>
         {% if solicitudes %}
-          <!-- Tabla -->
+        <!-- Tabla -->
         <div class="table mt-2 table-responsive">
-          <table id = "datatable" class="table align-items-center table-hover"> 
+          <table id="datatable" class="table align-items-center table-hover">
             <thead class="thead">
               <tr>
                 <th scope="col"></th>
@@ -415,7 +423,7 @@
         </div>
       </div>
     </div>
-  
+
     {% else %}
     <p>
       <strong>No hay solicitudes creadas</strong>
@@ -430,55 +438,55 @@
 <div class="mt-5" id="otros">
   <form method="post">
     {% csrf_token %}
-  
+
     <h6 class="text-uppercase font-weight-bolder opacity-6">Otras solicitudes</h6>
     <div class="card">
       <div class="card-body">
         <!-- Opciones de aprobación -->
         {% if request.user.is_staff %}
-          <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
-          <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
+        <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
+        <input type="submit" class="btn btn-outline-danger  btn-sm " value="Rechazar" name="rechazar">
         {% endif %}
-  
+
         <!-- Opciones de selección -->
         <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">
           Mostrar filtros
         </button>
         {% if solicitudes %}
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
-              Seleccionar todo
-            </button>
-            <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
-              Limpiar selección
-            </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
+          Seleccionar todo
+        </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
+          Limpiar selección
+        </button>
         {% endif %}
-  
+
         <!-- Opciones de filtrado -->
-        <div id="filtrosdiv" style='display: none;'  class="card">
+        <div id="filtrosdiv" style='display: none;' class="card">
           <p>
           <div class="card-body">
             <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}" />
-                <div class="row">
-                  {% for field in filtros_form %}
-                    <div class="col-sm-4">
-                      <b>{{ field.label_tag }}</b> - {{ field}} 
-                      </br>
-                    </div>
-                    </br>
-                  {% endfor %}
-                </div>  
-                <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ next }}" />
+              <div class="row">
+                {% for field in filtros_form %}
+                <div class="col-sm-4">
+                  <b>{{ field.label_tag }}</b> - {{ field}}
+                  </br>
+                </div>
+                </br>
+                {% endfor %}
+              </div>
+              <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
             </form>
-          </div>  
+          </div>
           </p>
           </br>
         </div>
         {% if solicitudes %}
-          <!-- Tabla -->
+        <!-- Tabla -->
         <div class="table table-responsive">
-          <table id = "datatable" class="table align-items-center table-hover"> 
+          <table id="datatable" class="table align-items-center table-hover">
             <thead class="thead">
               <tr>
                 <th scope="col"></th>
@@ -555,7 +563,7 @@
         </div>
       </div>
     </div>
-  
+
     {% else %}
     <p>
       <strong>No hay solicitudes creadas</strong>
@@ -563,7 +571,6 @@
     {% endif %}
   </form>
 </div>
-
 
 <!--Modal-->
 <div id="myModal" class="modal" tabindex="-1">

@@ -20,14 +20,9 @@
     content="Sistema de registro de horas y asignación de tareas del trabajo comunal universitario TC-691 Tropicalización de la tecnología.">
   <meta name="author" content="TCU Tropicalización de la tecnología">
   <meta name="keyword" content="TCU, UCR, Tropicalización, Tecnología">
-  <title>{% block page_title %}{% endblock %} | TCU Tropicalización</title>
-  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'assets/favicon/android-icon-192x192.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="96x96" href="{% static 'assets/favicon/favicon-96x96.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/favicon/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'assets/favicon/manifest.json' %}">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="{% static 'assets/favicon/ms-icon-144x144.png' %}">
+  <title>{% block page_title %}{% endblock %} | Tropicalización</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{% static 'img/tcu_favicon.png' %}">
   <meta name="theme-color" content="#ffffff">
   <!-- Vendors styles-->
   <link rel="stylesheet" href="{% static 'vendors/simplebar/css/simplebar.css' %}">
@@ -45,15 +40,8 @@
   <!-- Menú lateral -->
   <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
     <div class="sidebar-brand d-none d-md-flex">
-      <img class="sidebar-brand-full" src="{% static 'img/tcu_color.png' %}" width="90" alt="Logo TCU">
-      <small><strong>Tropicalización</strong> <br> de la tecnología</small>
-      <!--
-        <svg class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
-          <use xlink:href="{% static 'assets/brand/coreui.svg' %}#full"></use>
-        </svg>-->
-      <svg class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
-        <use xlink:href="{% static 'assets/brand/coreui.svg' %}#signet"></use>
-      </svg>
+      <img class="sidebar-brand-full" src="{% static 'img/tcu_trop.png' %}" width="180" alt="Logo TCU">
+      <img class="sidebar-brand-narrow" src="{% static 'img/tcu_color.png' %}" width="46" alt="Logo TCU">
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
       <li class="nav-item"><a class="nav-link" href="{% url 'crear_actividad' %}">
@@ -69,18 +57,18 @@
           </svg> Panel</a></li>
       {% else %}
       <li class="nav-item"><a class="nav-link" href="{% url 'resumen' %}">
-        <svg class="nav-icon">
-          <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-chart"></use>
-        </svg> Resumen</a></li>
+          <svg class="nav-icon">
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-chart"></use>
+          </svg> Resumen</a></li>
       {% endif %}
       <li class="nav-item"><a class="nav-link" href="{% url 'actividades' %}">
           <svg class="nav-icon">
-            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-task"></use>
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-clock"></use>
           </svg> Actividades</a></li>
       <li class="nav-title">Proyectos</li>
       <li class="nav-group"><a class="nav-link nav-group-toggle" href="{% url 'tareas' %}">
           <svg class="nav-icon">
-            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-playlist-add"></use>
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-task"></use>
           </svg> Tareas</a>
         <ul class="nav-group-items">
           <li class="nav-item"><a class="nav-link" href="login.html" target="_top">
@@ -94,7 +82,7 @@
         </ul>
       <li class="nav-item"><a class="nav-link" href="{% url 'proyectos' %}">
           <svg class="nav-icon">
-            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-library"></use>
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-description"></use>
           </svg> Proyectos</a></li>
       <li class="nav-item"><a class="nav-link" href="{% url 'areas' %}">
           <svg class="nav-icon">
@@ -104,13 +92,13 @@
       <li class="nav-title">Trámites</li>
       <li class="nav-group"><a class="nav-link nav-group-toggle" href="{% url 'solicitudes' %}">
           <svg class="nav-icon">
-            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-description"></use>
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-comment-square"></use>
           </svg> Solicitudes</a>
         <ul class="nav-group-items">
           <li class="nav-item"><a class="nav-link" href="{% url 'solicitudes' %}#finalizacion" target="_top">
-            <svg class="nav-icon">
-              <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-check"></use>
-            </svg> Finalización</a></li>
+              <svg class="nav-icon">
+                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-check"></use>
+              </svg> Finalización</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'solicitudes' %}#prorroga" target="_top">
               <svg class="nav-icon">
                 <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-clock"></use>
@@ -143,25 +131,10 @@
           <svg class="icon icon-lg">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-menu"></use>
           </svg>
-        </button><a class="header-brand d-md-none" href="#">
-          <svg width="118" height="46" alt="CoreUI Logo">
-            <use xlink:href="{% static 'assets/brand/coreui.svg' %}#full"></use>
-          </svg></a>
-        <ul class="header-nav d-none d-md-flex">
-          <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
-        </ul>
-        <ul class="header-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#">
-              <svg class="icon icon-lg">
-                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-bell"></use>
-              </svg></a></li>
-          <li class="nav-item"><a class="nav-link" href="#">
-              <svg class="icon icon-lg">
-                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-envelope-open"></use>
-              </svg></a></li>
-        </ul>
+        </button>
+        <a class="header-brand d-md-none" href="#">
+          <img class="sidebar-brand-full" src="{% static 'img/tcu_trop_primary.png' %}" width="130" alt="Logo TCU">
+        </a>
         <ul class="header-nav ms-3">
           <li class="nav-item dropdown"><a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button"
               aria-haspopup="true" aria-expanded="false">
@@ -172,41 +145,16 @@
             </a>
             <div class="dropdown-menu dropdown-menu-end pt-0">
               <div class="dropdown-header bg-light py-2">
-                <div class="fw-semibold">Account</div>
-              </div><a class="dropdown-item" href="#">
-                <svg class="icon me-2">
-                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-bell"></use>
-                </svg> Updates<span class="badge badge-sm bg-info ms-2">42</span></a><a class="dropdown-item" href="#">
-                <svg class="icon me-2">
-                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-envelope-open"></use>
-                </svg> Messages<span class="badge badge-sm bg-success ms-2">42</span></a><a class="dropdown-item"
-                href="#">
-                <svg class="icon me-2">
-                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-task"></use>
-                </svg> Tasks<span class="badge badge-sm bg-danger ms-2">42</span></a><a class="dropdown-item" href="#">
-                <svg class="icon me-2">
-                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-comment-square"></use>
-                </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span></a>
-              <div class="dropdown-header bg-light py-2">
-                <div class="fw-semibold">Settings</div>
-              </div><a class="dropdown-item" href="#">
+                <div class="fw-semibold">Cuenta</div>
+              </div><a class="dropdown-item" href="{% url 'perfil' %}">
                 <svg class="icon me-2">
                   <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-user"></use>
-                </svg> Profile</a><a class="dropdown-item" href="#">
+                </svg> Perfil</a><a class="dropdown-item" href="{% url 'perfil' %}#ajustes">
                 <svg class="icon me-2">
                   <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-settings"></use>
-                </svg> Settings</a><a class="dropdown-item" href="#">
-                <svg class="icon me-2">
-                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-credit-card"></use>
-                </svg> Payments<span class="badge badge-sm bg-secondary ms-2">42</span></a><a class="dropdown-item"
-                href="#">
-                <svg class="icon me-2">
-                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-file"></use>
-                </svg> Projects<span class="badge badge-sm bg-primary ms-2">42</span></a>
-              <div class="dropdown-divider"></div><a class="dropdown-item" href="#">
-                <svg class="icon me-2">
-                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-lock-locked"></use>
-                </svg> Lock Account</a><a class="dropdown-item" href="{% url 'logout' %}">
+                </svg> Ajustes</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'logout' %}">
                 <svg class="icon me-2">
                   <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-account-logout"></use>
                 </svg> Cerrar sesión</a>
@@ -216,22 +164,11 @@
       </div>
       <div class="header-divider"></div>
       <div class="container-fluid">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb my-0 ms-2">
-            <li class="breadcrumb-item">
-              <!-- if breadcrumb is single--><a href="#">Home</a>
-            </li>
-            <li class="breadcrumb-item">
-              <!-- if breadcrumb is single--><a href="#">Theme</a>
-            </li>
-            <li class="breadcrumb-item active"><span>Colors</span></li>
-          </ol>
-        </nav>
+       <small>Sistema de registro de horas y asignación de tareas de trabajo comunal universitario</small>
       </div>
     </header>
 
     {% if user.is_authenticated %}
-
 
     <div class="body flex-grow-1 px-3">
       <div class="container-lg">
@@ -245,8 +182,7 @@
 
     {% endif %}
     <footer class="footer">
-      <div>© 2022 TC-691 <a href="/acerca/" target="_blank">Tropicalización de la tecnología</a></div>
-      <div class="ms-auto"><a href="https://www.ucr.ac.cr/" target="_blank">Universidad de Costa Rica</a></div>
+      <div>© 2022 <a href="/acerca/" target="_blank">Tropicalización de la tecnología</a></div>
     </footer>
   </div>
   <!-- CoreUI and necessary plugins-->

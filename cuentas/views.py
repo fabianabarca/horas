@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
+
 @staff_member_required(login_url='/cuentas/login/')
 def register_request(request):
 	form = NewUserForm(request.POST or None)
@@ -83,3 +84,14 @@ def logout_request(request):
 	logout(request)
 	messages.info(request, "Has terminado tu sesión exitosamente.") 
 	return redirect(login_request)
+
+
+@login_required(login_url='/cuentas/login/')
+def perfil(request):
+
+    estudiante_actual = Estudiante.objects.get(user=request.user)
+
+    context = {
+		'estudiante': estudiante_actual
+	}
+    return render(request, 'perfil.html', context)
