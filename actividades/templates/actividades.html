@@ -107,12 +107,13 @@
                 </a>
 
                 <!-- Eliminar -->
-                <a onclick="return confirm('¿Está seguro de enviarlo a la papelera?')" type="submit"
-                  class="text-danger" value="{{ actividad.id }}" name="deleteButton">
+                <button onclick="return confirm('¿Está seguro de enviarlo a la papelera?')" type="submit"
+                  class="text-danger" value="{{ actividad.id }}" name="deleteButton" 
+                  style="background-color: transparent;  border: 0;">
                   <svg class="nav-icon" width="16" height="16">
                     <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-trash"></use>
                   </svg>
-                </a>
+                </button>
               </td>
               <td><span class="label Descripcion">{{ actividad.descripcion }}</span></td>
               <td class="fila_tabla">{{ actividad.horas }}</td>
