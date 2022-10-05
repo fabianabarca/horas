@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
 
-@staff_member_required(login_url='/cuentas/login/')
+@staff_member_required(login_url='/cuentas/ingreso/')
 def register_request(request):
 	form = NewUserForm(request.POST or None)
 	if request.method == "POST":
@@ -55,7 +55,7 @@ def register_request(request):
 		else:
 			messages.error(request, "Falló el registro. Información inválida.")
 	#form = NewUserForm()
-	return render (request=request, template_name="../templates/register.html", context={"register_form":form})
+	return render (request, "registro.html", context={"register_form":form})
 
 
 def login_request(request):
@@ -78,7 +78,7 @@ def login_request(request):
 		else:
 			messages.error(request,"Usuario o contraseña inválido.")
 	form = CustomAuthenticationForm()
-	return render(request=request, template_name="../templates/login.html", context={"login_form":form})
+	return render(request, "ingreso.html", context={"login_form":form})
 
 def logout_request(request):
 	logout(request)
@@ -86,7 +86,7 @@ def logout_request(request):
 	return redirect(login_request)
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def perfil(request):
 
     estudiante_actual = Estudiante.objects.get(user=request.user)
