@@ -1,6 +1,12 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% extends 'base.html' %} 
+
 {% load static %}
 
+{% load crispy_forms_tags %} 
+
+{% block page_title %} Crear tarea {% endblock %}
+
+{% block main %}
 
 <script>
   var formSubmitting = false;

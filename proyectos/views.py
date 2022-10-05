@@ -45,7 +45,7 @@ def proyectos_request(request):
 
     form = FiltrosProyectoForm()
 
-    return render(request=request, template_name="../templates/proyectos.html", context={"proyectos": proyectos_list, "filtros_form": form})
+    return render(request, "proyectos.html", context={"proyectos": proyectos_list, "filtros_form": form})
 
 
 @login_required(login_url='/cuentas/login/')
@@ -118,7 +118,7 @@ def proyectosInfo(request):
     return render(request=request,  template_name="../templates/proyectosInfo.html", context={"listaProyectos": listaProyectos})
 
 
-def proyectoIndividual(request, id):
+def proyecto(request, id):
     proyecto = Proyecto.objects.filter(id=id)
     proyectoHoras = 1
     objetivos = proyecto[0].objetivo_set.filter(enPapelera=False)
@@ -129,5 +129,5 @@ def proyectoIndividual(request, id):
         for tarea in tareas:
             listatareas.append(tarea.nombre)
 
-    return render(request=request,  template_name="../templates/proyectoIndividual.html", context={"proyecto": proyecto[0],
+    return render(request, "proyecto.html", context={"proyecto": proyecto[0],
                                                                                                    "proyectoHoras": proyectoHoras, "objetivos": objetivos, "tareas": listatareas})

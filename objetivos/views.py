@@ -20,7 +20,7 @@ def objetivos_request(request):
         
         return HttpResponseRedirect("/objetivos")  
 
-    return render (request=request, template_name="../templates/objetivos.html", context={"objetivos":objetivos_list})
+    return render (request, "objetivos.html", context={"objetivos":objetivos_list})
 
 @login_required(login_url='/cuentas/login/')
 def crear_objetivo(request):
