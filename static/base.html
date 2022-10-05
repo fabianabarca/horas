@@ -59,10 +59,17 @@
           </svg> <button type="button" class="btn btn-outline-info">Nuevo registro</button></a></li>
       <li class="nav-divider"></li>
       <li class="nav-title">Horas</li>
-      <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">
+      {% if request.user.is_staff %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'panel' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-chart"></use>
-          </svg> Resumen</a></li>
+          </svg> Panel</a></li>
+      {% else %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'resumen' %}">
+        <svg class="nav-icon">
+          <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-chart"></use>
+        </svg> Resumen</a></li>
+      {% endif %}
       <li class="nav-item"><a class="nav-link" href="{% url 'actividades' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-task"></use>
