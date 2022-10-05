@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 import time
 
 # Create your views here.
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def areas_request(request):
     areas_list = Area.objects.all()
     if request.method == "POST":
@@ -22,7 +22,7 @@ def areas_request(request):
 
     return render (request=request, template_name="../templates/areas.html", context={"areas":areas_list})
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def crear_area(request):
 
     if request.method == "POST":
@@ -40,7 +40,7 @@ def crear_area(request):
     return render (request=request, template_name="../templates/crear_area.html", context={"tipoAccion":creacionOedicion,"area_form":form})
  
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def editar_area(request, id):
 
     obj = get_object_or_404(Area, id = id) 

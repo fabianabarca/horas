@@ -11,7 +11,7 @@ import time
 # Create your views here.
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def proyectos_request(request):
     proyectos_list = Proyecto.objects.all()
 
@@ -48,7 +48,7 @@ def proyectos_request(request):
     return render(request, "proyectos.html", context={"proyectos": proyectos_list, "filtros_form": form})
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def crear_proyecto(request):
 
     if request.method == "POST":
@@ -72,7 +72,7 @@ def crear_proyecto(request):
     return render(request=request, template_name="../templates/crear_proyecto.html", context={"tipoAccion": creacionOedicion, "proyecto_form": form})
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def crear_area(request):
 
     if request.method == "POST":
@@ -90,7 +90,7 @@ def crear_area(request):
     return render(request=request, template_name="../templates/crear_area.html", context={"area_form": form})
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def editar_proyecto(request, id):
 
     obj = get_object_or_404(Proyecto, id=id)

@@ -30,8 +30,8 @@ class SimpleTest(TestCase):
             username='a232323', email='tt2936082@gmail.com', password='admin2323')
         estudiante = Estudiante.objects.get(user=self.user)
         
-        estudiante.fechaInicioTCU ='2022-08-10'
-        estudiante.fechaFinTCU='2023-08-17'
+        estudiante.fecha_inicio ='2022-08-10'
+        estudiante.fecha_final='2023-08-17'
         estudiante.save()
 
     def test_All_Views_UsuarioEstudianteRegular(self):

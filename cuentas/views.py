@@ -31,10 +31,10 @@ def register_request(request):
 			estudiante = Estudiante.objects.get(id=user.id)
 			estudiante.carrera_id = Carrera.objects.get(nombre__contains=carrera)
 			#estudiante.save()
-			fechaInicioTCU = form.cleaned_data.get('fechaInicioTCU')
-			fechaFinTCU	= form.cleaned_data.get('fechaFinTCU')
-			estudiante.fechaInicioTCU=fechaInicioTCU
-			estudiante.fechaFinTCU=fechaFinTCU
+			fecha_inicio = form.cleaned_data.get('fecha_inicio')
+			fecha_final	= form.cleaned_data.get('fecha_final')
+			estudiante.fecha_inicio=fecha_inicio
+			estudiante.fecha_final=fecha_final
 			
 			estudiante.save()
 
