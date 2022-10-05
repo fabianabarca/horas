@@ -6,6 +6,8 @@
 
 {% block main %}
 
+{% if not request.user.is_staff %}
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
 <h1 class="display-4">Resumen de horas</h1>
@@ -287,5 +289,9 @@
         }
     });
 </script>
+
+{% else %}
+Aviso: Esta página muestra el resumen de datos de estudiantes.
+{% endif %}
 
 {% endblock %}
