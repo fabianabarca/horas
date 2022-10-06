@@ -82,7 +82,7 @@ def login_request(request):
 
 def logout_request(request):
 	logout(request)
-	messages.info(request, "Has terminado tu sesión exitosamente.") 
+	messages.info(request, "La sesión ha terminado exitosamente.") 
 	return redirect(login_request)
 
 
