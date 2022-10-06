@@ -8,7 +8,7 @@ from tareas.models import Tarea
 from solicitudes.models import Solicitud
 
 # Create your views here.
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def papelera_request(request):
     actividades_list = Actividad.objects.all()
     tareas_list = Tarea.objects.all()

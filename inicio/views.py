@@ -13,7 +13,7 @@ import datetime
 
 # Create your views here.
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def index(request,id=9999):
     
     #en caso de que NO se redirige de página Estudiantes, uso el numero 9999 como default al llegar a
@@ -46,8 +46,8 @@ def index(request,id=9999):
 
     #Desde aqui se procesa la barra de progreso de dias del TCU por estudiante
     current_datetime = datetime.date.today()
-    inicioTCU = estudiante_actual.fechaInicioTCU
-    finalTCU = estudiante_actual.fechaFinTCU
+    inicioTCU = estudiante_actual.fecha_inicio
+    finalTCU = estudiante_actual.fecha_final
 
     diasRestantesDelTCU =  finalTCU - current_datetime
 
@@ -187,11 +187,10 @@ def indexandoTareasSubordinadasRecursivas(tareasDict):
 
 
 '''
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def indexInicio(request):
 
 '''
-def inicio(request):
+def sitio(request):
 
-    
-    return render (request=request, template_name="../templates/inicio.html", context={})
+    return render (request, "sitio.html")

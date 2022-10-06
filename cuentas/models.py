@@ -34,8 +34,8 @@ class Estudiante(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     carrera = models.ForeignKey(Carrera, blank=True, null=True, on_delete=models.SET_NULL)
-    fechaInicioTCU = models.DateField(blank=True, null=True)
-    fechaFinTCU = models.DateField(blank=True, null=True)
+    fecha_inicio = models.DateField(blank=True, null=True)
+    fecha_final = models.DateField(blank=True, null=True)
     estado = models.CharField(blank=False, null=True, choices=ESTADOS, max_length=1, default='A')
     tutor = models.ForeignKey(Profesor, blank=True, null=True, on_delete=models.SET_NULL)
 

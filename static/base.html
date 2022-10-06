@@ -71,11 +71,11 @@
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-task"></use>
           </svg> Tareas</a>
         <ul class="nav-group-items">
-          <li class="nav-item"><a class="nav-link" href="login.html" target="_top">
+          <li class="nav-item"><a class="nav-link" href="{% url 'tareas' %}#mis-tareas" target="_top">
               <svg class="nav-icon">
                 <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-bookmark"></use>
               </svg> Mis tareas</a></li>
-          <li class="nav-item"><a class="nav-link" href="register.html" target="_top">
+          <li class="nav-item"><a class="nav-link" href="{% url 'tareas' %}#todas-las-tareas" target="_top">
               <svg class="nav-icon">
                 <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-list"></use>
               </svg> Todas las tareas</a></li>
@@ -154,7 +154,7 @@
                   <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-settings"></use>
                 </svg> Ajustes</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'logout' %}">
+              <a class="dropdown-item" href="{% url 'salir' %}">
                 <svg class="icon me-2">
                   <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-account-logout"></use>
                 </svg> Cerrar sesión</a>

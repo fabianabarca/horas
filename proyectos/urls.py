@@ -8,6 +8,6 @@ urlpatterns = [
     path('crear_area', crear_area, name='crear_area'),
     path('editar_proyecto/<int:id>', editar_proyecto, name='editar_proyecto'),
     path('proyectosInfo', proyectosInfo, name='proyectosInfo'),
-    path('proyectoIndividual/<int:id>', proyectoIndividual, name='proyectoIndividual'),
+    path('<int:id>/', proyecto, name='proyectoIndividual'),
 
 ]

@@ -12,7 +12,7 @@ import time
 
 
 # Create your views here.
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def actividades_request(request):
 
     list_of_inputs = request.POST.getlist('inputs')
@@ -73,7 +73,7 @@ def actividades_request(request):
     return render(request=request, template_name="../templates/actividades.html", context={"actividades": actividades_list, "filtros_form": form})
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def crear_actividad(request):
 
     estudiante_actual = Estudiante.objects.get(user=request.user)
@@ -108,7 +108,7 @@ def crear_actividad(request):
     return render(request=request, template_name="../templates/crear_actividad.html", context={"tipoAccion": creacionOedicion, "form": form})
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def editar_actividad(request, id):
 
     obj = get_object_or_404(Actividad, id=id)

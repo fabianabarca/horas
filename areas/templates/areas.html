@@ -4,7 +4,10 @@
 
 {% load crispy_forms_tags %} 
 
-{% block main %} 
+{% block page_title %} Áreas {% endblock %}
+
+{% block main %}
+
 <!-- Título -->
 <h1 class="display-4">Áreas</h1>
 <p class="lead">
@@ -15,7 +18,7 @@
 <!--Boton para agregar areas-->
 {% if request.user.is_staff %}
 <p>
-  <a href="crear_area" type="button" class="btn btn-outline-info">Agregar nueva área</a>
+  <a href="crear_area" type="button" class="btn btn-outline-info">Nueva área</a>
 </p>
 {% endif %}
 

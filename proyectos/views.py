@@ -11,7 +11,7 @@ import time
 # Create your views here.
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def proyectos_request(request):
     proyectos_list = Proyecto.objects.all()
 
@@ -45,10 +45,10 @@ def proyectos_request(request):
 
     form = FiltrosProyectoForm()
 
-    return render(request=request, template_name="../templates/proyectos.html", context={"proyectos": proyectos_list, "filtros_form": form})
+    return render(request, "proyectos.html", context={"proyectos": proyectos_list, "filtros_form": form})
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def crear_proyecto(request):
 
     if request.method == "POST":
@@ -72,7 +72,7 @@ def crear_proyecto(request):
     return render(request=request, template_name="../templates/crear_proyecto.html", context={"tipoAccion": creacionOedicion, "proyecto_form": form})
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def crear_area(request):
 
     if request.method == "POST":
@@ -90,7 +90,7 @@ def crear_area(request):
     return render(request=request, template_name="../templates/crear_area.html", context={"area_form": form})
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def editar_proyecto(request, id):
 
     obj = get_object_or_404(Proyecto, id=id)
@@ -118,7 +118,7 @@ def proyectosInfo(request):
     return render(request=request,  template_name="../templates/proyectosInfo.html", context={"listaProyectos": listaProyectos})
 
 
-def proyectoIndividual(request, id):
+def proyecto(request, id):
     proyecto = Proyecto.objects.filter(id=id)
     proyectoHoras = 1
     objetivos = proyecto[0].objetivo_set.filter(enPapelera=False)
@@ -129,5 +129,5 @@ def proyectoIndividual(request, id):
         for tarea in tareas:
             listatareas.append(tarea.nombre)
 
-    return render(request=request,  template_name="../templates/proyectoIndividual.html", context={"proyecto": proyecto[0],
+    return render(request, "proyecto.html", context={"proyecto": proyecto[0],
                                                                                                    "proyectoHoras": proyectoHoras, "objetivos": objetivos, "tareas": listatareas})

@@ -1,0 +1,131 @@
+{% extends 'base-sitio.html' %}
+
+{% load static %}
+
+{% block main %}
+
+<!-- Header-->
+<header class="masthead d-flex align-items-center">
+    <div class="container px-4 px-lg-5 text-center">
+        <h1 class="mb-1">Tropicalización <br> de la tecnología</h1>
+        <h3 class="mb-5"><em>Trabajo Comunal Universitario TC-691</em></h3>
+        <a class="btn btn-primary btn-xl" href="#acerca">Conózcanos</a>
+    </div>
+</header>
+<!-- About-->
+<section class="content-section bg-light" id="acerca">
+    <div class="container px-4 px-lg-5 text-center">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-10">
+                <h2>Stylish Portfolio is the perfect theme for your next project!</h2>
+                <p class="lead mb-5">
+                    This theme features a flexible, UX friendly sidebar menu and stock photos from our friends at
+                    <a href="https://unsplash.com/">Unsplash</a>
+                    !
+                </p>
+                <a class="btn btn-dark btn-xl" href="#areas">What We Offer</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Services-->
+<section class="content-section bg-primary text-white text-center" id="areas">
+    <div class="container px-4 px-lg-5">
+        <div class="content-section-heading">
+            <h3 class="text-secondary mb-0">Especialidades</h3>
+            <h2 class="mb-5">Áreas</h2>
+        </div>
+        <div class="row gx-4 gx-lg-5">
+            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+                <span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-screen-desktop"></i></span>
+                <h4><strong>Sistemas de información</strong></h4>
+                <p class="text-faded mb-0">¡Datos para las comunidades!</p>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+                <span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-pencil"></i></span>
+                <h4><strong>Talleres educativos</strong></h4>
+                <p class="text-faded mb-0">La diversión de la tecnología</p>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+                <span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-wrench"></i></span>
+                <h4><strong>Prototipos</strong></h4>
+                <p class="text-faded mb-0"><emph>Hardware is hard</emph></p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Callout-->
+<section class="callout">
+    <div class="container px-4 px-lg-5 text-center">
+        <h2 class="mx-auto mb-5">
+            Welcome to
+            <em>your</em>
+            next website!
+        </h2>
+        <a class="btn btn-primary btn-xl" href="https://startbootstrap.com/theme/stylish-portfolio/">Download Now!</a>
+    </div>
+</section>
+<!-- Portfolio-->
+<section class="content-section" id="proyectos">
+    <div class="container px-4 px-lg-5">
+        <div class="content-section-heading text-center">
+            <h3 class="text-secondary mb-0">Portafolio</h3>
+            <h2 class="mb-5">Proyectos</h2>
+        </div>
+        <div class="row gx-0">
+            <div class="col-lg-6">
+                <a class="portfolio-item" href="#!">
+                    <div class="caption">
+                        <div class="caption-content">
+                            <div class="h2">Ferias del agricultor</div>
+                            <p class="mb-0">A yellow pencil with envelopes on a clean, blue backdrop!</p>
+                        </div>
+                    </div>
+                    <img class="img-fluid" src="{% static 'sitio/assets/img/portfolio-1.jpg' %}" alt="..." />
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <a class="portfolio-item" href="#!">
+                    <div class="caption">
+                        <div class="caption-content">
+                            <div class="h2">Transporte público</div>
+                            <p class="mb-0">A dark blue background with a colored pencil, a clip, and a tiny ice cream cone!</p>
+                        </div>
+                    </div>
+                    <img class="img-fluid" src="{% static 'sitio/assets/img/portfolio-2.jpg' %}" alt="..." />
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <a class="portfolio-item" href="#!">
+                    <div class="caption">
+                        <div class="caption-content">
+                            <div class="h2">Talleres educativos</div>
+                            <p class="mb-0">Strawberries are such a tasty snack, especially with a little sugar on top!</p>
+                        </div>
+                    </div>
+                    <img class="img-fluid" src="{% static 'sitio/assets/img/portfolio-3.jpg' %}" alt="..." />
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <a class="portfolio-item" href="#!">
+                    <div class="caption">
+                        <div class="caption-content">
+                            <div class="h2">Otros</div>
+                            <p class="mb-0">A yellow workspace with some scissors, pencils, and other objects.</p>
+                        </div>
+                    </div>
+                    <img class="img-fluid" src="{% static 'sitio/assets/img/portfolio-4.jpg' %}" alt="..." />
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Call to Action-->
+<section class="content-section bg-primary text-white" id="contacto">
+    <div class="container px-4 px-lg-5 text-center">
+        <h2 class="mb-4">¡Contáctenos!</h2>
+        <a class="btn btn-xl btn-light me-4" href="#!">Click Me!</a>
+    </div>
+</section>
+
+{% endblock %}

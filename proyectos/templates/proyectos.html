@@ -1,29 +1,32 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% load crispy_forms_tags %}
 
-{% block main %}
+{% block page_title %} Proyectos {% endblock %}
 
-{% load static %}
+{% block main %}
 
 <!-- Título -->
 <h1 class="display-4">Proyectos</h1>
 <p class="lead">
-  Los proyectos pueden pertenecer a varias áreas.
+  Los proyectos tienen objetivos y tareas asignadas para su consecución.
 </p>
 
 {% if request.user.is_staff %}
-<div class="mb-3">
-  <a href="crear_proyecto" type="button" class="btn btn-outline-info"><i class="fas fa-plus-circle"></i> Agregar
-    proyecto</a>
-  <a href="crear_area" type="button" class="btn btn-outline-success"><i class="fas fa-plus-circle"></i> Agregar área</a>
-</div>
+<p>
+  <a href="crear_proyecto" type="button" class="btn btn-outline-info">Nuevo proyecto</a>
+</p>
 {% endif %}
 
 <!-- Lista de proyectos -->
-<form method="post">{% csrf_token %}
+<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h6>
 
-  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h6>
+<form method="post">
+
+  {% csrf_token %}
+
   <div class="card">
     <div class="card-body">
       <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">Mostrar filtros</button>

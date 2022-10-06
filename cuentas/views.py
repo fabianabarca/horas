@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
 
-@staff_member_required(login_url='/cuentas/login/')
+@staff_member_required(login_url='/cuentas/ingreso/')
 def register_request(request):
 	form = NewUserForm(request.POST or None)
 	if request.method == "POST":
@@ -31,10 +31,10 @@ def register_request(request):
 			estudiante = Estudiante.objects.get(id=user.id)
 			estudiante.carrera_id = Carrera.objects.get(nombre__contains=carrera)
 			#estudiante.save()
-			fechaInicioTCU = form.cleaned_data.get('fechaInicioTCU')
-			fechaFinTCU	= form.cleaned_data.get('fechaFinTCU')
-			estudiante.fechaInicioTCU=fechaInicioTCU
-			estudiante.fechaFinTCU=fechaFinTCU
+			fecha_inicio = form.cleaned_data.get('fecha_inicio')
+			fecha_final	= form.cleaned_data.get('fecha_final')
+			estudiante.fecha_inicio=fecha_inicio
+			estudiante.fecha_final=fecha_final
 			
 			estudiante.save()
 
@@ -55,7 +55,12 @@ def register_request(request):
 		else:
 			messages.error(request, "Falló el registro. Información inválida.")
 	#form = NewUserForm()
-	return render (request=request, template_name="../templates/register.html", context={"register_form":form})
+
+	context = {
+		"register_form":form,
+	}
+
+	return render (request, "registro.html", context)
 
 
 def login_request(request):
@@ -78,15 +83,15 @@ def login_request(request):
 		else:
 			messages.error(request,"Usuario o contraseña inválido.")
 	form = CustomAuthenticationForm()
-	return render(request=request, template_name="../templates/login.html", context={"login_form":form})
+	return render(request, "ingreso.html", context={"login_form":form})
 
 def logout_request(request):
 	logout(request)
-	messages.info(request, "Has terminado tu sesión exitosamente.") 
+	messages.info(request, "La sesión ha terminado exitosamente.") 
 	return redirect(login_request)
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def perfil(request):
 
     estudiante_actual = Estudiante.objects.get(user=request.user)

@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 import time
 
 # Create your views here.
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def objetivos_request(request):
     objetivos_list = Objetivo.objects.all()
     if request.method == "POST":
@@ -20,9 +20,9 @@ def objetivos_request(request):
         
         return HttpResponseRedirect("/objetivos")  
 
-    return render (request=request, template_name="../templates/objetivos.html", context={"objetivos":objetivos_list})
+    return render (request, "objetivos.html", context={"objetivos":objetivos_list})
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def crear_objetivo(request):
 
     if request.method == "POST":
@@ -47,7 +47,7 @@ def crear_objetivo(request):
     return render (request=request, template_name="../templates/crear_objetivo.html", context={"tipoAccion":creacionOedicion,"objetivo_form":form})
  
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def editar_objetivo(request, id):
 
     obj = get_object_or_404(Objetivo, id = id) 
