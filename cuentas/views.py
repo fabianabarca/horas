@@ -55,7 +55,12 @@ def register_request(request):
 		else:
 			messages.error(request, "Falló el registro. Información inválida.")
 	#form = NewUserForm()
-	return render (request, "registro.html", context={"register_form":form})
+
+	context = {
+		"register_form":form,
+	}
+
+	return render (request, "registro.html", context)
 
 
 def login_request(request):

@@ -1,49 +1,60 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
-{% load crispy_forms_tags %} 
+{% load crispy_forms_tags %}
+
+{% block page_title %} Registro de estudiantes {% endblock %}
 
 {% block main %}
 
-<script>
-  var formSubmitting = false;
-  var setFormSubmitting = function() { formSubmitting = true; };
-  
-  window.onload = function() {
-      window.addEventListener("beforeunload", function (e) {
-          if (formSubmitting) {
-              return undefined;
-          }
-  
-          var confirmationMessage = 'It looks like you have been editing something. '
-                                  + 'If you leave before saving, your changes will be lost.';
-          
-          (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-          return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-      });
-  };
-  </script>
-<!--Register-->
+<!-- Formulario de registro de estudiantes -->
 <div class="card">
+  <div class="card-header">
+    Registro de estudiantes
+  </div>
   <div class="card-body">
-    <h4 class="card-title">Registro</h4>
     <form method="POST" onsubmit="setFormSubmitting()">
-      {% csrf_token %} 
-      
+      {% csrf_token %}
+      <p>
+      <!-- Mensajes -->
       {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
+      {% for message in messages %}
+      {% if message.tags == 'error' %}
+      <div class="alert alert-danger" role="alert">     
+      {% else %}
+      <div class="alert alert-{{ message.tags }}" role="alert">
+      {% endif %}        
+        {{ message }}
+      </div>
+      {% endfor %}
       {% endif %}
-
-      {{ register_form|crispy }}
-      <button type="submit" class="btn btn-primary btn-block">Continuar</button>
+      <!-- Formulario -->
+      {{ register_form | crispy }}
+      </p>
+      <button type="submit" class="btn btn-primary btn-block">Registrar</button>
     </form>
-    <p class="text-center">
-      Si ya tiene una cuenta, <a href="/cuentas/login">inicie sesión</a>
-    </p>
   </div>
 </div>
+
+<br>
+
+<!-- Aviso de salir de página sin guardar -->
+<script>
+  var formSubmitting = false;
+  var setFormSubmitting = function () { formSubmitting = true; };
+
+  window.onload = function () {
+    window.addEventListener("beforeunload", function (e) {
+      if (formSubmitting) {
+        return undefined;
+      }
+
+      var confirmationMessage = 'It looks like you have been editing something. '
+        + 'If you leave before saving, your changes will be lost.';
+
+      (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+      return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
+  };
+</script>
 
 {% endblock %}

@@ -1,4 +1,4 @@
-from cuentas.models import Estudiante, Profesor
+from cuentas.models import Estudiante, Profesor, Carrera
 from solicitudes.models import Solicitud, SolicitudArchivo
 from actividades.models import Actividad
 from proyectos.models import *
@@ -13,7 +13,8 @@ from django.forms import ClearableFileInput
 
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    carrera = forms.CharField(required=False)
+    carreras = Carrera.objects.all()
+    carrera = forms.ModelChoiceField(queryset=carreras)
     fecha_inicio = forms.DateField(required=False, widget=forms.DateInput(
         attrs={'type': 'date', 'style': 'width: 200px;', 'class': 'form-control'}))
     fecha_final = forms.DateField(required=False, widget=forms.DateInput(
@@ -31,7 +32,7 @@ class NewUserForm(UserCreationForm):
         super(NewUserForm, self).__init__(*args, **kwargs)
 
         for fieldname in ['username']:
-            self.fields[fieldname].label = 'Carne'
+            self.fields[fieldname].label = 'ID (carné)'
 
     def save(self, commit=True):
         user = super(NewUserForm, self).save(commit=False)
