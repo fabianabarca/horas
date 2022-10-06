@@ -1,4 +1,9 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %} {% block main %}
+{% extends 'base.html' %} 
+
+{% load crispy_forms_tags %} 
+
+{% block main %}
+
 <script>
   var formSubmitting = false;
   var setFormSubmitting = function() { formSubmitting = true; };
@@ -40,4 +45,5 @@
     </p>
   </div>
 </div>
+
 {% endblock %}

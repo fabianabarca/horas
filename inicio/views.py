@@ -191,7 +191,6 @@ def indexandoTareasSubordinadasRecursivas(tareasDict):
 def indexInicio(request):
 
 '''
-def inicio(request):
+def sitio(request):
 
-    
-    return render (request=request, template_name="../templates/inicio.html", context={})
+    return render (request, "sitio.html")
