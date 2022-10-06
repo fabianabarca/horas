@@ -77,7 +77,7 @@
 <!--Calendar google start-->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    google.charts.load("current", { packages: ["calendar"] });
+    google.charts.load("current", { packages: ["calendar"],'language': 'es' });
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
@@ -97,6 +97,9 @@
         var options = {
             title: "Calendario",
             height: 350,
+            calendar: {
+                daysOfWeek: 'DLMMJVS'
+            }
         };
 
         chart.draw(dataTable, options);
