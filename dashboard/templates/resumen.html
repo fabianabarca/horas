@@ -69,42 +69,44 @@
         </div>
     </div>
 </div>
+<br>
+<!-- Calendar -->
+<h2>Gráfico de horas por día</h2>
+<div id="calendar_basic" style="width: 1000px; height: 200px;"></div>
 
-<!-- Otra cosa -->
+<!--Calendar google start-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["calendar"] });
+    google.charts.setOnLoadCallback(drawChart);
 
-{% if request.user.is_staff %}
+    function drawChart() {
+        var horas = {{ horasPorDia|safe }}; // Por resolver: Saber por qué IDE marca como error. "{{ horasPorDia|safe }}"
+        var numeroActividades = "{{ numeroActividades|safe }}";
+        console.log(horas, numeroActividades);
+        var horasDia = new Array(numeroActividades+1);
+        horasDia[0] = [{ label: 'Fecha', type: 'date' }, { label: 'Horas', type: 'number' }];
+        for (let i = 0; i < numeroActividades; i++) {
+            console.log(horas[i][0]);
+            horasDia[i + 1] = [new Date(horas[i][0], (horas[i][1] - 1), horas[i][2]), horas[i][3]];
+        }
+        var dataTable = new google.visualization.arrayToDataTable(horasDia, false);
 
-<h3>Ranking de estudiantes por cantidad de horas</h3>
+        var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Horas de estudiantes</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Ránking por cantidad de horas</h6>
-        <div id="container" style="width: 50%;">
-            <canvas id="ranking-estudiantes-actividades"></canvas>
-        </div>
-    </div>
-</div>
+        var options = {
+            title: "Calendario",
+            height: 350,
+        };
 
-
-<h3>Horas por proyecto</h3>
-
-<div id="container" style="width: 25%;">
-    <canvas id="pie-chart"></canvas>
-</div>
-
-<h3>Ranking horas por proyecto</h3>
-
-<div id="container" style="width: 50%;">
-    <canvas id="bar-chart"></canvas>
-</div>
-</br></br>
-
-{% endif %}
+        chart.draw(dataTable, options);
+    }
+</script>
+<!--Calendar google end-->
 
 <!--
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
--->
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
@@ -288,7 +290,7 @@
 
         }
     });
-</script>
+</script> -->
 
 {% else %}
 Aviso: Esta página muestra el resumen de datos de estudiantes.

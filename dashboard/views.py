@@ -10,7 +10,7 @@ from actividades.models import Actividad
 from proyectos.models import Proyecto
 from tareas.models import Tarea
 import datetime
-
+import json
 
 # Create your views here.
 
@@ -110,6 +110,19 @@ def resumen(request):
 
     colorListRankingEstudiante = color_list(mapEstudianteCantidadActividades)
 
+    #Fechas, Horas Calendario
+    actividades_calendario= Actividad.objects.raw('SELECT id, estudiante_id, horas, fecha, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false AND estado == 'A'")
+    horasPorDia = [[0 for i in range(4)] for actividad in actividades_calendario]
+    #print(horasPorDia)
+    numeroActividades = 0
+    for actividad in actividades_calendario:
+        if actividad.estado == "A":
+            horasPorDia[numeroActividades][0]=actividad.fecha.year
+            horasPorDia[numeroActividades][1]=actividad.fecha.month
+            horasPorDia[numeroActividades][2]=actividad.fecha.day
+            horasPorDia[numeroActividades][3]=actividad.horas
+            numeroActividades+=1
+
     context = {
         "progreso": horasTotalesPorEstudiante,
         "porcentaje": porcentaje,
@@ -125,6 +138,8 @@ def resumen(request):
         'labelsRankingEstudiante': labelsRankingEstudiante,
         'dataRankingEstudiante': dataRankingEstudiante,
         'colorListRankingEstudiante': colorListRankingEstudiante,
+        'horasPorDia':horasPorDia,
+        'numeroActividades':numeroActividades,
     }
 
     return render(request, 'resumen.html', context)

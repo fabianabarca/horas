@@ -152,7 +152,7 @@
       google.charts.setOnLoadCallback(drawChart);
   
       function drawChart() {
-        var horas = {{ horasPorDia|safe }};
+        var horas = "{{ horasPorDia|safe }}";
         var horasDia = new Array((parseInt("{{numeroActividades}}")));
         horasDia[0] = [{ label: 'Fecha', type: 'date' }, { label: 'Horas', type: 'number' }];
         for (let i = 0; i < parseInt("{{numeroActividades}}"); i++) {
@@ -234,7 +234,7 @@
 
     function drawBasic() {
 
-      var horas = {{ horasOrdenadas|safe }};
+      var horas = "{{ horasOrdenadas|safe }}";
       var horasDia = new Array((parseInt("{{numeroActividades}}")));
       horasDia[0] = [{ label: 'Fecha', type: 'date' }, { label: 'Horas', type: 'number' }];
       for (let i = 0; i < parseInt("{{numeroActividades}}"); i++) {
