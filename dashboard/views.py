@@ -110,6 +110,12 @@ def resumen(request):
 
     colorListRankingEstudiante = color_list(mapEstudianteCantidadActividades)
 
+    indiceAvance = round(porcentaje/porcentajeDaysYear,2)
+    indiceAvanceW = int(50/1*indiceAvance)
+    #stringHorasEs = "width: "+str(horasTotalesPorEstudiante)+"%"
+    #stringDiasTCU = "width: "+str(porcentajeDaysYear)+"%"
+    #stringIndAvan = "width: "+str(indiceAvance)+"%"
+
     #Fechas, Horas Calendario
     actividades_calendario= Actividad.objects.raw('SELECT id, estudiante_id, horas, fecha, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false AND estado == 'A'")
     horasPorDia = [[0 for i in range(4)] for actividad in actividades_calendario]
@@ -138,8 +144,10 @@ def resumen(request):
         'labelsRankingEstudiante': labelsRankingEstudiante,
         'dataRankingEstudiante': dataRankingEstudiante,
         'colorListRankingEstudiante': colorListRankingEstudiante,
-        'horasPorDia':horasPorDia,
+        'horasPorDia':json.dumps(horasPorDia),
         'numeroActividades':numeroActividades,
+        'indiceAvance':indiceAvance,
+        'indiceAvanceW':indiceAvanceW,
     }
 
     return render(request, 'resumen.html', context)
