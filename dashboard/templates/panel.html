@@ -83,18 +83,26 @@
 
 <!-- {% if request.user.is_staff %} -->
 
-<h3>Ranking de estudiantes por cantidad de horas</h3>
+<!-- Cambio a componentes de plantilla / gráficos de Google en progreso -->
+<h3>Horas trabajadas por proyecto</h3>
+
+<div id="container" style="width: 50%;">
+    <canvas id="bar-chart"></canvas>
+</div>
+</br></br>
+
+<h3>Ranking de estudiantes por índice de avance</h3>
 
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Horas de estudiantes</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Ránking por cantidad de horas</h6>
+        <h5 class="card-title">Índice de avance de estudiantes</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Ránking por índice de avance</h6>
         <div id="container" style="width: 50%;">
             <canvas id="ranking-estudiantes-actividades"></canvas>
         </div>
     </div>
 </div>
-
+<!-- Cambio a componentes de plantilla / gráficos de Google en progreso -->
 
 <!--- <h3>Horas por proyecto</h3>
 
@@ -102,18 +110,13 @@
     <canvas id="pie-chart"></canvas>
 </div> -->
 
-<h3>Ranking horas por proyecto</h3>
-
-<div id="container" style="width: 50%;">
-    <canvas id="bar-chart"></canvas>
-</div>
-</br></br>
-
 <!-- {% endif %} -->
 
 <!--
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 -->
+
+<!-- Cambio a componentes de plantilla / gráficos de Google en progreso -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
@@ -121,6 +124,7 @@
     var listData = "{{ dataRankingEstudiante|safe }}"
     var listLabels = "{{ labelsRankingEstudiante|safe }}"
     var colorList = "{{ colorListRankingEstudiante|safe }}"
+    var rankingIndiceAvance = {{ rankingIndiceAvance|safe }} // Funciona aunque marque error de { } en IDE
 
     listData = listData.slice(1);
     listData = listData.slice(0, listData.length - 1);
@@ -150,8 +154,8 @@
             datasets: [{
 
                 barThickness: 30,
-                label: 'Horas por estudiantes',
-                data: newlistData,
+                label: 'Índice de avance por estudiante',
+                data: rankingIndiceAvance,//newlistData,
                 backgroundColor: newcolorList
             }],
             //borderWidth: 20
@@ -179,8 +183,7 @@
 
     });
 </script>
-
-
+<!-- Cambio a componentes de plantilla / gráficos de Google en progreso -->
 <script>
 
     const ctx = document.getElementById('bar-chart').getContext('2d');
@@ -216,7 +219,7 @@
             datasets: [{
 
                 barThickness: 30,
-                label: 'Horas por proyectos',
+                label: 'Horas trabajadas por proyecto',
                 data: newlistData,
                 backgroundColor: newcolorList
             }],
@@ -245,6 +248,7 @@
 
     });
 </script>
+<!-- Cambio a componentes de plantilla / gráficos de Google en progreso -->
 <!---
 <script>
 

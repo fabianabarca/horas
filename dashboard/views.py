@@ -269,6 +269,7 @@ def panel(request):
     # A partir de aquí datos para grafico de barras ranking de estudiantes por actividades
     labelsRankingEstudiante = []
     dataRankingEstudiante = []
+    rankingIndiceAvance = []
     mapEstudianteCantidadActividades = {}
     rankingEstudiantesList = Estudiante.objects.filter(user__is_staff=False)
 
@@ -278,14 +279,17 @@ def panel(request):
         horasEstudiante = 0
         for actividad in horasActividades:
             horasEstudiante = horasEstudiante + actividad.horas
-        mapEstudianteCantidadActividades[estudiante.user.username] = horasEstudiante
+        mapEstudianteCantidadActividades[estudiante] = horasEstudiante
 
     sortedmapEstudianteCantidadActividades = sorted(
         mapEstudianteCantidadActividades.items(), key=lambda x: x[1], reverse=True)
 
     for element in sortedmapEstudianteCantidadActividades:
-        labelsRankingEstudiante.append(element[0])
+        labelsRankingEstudiante.append(element[0].user.username)
         dataRankingEstudiante.append(element[1])
+        rankingIndiceAvance.append(((100 / 300) * element[1]) / 
+            ((100 / 365) * (datetime.date.today()-element[0].fechaInicioTCU).days))
+    #print(rankingIndiceAvance)
 
     colorListRankingEstudiante = color_list(mapEstudianteCantidadActividades)
 
@@ -335,6 +339,7 @@ def panel(request):
         'indiceAvanceW':indiceAvanceW,
         "numeroEstudiantes":numeroEstudiantes,
         "numeroProyectos":numeroProyectos,
+        'rankingIndiceAvance':rankingIndiceAvance,
     }
 
     return render(request, 'panel.html', context)
