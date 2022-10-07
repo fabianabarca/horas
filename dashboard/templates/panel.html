@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block page_title %} Resumen de horas {% endblock %}
+{% block page_title %} Panel {% endblock %}
 
 {% block main %}
 
@@ -16,6 +16,10 @@
     <dt>Usuario:</dt> <dd>{{user.username}}</dd>
     <dt>Nombre:</dt> <dd>{{user.first_name}}</dd>
     <dt>Apellido:</dt> <dd>{{user.last_name}}</dd>
+    <br>
+    <dt>Cantidad de estudiante activos:</dt> <dd>{{numeroEstudiantes}}</dd>
+    <dt>Cantidad de proyectos:</dt> <dd>{{numeroProyectos}}</dd>
+    <br>
 </dl>
 
 <!-- Números principales 
@@ -92,11 +96,11 @@
 </div>
 
 
-<h3>Horas por proyecto</h3>
+<!--- <h3>Horas por proyecto</h3>
 
 <div id="container" style="width: 25%;">
     <canvas id="pie-chart"></canvas>
-</div>
+</div> -->
 
 <h3>Ranking horas por proyecto</h3>
 
@@ -134,7 +138,7 @@
 
         newcolorList[count] = newcolorList[count].slice(1)
         newcolorList[count] = newcolorList[count].slice(0, newcolorList[count].length - 1)
-        console.log(newcolorList[count])
+        //console.log(newcolorList[count])
         count = count + 1
 
     }
@@ -200,7 +204,7 @@
 
         newcolorList[count] = newcolorList[count].slice(1)
         newcolorList[count] = newcolorList[count].slice(0, newcolorList[count].length - 1)
-        console.log(newcolorList[count])
+        //console.log(newcolorList[count])
         count = count + 1
 
     }
@@ -241,7 +245,7 @@
 
     });
 </script>
-
+<!---
 <script>
 
     const ctx2 = document.getElementById('pie-chart').getContext('2d');
@@ -249,7 +253,7 @@
     var listLabels = "{{ labels|safe }}"
     var colorList = "{{ colorList|safe }}"
 
-    console.log(colorList)
+    //console.log(colorList)
     colorList = colorList.slice(1);
     colorList = colorList.slice(0, colorList.length - 1);
 
@@ -262,17 +266,17 @@
     var newlistLabels = listLabels.split(',')
     var newcolorList = colorList.split(', ')
 
-    console.log(newcolorList)
+    //console.log(newcolorList)
     count = 0
     for (color in newcolorList) {
 
         newcolorList[count] = newcolorList[count].slice(1)
         newcolorList[count] = newcolorList[count].slice(0, newcolorList[count].length - 1)
-        console.log(newcolorList[count])
+        //console.log(newcolorList[count])
         count = count + 1
 
     }
-    console.log(newcolorList)
+    //console.log(newcolorList)
     const myChart2 = new Chart(ctx2, {
         type: 'pie',
         data: {
@@ -294,6 +298,7 @@
         }
     });
 </script>
+-->
 
 {% else %}
 Aviso: Usted no tiene autorización para ver este contenido.

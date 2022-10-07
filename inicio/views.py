@@ -31,7 +31,7 @@ def index(request,id=9999):
 
     proyectos_list = Proyecto.objects.all()
     numeroProyectos=proyectos_list.count
-    
+    #print(numeroEstudiantes,numeroProyectos, "views inicio") # test
 
     #Desde aqui se procesa la barra de progreso de horas por estudiante
     my_actividades_list= Actividad.objects.raw('SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false")
