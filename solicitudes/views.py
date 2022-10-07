@@ -32,7 +32,7 @@ class FileFieldFormView(FormView):
             return self.form_invalid(form)
 '''
 # Create your views here.
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def solicitudes_request(request):
 
     list_of_inputs=request.POST.getlist('inputs')
@@ -81,7 +81,7 @@ def solicitudes_request(request):
 
     return render (request=request, template_name="../templates/solicitudes.html",context={"solicitudes":solicitudes_list,"archivos":archivos_list, "filtros_form":form})
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def crear_solicitud(request):
 
     estudiante_actual = Estudiante.objects.get(user = request.user)
@@ -116,7 +116,7 @@ def crear_solicitud(request):
     return render (request=request, template_name="../templates/crear_solicitud.html", context={"tipoAccion":creacionOedicion,"solicitud_form":form, "solicitudArchivo_form":form_archivo})
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def editar_solicitud(request, id):
 
     obj = get_object_or_404(Solicitud, id = id) 

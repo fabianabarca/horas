@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def estudiantes_request(request):
 
     staffBotonVistaEstudiante= False
@@ -57,7 +57,7 @@ def estudiantes_request(request):
     "estudiantes":estudiantes_list,"actividades":actividades_list,
     "porcentajeList":porcentajeEstudianteslist,"porcentajeWidthList":porcentajeWidthEstudianteslist})
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def editar_estudiante(request, id):
 
     obj = get_object_or_404(Estudiante, id = id) 
@@ -65,8 +65,8 @@ def editar_estudiante(request, id):
     form = EstudiantesForm(request.POST or None, instance = obj)
     form.fields['user'].widget = forms.HiddenInput()
     form.fields['carrera'].widget = forms.HiddenInput()
-    form.fields['fechaInicioTCU'].widget = forms.HiddenInput()
-    form.fields['fechaFinTCU'].widget = forms.HiddenInput()
+    form.fields['fecha_inicio'].widget = forms.HiddenInput()
+    form.fields['fecha_final'].widget = forms.HiddenInput()
 
     if form.is_valid():
         form.save()

@@ -1,4 +1,4 @@
-from cuentas.models import Estudiante, Profesor
+from cuentas.models import Estudiante, Profesor, Carrera
 from solicitudes.models import Solicitud, SolicitudArchivo
 from actividades.models import Actividad
 from proyectos.models import *
@@ -13,10 +13,11 @@ from django.forms import ClearableFileInput
 
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    carrera = forms.CharField(required=False)
-    fechaInicioTCU = forms.DateField(required=False, widget=forms.DateInput(
+    carreras = Carrera.objects.all()
+    carrera = forms.ModelChoiceField(queryset=carreras)
+    fecha_inicio = forms.DateField(required=False, widget=forms.DateInput(
         attrs={'type': 'date', 'style': 'width: 200px;', 'class': 'form-control'}))
-    fechaFinTCU = forms.DateField(required=False, widget=forms.DateInput(
+    fecha_final = forms.DateField(required=False, widget=forms.DateInput(
         attrs={'type': 'date', 'style': 'width: 200px;', 'class': 'form-control'}))
 
     class Meta:
@@ -25,20 +26,20 @@ class NewUserForm(UserCreationForm):
         #fields = ("username", "first_name", "last_name", "email", "carrera","password1", "password2")
         fields = UserCreationForm.Meta.fields + \
             ('first_name', 'last_name', 'email', 'carrera',
-             'is_staff', 'fechaInicioTCU', 'fechaFinTCU')
+             'is_staff', 'fecha_inicio', 'fecha_final')
 
     def __init__(self, *args, **kwargs):
         super(NewUserForm, self).__init__(*args, **kwargs)
 
         for fieldname in ['username']:
-            self.fields[fieldname].label = 'Carne'
+            self.fields[fieldname].label = 'ID (carné)'
 
     def save(self, commit=True):
         user = super(NewUserForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
         user.carrera = self.cleaned_data['carrera']
-        user.fechaInicioTCU = self.cleaned_data['fechaInicioTCU']
-        user.fechaFinTCU = self.cleaned_data['fechaFinTCU']
+        user.fecha_inicio = self.cleaned_data['fecha_inicio']
+        user.fecha_final = self.cleaned_data['fecha_final']
 
         if commit:
             user.save()

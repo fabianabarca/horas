@@ -5,16 +5,12 @@
 
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link
-  rel="stylesheet"
-  type="text/css"
-  href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css"
- />
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css" />
   <!-- Bootstrap -->
-      <!-- CSS only -->
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="" crossorigin="anonymous">
-      
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity=""
+    crossorigin="anonymous">
+
 
   <!-- CSS -->
   <!-- Fonts -->
@@ -23,13 +19,13 @@
   <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
   <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
- 
+
   <!-- CSS Files -->
   <link id="pagestyle" href="{% static 'css/soft-ui-dashboard.css' %}" rel="stylesheet" />
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
-  
+
   <!-- Barra lateral -->
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
     id="sidenav-main">
@@ -37,9 +33,7 @@
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
         aria-hidden="true" id="iconSidenav"></i>
       <!-- <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " -->
-      <a class="navbar-brand m-0" href=" / "
-
-        target="_blank">
+      <a class="navbar-brand m-0" href=" / " target="_blank">
         <img src="{% static 'img/logo-ct-dark.png' %}" class="navbar-brand-img h-100" alt="main_logo">
         <span class="ms-1 font-weight-bold">Tropicalización</span>
       </a>
@@ -77,10 +71,11 @@
             <span class="nav-link-text ms-1">Inicio</span>
           </a>
         </li>
-        
+
 
         <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.url_name == 'actividades' %}active{% endif %}" href="/actividades">
+          <a class="nav-link {% if request.resolver_match.url_name == 'actividades' %}active{% endif %}"
+            href="/actividades">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg class="text-dark" width="16px" height="16px" viewBox="0 0 40 40" version="1.1"
@@ -139,7 +134,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.url_name == 'proyectos' %}active{% endif %}" href="/proyectos">
+          <a class="nav-link {% if request.resolver_match.url_name == 'proyectos' %}active{% endif %}"
+            href="/proyectos">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg class="text-dark" width="16px" height="16px" viewBox="0 0 40 40" version="1.1"
@@ -199,7 +195,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.url_name == 'objetivos' %}active{% endif %}" href="/objetivos">
+          <a class="nav-link {% if request.resolver_match.url_name == 'objetivos' %}active{% endif %}"
+            href="/objetivos">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg class="text-dark" width="16px" height="16px" viewBox="0 0 40 44" version="1.1"
@@ -225,9 +222,10 @@
             <span class="nav-link-text ms-1">Objetivos</span>
           </a>
         </li>
-        
+
         <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.url_name == 'solicitudes' %}active{% endif %}" href="/solicitudes">
+          <a class="nav-link {% if request.resolver_match.url_name == 'solicitudes' %}active{% endif %}"
+            href="/solicitudes">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg class="text-dark" width="16px" height="16px" viewBox="0 0 46 42" version="1.1"
@@ -257,7 +255,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="/dashboard">
+          <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+            href="/dashboard">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg class="text-dark" width="16px" height="16px" viewBox="0 0 46 42" version="1.1"
@@ -321,7 +320,8 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Administración</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.url_name == 'estudiantes' %}active{% endif %}" href="/estudiantes">
+          <a class="nav-link {% if request.resolver_match.url_name == 'estudiantes' %}active{% endif %}"
+            href="/estudiantes">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg class="text-dark" width="16px" height="16px" viewBox="0 0 46 42" version="1.1"
@@ -351,7 +351,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.url_name == 'cuentas/register' %}active{% endif %}" href="/cuentas/register">
+          <a class="nav-link {% if request.resolver_match.url_name == 'cuentas/register' %}active{% endif %}"
+            href="/cuentas/register">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg class="text-dark" width="16px" height="16px" viewBox="0 0 46 42" version="1.1"
@@ -388,7 +389,7 @@
 
   <!-- Contenido -->
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-    
+
     <!-- Barra de navegación -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
       navbar-scroll="true">
@@ -402,7 +403,7 @@
           <h6 class="font-weight-bolder mb-0">Sistema de registro de horas</h6>
         </nav>
         <ul class="navbar-nav  justify-content-end">
-          
+
           <li class="nav-item d-flex align-items-center">
             <a class="btn bg-gradient-primary mb-0 me-3" target="_blank" href="#">
               <i class="fas fa-user"></i> &nbsp; {{user.username}}
@@ -425,7 +426,7 @@
         </ul>
       </div>
     </nav>
-    
+
     <!-- Bloque de contenido -->
     <div class="container-fluid py-4">
 
@@ -444,20 +445,23 @@
                 ©
                 <script>
                   document.write(new Date().getFullYear())
-                </script>, 
+                </script>,
                 TC-691 <strong>Tropicalización de la tecnología</strong>
               </div>
             </div>
             <div class="col-lg-6">
               <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                 <li class="nav-item">
-                  <a href="https://www.ucr.ac.cr/" class="nav-link text-muted" target="_blank"><i class="fas fa-link"></i> UCR</a>
+                  <a href="https://www.ucr.ac.cr/" class="nav-link text-muted" target="_blank"><i
+                      class="fas fa-link"></i> UCR</a>
                 </li>
                 <li class="nav-item">
-                  <a href="https://eie.ucr.ac.cr/" class="nav-link text-muted" target="_blank"><i class="fas fa-link"></i> EIE</a>
+                  <a href="https://eie.ucr.ac.cr/" class="nav-link text-muted" target="_blank"><i
+                      class="fas fa-link"></i> EIE</a>
                 </li>
                 <li class="nav-item">
-                  <a href="https://accionsocial.ucr.ac.cr/modalidades/trabajo-comunidad/trabajo-comunal-universitario" class="nav-link text-muted" target="_blank"><i class="fas fa-link"></i> TCU</a>
+                  <a href="https://accionsocial.ucr.ac.cr/modalidades/trabajo-comunidad/trabajo-comunal-universitario"
+                    class="nav-link text-muted" target="_blank"><i class="fas fa-link"></i> TCU</a>
                 </li>
               </ul>
             </div>
@@ -466,13 +470,13 @@
       </footer>
     </div>
   </main>
-<!-- JavaScript -->
+  <!-- JavaScript -->
   <!-- Core -->
   <script src="{% static 'js/core/popper.min.js' %}"></script>
   <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
   <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
   <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
- 
+
   <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
@@ -483,30 +487,22 @@
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
   </script>
-   <!-- Github buttons -->
-   <script async defer src="https://buttons.github.io/buttons.js"></script>
-   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-   <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
-  
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
+
 
 </body>
- <!-- JQuery -->
- <script
- type="text/javascript"
- src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
-></script>
+<!-- JQuery -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 
-<script
- type="text/javascript"
- charset="utf8"
- src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"
-></script>
-     <!-- JavaScript Bundle with Popper -->
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-       integrity=""
-       crossorigin="anonymous"></script>
- <!-- Font Awesome Icons -->
- <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity=""
+  crossorigin="anonymous"></script>
+<!-- Font Awesome Icons -->
+<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 
 
 <script type="text/javascript">
@@ -572,23 +568,23 @@
   }
 
   $(document).ready(function () {
-      $("table.table").DataTable({
-        language: {
-          lengthMenu: "Mostrar _MENU_ filas por página",
-          zeroRecords: "No hay datos disponibles - sorry",
-          info: "Mostrando página _PAGE_ de _PAGES_",
-          infoEmpty: "No hay datos disponibles",
-          infoFiltered: "(filtrado de _MAX_ total filas)",
-          loadingRecords: "Cargando...",
-          processing: "Procesando...",
-          search: "Buscar:",
-          paginate: {
-            first: "Primero",
-            last: "Último",
-            next: "Siguiente",
-            previous: "Anterior",
+    $("table.table").DataTable({
+      language: {
+        lengthMenu: "Mostrar _MENU_ filas por página",
+        zeroRecords: "No hay datos disponibles - sorry",
+        info: "Mostrando página _PAGE_ de _PAGES_",
+        infoEmpty: "No hay datos disponibles",
+        infoFiltered: "(filtrado de _MAX_ total filas)",
+        loadingRecords: "Cargando...",
+        processing: "Procesando...",
+        search: "Buscar:",
+        paginate: {
+          first: "Primero",
+          last: "Último",
+          next: "Siguiente",
+          previous: "Anterior",
 
-          
+
         },
       },
     });
@@ -596,4 +592,3 @@
 </script>
 
 </html>
-

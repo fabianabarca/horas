@@ -15,7 +15,7 @@ import json
 
 # Create your views here.
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def resumen(request):
     '''Recopilación de información y creación de gráficas
     para el resumen de actividades de estudiantes.
@@ -38,8 +38,8 @@ def resumen(request):
 
     # Desde aqui se procesa la barra de progreso de dias del TCU por estudiante
     current_datetime = datetime.date.today()
-    inicioTCU = estudiante_actual.fechaInicioTCU
-    finalTCU = estudiante_actual.fechaFinTCU
+    inicioTCU = estudiante_actual.fecha_inicio
+    finalTCU = estudiante_actual.fecha_final
 
     diasRestantesDelTCU = finalTCU - current_datetime
 
@@ -162,7 +162,7 @@ def resumen(request):
     return render(request, 'resumen.html', context)
 
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def panel(request):
 
     estudiantes_list = Estudiante.objects.all()

@@ -10,11 +10,17 @@
 
 <!-- Título -->
 <h1 class="display-4">Estudiantes</h1>
+<p class="lead">
+  Lista de personas matriculadas y activas en TC-691 "Tropicalización de la tecnología".
+</p>
+
+<!-- Botón para agregar estudiantes -->
+<p>
+  <a href="{% url 'registro' %}" type="button" class="btn btn-outline-info">Nuevo estudiante</a>
+</p>
 
 <!-- Lista de estudiantes -->
-<div class="mt-5">
-  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de estudiantes</h6>
-</div>
+<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de estudiantes</h6>
 
 <form method="post">
   {% csrf_token %}
@@ -63,8 +69,8 @@
               <td>{{ estudiante.user.email }}</td>
               <td>{{ estudiante.carrera.nombre }}</td>
               <td>{{ estudiante.tutor}}</td>
-              <td>{{ estudiante.fechaInicioTCU}}</td>
-              <td>{{ estudiante.fechaFinTCU}}</td>
+              <td>{{ estudiante.fecha_inicio}}</td>
+              <td>{{ estudiante.fecha_final}}</td>
               <td>
                 <!--{{ horas}}-->
                 <div class="progress-wrapper">

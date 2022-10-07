@@ -5,6 +5,6 @@ from django.urls import path
 urlpatterns = [
     path('perfil/', perfil, name='perfil'),
     path('ingreso/', login_request, name='ingreso'),
-    path('logout/', logout_request, name= 'logout'),
+    path('salir/', logout_request, name= 'salir'),
     path('registro/', register_request, name='registro')
 ]

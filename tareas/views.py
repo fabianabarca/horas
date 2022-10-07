@@ -10,7 +10,7 @@ import time
 from django.core.mail import send_mail
 
 # Create your views here.
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def tareas_request(request):
     tareas_list = Tarea.objects.all()
     if request.method == "POST":
@@ -82,7 +82,7 @@ def tareas_request(request):
 
     return render (request=request, template_name="../templates/tareas.html", context={"tareas":tareas_list,"filtros_form":form})
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def crear_tarea(request):
 
     if request.method == "POST":
@@ -110,7 +110,7 @@ def crear_tarea(request):
 
     return render (request=request, template_name="../templates/crear_tarea.html", context={"tipoAccion":creacionOedicion,"tarea_form":form})
 
-@login_required(login_url='/cuentas/login/')
+@login_required(login_url='/cuentas/ingreso/')
 def editar_tarea(request, id):
 
     obj = get_object_or_404(Tarea, id = id) 
