@@ -109,14 +109,14 @@
                         </svg>
                       </button>  
                     </td>
-                    <td class="fila_tabla">{{ solicitud.motivo }}</td>
-                    <td class="fila_tabla">{{ solicitud.fecha|date:"d, M, Y" }}</td>
+                    <td class="fila_tabla"><span class="label Motivo">{{ solicitud.motivo }}</span></td>
+                    <td class="fila_tabla"><span class="label Fecha">{{ solicitud.fecha|date:"d, M, Y" }}</span></td>
 
                     {% if request.user.is_staff %}
 
                     <td><span class="label Carne">{{ solicitud.estudiante.user.username}}</span></td>
-                    <td class="fila_tabla">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
-                    <td class="fila_tabla">{{ solicitud.estudiante.user.email}}</td>
+                    <td class="fila_tabla"><span class="label Nombre">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</span></td>
+                    <td class="fila_tabla"><span class="label Correo">{{ solicitud.estudiante.user.email}}</span></td>
 
                     {% endif %}
                     <td>
@@ -135,8 +135,7 @@
                       
                       {% endfor %}
                     </td>
-                    <td class="fila_tabla">{{ solicitud.get_estado_display}}</td>
-                    
+                    <td class="fila_tabla"><span class="label Estado">{{ solicitud.get_estado_display}}</span></td> 
                   </tr>
                 {% endif %}
               {% endfor %}
@@ -248,14 +247,14 @@
                         </svg>
                       </button>  
                     </td>
-                    <td class="fila_tabla">{{ solicitud.motivo }}</td>
-                    <td class="fila_tabla">{{ solicitud.fecha|date:"d, M, Y" }}</td>
+                    <td class="fila_tabla"><span class="label Motivo">{{ solicitud.motivo }}</span></td>
+                    <td class="fila_tabla"><span class="label Fecha">{{ solicitud.fecha|date:"d, M, Y" }}</span></td>
 
                     {% if request.user.is_staff %}
 
                     <td><span class="label Carne">{{ solicitud.estudiante.user.username}}</span></td>
-                    <td class="fila_tabla">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
-                    <td class="fila_tabla">{{ solicitud.estudiante.user.email}}</td>
+                    <td class="fila_tabla"><span class="label Nombre">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</span></td>
+                    <td class="fila_tabla"><span class="label Correo">{{ solicitud.estudiante.user.email}}</span></td>
 
                     {% endif %}
                     <td>
@@ -274,7 +273,7 @@
                               
                       {% endfor %}
                     </td>
-                    <td class="fila_tabla">{{ solicitud.get_estado_display}}</td>
+                    <td class="fila_tabla"><span class="label Estado">{{ solicitud.get_estado_display}}</span></td>
                     
                   </tr>
                 {% endif %}
@@ -387,14 +386,14 @@
                         </svg>
                       </button>  
                     </td>
-                    <td class="fila_tabla">{{ solicitud.motivo }}</td>
-                    <td class="fila_tabla">{{ solicitud.fecha|date:"d, M, Y" }}</td>
+                    <td class="fila_tabla"><span class="label Motivo">{{ solicitud.motivo }}</span></td>
+                    <td class="fila_tabla"><span class="label Fecha">{{ solicitud.fecha|date:"d, M, Y" }}</span></td>
   
                     {% if request.user.is_staff %}
   
-                    <td>{{ solicitud.estudiante.user.username}}</td>
-                    <td class="fila_tabla">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
-                    <td class="fila_tabla">{{ solicitud.estudiante.user.email}}</td>
+                    <td class="fila_tabla"><span class="label Carne">{{ solicitud.estudiante.user.username}}</span></td>
+                    <td class="fila_tabla"><span class="label Nombre">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</span></td>
+                    <td class="fila_tabla"><span class="label Correo">{{ solicitud.estudiante.user.email}}</span></td>
   
                     {% endif %}
                     <td>
@@ -413,7 +412,7 @@
                               
                       {% endfor %}
                     </td>
-                    <td class="fila_tabla">{{ solicitud.get_estado_display}}</td>
+                    <td class="fila_tabla"><span class="label Estado">{{ solicitud.get_estado_display}}</span></td>
                     
                   </tr>
                 {% endif %}
@@ -527,14 +526,14 @@
                         </svg>
                       </button>  
                     </td>
-                    <td class="fila_tabla">{{ solicitud.motivo }}</td>
-                    <td class="fila_tabla">{{ solicitud.fecha|date:"d, M, Y" }}</td>
+                    <td class="fila_tabla"><span class="label Motivo">{{ solicitud.motivo }}</span></td>
+                    <td class="fila_tabla"><span class="label Fecha">{{ solicitud.fecha|date:"d, M, Y" }}</span></td>
   
                     {% if request.user.is_staff %}
   
-                    <td>{{ solicitud.estudiante.user.username}}</td>
-                    <td class="fila_tabla">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</td>
-                    <td class="fila_tabla">{{ solicitud.estudiante.user.email}}</td>
+                    <td class="fila_tabla"><span class="label Carne">{{ solicitud.estudiante.user.username}}</span></td>
+                    <td class="fila_tabla"><span class="label Nombre">{{ solicitud.estudiante.user.first_name}} {{ solicitud.estudiante.user.last_name}}</span></td>
+                    <td class="fila_tabla"><span class="label Correo">{{ solicitud.estudiante.user.email}}</span></td>
   
                     {% endif %}
                     <td>
@@ -553,7 +552,7 @@
                               
                       {% endfor %}
                     </td>
-                    <td class="fila_tabla">{{ solicitud.get_estado_display}}</td>
+                    <td class="fila_tabla"><span class="label Motivo">{{ solicitud.get_estado_display}}</span></td>
                     
                   </tr>
                 {% endif %}
@@ -581,7 +580,26 @@
         <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p id="p_carne"></p>
+        <dl>
+          <dt>Motivo</dt>
+          <dd id="d_motivo"></dd>
+          <dt>Fecha</dt>
+          <dd id="d_fecha"></dd>
+          {% if request.user.is_staff %}
+          <dt>Carné</dt>
+          <dd id="d_carne"></dd>
+          <dt>Nombre</dt>
+          <dd id="d_nombre"></dd>
+          <dt>Correo del estudiante</dt>
+          <dd id="d_correo"></dd>
+          {% endif %}
+          <!--
+            <dt>Archivo adjunto</dt>
+            <dd id="d_archivo"></dd>
+          -->
+          <dt>Estado</dt>
+          <dd id="d_estado"></dd>
+        </dl>
       </div>
       <div class="modal-footer">
       </div>
@@ -594,18 +612,24 @@
   $(".fila_tabla").click(function(){
     $('#myModal').modal('show')
     var row = $(this).closest("tr");
+    var motivo = row.find(".label.Motivo").html()
+    var fecha = row.find(".label.Fecha").html()
     var carne = row.find(".label.Carne").html()
-    //var carrera = row.find(".label.Carrera").html()
-    $('#p_carne').text("Carné del estudiante: " + carne)
-    //$('#p_carrera').text("Carrera: " + carrera)
+    var nombre = row.find(".label.Nombre").html()
+    var correo = row.find(".label.Correo").html()
+    //var archivo = row.find(".label.Archivo").html()
+    var estado = row.find(".label.Estado").html()
+
+    $('#d_motivo').text(motivo)
+    $('#d_fecha').text(fecha)
+    $('#d_carne').text(carne)
+    $('#d_nombre').text(nombre)
+    $('#d_correo').text(correo)
+    //$('#d_archivo').text(motivo)
+    $('#d_estado').text(estado)
   });
 
-  /* Separar para cada una de las tablas
-  * Cada tabla debe de tener un id
-  * Usar el id para ocultar las filas especificas de cada tabla
-  * 
-  */
-  $('td:nth-child(4),th:nth-child(4)').hide();
+  //$('td:nth-child(4),th:nth-child(4)').hide();
   //$('td:nth-child(5),th:nth-child(5)').hide();
 </script>
 
