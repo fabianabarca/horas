@@ -552,7 +552,7 @@
                               
                       {% endfor %}
                     </td>
-                    <td class="fila_tabla"><span class="label Motivo">{{ solicitud.get_estado_display}}</span></td>
+                    <td class="fila_tabla"><span class="label Estado">{{ solicitud.get_estado_display}}</span></td>
                     
                   </tr>
                 {% endif %}
@@ -593,10 +593,6 @@
           <dt>Correo del estudiante</dt>
           <dd id="d_correo"></dd>
           {% endif %}
-          <!--
-            <dt>Archivo adjunto</dt>
-            <dd id="d_archivo"></dd>
-          -->
           <dt>Estado</dt>
           <dd id="d_estado"></dd>
         </dl>
