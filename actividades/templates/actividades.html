@@ -116,25 +116,25 @@
                 </button>
               </td>
               <td><span class="label Descripcion">{{ actividad.descripcion }}</span></td>
-              <td class="fila_tabla">{{ actividad.horas }}</td>
-              <td class="fila_tabla"><span class="text-lowercase">{{ actividad.fecha }}</span></td>
+              <td class="fila_tabla"><span class="label Horas">{{ actividad.horas }}</span></td>
+              <td class="fila_tabla"><span class="label Fecha">{{ actividad.fecha }}</span></td>
               {% if not actividad.tarea.objetivo.proyecto.enPapelera %}
-              <td class="fila_tabla">{{actividad.tarea.objetivo.proyecto.nombre}}</td>
+              <td class="fila_tabla"><span class="label Proyecto">{{actividad.tarea.objetivo.proyecto.nombre}}</span></td>
               {% else %}
               <td></td>
               {% endif %}
               {% if not actividad.tarea.enPapelera %}
-              <td class="fila_tabla">{{ actividad.tarea.nombre }}</td>
+              <td class="fila_tabla"><span class="label Tarea">{{ actividad.tarea.nombre }}</span></td>
               {% else %}
               <td></td>
               {% endif %}
 
               {% if request.user.is_staff %}
-              <td><span class="label Carne">{{ actividad.estudiante.user.username }}</span></td>
-              <td class="fila_tabla">{{ actividad.estudiante.user.first_name }} {{ actividad.estudiante.user.last_name }}</td>
+              <td class="fila_tabla"><span class="label Carne">{{ actividad.estudiante.user.username }}</span></td>
+              <td class="fila_tabla"><span class="label Nombre">{{ actividad.estudiante.user.first_name }} {{ actividad.estudiante.user.last_name }}</span></td>
               {% endif %}
 
-              <td class="fila_tabla">{{ actividad.get_estado_display }}</td>
+              <td class="fila_tabla"><span class="label Estado">{{ actividad.get_estado_display }}</span></td>
             </tr>
             {% endif %}
             {% endfor %}
@@ -153,7 +153,6 @@
 </form>
 
 
-
 <!--Modal-->
 <div id="myModal" class="modal" tabindex="-1">
   <div class="modal-dialog">
@@ -163,8 +162,26 @@
         <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p id="p_correo"></p>
-        <p id="p_carrera"></p>
+        <dl>
+          <dt>Descripción</dt>
+          <dd id="d_descripcion"></dd>
+          <dt>Horas</dt>
+          <dd id="d_horas"></dd>
+          <dt>Fecha</dt>
+          <dd id="d_fecha"></dd>
+          <dt>Proyecto</dt>
+          <dd id="d_proyecto"></dd>
+          <dt>Tarea</dt>
+          <dd id="d_tarea"></dd>
+          {% if request.user.is_staff %}
+          <dt>Carné</dt>
+          <dd id="d_carne"></dd>
+          <dt>Nombre</dt>
+          <dd id="d_nombre"></dd>
+          {% endif %}
+          <dt>Estado</dt>
+          <dd id="d_estado"></dd>
+        </dl>
       </div>
       <div class="modal-footer">
       </div>
@@ -177,14 +194,29 @@
   $(".fila_tabla").click(function(){
     $('#myModal').modal('show')
     var row = $(this).closest("tr");
+    
     var descripcion = row.find(".label.Descripcion").html()
+    var horas = row.find(".label.Horas").html()
+    var fecha = row.find(".label.Fecha").html()
+    var proyecto = row.find(".label.Proyecto").html()
+    var tarea = row.find(".label.Tarea").html()
     var carne = row.find(".label.Carne").html()
-    $('#p_correo').text("Descripción: " + descripcion)
-    $('#p_carrera').text("Carné del estudiante: " + carne)
+    var nombre = row.find(".label.Nombre").html()
+    var estado = row.find(".label.Estado").html()
+
+    $('#d_descripcion').text(descripcion)
+    $('#d_horas').text(horas)
+    $('#d_fecha').text(fecha)
+    $('#d_proyecto').text(proyecto)
+    $('#d_tarea').text(tarea)
+    $('#d_carne').text(carne)
+    $('#d_nombre').text(nombre)
+    $('#d_estado').text(estado)
   });
 
 
   $('td:nth-child(2),th:nth-child(2)').hide();
+  $('td:nth-child(6),th:nth-child(6)').hide();
   $('td:nth-child(7),th:nth-child(7)').hide();
 </script>
 {% endblock %}
