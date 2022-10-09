@@ -49,10 +49,8 @@
             <tr>
               <td>
                 <!-- Editar -->
-                <a href="editar_estudiante/{{ estudiante.id }}" class="text-warning" role="button">
-                  <svg class="nav-icon" width="16" height="16">
-                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
-                  </svg>
+                <a href="editar_estudiante/{{ estudiante.id }}" class="text-warning" role="button" style="text-decoration: none;">
+                  <i class="cil-pencil"></i>
                 </a>
               </td>
               <td class="fila_tabla"><span class="label Carne">{{ estudiante.user.username }}</span></td>

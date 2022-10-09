@@ -47,19 +47,15 @@
             <tr>
               <td>
                 <!-- Editar -->
-                <a href="editar_area/{{ area.id }}" class="text-warning" role="button">
-                  <svg class="nav-icon" width="16" height="16">
-                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
-                  </svg>
+                <a href="editar_area/{{ area.id }}" class="text-warning" role="button" style="text-decoration: none;">
+                  <i class="cil-pencil"></i>
                 </a>
 
                 <!-- Eliminar -->
                 <button onclick="return confirm('¿Está seguro de enviarlo a la papelera?')" type="submit"
                   class="text-danger" value="{{ area.id }}" name="deleteButton"
                   style="background-color: transparent;  border: 0; padding: 0;">
-                  <svg class="nav-icon" width="16" height="16">
-                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-trash"></use>
-                  </svg>
+                  <i class="cil-trash"></i>
                 </button>
               </td>
               <td>{{ area }}</td>
