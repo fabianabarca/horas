@@ -85,6 +85,7 @@
             </thead>
             <tbody>
               {% for solicitud in solicitudes %}
+
                 {% if not solicitud.enPapelera and solicitud.tipo == "F" %}
                   <tr>
                     <td>
@@ -137,7 +138,28 @@
                     </td>
                     <td class="fila_tabla"><span class="label Estado">{{ solicitud.get_estado_display}}</span></td> 
                   </tr>
+
                 {% endif %}
+                <td>
+                  {% for archivo in archivos %}
+
+                  {% if archivo.solicitud_id == solicitud.id %}
+                  <!--
+                                  Si se quiere abrir archivo en otra ventana:
+                                  <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
+                                -->
+
+                  <a href="../media/{{ archivo.archivo}}" download>{{ archivo.archivo}}</a>
+                  <br />
+                  {% endif %}
+
+
+                  {% endfor %}
+                </td>
+                <td>{{ solicitud.get_estado_display}}</td>
+
+              </tr>
+              {% endif %}
               {% endfor %}
             </tbody>
           </table>
@@ -223,6 +245,7 @@
             </thead>
             <tbody>
               {% for solicitud in solicitudes %}
+
                 {% if not solicitud.enPapelera and solicitud.tipo == "P" %}
                   <tr>
                     <td>
@@ -277,6 +300,7 @@
                     
                   </tr>
                 {% endif %}
+
               {% endfor %}
             </tbody>
           </table>
@@ -362,6 +386,7 @@
             </thead>
             <tbody>
               {% for solicitud in solicitudes %}
+
                 {% if not solicitud.enPapelera and solicitud.tipo == "A" %}
                   <tr>
                     <td>
@@ -416,6 +441,7 @@
                     
                   </tr>
                 {% endif %}
+
               {% endfor %}
             </tbody>
           </table>
@@ -502,6 +528,7 @@
             </thead>
             <tbody>
               {% for solicitud in solicitudes %}
+
                 {% if not solicitud.enPapelera and solicitud.tipo == "O" %}
                   <tr>
                     <td>
@@ -556,6 +583,7 @@
                     
                   </tr>
                 {% endif %}
+
               {% endfor %}
             </tbody>
           </table>
@@ -631,5 +659,7 @@
   $('td:nth-child(6),th:nth-child(6)').hide();
   //$('td:nth-child(7),th:nth-child(7)').hide();
 </script>
+
+<br>
 
 {% endblock %}

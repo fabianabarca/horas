@@ -107,13 +107,12 @@
                 </a>
 
                 <!-- Eliminar -->
-                <button onclick="return confirm('¿Está seguro de enviarlo a la papelera?')" type="submit"
-                  class="text-danger" value="{{ actividad.id }}" name="deleteButton" 
-                  style="background-color: transparent;  border: 0; padding: 0;">
+                <a onclick="return confirm('¿Está seguro de enviarlo a la papelera?')" type="submit"
+                  class="text-danger" value="{{ actividad.id }}" name="deleteButton">
                   <svg class="nav-icon" width="16" height="16">
                     <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-trash"></use>
                   </svg>
-                </button>
+                </a>
               </td>
               <td><span class="label Descripcion">{{ actividad.descripcion }}</span></td>
               <td class="fila_tabla"><span class="label Horas">{{ actividad.horas }}</span></td>
@@ -152,6 +151,7 @@
 
 </form>
 
+<br>
 
 <!--Modal-->
 <div id="myModal" class="modal" tabindex="-1">
@@ -219,4 +219,5 @@
   $('td:nth-child(6),th:nth-child(6)').hide();
   $('td:nth-child(7),th:nth-child(7)').hide();
 </script>
+
 {% endblock %}

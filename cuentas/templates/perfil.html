@@ -17,16 +17,58 @@
 <!-- Datos personales -->
 <h6 class="text-uppercase font-weight-bolder opacity-6">Datos personales</h6>
 
-<dl>
-    <dt>Carné</dt>
-    <dd>D12345</dd>
-    <dt>Nombre</dt>
-    <dd>María Rodríguez</dd>
-</dl>
+<div class="card">
+  <div class="card-body">
+    <table class="table table-sm table-responsive">
+      <tbody>
+        <tr>
+          <th scope="row" class="col-6">Nombre</th>
+          <td>{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="col-6">Carné</th>
+          <td>{{ estudiante.user }}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="col-6">Carrera</th>
+          <td>{{ estudiante.carrera.nombre }}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="col-6">Tutor</th>
+          <td>{{ estudiante.tutor }}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="col-6">Fecha de inicio</th>
+          <td>{{ estudiante.fecha_inicio }}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="col-6">Fecha de finalización</th>
+          <td>{{ estudiante.fecha_final }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>  
+</div>
+
+<br>
 
 <h3 id="ajustes">Ajustes</h3>
 
-Aquí van los ajustes... de algún tipo.
+<h4>Cambio de contraseña</h4>
+
+<!-- Por implementar -->
+
+<form>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Contraseña actual</label>
+    <input type="password" class="form-control" id="exampleInputPassword1">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword2" class="form-label">Contraseña nueva</label>
+    <input type="password" class="form-control" id="exampleInputPassword2">
+  </div>
+  <button type="submit" class="btn btn-primary">Cambiar</button>
+</form>
 
 <br>
 

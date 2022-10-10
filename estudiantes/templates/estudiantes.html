@@ -36,8 +36,8 @@
               <th scope="col"></th>
               <th scope="col">Carné</th>
               <th scope="col">Nombre</th>
-              <th scope="col" >Correo</th>
-              <th scope="col" >Carrera</th>
+              <th scope="col">Correo</th>
+              <th scope="col">Carrera</th>
               <th scope="col">Tutor</th>
               <th scope="col">Inicio del TCU</th>
               <th scope="col">Finalización del TCU</th>
@@ -45,9 +45,18 @@
             </tr>
           </thead>
           <tbody>
-            {% for estudiante, horas , porcentaje, porcentajeWidth in zipHoras %}   
+            {% for estudiante, horas , porcentaje, porcentajeWidth in zipHoras %}
             <tr>
               <td>
+                <!-- A pagina de estudiante button
+                <button  class="text-info"  value="{{ estudiante.user.id }}" name="studentButton" type="submit">
+                  <i class="	fa fa-address-card"></i>
+                </button> -->
+                <!--
+                <a  class="text-info"  href="/index/{{estudiante.id }}" role="button">
+                  <i class="	fa fa-address-card"></i>
+                </a>
+                -->
                 <!-- Editar -->
                 <a href="editar_estudiante/{{ estudiante.id }}" class="text-warning" role="button">
                   <svg class="nav-icon" width="16" height="16">
@@ -55,6 +64,7 @@
                   </svg>
                 </a>
               </td>
+
               <td class="fila_tabla"><span class="label Carne">{{ estudiante.user.username }}</span></td>
               <td class="fila_tabla"><span class="label Nombre">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</span></td>
               <td class="fila_tabla"><span class="label Correo">{{ estudiante.user.email }}</span></td>
@@ -63,6 +73,7 @@
               <td class="fila_tabla"><span class="label Inicio">{{ estudiante.fecha_inicio}}</span></td>
               <td class="fila_tabla"><span class="label Fin">{{ estudiante.fecha_final}}</span></td>
               <td class="fila_tabla">
+
                 <!--{{ horas}}-->
                 <div class="progress-wrapper">
                   <div class="progress-info">
@@ -87,8 +98,12 @@
                         }
                       </script>
                     </div>
+                    
                   </div>
+                  
                 </div>
+    
+    
               </td>
             </tr>
             {% endfor %}
