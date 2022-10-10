@@ -64,19 +64,21 @@
                   </svg>
                 </a>
               </td>
-              <td>{{ estudiante.user.username }}</td>
-              <td class="m">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</td>
-              <td>{{ estudiante.user.email }}</td>
-              <td>{{ estudiante.carrera.nombre }}</td>
-              <td>{{ estudiante.tutor}}</td>
-              <td>{{ estudiante.fecha_inicio}}</td>
-              <td>{{ estudiante.fecha_final}}</td>
-              <td>
+
+              <td class="fila_tabla"><span class="label Carne">{{ estudiante.user.username }}</span></td>
+              <td class="fila_tabla"><span class="label Nombre">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</span></td>
+              <td class="fila_tabla"><span class="label Correo">{{ estudiante.user.email }}</span></td>
+              <td class="fila_tabla"><span class="label Carrera">{{ estudiante.carrera.nombre }}</span></td>
+              <td class="fila_tabla"><span class="label Tutor">{{ estudiante.tutor}}</span></td>
+              <td class="fila_tabla"><span class="label Inicio">{{ estudiante.fecha_inicio}}</span></td>
+              <td class="fila_tabla"><span class="label Fin">{{ estudiante.fecha_final}}</span></td>
+              <td class="fila_tabla">
+
                 <!--{{ horas}}-->
                 <div class="progress-wrapper">
                   <div class="progress-info">
                     <div class="progress-percentage">
-                      <span class="text-sm font-weight-bold">{{ horas }} horas de 300</span>
+                      <span class="text-sm font-weight-bold label Horas">{{ horas }} horas de 300</span>
                     </div>
                   </div>
                   <div class="progress">
@@ -114,6 +116,71 @@
     </div>
   </div>
 </form>
+
+<!--Modal-->
+<div id="myModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Información adicional</h5>
+        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <dl>
+          <dt>Carné</dt>
+          <dd id="d_carne"></dd>
+          <dt>Nombre</dt>
+          <dd id="d_nombre"></dd>
+          <dt>Correo</dt>
+          <dd id="d_correo"></dd>
+          <dt>Carrera</dt>
+          <dd id="d_carrera"></dd>
+          <dt>Tutor</dt>
+          <dd id="d_tutor"></dd>
+          <dt>Inicio del TCU</dt>
+          <dd id="d_inicio"></dd>
+          <dt>Finalización del TCU</dt>
+          <dd id="d_fin"></dd>
+          <dt>Horas totales</dt>
+          <dd id="d_horas"></dd>
+        </dl>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--JQuery para el modal-->
+<script>
+  $(".fila_tabla").click(function(){
+    $('#myModal').modal('show')
+    var row = $(this).closest("tr");
+    var carne = row.find(".label.Carne").html()
+    var nombre = row.find(".label.Nombre").html()
+    var correo = row.find(".label.Correo").html()
+    var carrera = row.find(".label.Carrera").html()
+    var tutor = row.find(".label.Tutor").html()
+    var inicio = row.find(".label.Inicio").html()
+    var fin = row.find(".label.Fin").html()
+    var horas = row.find(".label.Horas").html()
+
+    $('#d_carne').text(carne)
+    $('#d_nombre').text(nombre)
+    $('#d_correo').text(correo)
+    $('#d_carrera').text(carrera)
+    $('#d_tutor').text(tutor)
+    $('#d_inicio').text(inicio)
+    $('#d_fin').text(fin)
+    $('#d_horas').text(horas)
+  });
+
+  $('td:nth-child(4),th:nth-child(4)').hide();
+  $('td:nth-child(5),th:nth-child(5)').hide();
+  $('td:nth-child(6),th:nth-child(6)').hide();
+  $('td:nth-child(7),th:nth-child(7)').hide();
+
+</script>
 
 {% endblock %}
 
