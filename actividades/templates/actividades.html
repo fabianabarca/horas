@@ -100,11 +100,13 @@
                 <input class="form-check-input" type="checkbox" name="inputs" value="{{ actividad.id }}" />
 
                 <!-- Editar -->
+                {% if request.user.is_staff %}
                 <a href="editar_actividad/{{ actividad.id }}" class="text-warning" role="button">
                   <svg class="nav-icon" width="16" height="16">
                     <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
                   </svg>
                 </a>
+                {% endif %}
 
                 <!-- Eliminar -->
                 <a onclick="return confirm('¿Está seguro de enviarlo a la papelera?')" type="submit"
