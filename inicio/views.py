@@ -13,160 +13,186 @@ import datetime
 
 # Create your views here.
 
-@login_required(login_url='/cuentas/ingreso/')
-def index(request,id=9999):
-    
-    #en caso de que NO se redirige de página Estudiantes, uso el numero 9999 como default al llegar a
-    #página Inicio desde login o desde menu de navegación
-    if id == 9999:  
-                
-        id =request.user.id
 
+@login_required(login_url='/cuentas/ingreso/')
+def index(request, id=9999):
+
+    # en caso de que NO se redirige de página Estudiantes, uso el numero 9999 como default al llegar a
+    # página Inicio desde login o desde menu de navegación
+    if id == 9999:
+
+        id = request.user.id
 
     estudiantes_list = Estudiante.objects.all()
-    estudiante_actual = Estudiante.objects.get(user =  User.objects.filter(id=id)[0])
+    estudiante_actual = Estudiante.objects.get(
+        user=User.objects.filter(id=id)[0])
 
-    numeroEstudiantes=estudiantes_list.filter(user__is_staff=False).count
+    numeroEstudiantes = estudiantes_list.filter(user__is_staff=False).count
 
     proyectos_list = Proyecto.objects.all()
-    numeroProyectos=proyectos_list.count
-    
+    numeroProyectos = proyectos_list.count
 
-    #Desde aqui se procesa la barra de progreso de horas por estudiante
-    my_actividades_list= Actividad.objects.raw('SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false")
-    horasTotalesPorEstudiante=0      
+    # Desde aqui se procesa la barra de progreso de horas por estudiante
+    my_actividades_list = Actividad.objects.raw(
+        'SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == ' + str(estudiante_actual.id)+" AND enPapelera==false")
+    horasTotalesPorEstudiante = 0
     for actividad in my_actividades_list:
         if actividad.estado == "A":
-            horasTotalesPorEstudiante+= actividad.horas
+            horasTotalesPorEstudiante += actividad.horas
 
-    #horasTotalesPorEstudiante=30  #para pruebas
-    porcentaje= (100 / 300) * horasTotalesPorEstudiante
+    # horasTotalesPorEstudiante=30  #para pruebas
+    porcentaje = (100 / 300) * horasTotalesPorEstudiante
     porcentajeWidth = int(porcentaje)
 
-
-    #Desde aqui se procesa la barra de progreso de dias del TCU por estudiante
+    # Desde aqui se procesa la barra de progreso de dias del TCU por estudiante
     current_datetime = datetime.date.today()
     inicioTCU = estudiante_actual.fecha_inicio
     finalTCU = estudiante_actual.fecha_final
 
-    diasRestantesDelTCU =  finalTCU - current_datetime
+    diasRestantesDelTCU = finalTCU - current_datetime
 
     diasDesdeInicioTCU = current_datetime - inicioTCU
     diasTCU = diasDesdeInicioTCU.days
 
     totalDiasTCU = 365
 
-    porcentajeDaysYear= (100 / totalDiasTCU) * diasTCU
+    porcentajeDaysYear = (100 / totalDiasTCU) * diasTCU
     porcentajeWidthDaysYear = int(porcentajeDaysYear)
 
-    #Desde aqui se procesa el factor de avance
-    factorDeAvance =  porcentaje / porcentajeDaysYear
+    # Desde aqui se procesa el factor de avance
+    factorDeAvance = porcentaje / porcentajeDaysYear
     redondeadoFactorDeAvance = int(factorDeAvance)
 
     listaDirectorio = []
-    actividades_list   = Actividad.objects.filter(estudiante = estudiante_actual)
-    zipDirectorio  = []
+    actividades_list = Actividad.objects.filter(estudiante=estudiante_actual)
+    zipDirectorio = []
     if request.method == "POST":
 
-            if request.POST.get('actividadListButton'):
-      
-                #Desde aqui se procesan los registros que esta realizando actualmente
-                actividades_list = Actividad.objects.filter(estudiante = estudiante_actual)
-                proyectos_list = Proyecto.objects.filter(objetivo__tarea__actividad__estudiante = estudiante_actual)
+        if request.POST.get('actividadListButton'):
 
-                #Creando formato de directorio para actividades de estudiante actual
-                listaProyectos = {}
+            # Desde aqui se procesan los registros que esta realizando actualmente
+            actividades_list = Actividad.objects.filter(
+                estudiante=estudiante_actual)
+            proyectos_list = Proyecto.objects.filter(
+                objetivo__tarea__actividad__estudiante=estudiante_actual)
+
+            # Creando formato de directorio para actividades de estudiante actual
+            listaProyectos = {}
+            listaObjetivos = {}
+            listaTareas = {}
+            listaActividades = []
+            querysetProyectos = Proyecto.objects.filter(
+                objetivo__tarea__actividad__estudiante=estudiante_actual, enPapelera=False)
+            for proyecto in querysetProyectos:
+                totalActividadesPorProyecto = 0
+                querysetObjetivos = proyecto.objetivo_set.filter(
+                    tarea__actividad__estudiante=estudiante_actual, enPapelera=False)
+
                 listaObjetivos = {}
-                listaTareas = {}
-                listaActividades = []        
-                querysetProyectos=Proyecto.objects.filter(objetivo__tarea__actividad__estudiante = estudiante_actual,enPapelera=False)       
-                for proyecto in querysetProyectos:
-                        totalActividadesPorProyecto = 0
-                        querysetObjetivos=proyecto.objetivo_set.filter(tarea__actividad__estudiante = estudiante_actual,enPapelera=False)
+                for objetivo in querysetObjetivos:
+                    querysetTareas = objetivo.tarea_set.filter(
+                        actividad__estudiante=estudiante_actual, enPapelera=False)
 
-                        listaObjetivos = {}
-                        for objetivo in querysetObjetivos:
-                                querysetTareas=objetivo.tarea_set.filter(actividad__estudiante = estudiante_actual,enPapelera=False) 
+                    listaTareas = {}
 
-                                listaTareas = {}
-                                
-                                for tarea in querysetTareas:
-                                    querysetActividades=tarea.actividad_set.filter(estudiante = estudiante_actual,enPapelera=False) 
-                                    
+                    for tarea in querysetTareas:
+                        querysetActividades = tarea.actividad_set.filter(
+                            estudiante=estudiante_actual, enPapelera=False)
 
-                                    listaActividades = [] 
-                                    for actividad in querysetActividades:
-                                        listaActividades.append(actividad.descripcion)
-                                                    
-                                        #listaTareas[tarea.nombre] = listaActividades
+                        listaActividades = []
+                        for actividad in querysetActividades:
+                            listaActividades.append(
+                                actividad.descripcion)
 
-                                    querysetTareasSubordinadas=tarea.tarea_set.filter(actividad__estudiante = estudiante_actual,enPapelera=False)
+                            # listaTareas[tarea.nombre] = listaActividades
 
-                                    #if(querysetTareasSubordinadas.exists()):
-                                        #indexandoTareasSubordinadasRecursivas(querysetTareasSubordinadas)
+                        querysetTareasSubordinadas = tarea.tarea_set.filter(
+                            actividad__estudiante=estudiante_actual, enPapelera=False)
 
-                                    listaTareas[tarea.nombre] = listaActividades
-                                
-                                listaObjetivos[objetivo.nombre] = listaTareas
-                            
-                        listaProyectos[proyecto.nombre] = listaObjetivos
-            
+                        # if(querysetTareasSubordinadas.exists()):
+                        # indexandoTareasSubordinadasRecursivas(querysetTareasSubordinadas)
 
-                #Creando string de directorios de actividades
-                #print("probando")
-                directorioActividades = []
-                stringHierarchy = []
-                listaProyectosKeys = listaProyectos.keys()
-                for proyecto in listaProyectosKeys:
-                
-                    #print("Proyecto: " + proyecto + "\n")   
-                    directorioActividades0 = ""
-                    directorioActividades0 = directorioActividades0 +"Proyecto:     " + proyecto + "\n"  
-                    directorioActividades.append(directorioActividades0)
-                    stringHierarchy.append("proyecto")
-                    listaObjetivosKeys = listaProyectos[proyecto].keys()
-                    listaObjetivos = listaProyectos[proyecto]
+                        listaTareas[tarea.nombre] = listaActividades
 
-                    for objetivo in listaObjetivosKeys:
-                        #print("     objetivo: " +objetivo + "\n")  
-                        directorioActividades1 = ""
-                        directorioActividades1 = directorioActividades1 +"-Objetivo:   " +objetivo + "\n"
-                        directorioActividades.append(directorioActividades1)
-                        stringHierarchy.append("objetivo")
-                        listaTareasKeys = listaObjetivos[objetivo].keys()
-                        listaTareas = listaObjetivos[objetivo]
-                        
-                        for tarea in listaTareasKeys:
-                                #print("             tarea: " +tarea + "\n")  
-                                directorioActividades3 = ""
-                                directorioActividades3 = directorioActividades3 +"-----             Tarea:     " +tarea + "\n" 
-                                directorioActividades.append(directorioActividades3)
-                                stringHierarchy.append("tarea")
-                                #listaActividadesKeys = listaTareasKeys[actividad].keys()
-                                listaActividades = listaTareas[tarea]
+                    listaObjetivos[objetivo.nombre] = listaTareas
 
-                                for actividad in listaActividades:
-                                    if Actividad.objects.filter(descripcion=actividad)[0].estudiante==estudiante_actual:
-                                        #print("                 actividad: " +actividad + "\n")  
-                                        directorioActividades4 = ""
-                                        directorioActividades4 = directorioActividades4 +"------------                Actividad:   " +actividad + "\n" 
-                                        stringHierarchy.append("actividad")
-                                        directorioActividades.append(directorioActividades4)
-                                                                     
-                #print("chequeo string")
-                zipDirectorio= zip(stringHierarchy,directorioActividades)   
+                listaProyectos[proyecto.nombre] = listaObjetivos
 
-            
+            # Creando string de directorios de actividades
+            # print("probando")
+            directorioActividades = []
+            stringHierarchy = []
+            listaProyectosKeys = listaProyectos.keys()
+            for proyecto in listaProyectosKeys:
+
+                # print("Proyecto: " + proyecto + "\n")
+                directorioActividades0 = ""
+                directorioActividades0 = directorioActividades0 + \
+                    "Proyecto:     " + proyecto + "\n"
+                directorioActividades.append(directorioActividades0)
+                stringHierarchy.append("proyecto")
+                listaObjetivosKeys = listaProyectos[proyecto].keys()
+                listaObjetivos = listaProyectos[proyecto]
+
+                for objetivo in listaObjetivosKeys:
+                    # print("     objetivo: " +objetivo + "\n")
+                    directorioActividades1 = ""
+                    directorioActividades1 = directorioActividades1 + "-Objetivo:   " + objetivo + "\n"
+                    directorioActividades.append(directorioActividades1)
+                    stringHierarchy.append("objetivo")
+                    listaTareasKeys = listaObjetivos[objetivo].keys()
+                    listaTareas = listaObjetivos[objetivo]
+
+                    for tarea in listaTareasKeys:
+                        # print("             tarea: " +tarea + "\n")
+                        directorioActividades3 = ""
+                        directorioActividades3 = directorioActividades3 + \
+                            "-----             Tarea:     " + tarea + "\n"
+                        directorioActividades.append(
+                            directorioActividades3)
+                        stringHierarchy.append("tarea")
+                        # listaActividadesKeys = listaTareasKeys[actividad].keys()
+                        listaActividades = listaTareas[tarea]
+
+                        for actividad in listaActividades:
+                            if Actividad.objects.filter(descripcion=actividad)[0].estudiante == estudiante_actual:
+                                # print("                 actividad: " +actividad + "\n")
+                                directorioActividades4 = ""
+                                directorioActividades4 = directorioActividades4 + \
+                                    "------------                Actividad:   " + actividad + "\n"
+                                stringHierarchy.append("actividad")
+                                directorioActividades.append(
+                                    directorioActividades4)
+
+            # print("chequeo string")
+            zipDirectorio = zip(stringHierarchy, directorioActividades)
+
+    context = {"progreso": horasTotalesPorEstudiante,
+               "porcentaje": porcentaje,
+               "width": porcentajeWidth,
+               "diasTCU": diasTCU,
+               "inicioTCU": inicioTCU,
+               "finalTCU": finalTCU,
+               "totalDiasTCU": totalDiasTCU,
+               "porcentajeDaysYear": porcentajeDaysYear,
+               "porcentajeWidthDaysYear": porcentajeWidthDaysYear,
+               "factorDeAvance": factorDeAvance,
+               "numeroEstudiantes": numeroEstudiantes,
+               "numeroProyectos": numeroProyectos,
+               "estudiante_actual": estudiante_actual,
+               "proyectos_list": proyectos_list,
+               "listaDirectorio": listaDirectorio,
+               "actividades_list": actividades_list,
+               "zipDirectorio": zipDirectorio, }
+
+    if request.user.is_staff:
+        landing_page = '../../dashboard/templates/panel.html'
+    else:
+        landing_page = '../../dashboard/templates/resumen.html'
+
+    return render(request, landing_page, context)
 
 
-
-    return render (request=request, template_name="../templates/index.html", context={"progreso":horasTotalesPorEstudiante,
-    "porcentaje":porcentaje,"width":porcentajeWidth,"diasTCU":diasTCU,"inicioTCU":inicioTCU,"finalTCU":finalTCU,"totalDiasTCU":totalDiasTCU,
-    "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,"factorDeAvance":factorDeAvance,
-    "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,"estudiante_actual":estudiante_actual,
-     "proyectos_list":proyectos_list,"listaDirectorio":listaDirectorio,"actividades_list":actividades_list,
-    "zipDirectorio":zipDirectorio,})
-    
 '''
 def indexandoTareasSubordinadasRecursivas(tareasDict):
     
@@ -191,6 +217,8 @@ def indexandoTareasSubordinadasRecursivas(tareasDict):
 def indexInicio(request):
 
 '''
+
+
 def sitio(request):
 
-    return render (request, "sitio.html")
+    return render(request, "sitio.html")
