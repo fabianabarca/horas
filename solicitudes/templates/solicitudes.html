@@ -85,7 +85,6 @@
             </thead>
             <tbody>
               {% for solicitud in solicitudes %}
-
                 {% if not solicitud.enPapelera and solicitud.tipo == "F" %}
                   <tr>
                     <td>
@@ -138,28 +137,7 @@
                     </td>
                     <td class="fila_tabla"><span class="label Estado">{{ solicitud.get_estado_display}}</span></td> 
                   </tr>
-
                 {% endif %}
-                <td>
-                  {% for archivo in archivos %}
-
-                  {% if archivo.solicitud_id == solicitud.id %}
-                  <!--
-                                  Si se quiere abrir archivo en otra ventana:
-                                  <a href="../media/{{ archivo.archivo}}" >{{ archivo.archivo}}</a>
-                                -->
-
-                  <a href="../media/{{ archivo.archivo}}" download>{{ archivo.archivo}}</a>
-                  <br />
-                  {% endif %}
-
-
-                  {% endfor %}
-                </td>
-                <td>{{ solicitud.get_estado_display}}</td>
-
-              </tr>
-              {% endif %}
               {% endfor %}
             </tbody>
           </table>
