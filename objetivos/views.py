@@ -1,6 +1,7 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from horas.forms import ObjetivosForm, ObjetivosForm
+from objetivos.models import ObjetivoX # Test: con esto carga la página (¿Objetivos correctos?)
 from proyectos.models import Objetivo
 from proyectos.models import Proyecto
 from django import forms
@@ -11,7 +12,7 @@ import time
 # Create your views here.
 @login_required(login_url='/cuentas/ingreso/')
 def objetivos_request(request):
-    objetivos_list = Objetivo.objects.all()
+    objetivos_list = ObjetivoX.objects.all()
     if request.method == "POST":
         if request.POST.get('deleteButton'):
                 deleteButtonItemValue=request.POST.getlist('deleteButton')

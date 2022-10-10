@@ -10,6 +10,7 @@ from actividades.models import Actividad
 from cuentas.models import Estudiante
 from proyectos.models import Proyecto
 import datetime
+import json
 
 # Create your views here.
 
@@ -30,7 +31,7 @@ def index(request,id=9999):
 
     proyectos_list = Proyecto.objects.all()
     numeroProyectos=proyectos_list.count
-    
+    #print(numeroEstudiantes,numeroProyectos, "views inicio") # test
 
     #Desde aqui se procesa la barra de progreso de horas por estudiante
     my_actividades_list= Actividad.objects.raw('SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false")
@@ -62,6 +63,33 @@ def index(request,id=9999):
     #Desde aqui se procesa el factor de avance
     factorDeAvance =  porcentaje / porcentajeDaysYear
     redondeadoFactorDeAvance = int(factorDeAvance)
+
+        #Fechas, Horas Calendario
+    actividades_calendario= Actividad.objects.raw('SELECT id, estudiante_id, horas, fecha, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false")
+    horasPorDia = [[0 for i in range(4)] for actividad in actividades_calendario]
+    numeroActividades = 0
+    for actividad in actividades_calendario:
+        if actividad.estado == "A":
+            horasPorDia[numeroActividades][0]=actividad.fecha.year
+            horasPorDia[numeroActividades][1]=actividad.fecha.month
+            horasPorDia[numeroActividades][2]=actividad.fecha.day
+            horasPorDia[numeroActividades][3]=actividad.horas
+            numeroActividades+=1
+        #print(n,actividad.fecha.year,actividad.fecha.month,actividad.fecha.day,actividad.horas)
+    horasOdenadas = horasPorDia.copy()
+    horasOdenadas.sort(key=lambda horasOdenadas: horasOdenadas[2])
+    horasOdenadas.sort(key=lambda horasOdenadas: horasOdenadas[1])
+    horasOdenadas.sort(key=lambda horasOdenadas: horasOdenadas[0])
+    #print(horasPorDia)
+    #print(horasOdenadas)
+    
+    my_actividades_list= Actividad.objects.raw('SELECT id, estudiante_id, horas, fecha, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false")
+    horasPorMes = [0]*12
+    for actividad in my_actividades_list:
+        if actividad.estado == "A":
+            horasPorMes[actividad.fecha.month-1]+= actividad.horas
+            #print(actividad.fecha.month, actividad.horas)
+    #horasPorMesJ = json.dumps(horasPorMes)
 
     listaDirectorio = []
     actividades_list   = Actividad.objects.filter(estudiante = estudiante_actual)
@@ -165,7 +193,8 @@ def index(request,id=9999):
     "porcentajeDaysYear":porcentajeDaysYear,"porcentajeWidthDaysYear":porcentajeWidthDaysYear,"factorDeAvance":factorDeAvance,
     "numeroEstudiantes":numeroEstudiantes,"numeroProyectos":numeroProyectos,"estudiante_actual":estudiante_actual,
      "proyectos_list":proyectos_list,"listaDirectorio":listaDirectorio,"actividades_list":actividades_list,
-    "zipDirectorio":zipDirectorio,})
+    "zipDirectorio":zipDirectorio,"horasPorMes":horasPorMes,"horasPorDia":json.dumps(horasPorDia),
+    "numeroActividades":numeroActividades,"horasOrdenadas":horasOdenadas})
     
 '''
 def indexandoTareasSubordinadasRecursivas(tareasDict):
