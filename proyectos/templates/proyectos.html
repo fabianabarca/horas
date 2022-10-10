@@ -27,31 +27,34 @@
 
   {% csrf_token %}
 
-  <div class="card">
-    <div class="card-body">
-      <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">Mostrar filtros</button>
-      <!-- Opciones de filtrado -->
-      <div id="filtrosdiv" style='display: none;' class="card">
-        <div class="card-body">
-          <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}" />
-            <div class="row">
-              {% for field in filtros_form %}
-              <div class="col-sm-4">
-                <b>{{ field.label_tag }}</b> - {{ field}}
-                </br>
-              </div>
-              </br>
-              {% endfor %}
-            </div>
+  
+  <a class="btn btn-outline-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
+  aria-expanded="false" aria-controls="verFiltros">
+  Mostrar filtros
+</a>
+  <div class="collapse" id="verFiltros">
+   
 
-            <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
-
-          </form>
+    <p>
+    <div class="card card-body">
+      <form id="filtro" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        <div class="row">
+          {% for field in filtros_form %}
+          <div class="col-sm-4">
+            <b>{{ field.label_tag }}</b> {{ field }}
+            </br>
+          </div>
+          </br>
+          {% endfor %}
         </div>
-        </br>
-      </div>
+        <button type="submit" class="btn btn-light">Filtrar</button>
+      </form>
+    </div>
+    </p>
+  </div>
+  <div class="card">
       {% if proyectos %}
       <!-- Tabla -->
       <div class="table-responsive">
@@ -72,7 +75,7 @@
           <tbody>
             {% for proyecto in proyectos %}
             {% if not proyecto.enPapelera %}
-
+            <!-- Registro de proyectos -->
             <tr>
               {% if request.user.is_staff %}
               <td>
@@ -85,16 +88,14 @@
                     <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
                   </svg>
                 </a>
-
                 <!-- Delete button -->
-                <button onclick="return confirm('Está seguro de enviarlo a la papelera?')" type="submit"
+                <button onclick="return confirm('¿Está seguro de enviarlo a la papelera?')" type="submit"
                   class="text-danger" value="{{ proyecto.id }}" name="deleteButton"
                   style="background-color: transparent;  border: 0;">
                   <svg class="nav-icon" width="16" height="16">
                     <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-trash"></use>
                   </svg>
                 </button>
-
               </td>
               {% endif %}
               <td>{{ proyecto.nombre }}</td>
@@ -120,6 +121,7 @@
       </div>
     </div>
   </div>
+</div>
   {% else %}
   <strong>No hay proyectos registrados</strong>
   {% endif %}
