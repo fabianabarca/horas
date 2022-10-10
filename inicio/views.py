@@ -185,12 +185,17 @@ def index(request, id=9999):
                "actividades_list": actividades_list,
                "zipDirectorio": zipDirectorio, }
 
+    # AQUÍ TODO LO QUE HAY QUE PONER EN EL PANEL DE PROFESOR
     if request.user.is_staff:
-        landing_page = '../../dashboard/templates/panel.html'
+        
+        inicio = 'panel.html'
+    
+    # AQUÍ TODO LO QUE HAY QUE PONER EN EL PANEL DE ESTUDIANTE
     else:
-        landing_page = '../../dashboard/templates/resumen.html'
+        
+        inicio = 'resumen.html'
 
-    return render(request, landing_page, context)
+    return render(request, inicio, context)
 
 
 '''
