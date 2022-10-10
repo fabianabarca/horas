@@ -9,9 +9,8 @@ from cuentas.models import *
 from actividades.models import Actividad
 from proyectos.models import Proyecto
 from tareas.models import Tarea
-from cuentas.models import Estudiante
 import datetime
-import json
+
 
 # Create your views here.
 
@@ -111,31 +110,6 @@ def resumen(request):
 
     colorListRankingEstudiante = color_list(mapEstudianteCantidadActividades)
 
-    indiceAvance = round(porcentaje/porcentajeDaysYear,2)
-    indiceAvanceW = int(50/1*indiceAvance)
-
-    estudiantes_list = Estudiante.objects.all()
-    numeroEstudiantes=estudiantes_list.filter(user__is_staff=False).count
-    proyectos_list = Proyecto.objects.all()
-    numeroProyectos=proyectos_list.count
-    #print(numeroEstudiantes,numeroProyectos, "views dashboard") # test
-    #stringHorasEs = "width: "+str(horasTotalesPorEstudiante)+"%"
-    #stringDiasTCU = "width: "+str(porcentajeDaysYear)+"%"
-    #stringIndAvan = "width: "+str(indiceAvance)+"%"
-
-    #Fechas, Horas Calendario
-    actividades_calendario= Actividad.objects.raw('SELECT id, estudiante_id, horas, fecha, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false AND estado == 'A'")
-    horasPorDia = [[0 for i in range(4)] for actividad in actividades_calendario]
-    #print(horasPorDia)
-    numeroActividades = 0
-    for actividad in actividades_calendario:
-        if actividad.estado == "A":
-            horasPorDia[numeroActividades][0]=actividad.fecha.year
-            horasPorDia[numeroActividades][1]=actividad.fecha.month
-            horasPorDia[numeroActividades][2]=actividad.fecha.day
-            horasPorDia[numeroActividades][3]=actividad.horas
-            numeroActividades+=1
-
     context = {
         "progreso": horasTotalesPorEstudiante,
         "porcentaje": porcentaje,
@@ -151,12 +125,6 @@ def resumen(request):
         'labelsRankingEstudiante': labelsRankingEstudiante,
         'dataRankingEstudiante': dataRankingEstudiante,
         'colorListRankingEstudiante': colorListRankingEstudiante,
-        'horasPorDia':json.dumps(horasPorDia),
-        'numeroActividades':numeroActividades,
-        'indiceAvance':indiceAvance,
-        'indiceAvanceW':indiceAvanceW,
-        "numeroEstudiantes":numeroEstudiantes,
-        "numeroProyectos":numeroProyectos,
     }
 
     return render(request, 'resumen.html', context)
@@ -192,154 +160,3 @@ def color_list(listaCantidadMiembros):
         count = count + opasityDecreaseRange
 
     return colorList
-
-@login_required(login_url='/cuentas/login/')
-def panel(request):
-    '''Recopilación de información y creación de gráficas
-    para el resumen de actividades de estudiantes.
-    '''
-    estudiante_actual = Estudiante.objects.get(user=request.user)
-
-    # Desde aqui se procesa la barra de progreso de horas por estudiante
-    my_actividades_list = Actividad.objects.raw(
-        'SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == ' + str(estudiante_actual.id)+" AND enPapelera==false")
-    horasTotalesPorEstudiante = 0
-
-    for actividad in my_actividades_list:
-
-        if actividad.estado == "A":
-            horasTotalesPorEstudiante += actividad.horas
-
-    # horasTotalesPorEstudiante=30  #para pruebas
-    porcentaje = (100 / 300) * horasTotalesPorEstudiante
-    porcentajeWidth = int(porcentaje)
-
-    # Desde aqui se procesa la barra de progreso de dias del TCU por estudiante
-    current_datetime = datetime.date.today()
-    inicioTCU = estudiante_actual.fechaInicioTCU
-    finalTCU = estudiante_actual.fechaFinTCU
-
-    diasRestantesDelTCU = finalTCU - current_datetime
-
-    diasDesdeInicioTCU = current_datetime - inicioTCU
-    diasTCU = diasDesdeInicioTCU.days
-
-    totalDiasTCU = 365
-
-    porcentajeDaysYear = (100 / totalDiasTCU) * diasTCU
-    porcentajeWidthDaysYear = int(porcentajeDaysYear)
-
-    # Datos para pie chart y horizontal bar chart con relación proyectos y actividades
-    labels = []
-    data = []
-    dictCantidadActividadesHoras = {}
-    querysetProyectos = Proyecto.objects.filter(enPapelera=False)
-
-    for proyecto in querysetProyectos:
-
-        totalActividadesHorasPorProyecto = 0
-        querysetObjetivos = proyecto.objetivo_set.filter(enPapelera=False)
-
-        for objetivo in querysetObjetivos:
-            querysetTareas = objetivo.tarea_set.filter(enPapelera=False)
-            # cambioMetasATareas
-            for tarea in querysetTareas:
-                querysetActividades = tarea.actividad_set.filter(
-                    enPapelera=False)
-
-                for actividad in querysetActividades:
-                    totalActividadesHorasPorProyecto = totalActividadesHorasPorProyecto + actividad.horas
-
-        # labels.append(proyecto.nombre)
-        # tquery=Tarea.objects.filter(proyecto=proyecto)
-        # data.append(tquery.count)
-
-        dictCantidadActividadesHoras[proyecto.nombre] = totalActividadesHorasPorProyecto
-
-    sorteddictCantidadActividades = sorted(
-        dictCantidadActividadesHoras.items(), key=lambda x: x[1], reverse=True)
-
-    for element in sorteddictCantidadActividades:
-        labels.append(element[0])
-        data.append(element[1])
-
-    # Listas con los colores para los graficos desplegados
-    colorList = color_list(dictCantidadActividadesHoras)
-
-    # A partir de aquí datos para grafico de barras ranking de estudiantes por actividades
-    labelsRankingEstudiante = []
-    dataRankingEstudiante = []
-    rankingIndiceAvance = []
-    mapEstudianteCantidadActividades = {}
-    rankingEstudiantesList = Estudiante.objects.filter(user__is_staff=False)
-
-    for estudiante in rankingEstudiantesList:
-        horasActividades = Actividad.objects.filter(
-            estudiante=estudiante, enPapelera=False)
-        horasEstudiante = 0
-        for actividad in horasActividades:
-            horasEstudiante = horasEstudiante + actividad.horas
-        mapEstudianteCantidadActividades[estudiante] = horasEstudiante
-
-    sortedmapEstudianteCantidadActividades = sorted(
-        mapEstudianteCantidadActividades.items(), key=lambda x: x[1], reverse=True)
-
-    for element in sortedmapEstudianteCantidadActividades:
-        labelsRankingEstudiante.append(element[0].user.username)
-        dataRankingEstudiante.append(element[1])
-        rankingIndiceAvance.append(((100 / 300) * element[1]) / 
-            ((100 / 365) * (datetime.date.today()-element[0].fechaInicioTCU).days))
-    #print(rankingIndiceAvance)
-
-    colorListRankingEstudiante = color_list(mapEstudianteCantidadActividades)
-
-    indiceAvance = round(porcentaje/porcentajeDaysYear,2)
-    indiceAvanceW = int(50/1*indiceAvance)
-
-    estudiantes_list = Estudiante.objects.all()
-    numeroEstudiantes=estudiantes_list.filter(user__is_staff=False).count
-    proyectos_list = Proyecto.objects.all()
-    numeroProyectos=proyectos_list.count
-    #print(numeroEstudiantes,numeroProyectos, "views dashboard") # test
-    #stringHorasEs = "width: "+str(horasTotalesPorEstudiante)+"%"
-    #stringDiasTCU = "width: "+str(porcentajeDaysYear)+"%"
-    #stringIndAvan = "width: "+str(indiceAvance)+"%"
-
-    #Fechas, Horas Calendario
-    actividades_calendario= Actividad.objects.raw('SELECT id, estudiante_id, horas, fecha, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false AND estado == 'A'")
-    horasPorDia = [[0 for i in range(4)] for actividad in actividades_calendario]
-    #print(horasPorDia)
-    numeroActividades = 0
-    for actividad in actividades_calendario:
-        if actividad.estado == "A":
-            horasPorDia[numeroActividades][0]=actividad.fecha.year
-            horasPorDia[numeroActividades][1]=actividad.fecha.month
-            horasPorDia[numeroActividades][2]=actividad.fecha.day
-            horasPorDia[numeroActividades][3]=actividad.horas
-            numeroActividades+=1
-
-    context = {
-        "progreso": horasTotalesPorEstudiante,
-        "porcentaje": porcentaje,
-        "width": porcentajeWidth,
-        "diasTCU": diasTCU,
-        "inicioTCU": inicioTCU,
-        "finalTCU": finalTCU,
-        "totalDiasTCU": totalDiasTCU,
-        "porcentajeDaysYear": porcentajeDaysYear,
-        "porcentajeWidthDaysYear": porcentajeWidthDaysYear,
-        'labels': labels, 'data': data,
-        'colorList': colorList,
-        'labelsRankingEstudiante': labelsRankingEstudiante,
-        'dataRankingEstudiante': dataRankingEstudiante,
-        'colorListRankingEstudiante': colorListRankingEstudiante,
-        'horasPorDia':json.dumps(horasPorDia),
-        'numeroActividades':numeroActividades,
-        'indiceAvance':indiceAvance,
-        'indiceAvanceW':indiceAvanceW,
-        "numeroEstudiantes":numeroEstudiantes,
-        "numeroProyectos":numeroProyectos,
-        'rankingIndiceAvance':rankingIndiceAvance,
-    }
-
-    return render(request, 'panel.html', context)
