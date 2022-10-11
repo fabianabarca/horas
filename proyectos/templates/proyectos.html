@@ -27,35 +27,36 @@
 
   {% csrf_token %}
 
-  
-  <a class="btn btn-outline-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
-  aria-expanded="false" aria-controls="verFiltros">
-  Mostrar filtros
-</a>
-  <div class="collapse" id="verFiltros">
-   
+  {% if proyectos %}
 
-    <p>
-    <div class="card card-body">
-      <form id="filtro" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}" />
-        <div class="row">
-          {% for field in filtros_form %}
-          <div class="col-sm-4">
-            <b>{{ field.label_tag }}</b> {{ field }}
-            </br>
-          </div>
-          </br>
-          {% endfor %}
-        </div>
-        <button type="submit" class="btn btn-light">Filtrar</button>
-      </form>
-    </div>
-    </p>
-  </div>
   <div class="card">
-      {% if proyectos %}
+    <div class="card-body">
+      <!-- Filtros -->
+      <a class="btn btn-outline-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
+        aria-expanded="false" aria-controls="verFiltros">
+        Mostrar filtros
+      </a>
+      <!-- Opciones de filtrado -->
+      <p>
+      <div class="collapse" id="verFiltros">
+        <div class="card card-body">
+          <form id="filtro" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div class="row">
+              {% for field in filtros_form %}
+              <div class="col-sm-4">
+                <b>{{ field.label_tag }}</b> {{ field }}
+                </br>
+              </div>
+              </br>
+              {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-light">Filtrar</button>
+          </form>
+        </div>
+      </div>
+      </p>
       <!-- Tabla -->
       <div class="table-responsive">
         <table id="datatable" class="table align-items-center table-hover">
@@ -69,7 +70,6 @@
               <th scope="col">Profesor</th>
               <th scope="col">Áreas</th>
               <th scope="col">Ubicación</th>
-
             </tr>
           </thead>
           <tbody>
@@ -80,8 +80,8 @@
               {% if request.user.is_staff %}
               <td>
                 <!-- Checkbox 
-                    <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
-                    -->
+                        <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
+                        -->
                 <!-- Edit button -->
                 <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button">
                   <svg class="nav-icon" width="16" height="16">
@@ -101,7 +101,6 @@
               <td>{{ proyecto.nombre }}</td>
               <td>{{ proyecto.descripcion }}</td>
               <td>{{ proyecto.profesor.user.first_name }}</td>
-
               <td>
                 {% for area in proyecto.area.all %}
                 {% if not area.enPapelera %}
@@ -109,22 +108,22 @@
                 {% endif %}
                 {% endfor %}
               </td>
-
               <td>{{ proyecto.ubicacion }}</td>
-
             </tr>
             {% endif %}
-
             {% endfor %}
           </tbody>
         </table>
       </div>
     </div>
   </div>
-</div>
+
   {% else %}
-  <strong>No hay proyectos registrados</strong>
+  <div class="alert alert-info" role="alert">
+    No hay proyectos registrados.
+  </div>
   {% endif %}
+
 </form>
 
 {% endblock %}
