@@ -1,3 +1,4 @@
+from email.policy import default
 from cuentas.models import Profesor
 from inicio.models import Registro
 from django.db import models
@@ -28,10 +29,10 @@ class Proyecto(Registro):
 
 
 class Objetivo(Registro):
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = models.TextField(default='Objetivo no nulo.')
     proyecto = models.ForeignKey(
         Proyecto, on_delete=models.SET_NULL, null=True)
-    general = models.BooleanField(False)
+    general = models.BooleanField('¿Es objetivo general?', default=False)
 
     def __str__(self):
         return self.descripcion
