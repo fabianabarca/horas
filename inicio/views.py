@@ -47,7 +47,6 @@ def index(request, id=9999):
         labels = []
         data = []
         dictCantidadActividadesHoras = {}
-
         querysetProyectos = Proyecto.objects.filter(enPapelera=False)
 
         for proyecto in querysetProyectos:
@@ -94,7 +93,6 @@ def index(request, id=9999):
         for element in sortedmapEstudianteCantidadActividades:
             labelsRankingEstudiante.append(element[0].user.username)
             dataRankingEstudiante.append(element[1])
-            print("error",element)
             if(element[0].fecha_inicio != None):
                 rankingIndiceAvance.append(((100 / 300) * element[1]) / 
                 ((100 / 365) * (datetime.date.today()-element[0].fecha_inicio).days))
