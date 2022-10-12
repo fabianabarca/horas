@@ -1,8 +1,8 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% load static %}
 
-{% load crispy_forms_tags %} 
+{% load crispy_forms_tags %}
 
 {% block page_title %} Estudiantes {% endblock %}
 
@@ -23,11 +23,15 @@
 <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de estudiantes</h6>
 
 <form method="post">
+  
   {% csrf_token %}
+      
+  {% if estudiantes %}
+  
   <!-- Tabla -->
+  <p>
   <div class="card">
     <div class="card-body">
-      {% if estudiantes %}
       <!--Tabla de estudiantes-->
       <div class="table table-responsive">
         <table id="estudiantes-table" class="table align-items-center table-hover">
@@ -41,11 +45,11 @@
               <th scope="col">Tutor</th>
               <th scope="col">Inicio del TCU</th>
               <th scope="col">Finalización del TCU</th>
-              <th scope="col">Horas Totales</th>
+              <th scope="col">Horas totales</th>
             </tr>
           </thead>
           <tbody>
-            {% for estudiante, horas , porcentaje, porcentajeWidth in zipHoras %}
+            {% for estudiante, horas, porcentaje, porcentajeWidth in zipHoras %}
             <tr>
               <td>
                 <!-- A pagina de estudiante button
@@ -73,48 +77,26 @@
               <td class="fila_tabla"><span class="label Inicio">{{ estudiante.fecha_inicio}}</span></td>
               <td class="fila_tabla"><span class="label Fin">{{ estudiante.fecha_final}}</span></td>
               <td class="fila_tabla">
-
-                <!--{{ horas}}-->
-                <div class="progress-wrapper">
-                  <div class="progress-info">
-                    <div class="progress-percentage">
-                      <span class="text-sm font-weight-bold label Horas">{{ horas }} horas de 300</span>
-                    </div>
-                  </div>
-                  <div class="progress">
-                    <div class="progress-bar bg-gradient-primary" role="progressbar" aria-valuenow="66.0" aria-valuemin="0" aria-valuemax="100" style="width: 66.0%;">
-                      <!--
-                      Permite aplicar script para el elemento actual del documento. Tomado y modificado de: https://stackoverflow.com/questions/9209823/what-is-the-current-element-in-javascript
-                        -->
-                      <script>
-                        'use strict';
-                        var scriptTag = document.getElementsByTagName('script');
-                        scriptTag = scriptTag[scriptTag.length - 1];
-                    
-                        var parent = scriptTag.parentNode;
-                        if(parent.className=="progress-bar bg-gradient-primary"){
-                          parent.setAttribute("aria-valuenow", "{{porcentaje}}");
-                          parent.setAttribute("style",  "width: {{porcentajeWidth}}%;");
-                        }
-                      </script>
-                    </div>
-                    
-                  </div>
-                  
+                {{ horas }} de 300 <span class="text-muted small">({{ porcentaje }}%)</span>
+                <div class="progress progress-thin">
+                  <div class="progress-bar bg-warning" role="progressbar" style="width: {{ porcentajeWidth }}%" aria-valuenow="{{ porcentajeWidth }}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-    
-    
               </td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
-      {% else %}
-        <strong>No hay estudiantes registrados</strong> 
-      {% endif %}
     </div>
   </div>
+  </p>
+
+  {% else %}
+  <div class="alert alert-info" role="alert">
+    No hay estudiantes registrados.
+  </div>
+  {% endif %}
+
 </form>
 
 <!--Modal-->
@@ -153,7 +135,7 @@
 
 <!--JQuery para el modal-->
 <script>
-  $(".fila_tabla").click(function(){
+  $(".fila_tabla").click(function () {
     $('#myModal').modal('show')
     var row = $(this).closest("tr");
     var carne = row.find(".label.Carne").html()
@@ -183,6 +165,3 @@
 </script>
 
 {% endblock %}
-
-
-
