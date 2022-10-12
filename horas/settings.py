@@ -50,9 +50,7 @@ INSTALLED_APPS = [
     'estudiantes',
     'tareas',
     'papelera',
-    'crispy_forms',
-    'objetivos',
-    
+    'crispy_forms',  
 ]
 
 MIDDLEWARE = [

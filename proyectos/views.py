@@ -1,9 +1,9 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from horas.forms import AreasForm, FiltrosProyectoForm, ProyectosForm
-from proyectos.models import Proyecto
+from horas.forms import AreasForm, ProyectosForm, ObjetivosForm, FiltrosProyectoForm
 from proyectos.models import Area
-from django.shortcuts import render
+from proyectos.models import Proyecto
+from proyectos.models import Objetivo
 from django.contrib.auth.decorators import login_required
 from django import forms
 import time
@@ -35,7 +35,7 @@ def proyectos(request):
 
     # Formulario para los filtros
     if request.method == "POST":
-        
+
         # Crea el filtro para la tabla
         form = FiltrosProyectoForm(request.POST or None)
 
@@ -137,11 +137,66 @@ def editar_proyecto(request, id):
     crear = False
 
     context = {
-        "crear": crear, 
+        "crear": crear,
         "proyecto_form": form
     }
 
     return render(request, "crear_proyecto.html", context)
+
+
+@login_required(login_url='/cuentas/ingreso/')
+def crear_objetivo(request):
+
+    if request.method == "POST":
+        form = ObjetivosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            time.sleep(1)  # para que mensaje de que se creo pueda verse
+
+            return HttpResponseRedirect("/proyectos")
+
+    form = ObjetivosForm()
+    form.fields['general'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
+
+    # para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
+    proyectos_noborrados = Proyecto.objects.all()
+    proyectos_noborrados = proyectos_noborrados.filter(enPapelera=False)
+    form.fields["proyecto"].queryset = proyectos_noborrados
+
+    crear = True
+
+    context = {
+        "tipoAccion": crear,
+        "objetivo_form": form
+    }
+
+    return render(request, "crear_objetivo.html", context)
+
+
+@login_required(login_url='/cuentas/ingreso/')
+def editar_objetivo(request, id):
+
+    obj = get_object_or_404(Objetivo, id=id)
+
+    form = ObjetivosForm(request.POST or None, instance=obj)
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/objetivos")
+
+    form.fields['general'].widget = forms.HiddenInput()
+    form.fields['enPapelera'].widget = forms.HiddenInput()
+    form.fields['fechaPapelera'].widget = forms.HiddenInput()
+
+    # para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
+    proyectos_noborrados = Proyecto.objects.all()
+    proyectos_noborrados = proyectos_noborrados.filter(enPapelera=False)
+    form.fields["proyecto"].queryset = proyectos_noborrados
+
+    creacionOedicion = 0
+    return render(request, "crear_objetivo.html", context={"tipoAccion": creacionOedicion, "objetivo_form": form})
 
 
 @ login_required(login_url='/cuentas/ingreso/')
