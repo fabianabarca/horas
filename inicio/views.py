@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django import forms
 from django.http.response import HttpResponseRedirect
-from dashboard.models import *
 import time
 from cuentas.models import *
 from actividades.models import Actividad

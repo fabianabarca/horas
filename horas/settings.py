@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'tareas',
     'papelera',
     'crispy_forms',
-    'dashboard',
     'objetivos',
     
 ]

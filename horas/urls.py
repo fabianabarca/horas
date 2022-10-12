@@ -30,7 +30,4 @@ urlpatterns = [
     path('estudiantes/', include('estudiantes.urls'), name='estudiantes'),
     path('tareas/', include('tareas.urls'), name='tareas'),
     path('papelera/', include('papelera.urls'), name='papelera'),
-    path('dashboard/', include('dashboard.urls'), name='dashboard'),
-
-    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Ver los archivos desde admin
