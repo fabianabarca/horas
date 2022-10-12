@@ -43,10 +43,12 @@
       <img class="sidebar-brand-narrow" src="{% static 'img/tcu_color.png' %}" width="46" alt="Logo TCU">
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
+      {% if not request.user.is_staff %}
       <li class="nav-item"><a class="nav-link" href="{% url 'crear_actividad' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-plus"></use>
-          </svg> <button type="button" class="btn btn-outline-info">Nuevo registro</button></a></li>
+          </svg> <button type="button" class="btn btn-outline-info">Nueva actividad</button></a></li>
+      {% endif %}
       <li class="nav-divider"></li>
       <li class="nav-title">Horas</li>
       {% if request.user.is_staff %}
@@ -64,6 +66,7 @@
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-clock"></use>
           </svg> Actividades</a></li>
+      <li class="nav-divider"></li>
       <li class="nav-title">Proyectos</li>
       <li class="nav-group"><a class="nav-link nav-group-toggle" href="{% url 'tareas' %}">
           <svg class="nav-icon">
@@ -112,8 +115,8 @@
               </svg> Otros</a></li>
         </ul>
       </li>
-      <li class="nav-divider"></li>
       {% if request.user.is_staff %}
+      <li class="nav-divider"></li>
       <li class="nav-title">Administración</li>
       <li class="nav-item"><a class="nav-link" href="{% url 'estudiantes' %}">
           <svg class="nav-icon">
@@ -145,12 +148,17 @@
                   alt="user@email.com"></div>-->
             </a>
             <div class="dropdown-menu dropdown-menu-end pt-0">
+              <div class="dropdown-header bg-white py-2">
+                <div class="fw-semibold">Hola, {{ user.first_name }}</div>
+              </div>
               <div class="dropdown-header bg-light py-2">
                 <div class="fw-semibold">Cuenta</div>
-              </div><a class="dropdown-item" href="{% url 'perfil' %}">
+              </div>
+              <a class="dropdown-item" href="{% url 'perfil' %}">
                 <svg class="icon me-2">
                   <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-user"></use>
-                </svg> Perfil</a><a class="dropdown-item" href="{% url 'perfil' %}#ajustes">
+                </svg> Perfil</a>
+              <a class="dropdown-item" href="{% url 'perfil' %}#ajustes">
                 <svg class="icon me-2">
                   <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-settings"></use>
                 </svg> Ajustes</a>
