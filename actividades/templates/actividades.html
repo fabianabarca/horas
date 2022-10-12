@@ -28,6 +28,7 @@
 
   {% if actividades %}
 
+  <p>
   <div class="card">
     <div class="card-body">
 
@@ -45,9 +46,6 @@
       {% if actividades %}
       <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
         Seleccionar todo
-      </button>
-      <button type="button" class="btn btn-outline-dark btn-sm" onclick="uncheckAll()">
-        Limpiar selección
       </button>
       {% endif %}
 
@@ -144,6 +142,7 @@
       </div>
     </div>
   </div>
+  </p>
 
   {% else %}
   <div class="alert alert-info" role="alert">

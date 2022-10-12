@@ -28,10 +28,12 @@
 <form method="post">
   
   {% csrf_token %}
+      
+  {% if areas %}
 
+  <p>
   <div class="card">
     <div class="card-body">
-      {% if areas %}
       <div class="table">
         <table id="areas-table" class="table align-items-center table-hover">
           <thead>
@@ -64,19 +66,21 @@
               <td>{{ area }}</td>
               <td>{{ area.descripcion }}</td>
             </tr>
-
             {% endif %}
             {% endfor %}
           </tbody>
         </table>
       </div>
-      {% else %}
-      <p>
-        <strong>No hay áreas registradas.</strong>
-      </p>
-      {% endif %}
     </div>
   </div>
+  </p>
+
+  {% else %}
+  <div class="alert alert-info" role="alert">
+    No hay áreas registradas.
+  </div>
+  {% endif %}
+
 </form>
 
 {% endblock %}
