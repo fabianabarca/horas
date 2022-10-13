@@ -47,10 +47,10 @@
                         <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-calendar"></use>
                     </svg>
                 </div>
-                <div class="fs-4 fw-semibold">{{porcentajeWidthDaysYear}}%</div><small
+                <div class="fs-4 fw-semibold">{{porcentaje_width_days_year}}%</div><small
                     class="text-medium-emphasis text-uppercase fw-semibold">Tiempo transcurrido del TCU</small>
                 <div class="progress progress-thin mt-3 mb-0">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{porcentajeWidthDaysYear}}%" aria-valuenow="{{porcentajeWidthDaysYear}}"
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{porcentaje_width_days_year}}%" aria-valuenow="{{porcentaje_width_days_year}}"
                         aria-valuemin="0" aria-valuemax="100"></div> <!-- Funciona aunque marque error de { } en IDE -->
                 </div>
             </div>
@@ -65,10 +65,10 @@
                         <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-battery-3"></use>
                     </svg>
                 </div>
-                <div class="fs-4 fw-semibold">{{indiceAvance}}</div><small
+                <div class="fs-4 fw-semibold">{{indice_avance}}</div><small
                     class="text-medium-emphasis text-uppercase fw-semibold">Índice de avance</small>
                 <div class="progress progress-thin mt-3 mb-0">
-                    <div class="progress-bar" role="progressbar" style="width: {{ indiceAvanceW }}%" aria-valuenow="{{indiceAvance}}" aria-valuemin="-3.00"
+                    <div class="progress-bar" role="progressbar" style="width: {{ indice_avance_width }}%" aria-valuenow="{{indice_avance}}" aria-valuemin="-3.00"
                         aria-valuemax="3.00"></div> <!-- Funciona aunque marque error de { } en IDE -->
                 </div>
             </div>
@@ -88,7 +88,7 @@
 <br>
 
 <!-- Calendar -->
-{% if horasPorDia|length > 2 %}
+{% if horas_por_dia|length > 2 %}
     <h2>Gráfico de horas por día</h2>
     <div id="calendar_basic" style="width: 1000px; height: 200px;"></div>
 {% else %}
@@ -102,14 +102,14 @@
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-        var horas = {{ horasPorDia|safe }}; // Funciona aunque marque error de { } en IDE
-        var numeroActividades = "{{ numeroActividades|safe }}";
-        var horasDia = new Array(numeroActividades+1);
-        horasDia[0] = [{ label: 'Fecha', type: 'date' }, { label: 'Horas', type: 'number' }];
-        for (let i = 0; i < numeroActividades; i++) {
-            horasDia[i + 1] = [new Date(horas[i][0], (horas[i][1] - 1), horas[i][2]), horas[i][3]];
+        var horas = {{ horas_por_dia|safe }}; // Funciona aunque marque error de { } en IDE
+        var numero_actividades = "{{ numero_actividades|safe }}";
+        var horas_dia = new Array(numero_actividades+1);
+        horas_dia[0] = [{ label: 'Fecha', type: 'date' }, { label: 'Horas', type: 'number' }];
+        for (let i = 0; i < numero_actividades; i++) {
+            horas_dia[i + 1] = [new Date(horas[i][0], (horas[i][1] - 1), horas[i][2]), horas[i][3]];
         }
-        var dataTable = new google.visualization.arrayToDataTable(horasDia, false);
+        var data_table = new google.visualization.arrayToDataTable(horas_dia, false);
 
         var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
 
@@ -121,7 +121,7 @@
             }
         };
 
-        chart.draw(dataTable, options);
+        chart.draw(data_table, options);
     } // Funciona aunque marque error de { } en IDE
 </script>
 <!--Calendar google end-->
