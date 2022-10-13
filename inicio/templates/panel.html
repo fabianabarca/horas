@@ -6,24 +6,25 @@
 
 {% block main %}
 
-{% if request.user.is_staff %}
+{% if request.user.is_staff %} <!-- Si el usuario es profesor -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> <!-- Script para los charts -->
 
 <h1 class="display-4">Panel</h1>
 
-<dl>
+<dl> <!-- Datos del usuario -->
     <dt>Usuario:</dt> <dd>{{user.username}}</dd>
     <dt>Nombre:</dt> <dd>{{user.first_name}}</dd>
     <dt>Apellido:</dt> <dd>{{user.last_name}}</dd>
     <br>
-    <dt>Cantidad de estudiante activos:</dt> <dd>{{numero_Estudiantes}}</dd>
+    <dt>Cantidad de estudiante activos:</dt> <dd>{{numero_estudiantes}}</dd>
     <dt>Cantidad de proyectos:</dt> <dd>{{numero_proyectos}}</dd>
     <br>
 </dl>
 
 <h3>Horas trabajadas por proyecto</h3>
 
+<!-- Gráfico de horas trabajadas por proyecto -->
 <div id="container" style="width: 50%;">
     <canvas id="bar-chart"></canvas>
 </div>
@@ -31,6 +32,7 @@
 
 <h3>Ranking de estudiantes por índice de avance</h3>
 
+<!-- Gráfico de ranking de estudiantes por índice de avance -->
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Índice de avance de estudiantes</h5>
@@ -41,14 +43,16 @@
     </div>
 </div>
 
+<!-- Scripts para los charts -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx_ranking = document.getElementById('ranking-estudiantes-actividades').getContext('2d');
-    var list_data = "{{ data_ranking_estudiante|safe }}"
-    var list_labels = "{{ labels_ranking_estudiante|safe }}"
-    var color_list = "{{ color_list_ranking_estudiante|safe }}"
-    var ranking_indice_avance = {{ ranking_indice_avance|safe }} // Funciona aunque marque error de { } en IDE
+<script> // Script para el gráfico de ranking de estudiantes por índice de avance
+    const ctx_ranking = document.getElementById('ranking-estudiantes-actividades').getContext('2d'); // Canvas del gráfico
+    var list_data = "{{ data_ranking_estudiante|safe }}" // Datos del gráfico de ranking
+    var list_labels = "{{ labels_ranking_estudiante|safe }}" // Etiquetas del gráfico de ranking
+    var color_list = "{{ color_list_ranking_estudiante|safe }}" // Lista de colores para los gráficos desplegados
+    var ranking_indice_avance = {{ ranking_indice_avance|safe }} // Datos del índice de avance para el ranking. Funciona aunque marque error de { } en IDE
 
+    // Convertir a listas normales las listas data, labels y color que entran como strings
     list_data = list_data.slice(1);
     list_data = list_data.slice(0, list_data.length - 1);
     list_labels = list_labels.slice(1);
@@ -56,10 +60,12 @@
     color_list = color_list.slice(1);
     color_list = color_list.slice(0, color_list.length - 1);
 
+    // Convertir a listas normales las listas data, labels y color que entran como strings
     var new_list_data = list_data.split(',')
     var new_list_labels = list_labels.split(',')
     var new_color_list = color_list.split(', ')
 
+    // Convertir a listas normales la lista de color que entra como strings
     count = 0
     for (color in new_color_list) {
         new_color_list[count] = new_color_list[count].slice(1)
@@ -67,18 +73,19 @@
         count = count + 1
     }
 
+    // Creación del chart y sus opciones
     const my_chart_ranking = new Chart(ctx_ranking, {
-        type: 'bar',
+        type: 'bar', // Tipo de gráfico
         data: {
-            labels: new_list_labels,
-            datasets: [{
+            labels: new_list_labels, // Etiquetas
+            datasets: [{ // Datos de las barras
                 barThickness: 30,
                 label: 'Índice de avance por estudiante',
                 data: ranking_indice_avance,
                 backgroundColor: new_color_list
             }],
         },
-        options: {
+        options: { // Opciones del gráfico
             indexAxis: 'y',
             scales: {
                 y: {
@@ -88,12 +95,13 @@
     });
 </script>
 
-<script>
-    const ctx = document.getElementById('bar-chart').getContext('2d');
-    var list_data = "{{ data|safe }}"
-    var list_labels = "{{ labels|safe }}"
-    var color_list = "{{ color_list|safe }}"
+<script> // Script para el gráfico de horas trabajadas por proyecto
+    const ctx = document.getElementById('bar-chart').getContext('2d'); // Canvas del gráfico
+    var list_data = "{{ data|safe }}" // Datos para el gráfico
+    var list_labels = "{{ labels|safe }}" // Etiquetas para el gráfico
+    var color_list = "{{ color_list|safe }}" // Listas con los colores para los gráficos desplegados
 
+    // Convertir a listas normales las listas data, labels y color que entran como strings
     list_data = list_data.slice(1);
     list_data = list_data.slice(0, list_data.length - 1);
     list_labels = list_labels.slice(1);
@@ -101,10 +109,12 @@
     color_list = color_list.slice(1);
     color_list = color_list.slice(0, color_list.length - 1);
 
+    // Convertir a listas normales las listas data, labels y color que entran como strings
     var new_list_data = list_data.split(',')
     var new_list_labels = list_labels.split(',')
     var new_color_list = color_list.split(', ')
 
+    // Convertir a listas normales la lista de color que entra como strings
     count = 0
     for (color in new_color_list) {
         new_color_list[count] = new_color_list[count].slice(1)
@@ -112,18 +122,19 @@
         count = count + 1
     }
 
+    // Creación del chart y sus opciones
     const my_chart = new Chart(ctx, {
-        type: 'bar',
+        type: 'bar', // Tipo de gráfico
         data: {
-            labels: new_list_labels,
-            datasets: [{
+            labels: new_list_labels, // Etiquetas
+            datasets: [{ // Datos de las barras
                 barThickness: 30,
                 label: 'Horas trabajadas por proyecto',
                 data: new_list_data,
                 backgroundColor: new_color_list
             }],
         },
-        options: {
+        options: { // Opciones del gráfico
             indexAxis: 'y',
             scales: {
                 y: {
@@ -133,8 +144,8 @@
     });
 </script>
 
-{% else %}
-    Aviso: Usted no tiene autorización para ver este contenido.
+{% else %}  <!-- Si el usuario no es profesor (si es estudiante) -->
+    Aviso: Usted no tiene autorización para ver este contenido. <!-- Aviso para estudiantes -->
 {% endif %}
 
 {% endblock %}
