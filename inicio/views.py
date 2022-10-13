@@ -11,6 +11,9 @@ from cuentas.models import Estudiante
 from proyectos.models import Proyecto
 import datetime
 
+# Recibe: Diccionario o lista con elementos y sus cantidades
+# Modifica: ---
+# Devuelve: Lista con los colores para los gráficos desplegados
 def color_list_f(lista_cantidad_miembros):
     color_list = []
     alpha_initial = 1
@@ -20,7 +23,7 @@ def color_list_f(lista_cantidad_miembros):
     b = str(253)
     alpha = alpha_initial
     count = 0
-    for i in lista_cantidad_miembros:
+    for i in lista_cantidad_miembros: # Por cada miembro del diccionario
         alpha = alpha - (count)
         color = 'rgba(' + r + ',' + g + ',' + b + ',' + str(alpha) + ')'
         color_list.append(color)
@@ -36,23 +39,24 @@ def index(request, id=9999):
 
     # AQUÍ TODO LO QUE HAY QUE PONER EN EL PANEL DE PROFESOR
     if request.user.is_staff:
-        estudiantes_list = Estudiante.objects.all()
-        numero_estudiantes = estudiantes_list.filter(user__is_staff=False).count
-        proyectos_list = Proyecto.objects.all()
-        numero_proyectos = proyectos_list.count
+        # Datos de números de estudiantes y proyectos #
+        estudiantes_list = Estudiante.objects.all() # Lista de estudiantes a trabajar
+        numero_estudiantes = estudiantes_list.filter(user__is_staff=False).count # Cantidad de estudiantes
+        proyectos_list = Proyecto.objects.all() # Lista de proyectos a trabajar
+        numero_proyectos = proyectos_list.count # Cantidad de proyectos
 
-        # Datos para horizontal bar chart con relación proyectos y actividades
-        labels = []
-        data = []
-        dict_cantidad_actividades_horas = {}
-        query_set_proyectos = Proyecto.objects.filter(enPapelera=False)
+        # Datos para "horizontal bar chart" con relación proyectos y actividades #
+        labels = [] # Etiquetas para el gráfico
+        data = [] # Datos para el gráfico
+        dict_cantidad_actividades_horas = {} # Diccionario de proyectos y sus horas
+        query_set_proyectos = Proyecto.objects.filter(enPapelera=False) # Proyectos existentes
 
+        # Llenar el diccionario de Proyectos y sus cantidades de horas
         for proyecto in query_set_proyectos:
             total_actividades_horas_por_proyecto = 0
             query_set_objetivos = proyecto.objetivo_set.filter(enPapelera=False)
             for objetivo in query_set_objetivos:
                 query_set_tareas = objetivo.tarea_set.filter(enPapelera=False)
-                # Cambio Metas a Tareas
                 for tarea in query_set_tareas:
                     query_set_actividades = tarea.actividad_set.filter(
                         enPapelera=False)
@@ -60,23 +64,31 @@ def index(request, id=9999):
                         total_actividades_horas_por_proyecto = total_actividades_horas_por_proyecto + actividad.horas
             dict_cantidad_actividades_horas[proyecto.nombre] = total_actividades_horas_por_proyecto
 
+        # Ordenar el diccionario de actividades por sus cantidades de horas
         sorted_dict_cantidad_actividades = sorted(
             dict_cantidad_actividades_horas.items(), key=lambda x: x[1], reverse=True)
 
+        # Llenar las listas de etiquetas y datos para los gráficos
         for element in sorted_dict_cantidad_actividades:
             labels.append(element[0])
             data.append(element[1])
 
-        # Listas con los colores para los graficos desplegados
+        # Listas con los colores para los gráficos desplegados
         color_list = color_list_f(dict_cantidad_actividades_horas)
 
-        # A partir de aquí datos para grafico de barras ranking de estudiantes por actividades
-        labels_ranking_estudiante = []
-        data_ranking_estudiante = []
-        ranking_indice_avance = []
-        map_estudiante_cantidad_actividades = {}
-        rankingEstudiantesList = Estudiante.objects.filter(user__is_staff=False)
+        # A partir de aquí datos para grafico de barras: ranking por índice de avance #
+        labels_ranking_estudiante = [] # Etiquetas del gráfico de ranking
+        data_ranking_estudiante = [] # Datos del gráfico de ranking
+        map_estudiante_cantidad_actividades = {} # Mapa de estudiantes con sus cantidades de horas
+        rankingEstudiantesList = Estudiante.objects.filter(user__is_staff=False) #  Lista de estudiantes para el ranking
+        # Variables para el cálculo de índice de avance para el ranking
+        ranking_indice_avance = [] # Datos del índice de avance para el ranking
+        porcentaje_horas = 0 # Porcentaje de avance de horas 
+        porcentaje_tiempo = 0 # Porcentaje de avance del tiempo disponible
+        fecha_hoy = datetime.date.today() # Fecha del día actual de tipo fecha
+        dias_desde_inicio_TCU = 0 # Días transcurridos desde el inicio del TCU para el estudiante
 
+        # Llenar el mapa de estudiantes con sus horas respectivas
         for estudiante in rankingEstudiantesList:
             horasActividades = Actividad.objects.filter(
                 estudiante=estudiante, enPapelera=False)
@@ -85,29 +97,35 @@ def index(request, id=9999):
                 horas_estudiante = horas_estudiante + actividad.horas
             map_estudiante_cantidad_actividades[estudiante] = horas_estudiante
 
+        # Ordenar el mapa de estudiantes por sus cantidades de horas
         sorted_map_estudiante_cantidad_actividades = sorted(
             map_estudiante_cantidad_actividades.items(), key=lambda x: x[1], reverse=True)
 
+        # Llenar las listas de etiquetas y datos para los gráficos del ranking
         for element in sorted_map_estudiante_cantidad_actividades:
             labels_ranking_estudiante.append(element[0].user.username)
             data_ranking_estudiante.append(element[1])
-            if(element[0].fecha_inicio != None):
-                ranking_indice_avance.append(((100 / 300) * element[1]) / 
-                ((100 / 365) * (datetime.date.today()-element[0].fecha_inicio).days))
+            if(element[0].fecha_inicio != None): # Si la fecha de inicio no es nula:
+                dias_desde_inicio_TCU = (fecha_hoy - element[0].fecha_inicio).days
+                porcentaje_horas = (100 / 300) * element[1]
+                porcentaje_tiempo = (100 / 365) * dias_desde_inicio_TCU
+                ranking_indice_avance.append(porcentaje_horas / porcentaje_tiempo)
 
+        # Calcular la lista de colores para los gráficos desplegados
         color_list_ranking_estudiante = color_list_f(map_estudiante_cantidad_actividades)
 
+        # Inicio y contexto si el usuario es profesor #
         inicio = 'panel.html'
         context = {
-            "numero_estudiantes": numero_estudiantes,
-            "numero_proyectos": numero_proyectos,
-            "labels_ranking_estudiante": labels_ranking_estudiante,
-            "data_ranking_estudiante": data_ranking_estudiante,
-            "color_list_ranking_estudiante": color_list_ranking_estudiante,
-            "ranking_indice_avance":ranking_indice_avance,
-            "labels": labels,
-            "data": data,
-            "color_list": color_list,
+            "numero_estudiantes": numero_estudiantes, # Cantidad de estudiantes
+            "numero_proyectos": numero_proyectos, # Cantidad de proyectos
+            "labels_ranking_estudiante": labels_ranking_estudiante, # Etiquetas del gráfico de ranking
+            "data_ranking_estudiante": data_ranking_estudiante, # Datos del gráfico de ranking
+            "color_list_ranking_estudiante": color_list_ranking_estudiante, # Lista de colores para los gráficos desplegados
+            "ranking_indice_avance": ranking_indice_avance, # Datos del índice de avance para el ranking
+            "labels": labels, # Etiquetas para el gráfico
+            "data": data, # Datos para el gráfico
+            "color_list": color_list, # Listas con los colores para los gráficos desplegados
         }
     
     # AQUÍ TODO LO QUE HAY QUE PONER EN EL PANEL DE ESTUDIANTE
@@ -115,13 +133,11 @@ def index(request, id=9999):
         estudiante_actual = Estudiante.objects.get(user=request.user)
 
         # Desde aqui se procesa la barra de progreso de dias del TCU por estudiante
-        current_datetime = datetime.date.today()
+        fecha_hoy = datetime.date.today()
         inicio_TCU = estudiante_actual.fecha_inicio
-        dias_desde_inicio_TCU = current_datetime - inicio_TCU
-        dias_TCU = dias_desde_inicio_TCU.days
-        total_dias_TCU = 365
-        porcentaje_days_year = (100 / total_dias_TCU) * dias_TCU
-        porcentaje_width_days_year = int(porcentaje_days_year)
+        dias_desde_inicio_TCU = (fecha_hoy - inicio_TCU).days
+        porcentaje_tiempo = (100 / 365) * dias_desde_inicio_TCU
+        porcentaje_tiempo_width = int(porcentaje_tiempo)
 
         # Desde aqui se procesa la barra de progreso de horas por estudiante
         my_actividades_list = Actividad.objects.raw(
@@ -134,10 +150,10 @@ def index(request, id=9999):
 
         porcentaje = (100 / 300) * horas_totales_por_estudiante
         porcentaje_width = int(porcentaje)
-        indice_avance = round(porcentaje / porcentaje_days_year, 2)
+        indice_avance = round(porcentaje / porcentaje_tiempo, 2)
         indice_avance_width = int(50/1 * indice_avance)
 
-        #Fechas, Horas Calendario
+        # Fechas, Horas Calendario
         actividades_calendario= Actividad.objects.raw('SELECT id, estudiante_id, horas, fecha, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false AND estado == 'A'")
         horas_por_dia = [[0 for i in range(4)] for actividad in actividades_calendario]
         numero_actividades = 0
@@ -149,11 +165,12 @@ def index(request, id=9999):
                 horas_por_dia[numero_actividades][3]=actividad.horas
                 numero_actividades+=1
 
+        # Inicio y contexto si el usuario es estudiante #
         inicio = 'resumen.html'
         context = {
             "progreso": horas_totales_por_estudiante,
             "width": porcentaje_width,
-            "porcentaje_width_days_year": porcentaje_width_days_year,
+            "porcentaje_tiempo_width": porcentaje_tiempo_width,
             "indice_avance":indice_avance,
             "indice_avance_width":indice_avance_width,
             "horas_por_dia":json.dumps(horas_por_dia),
