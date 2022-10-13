@@ -102,7 +102,7 @@
     google.charts.load("current", { packages: ["calendar"],'language': 'es' }); // 'es' para el lenguaje de etiquetas
     google.charts.setOnLoadCallback(drawChart); // Se llama a la función para crear el chart
 
-    function drawChart() {
+    function drawChart() { // Función para crear el chart
         var horas = {{ horas_por_dia|safe }}; // Lista para los datos del calendario. Funciona aunque marque error de { } en IDE
         var numero_actividades = "{{ numero_actividades|safe }}"; // Número de actividades del estudiante
         var horas_dia = new Array(numero_actividades+1); // Lista de datos para el calendario: [día], [horas]
@@ -110,7 +110,7 @@
         
         // Llena la lista con la fecha y las horas registradas
         for (let i = 0; i < numero_actividades; i++) {
-            // En cada fila después de las etiquetas, guarda la fecha (año, mes, día), con las horas del día
+            // En cada fila después de las etiquetas, guarda [la fecha (año, mes, día), con las horas del día]
             horas_dia[i + 1] = [new Date(horas[i][0], (horas[i][1] - 1), horas[i][2]), horas[i][3]];
         }
         var data_table = new google.visualization.arrayToDataTable(horas_dia, false); // Pasa la lista a la tabla a usar del calendario

@@ -15,6 +15,7 @@ import datetime
 # Modifica: ---
 # Devuelve: Lista con los colores para los gráficos desplegados
 def color_list_f(lista_cantidad_miembros):
+    # Datos de la lista
     color_list = []
     alpha_initial = 1
     opasity_decrease_range = 0.2
@@ -23,11 +24,14 @@ def color_list_f(lista_cantidad_miembros):
     b = str(253)
     alpha = alpha_initial
     count = 0
-    for i in lista_cantidad_miembros: # Por cada miembro del diccionario
+
+    # Por cada miembro del diccionario agrega los colores a la nueva lista:
+    for i in lista_cantidad_miembros:
         alpha = alpha - (count)
         color = 'rgba(' + r + ',' + g + ',' + b + ',' + str(alpha) + ')'
         color_list.append(color)
         count = count + opasity_decrease_range
+    
     return color_list
 
 @login_required(login_url='/cuentas/ingreso/')
@@ -80,7 +84,7 @@ def index(request, id=9999):
         labels_ranking_estudiante = [] # Etiquetas del gráfico de ranking
         data_ranking_estudiante = [] # Datos del gráfico de ranking
         map_estudiante_cantidad_actividades = {} # Mapa de estudiantes con sus cantidades de horas
-        rankingEstudiantesList = Estudiante.objects.filter(user__is_staff=False) #  Lista de estudiantes para el ranking
+        ranking_estudiantes_list = Estudiante.objects.filter(user__is_staff=False) #  Lista de estudiantes para el ranking
         # Variables para el cálculo de índice de avance para el ranking
         ranking_indice_avance = [] # Datos del índice de avance para el ranking
         porcentaje_horas = 0 # Porcentaje de avance de horas 
@@ -89,11 +93,11 @@ def index(request, id=9999):
         dias_desde_inicio_TCU = 0 # Días transcurridos desde el inicio del TCU para el estudiante
 
         # Llenar el mapa de estudiantes con sus horas respectivas
-        for estudiante in rankingEstudiantesList:
-            horasActividades = Actividad.objects.filter(
+        for estudiante in ranking_estudiantes_list:
+            horas_actividades = Actividad.objects.filter(
                 estudiante=estudiante, enPapelera=False)
             horas_estudiante = 0
-            for actividad in horasActividades:
+            for actividad in horas_actividades:
                 horas_estudiante = horas_estudiante + actividad.horas
             map_estudiante_cantidad_actividades[estudiante] = horas_estudiante
 
@@ -101,7 +105,7 @@ def index(request, id=9999):
         sorted_map_estudiante_cantidad_actividades = sorted(
             map_estudiante_cantidad_actividades.items(), key=lambda x: x[1], reverse=True)
 
-        # Llenar las listas de etiquetas y datos para los gráficos del ranking
+        # Llenar las listas de etiquetas y datos para los gráficos de rankings
         for element in sorted_map_estudiante_cantidad_actividades:
             labels_ranking_estudiante.append(element[0].user.username)
             data_ranking_estudiante.append(element[1])
