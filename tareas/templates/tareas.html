@@ -8,26 +8,37 @@
 
 {% block main %} 
 
-<div class="container">
-</br>
 <!-- Título -->
-<h1 class="display-4">Tareas</h1>
-<p>
+<div class="d-flex justify-content-between">
+  <div>
+    <h1 class="display-4">Tareas</h1>
+  </div>
+  <div>
+    <h1><span class="badge text-bg-dark"><i class="cil-task"></i></span></h1>
+  </div>
+</div>
+
+<!-- Descripción -->
+<p class="lead">
   Las tareas pertenecen a un objetivo, que son parte de un proyecto.
 </p>
 
 <!-- Botón para agregar tareas -->
-<a href="crear_tarea" type="button" class="btn bg-gradient-primary"><i class="fas fa-plus-circle"></i>    Agregar Tarea</a>
-</br>
-</br>
+<p>
+  <a href="crear_tarea" type="button" class="btn btn-outline-info">Nueva tarea</a>
+</p>
 
-  
+ 
+<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de tareas</h6>
+ 
 
 <!-- Lista de tareas -->
-<form method="post">{% csrf_token %}
+<form method="post">
+  
+  {% csrf_token %}
+  
+  {% if tareas %}
 
-
-  <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de tareas</h6>
   <div class="card">
     <div class="card-body">
         <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">Filtros</button>
@@ -54,8 +65,7 @@
           </div>
           </br>
         </div>
-{% if tareas %}
-       <!-- Tabla -->
+      <!-- Tabla -->
       <div class="table-responsive">
         <table id="datatable" class="table align-items-center table-hover">
         <thead class="thead">
@@ -67,7 +77,7 @@
             <th scope="col">Subordinada a</th>
             <th scope="col">Objetivo</th>
             <th scope="col">Proyecto</th>
-            <th scope="col">Areas</th>
+            <th scope="col">Área</th>
             <th scope="col">Carné</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
@@ -75,7 +85,7 @@
         </thead>
         <tbody>
           {% for tarea in tareas %}
-            {% if not tarea.enPapelera %}
+          {% if not tarea.enPapelera %}
           <tr>
             <td>
               <!-- Checkbox 
@@ -99,47 +109,37 @@
                 class="text-danger" value="{{ tarea.id }}"  name="assignButton"
                 style="background-color: transparent;  border: 0;">              
                 <i style="color: green" class="fa fa-envelope" ></i>
-                </button>
-                
-              
+                </button> 
             </td>
-
             <td>{{ tarea.nombre }}</td>
-            <td>{{ tarea.descripcion}}</td>
-            
+            <td>{{ tarea.descripcion}}</td>            
             <!--Subtareas-->
             <td>
               {% for tarea in tarea.tarea_set.all %}
                 {% if not tarea.enPapelera %}
-                    {{ tarea.nombre}}<br/>
+                  {{ tarea.nombre }}<br/>
                 {% endif %}
               {% endfor %}
             </td>
-
-            <!--Tarea superior-->
+            <!-- Tarea superior -->
             <td>
               {% if not tarea.tareaSuperior.enPapelera %}
-                  {{ tarea.tareaSuperior}}
+                {{ tarea.tareaSuperior}}
               {% endif %}
             </td>
-
-            
-
-            <!--Objetivo-->
+            <!-- Objetivo -->
             {% if not tarea.objetivo.enPapelera %}
-            <td>{{tarea.objetivo}}</td>
+            <td>{{ tarea.objetivo }}</td>
             {% else %}  
-                <td></td>
+            <td></td>
             {% endif %}
-
-            <!--Proyecto-->
+            <!-- Proyecto -->
             {% if not tarea.objetivo.proyecto.enPapelera %}
-                <td>{{tarea.objetivo.proyecto}}</td>
+            <td>{{tarea.objetivo.proyecto}}</td>
             {% else %}  
-                <td></td>
+            <td></td>
             {% endif %}
-
-             <!--Areas multiples-->
+            <!-- Áreas multiples -->
             <td>
               {% for area in tarea.objetivo.proyecto.area.all %}
                 {% if not area.enPapelera %}
@@ -184,7 +184,7 @@
   <strong>No hay tareas registradas</strong>
 {% endif %}
 </form>
-</div>
+
 {% endblock %}
 
 

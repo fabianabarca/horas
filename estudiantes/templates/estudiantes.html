@@ -9,7 +9,16 @@
 {% block main %}
 
 <!-- Título -->
-<h1 class="display-4">Estudiantes</h1>
+<div class="d-flex justify-content-between">
+  <div>
+    <h1 class="display-4">Estudiantes</h1>
+  </div>
+  <div>
+    <h1><span class="badge text-bg-dark"><i class="cil-people"></i></span></h1>
+  </div>
+</div>
+
+<!-- Descripción -->
 <p class="lead">
   Lista de personas matriculadas y activas en TC-691 "Tropicalización de la tecnología".
 </p>
@@ -77,7 +86,7 @@
               <td class="fila_tabla"><span class="label Inicio">{{ estudiante.fecha_inicio}}</span></td>
               <td class="fila_tabla"><span class="label Fin">{{ estudiante.fecha_final}}</span></td>
               <td class="fila_tabla">
-                {{ horas }} de 300 <span class="text-muted small">({{ porcentaje }}%)</span>
+                <span class="small">{{ horas }} de 300 <span class="text-muted">({{ porcentaje }}%)</span></span>
                 <div class="progress progress-thin">
                   <div class="progress-bar bg-warning" role="progressbar" style="width: {{ porcentajeWidth }}%" aria-valuenow="{{ porcentajeWidth }}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
