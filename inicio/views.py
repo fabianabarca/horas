@@ -130,53 +130,61 @@ def index(request, id=9999):
     
     # AQUÍ TODO LO QUE HAY QUE PONER EN EL PANEL DE ESTUDIANTE
     else:
-        estudiante_actual = Estudiante.objects.get(user=request.user)
+        estudiante_actual = Estudiante.objects.get(user=request.user) # Estudiante actual a trabajar
 
-        # Desde aqui se procesa la barra de progreso de dias del TCU por estudiante
-        fecha_hoy = datetime.date.today()
-        inicio_TCU = estudiante_actual.fecha_inicio
-        dias_desde_inicio_TCU = (fecha_hoy - inicio_TCU).days
-        porcentaje_tiempo = (100 / 365) * dias_desde_inicio_TCU
-        porcentaje_tiempo_width = int(porcentaje_tiempo)
+        # Desde aqui se procesa la barra de progreso de dias del TCU por estudiante #
+        fecha_hoy = datetime.date.today() # Fecha del día actual de tipo fecha
+        inicio_TCU = estudiante_actual.fecha_inicio # Fecha de inicio del TCU del estudiante actual
+        dias_desde_inicio_TCU = (fecha_hoy - inicio_TCU).days # Días transcurridos desde el inicio del TCU para el estudiante
+        porcentaje_tiempo = (100 / 365) * dias_desde_inicio_TCU # Porcentaje de avance del tiempo disponible
+        porcentaje_tiempo_width = int(porcentaje_tiempo) # Entero del porcentaje de avance del tiempo disponible para el widget
 
-        # Desde aqui se procesa la barra de progreso de horas por estudiante
-        my_actividades_list = Actividad.objects.raw(
+        # Desde aqui se procesa la barra de progreso de horas por estudiante #
+        my_actividades_list = Actividad.objects.raw( # Lista de actividades del estudiante
             'SELECT id, estudiante_id, horas, enPapelera FROM actividades_actividad where estudiante_id == ' + str(estudiante_actual.id)+" AND enPapelera==false")
-        horas_totales_por_estudiante = 0
+        horas_totales_por_estudiante = 0 # Horas totales del estudiante actual
 
+        # Calcula la sumatoria de horas entre todas las actividades del estudiante
         for actividad in my_actividades_list:
             if actividad.estado == "A":
                 horas_totales_por_estudiante += actividad.horas
 
-        porcentaje = (100 / 300) * horas_totales_por_estudiante
-        porcentaje_width = int(porcentaje)
-        indice_avance = round(porcentaje / porcentaje_tiempo, 2)
-        indice_avance_width = int(50/1 * indice_avance)
+        # Variables para los datos de las barras de widgets horas e índice
+        porcentaje_horas = (100 / 300) * horas_totales_por_estudiante # Porcentaje de avance del tiempo disponible
+        porcentaje_width = int(porcentaje_horas) # Entero del porcentaje de avance del tiempo disponible
+        indice_avance_total = porcentaje_horas / porcentaje_tiempo # Índice de avance con todos los decimales
+        indice_avance = round(indice_avance_total, 2) # Índice de avance redondeado a dos decimales
+        indice_avance_width = int(50/1 * indice_avance) # Porcentaje de la barra para mostrar el índice de avance
 
-        # Fechas, Horas Calendario
-        actividades_calendario= Actividad.objects.raw('SELECT id, estudiante_id, horas, fecha, enPapelera FROM actividades_actividad where estudiante_id == '+ str(estudiante_actual.id)+" AND enPapelera==false AND estado == 'A'")
-        horas_por_dia = [[0 for i in range(4)] for actividad in actividades_calendario]
-        numero_actividades = 0
-        for actividad in actividades_calendario:
-            if actividad.estado == "A":
-                horas_por_dia[numero_actividades][0]=actividad.fecha.year
-                horas_por_dia[numero_actividades][1]=actividad.fecha.month
-                horas_por_dia[numero_actividades][2]=actividad.fecha.day
-                horas_por_dia[numero_actividades][3]=actividad.horas
-                numero_actividades+=1
+        # Calendario de Google Charts tipo heatmap de Github #
+        actividades_calendario = Actividad.objects.raw( # Selecciona las actividades del estudiante
+            'SELECT id, estudiante_id, horas, fecha, enPapelera FROM actividades_actividad where estudiante_id == '
+            + str(estudiante_actual.id)+" AND enPapelera==false AND estado == 'A'")
+        horas_por_dia = [[0 for i in range(4)] for actividad in actividades_calendario] # Lista para los datos del calendario
+        numero_actividades = 0 # Número de actividades del estudiante
+        
+        # Calcula los datos utilizados en el calendario de Google Charts tipo heatmap de Github
+        for actividad in actividades_calendario: # Por cada actividad
+            if actividad.estado == "A": # Si el estado es Activo
+                horas_por_dia[numero_actividades][0]=actividad.fecha.year # Año de la actividad
+                horas_por_dia[numero_actividades][1]=actividad.fecha.month # Mes de la actividad
+                horas_por_dia[numero_actividades][2]=actividad.fecha.day # Día de la actividad
+                horas_por_dia[numero_actividades][3]=actividad.horas # Horas de la actividad
+                numero_actividades+=1 # Cantidad de actividades
 
         # Inicio y contexto si el usuario es estudiante #
         inicio = 'resumen.html'
         context = {
-            "progreso": horas_totales_por_estudiante,
-            "width": porcentaje_width,
-            "porcentaje_tiempo_width": porcentaje_tiempo_width,
-            "indice_avance":indice_avance,
-            "indice_avance_width":indice_avance_width,
-            "horas_por_dia":json.dumps(horas_por_dia),
-            "numero_actividades":numero_actividades,
+            "horas_totales_por_estudiante": horas_totales_por_estudiante, # Horas totales del estudiante actual
+            "porcentaje_width": porcentaje_width, # Entero del porcentaje de avance del tiempo disponible
+            "porcentaje_tiempo_width": porcentaje_tiempo_width, # Entero del porcentaje de avance del tiempo disponible para el widget
+            "indice_avance": indice_avance, # Índice de avance redondeado a dos decimales
+            "indice_avance_width": indice_avance_width, # Porcentaje de la barra para mostrar el índice de avance
+            "horas_por_dia": json.dumps(horas_por_dia), # Lista para los datos del calendario, convertida con json
+            "numero_actividades": numero_actividades, # Número de actividades del estudiante
         }
 
+    # Inicio y contexto según el usuario sea estudiante o profesor
     return render(request, inicio, context)
 
 def sitio(request):
