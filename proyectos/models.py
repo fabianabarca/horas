@@ -30,8 +30,7 @@ class Proyecto(Registro):
 
 class Objetivo(Registro):
     descripcion = models.TextField(blank=False)
-    proyecto = models.ForeignKey(
-        Proyecto, on_delete=models.SET_NULL, null=True)
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL, null=True)
     general = models.BooleanField('¿Es objetivo general?', default=False)
 
     def __str__(self):

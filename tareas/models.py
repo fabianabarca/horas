@@ -13,7 +13,7 @@ class Tarea(Registro):
         ('V', 'Vencida'),
         ('F', 'Finalizada'),
     )
-    nombre = models.CharField(max_length=500)
+    nombre = models.CharField(max_length=500, blank=False)
     descripcion = models.TextField(blank=True, null=True)
     estudiante = models.ManyToManyField(Estudiante)
     objetivo = models.ForeignKey(Objetivo, on_delete=models.SET_NULL, null=True)

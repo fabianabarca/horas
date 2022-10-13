@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from proyectos.models import Proyecto
+from proyectos.models import Proyecto, Objetivo
 from tareas.models import Tarea
 from cuentas.models import Estudiante
 from django.db import models
@@ -16,6 +16,7 @@ class Actividad(Registro):
     )
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     #proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL,null=True)
+    #objetivo = models.ForeignKey(Objetivo, on_delete=models.CASCADE, blank=True, null=True)
     tarea = models.ForeignKey(Tarea, on_delete=models.SET_NULL,null=True)
     descripcion = models.TextField(blank=True, null=True)
     fecha = models.DateField()

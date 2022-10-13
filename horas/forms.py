@@ -143,13 +143,20 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 
 class ActividadesForm(forms.ModelForm):
-    proyecto = forms.ModelChoiceField(queryset=Proyecto.objects.filter(
-        enPapelera=False), required=False, widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
+    '''Crea formulario para registro de actividades.'''
+
+    # Lista de proyectos
+    #proyecto = forms.ModelChoiceField(queryset=Proyecto.objects.filter(
+    #    enPapelera=False), required=False, widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
     #objetivo = forms.ModelChoiceField(queryset=Objetivo.objects.filter(
     #    enPapelera=False), required=False, widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    field_order = ['proyecto', 'objetivo',
-                   'tarea', 'descripcion', 'horas', 'fecha']
+    
+    # Orden de aparición de los campos del formulario
+    #field_order = ['proyecto', 'objetivo',
+    #               'tarea', 'descripcion', 'horas', 'fecha']
+    field_order = ['tarea', 'descripcion', 'horas', 'fecha']
 
+    # Carga todos los campos del modelo de actividades
     class Meta:
         model = Actividad
         fields = "__all__"
@@ -164,8 +171,9 @@ class ActividadesForm(forms.ModelForm):
         }
 
     # Parte de implementación de restringir seleccion de tarea por proyecto
-
+    '''
     def __init__(self, *args, **kwargs):
+        
         super(ActividadesForm, self).__init__(*args, **kwargs)
 
         self.fields['estudiante'].initial = Estudiante.objects.get(
@@ -177,13 +185,15 @@ class ActividadesForm(forms.ModelForm):
 
         # for value in self.data.keys():
         # print('aqui')
+
+        # Busca objetivos en proyecto seleccionado
         if 'proyecto' in self.data:
             # print('alla')
             try:
                 proyecto_id = int(self.data.get('proyecto'))
                 #print("forms: " + Objetivo.objects.filter(proyecto__id=proyecto_id).order_by('nombre'))
                 self.fields['objetivo'].queryset = Objetivo.objects.filter(
-                    proyecto__id=proyecto_id).order_by('nombre')
+                    proyecto__id=proyecto_id).order_by('descripcion')
             except (ValueError, TypeError):
                 pass  # invalid input from the client; ignore and fallback to empty City queryset
         elif self.instance.pk:
@@ -192,6 +202,7 @@ class ActividadesForm(forms.ModelForm):
             self.fields['objetivo'].queryset = Objetivo.objects.filter(
                 enPapelera=False)
 
+        # Busca tareas en objetivo seleccionado
         if 'objetivo' in self.data:
             try:
                 objetivo_id = int(self.data.get('objetivo'))
@@ -202,9 +213,8 @@ class ActividadesForm(forms.ModelForm):
                 pass  # invalid input from the client; ignore and fallback to empty City queryset
         elif self.instance.pk:
             #self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea=self.instance)
-            self.fields['tarea'].queryset = Tarea.objects.filter(
-                enPapelera=False)
-
+            self.fields['tarea'].queryset = Tarea.objects.filter(enPapelera=False)
+    '''
 
 class SolicitudesForm(forms.ModelForm):
     class Meta:

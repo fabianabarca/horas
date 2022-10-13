@@ -8,8 +8,15 @@
 
 <!-- Formulario de registro de estudiantes -->
 <div class="card">
-  <div class="card-header">
-    Registro de estudiantes
+  <div class="card-header fw-semibold">
+    <div class="d-flex justify-content-between">
+      <div>
+        Registro de estudiantes
+      </div>
+      <div>
+        <span class="badge text-bg-dark"><i class="cil-user-plus"></i></span>
+      </div>
+    </div>
   </div>
   <div class="card-body">
     <form method="POST" onsubmit="setFormSubmitting()">
@@ -19,11 +26,11 @@
       {% if messages %}
       {% for message in messages %}
       {% if message.tags == 'error' %}
-      <div class="alert alert-danger" role="alert">     
+      <div class="alert alert-danger" role="alert">
       {% else %}
       <div class="alert alert-{{ message.tags }}" role="alert">
-      {% endif %}        
-        {{ message }}
+      {% endif %}
+      {{ message }}
       </div>
       {% endfor %}
       {% endif %}
