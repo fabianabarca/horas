@@ -8,9 +8,6 @@
 
 {% if not request.user.is_staff %} <!-- Si el usuario es estudiante -->
 
-<!-- Script para los charts -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-
 <h1 class="display-4">Resumen de horas</h1>
 
 <dl> <!-- Datos del usuario -->
@@ -121,9 +118,9 @@
         var chart = new google.visualization.Calendar(document.getElementById('calendar_basic')); // Crea el chart
 
         var options = { // Opciones modificables del calendario
-            title: "Calendario",
-            height: 350,
-            calendar: {
+            title: "Calendario", // Título
+            height: 350, // Tamaño
+            calendar: { // Opciones del calendario
                 daysOfWeek: 'DLMMJVS' // Etiquetas modificables de los días/filas
             }
         };
