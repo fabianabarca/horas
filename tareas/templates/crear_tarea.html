@@ -1,103 +1,85 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% load static %}
 
-{% load crispy_forms_tags %} 
+{% load crispy_forms_tags %}
 
-{% block page_title %} Crear tarea {% endblock %}
+{% block page_title %} Nueva tarea {% endblock %}
 
 {% block main %}
 
+<!-- Formulario de registro de áreas -->
+
+<div class="card">
+  <div class="card-header fw-semibold">
+    <div class="d-flex justify-content-between">
+      <div>
+        {% if crear %} Registro de nueva tarea {% else %} Edición de "{{ tarea.nombre }}" {% endif %}
+      </div>
+      <div>
+        <span class="badge text-bg-dark"><i class="cil-task"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <p>Las tareas son esto y aquello.</p>
+    <form method="POST" onsubmit="setFormSubmitting()">
+      {% csrf_token %}
+      <p>
+      <!-- Mensajes -->
+      {% if messages %}
+      {% for message in messages %}
+      {% if message.tags == 'error' %}
+      <div class="alert alert-danger" role="alert">
+      {% else %}
+      <div class="alert alert-{{ message.tags }}" role="alert">
+      {% endif %}
+      {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      <!-- Formulario -->
+      {{ tarea_form | crispy }}
+      </p>
+      <button type="submit" class="btn btn-primary btn-block" onClick="return confirmarRegistro();">Registrar</button>
+    </form>
+  </div>
+</div>
+
+<br>
+
+<!-- Advertencia de abandonar sin guardar cambios -->
 <script>
   var formSubmitting = false;
-  var setFormSubmitting = function() { formSubmitting = true; };
-  
-  window.onload = function() {
-      window.addEventListener("beforeunload", function (e) {
-          if (formSubmitting) {
-              return undefined;
-          }
-  
-          var confirmationMessage = 'It looks like you have been editing something. '
-                                  + 'If you leave before saving, your changes will be lost.';
-          
-          (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-          return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-      });
-  };
-  </script>
+  var setFormSubmitting = function () { formSubmitting = true; };
 
-<script  type="text/javascript">
-  function confirmarRegistro(){
-    var creacion =  confirm('¿Está seguro/a de que desea crear el registro?');
-    if(creacion){
+  window.onload = function () {
+    window.addEventListener("beforeunload", function (e) {
+      if (formSubmitting) {
+        return undefined;
+      }
+
+      var confirmationMessage = 'It looks like you have been editing something. '
+        + 'If you leave before saving, your changes will be lost.';
+
+      (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+      return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
+  };
+</script>
+
+<!-- Confirmación de creación de registro -->
+<script type="text/javascript">
+  function confirmarRegistro() {
+    var creacion = confirm('¿Desea crear el nuevo registro?');
+    if (creacion) {
       const collection = document.getElementsByClassName("alert alert-success");
 
       collection[0].setAttribute("style", "display:block");
     }
-    
+
     return creacion
   }
 </script>
-
-
-<div class="container">
-  <div class="alert alert-success" role="alert" style="display:none">
-    <i class="material-icons">done</i> El registro de tarea se ha realizado exitosamente.
-  </div>
-</br>
-{% if tipoAccion %}
-  <h1>Crear Tarea</h1>
-{% else %}
-  <h1>Editar Tarea</h1>
-{% endif %}
-
-<form method="post" onsubmit="setFormSubmitting()" id="tareasForm" data-objetivos-url="{% url 'load_objetivos' %}">
-    {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next }}" />
-
-    {{tarea_form|crispy }}
-    
-   
-
-    <button type="submit"  onClick = "return confirmarRegistro();" class="btn btn-primary btn-block">Continuar</button>
-</form>
-<!--Usando código modificado de https://github.com/akjasim/cb_dj_dependent_dropdown
-Para permitir que el dropdown sea limitado por la eleccion de tarea superior
--->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-  $("#id_tareaSuperior").change(function () {
-      console.log("activado accion tarea");
-      const url = $("#tareasForm").attr("data-objetivos-url");  // get the url of the `load_cities` view
-      const tareaId = $(this).val();  // get the selected country ID from the HTML input
-
-      $.ajax({                       // initialize an AJAX request
-          url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
-          data: {
-              'tarea_id': tareaId       // add the country id to the GET parameters
-          },
-          success: function (data) {   // `data` is the return of the `load_cities` view function
-              $("#id_objetivo").html(data);  // replace the contents of the city input with the data that came from the server
-              /*
-
-              let html_data = '<option value="">---------</option>';
-              data.forEach(function (objetivo) {
-                  html_data += `<option value="${objetivo.id}">${objetivo.nombre}</option>`
-              });
-              console.log(html_data);
-              $("#id_objetivo").html(html_data);
-*/
-            
-          }
-      });
-
-  });
-</script>
-
-
-</div>
-
-
 
 {% endblock %}

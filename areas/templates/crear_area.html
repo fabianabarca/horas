@@ -4,7 +4,7 @@
 
 {% load crispy_forms_tags %}
 
-{% block page_title %} Nueva solicitud {% endblock %}
+{% block page_title %} Nueva área de trabajo {% endblock %}
 
 {% block main %}
 
@@ -14,16 +14,16 @@
   <div class="card-header fw-semibold">
     <div class="d-flex justify-content-between">
       <div>
-        Edición de estudiante {{ estudiante }}
+        {% if crear %} Registro de nueva área {% else %} Edición de "{{ area.nombre }}" {% endif %}
       </div>
       <div>
-        <span class="badge text-bg-dark"><i class="cil-comment-square"></i></span>
+        <span class="badge text-bg-dark"><i class="cil-folder-open"></i></span>
       </div>
     </div>
   </div>
   <div class="card-body">
-    <p>Las solicitudes son esto y aquello.</p>
-    <form enctype="multipart/form-data" method="POST" onsubmit="setFormSubmitting()">
+    <p>Las áreas son esto y aquello.</p>
+    <form method="POST" onsubmit="setFormSubmitting()">
       {% csrf_token %}
       <p>
       <!-- Mensajes -->
@@ -39,7 +39,7 @@
       {% endfor %}
       {% endif %}
       <!-- Formulario -->
-      {{ estudiante_form | crispy }}
+      {{ area_form | crispy }}
       </p>
       <button type="submit" class="btn btn-primary btn-block" onClick="return confirmarRegistro();">Registrar</button>
     </form>

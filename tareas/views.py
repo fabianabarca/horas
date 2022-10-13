@@ -4,83 +4,102 @@ from django.shortcuts import get_object_or_404, render
 from tareas.models import *
 from proyectos.models import *
 from cuentas.models import Estudiante
-from horas.forms import TareasForm ,FiltrosTareaForm
+from horas.forms import TareasForm, FiltrosTareaForm
 from django.contrib.auth.decorators import login_required
 import time
 from django.core.mail import send_mail
 
 # Create your views here.
+
+
 @login_required(login_url='/cuentas/ingreso/')
-def tareas_request(request):
+def tareas(request):
+    '''Despliega una lista de tareas con su información.
+    '''
+
     tareas_list = Tarea.objects.all()
+
+    # Configura el filtrado de la tabla
     if request.method == "POST":
-           
         form = FiltrosTareaForm(request.POST or None)
         if request.POST.get('deleteButton'):
-                deleteButtonItemValue=request.POST.getlist('deleteButton')
-                obj = Tarea( id = deleteButtonItemValue[0]) 
-                Tarea.objects.filter(id = deleteButtonItemValue[0]).update(enPapelera='True')
-                
-        
-        #parte de implementación de asignación de tareas por boton
+            deleteButtonItemValue = request.POST.getlist('deleteButton')
+            obj = Tarea(id=deleteButtonItemValue[0])
+            Tarea.objects.filter(id=deleteButtonItemValue[0]).update(
+                enPapelera='True')
+
+        # Parte de implementación de asignación de tareas por boton
         if request.POST.get('assignButton'):
-                asignButtonItemValue=request.POST.getlist('assignButton')
-                obj = Tarea( id = asignButtonItemValue[0]) 
-                tareaAsignar=Tarea.objects.filter(id = asignButtonItemValue[0])
+            asignButtonItemValue = request.POST.getlist('assignButton')
+            obj = Tarea(id=asignButtonItemValue[0])
+            tareaAsignar = Tarea.objects.filter(id=asignButtonItemValue[0])
 
-                estudiantesAsignadosATareaActual = tareaAsignar[0].estudiante.all()
-                for estudiante in estudiantesAsignadosATareaActual:
-                    asignaciones_list = AsignacionesEnviadas.objects.all()
-                    boolYaFueAsignadoAntes=False
-                    print("estudiante: " + estudiante.user.first_name)
-                    for asignacion in asignaciones_list:
-                        
-                        if(asignacion.estudiante==estudiante):
-                            #print(asignacion.estudiante)
-                            print("tarea ya asignada: "+asignacion.tarea.nombre)
-                            if(asignacion.tarea==tareaAsignar[0]):
-                                 boolYaFueAsignadoAntes=True
-                                 print("no se le envió correo a "+ estudiante.user.first_name)
+            estudiantesAsignadosATareaActual = tareaAsignar[0].estudiante.all()
+            for estudiante in estudiantesAsignadosATareaActual:
+                asignaciones_list = AsignacionesEnviadas.objects.all()
+                boolYaFueAsignadoAntes = False
+                print("estudiante: " + estudiante.user.first_name)
+                for asignacion in asignaciones_list:
 
-                            
-                    if (not boolYaFueAsignadoAntes):
-                        ae = AsignacionesEnviadas(estudiante=estudiante,tarea=tareaAsignar[0])
-                        ae.save()
-                        #print(AsignacionesEnviadas.objects.all())
-                        
+                    if (asignacion.estudiante == estudiante):
+                        # print(asignacion.estudiante)
+                        print("tarea ya asignada: "+asignacion.tarea.nombre)
+                        if (asignacion.tarea == tareaAsignar[0]):
+                            boolYaFueAsignadoAntes = True
+                            print("no se le envió correo a " +
+                                  estudiante.user.first_name)
 
-                        #aqui se manda el correo
-                        
-                        send_mail(
-                                            'Asignación de tarea',
-                                            'Se te asigno la tarea: ' + tareaAsignar[0].nombre +'\n\n'
-                                            + 'Descripción: '+ tareaAsignar[0].descripcion  +'\n\n'
-                                            + 'Del proyecto: '+ tareaAsignar[0].objetivo.proyecto.nombre  +'\n\n'
-                                            ,
-                                            'testertesrter3@gmail.com',
-                                            [estudiante.user.email],
-                                            fail_silently=False,
-                                )
-                        print("se envió correo a "+ estudiante.user.first_name)
-                        print( estudiante.user.email)
-        
+                if (not boolYaFueAsignadoAntes):
+                    ae = AsignacionesEnviadas(
+                        estudiante=estudiante, tarea=tareaAsignar[0])
+                    ae.save()
+                    # print(AsignacionesEnviadas.objects.all())
+
+                    # aqui se manda el correo
+
+                    send_mail(
+                        'Asignación de tarea',
+                        'Se te asigno la tarea: ' +
+                        tareaAsignar[0].nombre + '\n\n'
+                        + 'Descripción: ' +
+                        tareaAsignar[0].descripcion + '\n\n'
+                        + 'Del proyecto: ' +
+                        tareaAsignar[0].objetivo.proyecto.nombre + '\n\n',
+                        'testertesrter3@gmail.com',
+                        [estudiante.user.email],
+                        fail_silently=False,
+                    )
+                    print("Se envió correo a " + estudiante.user.first_name)
+                    print(estudiante.user.email)
+
         if form.is_valid():
             if form.cleaned_data.get('nombre'):
-                tareas_list =  tareas_list.filter(nombre__contains = form.cleaned_data.get('nombre'))
+                tareas_list = tareas_list.filter(
+                    nombre__contains=form.cleaned_data.get('nombre'))
             if form.cleaned_data.get('estudiante'):
-                tareas_list =  tareas_list.filter(estudiante = form.cleaned_data.get('estudiante'))
+                tareas_list = tareas_list.filter(
+                    estudiante=form.cleaned_data.get('estudiante'))
             if form.cleaned_data.get('descripcion'):
-                tareas_list =  tareas_list.filter(descripcion__contains = form.cleaned_data.get('descripcion'))
+                tareas_list = tareas_list.filter(
+                    descripcion__contains=form.cleaned_data.get('descripcion'))
             if form.cleaned_data.get('objetivo'):
-                tareas_list =  tareas_list.filter(objetivo = form.cleaned_data.get('objetivo'))
+                tareas_list = tareas_list.filter(
+                    objetivo=form.cleaned_data.get('objetivo'))
             if form.cleaned_data.get('area'):
-                tareas_list =  tareas_list.filter(objetivo__proyecto__area= form.cleaned_data.get('area'))
-           
-        #return HttpResponseRedirect("/tareas")
-        
+                tareas_list = tareas_list.filter(
+                    objetivo__proyecto__area=form.cleaned_data.get('area'))
+
+        # return HttpResponseRedirect("/tareas")
+
     form = FiltrosTareaForm()
 
-    return render (request=request, template_name="../templates/tareas.html", context={"tareas":tareas_list,"filtros_form":form})
+    context = {
+        "tareas": tareas_list,
+        "filtros_form": form
+    }
+
+    return render(request, "tareas.html", context)
+
 
 @login_required(login_url='/cuentas/ingreso/')
 def crear_tarea(request):
@@ -89,51 +108,54 @@ def crear_tarea(request):
         form = TareasForm(request.POST)
         if form.is_valid():
             form.save()
-            time.sleep(1)#para que mensaje de que se creo pueda verse
 
             return HttpResponseRedirect("/tareas")
-            
+
     form = TareasForm()
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
-    #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    tareas_noborradas=Tarea.objects.filter(enPapelera= False)
-    form.fields["tareaSuperior"].queryset  = tareas_noborradas
+    # para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
+    tareas_noborradas = Tarea.objects.filter(enPapelera=False)
+    form.fields["tareaSuperior"].queryset = tareas_noborradas
 
-    #para filtrar usuarios y que solo se puedan asignar estudiantes a tareas
-    estudiantes_nostaff=Estudiante.objects.filter(user__is_staff=False)
-    form.fields["estudiante"].queryset  = estudiantes_nostaff
+    # para filtrar usuarios y que solo se puedan asignar estudiantes a tareas
+    estudiantes_nostaff = Estudiante.objects.filter(user__is_staff=False)
+    form.fields["estudiante"].queryset = estudiantes_nostaff
 
+    crear = True
+    context = {
+        "crear": crear,
+        "tarea_form": form
+    }
 
-    creacionOedicion = 1
+    return render(request, "crear_tarea.html", context)
 
-    return render (request=request, template_name="../templates/crear_tarea.html", context={"tipoAccion":creacionOedicion,"tarea_form":form})
 
 @login_required(login_url='/cuentas/ingreso/')
 def editar_tarea(request, id):
 
-    obj = get_object_or_404(Tarea, id = id) 
+    tarea = get_object_or_404(Tarea, id=id)
 
-    form = TareasForm(request.POST or None, instance = obj)
+    form = TareasForm(request.POST or None, instance=tarea)
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
-    #para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
-    tareas_noborradas= Tarea.objects.filter(enPapelera= False)
-    form.fields["tareaSuperior"].queryset  = tareas_noborradas
+    # para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
+    tareas_noborradas = Tarea.objects.filter(enPapelera=False)
+    form.fields["tareaSuperior"].queryset = tareas_noborradas
 
     if form.is_valid():
 
-        #Para enviar correos a estudiantes nuevamente asignados
+        # Para enviar correos a estudiantes nuevamente asignados
         tareas_list = Tarea.objects.all()
-        tareaAEditar = tareas_list.filter(id = id)
-        
+        tareaAEditar = tareas_list.filter(id=id)
+
         estudiantesActualesEnTarea = tareaAEditar[0].estudiante.all()
-        
-        #Parte de código que al asignar estudiante nuevo al crear o editar una tarea 
-        #manda correo de asignación para los estudiantes nuevos y evita mandar a estudiantes ya asignados
-        #previamente a la tarea, con ayuda del modelo creado en la base de datos AsignacionesEnviadas
+
+        # Parte de código que al asignar estudiante nuevo al crear o editar una tarea
+        # manda correo de asignación para los estudiantes nuevos y evita mandar a estudiantes ya asignados
+        # previamente a la tarea, con ayuda del modelo creado en la base de datos AsignacionesEnviadas
         '''
         for estudianteForm in form.cleaned_data.get('estudiante'):
             mandarCorreo=True
@@ -172,68 +194,82 @@ def editar_tarea(request, id):
                                             [estudianteForm.user.email],
                                             fail_silently=False,
                                 )
-        '''            
-        #para cambio de objetivos de tareas subordinadas si tarea las tiene
+        '''
+        # para cambio de objetivos de tareas subordinadas si tarea las tiene
         tareasSubordinadas = tareaAEditar[0].tarea_set.all()
 
-        #para asignar objetivo de tarea superior a tareas subordinadas
+        # para asignar objetivo de tarea superior a tareas subordinadas
         if tareasSubordinadas:
-            cambio_objetivos_tareasrecursivas(form,tareaAEditar[0])
+            cambio_objetivos_tareasrecursivas(form, tareaAEditar[0])
 
-              
         form.save()
         return HttpResponseRedirect("/tareas")
 
-    #para no incluir en opciones de tareas superiores a subordinas o a si mismo
-    tareaAEditar =Tarea.objects.filter(id = id)
+    # para no incluir en opciones de tareas superiores a subordinas o a si mismo
+    tareaAEditar = Tarea.objects.filter(id=id)
     listaTareasNoSubordinadas = []
-    listaTareasNoSubordinadas=seleccion_tarea_superior_tareasrecursivas(form,tareaAEditar[0],listaTareasNoSubordinadas)
-   
-    querysetTareasNoSubordinadas = Tarea.objects.all().exclude(id__in=listaTareasNoSubordinadas)
+    listaTareasNoSubordinadas = seleccion_tarea_superior_tareasrecursivas(
+        form, tareaAEditar[0], listaTareasNoSubordinadas)
+
+    querysetTareasNoSubordinadas = Tarea.objects.all().exclude(
+        id__in=listaTareasNoSubordinadas)
     querysetTareasNoSubordinadas = querysetTareasNoSubordinadas.exclude(id=id)
     form.fields["tareaSuperior"].queryset = querysetTareasNoSubordinadas
 
-    creacionOedicion = 0
-    return render(request, "crear_tarea.html", context={"tipoAccion":creacionOedicion,"tarea_form":form})
+    crear = True
+    context = {
+        "crear": crear,
+        "tarea_form": form,
+        "tarea": tarea,
+    }
 
-#para cambio de objetivos de tareas subordinadas si tarea las tiene
-def cambio_objetivos_tareasrecursivas(form,tareaAEditar):
+    return render(request, "crear_tarea.html", context)
+
+# para cambio de objetivos de tareas subordinadas si tarea las tiene
+
+
+def cambio_objetivos_tareasrecursivas(form, tareaAEditar):
     tareasSubordinadas = tareaAEditar.tarea_set.all()
-    #print("nivel")
-    #print(tareasSubordinadas)
-    
-    if  tareasSubordinadas:
+    # print("nivel")
+    # print(tareasSubordinadas)
+
+    if tareasSubordinadas:
         for tarea in tareasSubordinadas.all():
-            #print("nivelrec")
-            #print(tareaAEditar.objetivo)
-            tarea.objetivo=form.cleaned_data.get('objetivo')
+            # print("nivelrec")
+            # print(tareaAEditar.objetivo)
+            tarea.objetivo = form.cleaned_data.get('objetivo')
             tarea.save()
-            cambio_objetivos_tareasrecursivas(form,tarea)
+            cambio_objetivos_tareasrecursivas(form, tarea)
 
-#para solo seleccion de tareas no subordinadas como tarea superior  
-def seleccion_tarea_superior_tareasrecursivas(form,tareaAEditar,listaTareasNoSubordinadas):
+# para solo seleccion de tareas no subordinadas como tarea superior
+
+
+def seleccion_tarea_superior_tareasrecursivas(form, tareaAEditar, listaTareasNoSubordinadas):
     tareasSubordinadas = tareaAEditar.tarea_set.all()
-    #print("nivel")
-    #print(tareasSubordinadas)
-    
-    if  tareasSubordinadas:
+    # print("nivel")
+    # print(tareasSubordinadas)
+
+    if tareasSubordinadas:
         for tarea in tareasSubordinadas.all():
             listaTareasNoSubordinadas.append(tarea.id)
-            #print("nivelrec")
-            #print(tarea.nombre)
-           
-            listaTareasNoSubordinadas= seleccion_tarea_superior_tareasrecursivas(form,tarea,listaTareasNoSubordinadas)
-    return listaTareasNoSubordinadas       
+            # print("nivelrec")
+            # print(tarea.nombre)
+
+            listaTareasNoSubordinadas = seleccion_tarea_superior_tareasrecursivas(
+                form, tarea, listaTareasNoSubordinadas)
+    return listaTareasNoSubordinadas
 
 # AJAX
+
+
 def load_objetivos(request):
     tarea_id = request.GET.get('tarea_id')
-    #print(tarea_id)
-    
-    if (tarea_id==''):
-         objetivos = Objetivo.objects.filter(enPapelera=False)
+    # print(tarea_id)
+
+    if (tarea_id == ''):
+        objetivos = Objetivo.objects.filter(enPapelera=False)
     else:
-         objetivos = Objetivo.objects.filter(tarea__id=tarea_id)
-    #print(objetivos)
+        objetivos = Objetivo.objects.filter(tarea__id=tarea_id)
+    # print(objetivos)
     return render(request, '../templates/objetivo_dropdown_list_options.html', {'objetivos': objetivos})
     # return JsonResponse(list(objetivos.values('id', 'nombre')), safe=False)

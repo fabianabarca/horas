@@ -24,9 +24,10 @@ import time
 
 @login_required(login_url='/cuentas/ingreso/')
 def proyectos(request):
-    '''Recopila todos los proyectos para desplegarlos
-    en una tabla con la lista de proyectos que no
-    están en papelera. Además, crea un formulario 
+    '''
+    Recopila todos los proyectos para desplegarlos
+    en una tabla con la lista de proyectos (que no
+    están en papelera). Además, crea un formulario 
     para filtrar los proyectos según categorías.
     '''
 
@@ -36,7 +37,7 @@ def proyectos(request):
     # Formulario para los filtros
     if request.method == "POST":
 
-        # Crea el filtro para la tabla
+        # Crea el filtro para la tabla de proyectos
         form = FiltrosProyectoForm(request.POST or None)
 
         if form.is_valid():
@@ -65,6 +66,7 @@ def proyectos(request):
 
         # return HttpResponseRedirect("/proyectos")
 
+    # Crea el objeto para enviar
     form = FiltrosProyectoForm()
 
     context = {
@@ -75,13 +77,14 @@ def proyectos(request):
     return render(request, "proyectos.html", context)
 
 
-@ login_required(login_url='/cuentas/ingreso/')
+@login_required(login_url='/cuentas/ingreso/')
 def crear_proyecto(request):
-    '''Crea formulario para recopilar los datos
+    '''
+    Crea formulario para recopilar los datos
     de un nuevo proyecto.
     '''
 
-    # Crea formulario con todos los campos de información del proyecto
+    # Crea formulario con todos los campos de información
     if request.method == "POST":
         form = ProyectosForm(request.POST)
         if form.is_valid():
@@ -89,7 +92,10 @@ def crear_proyecto(request):
 
             return HttpResponseRedirect("/proyectos")
 
+    # Utiliza el formulario de proyectos
     form = ProyectosForm()
+
+    # Ocula los campos de papelera
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
@@ -109,21 +115,25 @@ def crear_proyecto(request):
     return render(request, "crear_proyecto.html", context)
 
 
-@ login_required(login_url='/cuentas/ingreso/')
+@login_required(login_url='/cuentas/ingreso/')
 def editar_proyecto(request, id):
-    '''Carga un formulario con los datos de un 
+    '''
+    Carga un formulario con los datos de un 
     proyecto ya registrado para edición.
     '''
 
     # Recupera la información del proyecto seleccionado
-    obj = get_object_or_404(Proyecto, id=id)
+    proyecto = get_object_or_404(Proyecto, id=id)
 
     # Carga el formulario con la instancia del proyecto
-    form = ProyectosForm(request.POST or None, instance=obj)
+    form = ProyectosForm(request.POST or None, instance=proyecto)
+
+    # Oculta los campos de papelera
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
-    # Quita del formulario las áreas borradas
+    # Quita del formulario los proyectos asociados con
+    # las áreas que están en papelera
     areas_noborrados = Area.objects.all()
     areas_noborrados = areas_noborrados.filter(enPapelera=False)
     form.fields["area"].queryset = areas_noborrados
@@ -138,7 +148,8 @@ def editar_proyecto(request, id):
 
     context = {
         "crear": crear,
-        "proyecto_form": form
+        "proyecto_form": form,
+        "proyecto": proyecto,
     }
 
     return render(request, "crear_proyecto.html", context)
@@ -197,24 +208,6 @@ def editar_objetivo(request, id):
 
     creacionOedicion = 0
     return render(request, "crear_objetivo.html", context={"tipoAccion": creacionOedicion, "objetivo_form": form})
-
-
-@ login_required(login_url='/cuentas/ingreso/')
-def crear_area(request):
-
-    if request.method == "POST":
-        form = AreasForm(request.POST)
-        if form.is_valid():
-            form.save()
-            time.sleep(1)  # para que mensaje de que se creo pueda verse
-
-            return HttpResponseRedirect("/proyectos")
-
-    form = AreasForm()
-    form.fields['enPapelera'].widget = forms.HiddenInput()
-    form.fields['fechaPapelera'].widget = forms.HiddenInput()
-
-    return render(request=request, template_name="../templates/crear_area.html", context={"area_form": form})
 
 
 def proyectosInfo(request):

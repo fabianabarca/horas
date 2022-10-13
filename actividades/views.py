@@ -13,7 +13,7 @@ import time
 
 # Create your views here.
 @login_required(login_url='/cuentas/ingreso/')
-def actividades_request(request):
+def actividades(request):
 
     list_of_inputs = request.POST.getlist('inputs')
 
@@ -23,7 +23,6 @@ def actividades_request(request):
 
     if request.user.is_staff:
         actividades_list = Actividad.objects.all()
-
     else:
         estudiante_actual = Estudiante.objects.get(user=request.user)
         actividades_list = Actividad.objects.filter(
@@ -68,13 +67,25 @@ def actividades_request(request):
                     'fecha_inicio'), form.cleaned_data.get('fecha_final')])
 
             # return HttpResponseRedirect("/actividades")
+
+    # Declarar el formulario a utilizar
     form = FiltrosForm()
 
-    return render(request=request, template_name="../templates/actividades.html", context={"actividades": actividades_list, "filtros_form": form})
+    # Contexto
+    context = {
+        "actividades": actividades_list,
+        "filtros_form": form
+    }
+
+    return render(request, "actividades.html", context)
 
 
 @login_required(login_url='/cuentas/ingreso/')
 def crear_actividad(request):
+    '''
+    Registra la información de una nueva actividad con
+    N horas asociadas a una tarea.
+    '''
 
     estudiante_actual = Estudiante.objects.get(user=request.user)
 
@@ -104,16 +115,20 @@ def crear_actividad(request):
     #form.fields["proyecto"].queryset  = proyectos_noborrados
     form.fields["tarea"].queryset = tareas_noborradas
 
-    creacionOedicion = 1
-    return render(request=request, template_name="../templates/crear_actividad.html", context={"tipoAccion": creacionOedicion, "form": form})
+    crear = True
+    context = {
+        "crear": crear,
+        "form": form,
+    }
+    return render(request, "crear_actividad.html", context)
 
 
 @login_required(login_url='/cuentas/ingreso/')
 def editar_actividad(request, id):
 
-    obj = get_object_or_404(Actividad, id=id)
+    actividad = get_object_or_404(Actividad, id=id)
 
-    form = ActividadesForm(request.POST or None, instance=obj)
+    form = ActividadesForm(request.POST or None, instance=actividad)
 
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
@@ -135,8 +150,13 @@ def editar_actividad(request, id):
         form.save()
         return HttpResponseRedirect("/actividades")
 
-    creacionOedicion = 0
-    return render(request, "crear_actividad.html", context={"tipoAccion": creacionOedicion, "form": form})
+    crear = False
+    context = {
+        "crear": crear,
+        "form": form,
+        "actividad": actividad
+    }
+    return render(request, "crear_actividad.html", context)
 
 
 # AJAX

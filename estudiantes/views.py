@@ -72,9 +72,9 @@ def estudiantes(request):
 @login_required(login_url='/cuentas/ingreso/')
 def editar_estudiante(request, id):
 
-    obj = get_object_or_404(Estudiante, id=id)
+    estudiante = get_object_or_404(Estudiante, id=id)
 
-    form = EstudiantesForm(request.POST or None, instance=obj)
+    form = EstudiantesForm(request.POST or None, instance=estudiante)
     form.fields['user'].widget = forms.HiddenInput()
     form.fields['carrera'].widget = forms.HiddenInput()
     form.fields['fecha_inicio'].widget = forms.HiddenInput()
@@ -84,4 +84,14 @@ def editar_estudiante(request, id):
         form.save()
         return HttpResponseRedirect("/estudiantes")
 
-    return render(request, "editar_estudiante.html", context={"estudiante_form": form})
+    # Acción: editar
+    crear = False
+
+    # Contexto
+    context = {
+        "crear": crear,
+        "estudiante_form": form,
+        "estudiante": estudiante,
+    }
+
+    return render(request, "editar_estudiante.html", context)
