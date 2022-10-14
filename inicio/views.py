@@ -87,8 +87,10 @@ def index(request, id=9999):
         ranking_estudiantes_list = Estudiante.objects.filter(user__is_staff=False) #  Lista de estudiantes para el ranking
         # Variables para el cálculo de índice de avance para el ranking
         ranking_indice_avance = [] # Datos del índice de avance para el ranking
-        porcentaje_horas = 0 # Porcentaje de avance de horas 
-        porcentaje_tiempo = 0 # Porcentaje de avance del tiempo disponible
+        porcentaje_horas = 0 # Porcentaje de avance de horas, valor mínimo 0.01
+        porcentaje_tiempo = 0 # Porcentaje de avance del tiempo disponible, valor mínimo 0.01
+        indice_avance_total = 0 # Índice de avance con todos los decimales
+        indice_avance = 0 # Índice de avance redondeado a dos decimales
         fecha_hoy = datetime.date.today() # Fecha del día actual de tipo fecha
         dias_desde_inicio_TCU = 0 # Días transcurridos desde el inicio del TCU para el estudiante
 
@@ -113,7 +115,13 @@ def index(request, id=9999):
                 dias_desde_inicio_TCU = (fecha_hoy - element[0].fecha_inicio).days
                 porcentaje_horas = (100 / 300) * element[1]
                 porcentaje_tiempo = (100 / 365) * dias_desde_inicio_TCU
-                ranking_indice_avance.append(porcentaje_horas / porcentaje_tiempo)
+                if(porcentaje_horas == 0): # Cambia el porcentaje de horas si es 0 al mínimo para mantener el índice correcto
+                    porcentaje_horas = 0.01
+                if(porcentaje_tiempo == 0): # Cambia el porcentaje de tiempo si es 0 al mínimo para evitar errores de cálculo
+                    porcentaje_tiempo = 0.01
+                indice_avance_total = porcentaje_horas / porcentaje_tiempo # Calcula el índice de avance total
+                indice_avance = round(indice_avance_total, 2) # Limita a 2 decimales el índice de avance
+                ranking_indice_avance.append(indice_avance) # Agrega al ranking el índice de avance
 
         # Calcular la lista de colores para los gráficos desplegados
         color_list_ranking_estudiante = color_list_f(map_estudiante_cantidad_actividades)
@@ -140,7 +148,7 @@ def index(request, id=9999):
         fecha_hoy = datetime.date.today() # Fecha del día actual de tipo fecha
         inicio_TCU = estudiante_actual.fecha_inicio # Fecha de inicio del TCU del estudiante actual
         dias_desde_inicio_TCU = (fecha_hoy - inicio_TCU).days # Días transcurridos desde el inicio del TCU para el estudiante
-        porcentaje_tiempo = (100 / 365) * dias_desde_inicio_TCU # Porcentaje de avance del tiempo disponible
+        porcentaje_tiempo = (100 / 365) * dias_desde_inicio_TCU # Porcentaje de avance del tiempo disponible, valor mínimo 0.01
         porcentaje_tiempo_width = int(porcentaje_tiempo) # Entero del porcentaje de avance del tiempo disponible para el widget
 
         # Desde aqui se procesa la barra de progreso de horas por estudiante #
@@ -154,8 +162,12 @@ def index(request, id=9999):
                 horas_totales_por_estudiante += actividad.horas
 
         # Variables para los datos de las barras de widgets horas e índice
-        porcentaje_horas = (100 / 300) * horas_totales_por_estudiante # Porcentaje de avance del tiempo disponible
-        porcentaje_width = int(porcentaje_horas) # Entero del porcentaje de avance del tiempo disponible
+        porcentaje_horas = (100 / 300) * horas_totales_por_estudiante # Porcentaje de avance de horas, valor mínimo 0.01
+        porcentaje_width = int(porcentaje_horas) # Entero del porcentaje de avance de horas
+        if(porcentaje_horas == 0): # Cambia el porcentaje de horas si es 0 al mínimo para mantener el índice correcto
+            porcentaje_horas = 0.01
+        if(porcentaje_tiempo == 0): # Cambia el porcentaje de tiempo si es 0 al mínimo para evitar errores de cálculo
+            porcentaje_tiempo = 0.01
         indice_avance_total = porcentaje_horas / porcentaje_tiempo # Índice de avance con todos los decimales
         indice_avance = round(indice_avance_total, 2) # Índice de avance redondeado a dos decimales
         indice_avance_width = int(50/1 * indice_avance) # Porcentaje de la barra para mostrar el índice de avance
