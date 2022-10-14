@@ -142,15 +142,17 @@
         <ul class="header-nav ms-3">
           <li class="nav-item dropdown"><a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button"
               aria-haspopup="true" aria-expanded="false">
-              <button type="button" class="btn btn-dark btn-sm">{{ user.username }}</button>
+              <button type="button" class="btn btn-warning btn-sm">
+                <svg class="icon me-2">
+                  <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-user"></use>
+                </svg>
+                {{ user.first_name }}
+              </button>
               <!--
               <div class="avatar avatar-md"><img class="avatar-img" src="{% static 'assets/img/avatars/5.jpg' %}"
                   alt="user@email.com"></div>-->
             </a>
             <div class="dropdown-menu dropdown-menu-end pt-0">
-              <div class="dropdown-header bg-white py-2">
-                <div class="fw-semibold">Hola, {{ user.first_name }}</div>
-              </div>
               <div class="dropdown-header bg-light py-2">
                 <div class="fw-semibold">Cuenta</div>
               </div>
