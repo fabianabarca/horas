@@ -171,13 +171,12 @@ class ActividadesForm(forms.ModelForm):
         }
 
     # Parte de implementación de restringir seleccion de tarea por proyecto
-    '''
     def __init__(self, *args, **kwargs):
         
         super(ActividadesForm, self).__init__(*args, **kwargs)
 
         self.fields['estudiante'].initial = Estudiante.objects.get(
-            user=User.objects.get(id=1))
+            user=User.objects.get(id=42))
         self.fields['estado'].initial = "P"
 
         #self.fields['objetivo'].queryset = Objetivo.objects.none()
@@ -214,7 +213,6 @@ class ActividadesForm(forms.ModelForm):
         elif self.instance.pk:
             #self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea=self.instance)
             self.fields['tarea'].queryset = Tarea.objects.filter(enPapelera=False)
-    '''
 
 class SolicitudesForm(forms.ModelForm):
     class Meta:
