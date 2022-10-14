@@ -163,7 +163,7 @@ def index(request, id=9999):
 
         # Variables para los datos de las barras de widgets horas e índice
         porcentaje_horas = (100 / 300) * horas_totales_por_estudiante # Porcentaje de avance de horas, valor mínimo 0.01
-        porcentaje_width = int(porcentaje_horas) # Entero del porcentaje de avance de horas
+        porcentaje_horas_width = int(porcentaje_horas) # Entero del porcentaje de avance de horas
         if(porcentaje_horas == 0): # Cambia el porcentaje de horas si es 0 al mínimo para mantener el índice correcto
             porcentaje_horas = 0.01
         if(porcentaje_tiempo == 0): # Cambia el porcentaje de tiempo si es 0 al mínimo para evitar errores de cálculo
@@ -192,7 +192,7 @@ def index(request, id=9999):
         inicio = 'resumen.html'
         context = {
             "horas_totales_por_estudiante": horas_totales_por_estudiante, # Horas totales del estudiante actual
-            "porcentaje_width": porcentaje_width, # Entero del porcentaje de avance del tiempo disponible
+            "porcentaje_horas_width": porcentaje_horas_width, # Entero del porcentaje de avance de horas
             "porcentaje_tiempo_width": porcentaje_tiempo_width, # Entero del porcentaje de avance del tiempo disponible para el widget
             "indice_avance": indice_avance, # Índice de avance redondeado a dos decimales
             "indice_avance_width": indice_avance_width, # Porcentaje de la barra para mostrar el índice de avance
