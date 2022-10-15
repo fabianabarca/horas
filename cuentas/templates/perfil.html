@@ -9,50 +9,55 @@
 {% block main %}
 
 <!-- Título y descripción -->
-<h1 class="display-4">Perfil</h1>
+<h1 class="display-4">¡Hola, {{ estudiante.user.first_name }}!</h1>
 <p class="lead">
-  Persona estudiante matriculada en TC-691 "Tropicalización de la tecnología".
+  Información de matrícula en TC-691 "Tropicalización de la tecnología".
 </p>
 
 <!-- Datos personales -->
 <h6 class="text-uppercase font-weight-bolder opacity-6">Datos personales</h6>
 
-<div class="card">
-  <div class="card-body">
-    <table class="table table-sm table-responsive">
-      <tbody>
-        <tr>
-          <th scope="row" class="col-6">Nombre</th>
-          <td>{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="col-6">Carné</th>
-          <td>{{ estudiante.user }}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="col-6">Carrera</th>
-          <td>{{ estudiante.carrera.nombre }}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="col-6">Tutor</th>
-          <td>{{ estudiante.tutor }}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="col-6">Fecha de inicio</th>
-          <td>{{ estudiante.fecha_inicio }}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="col-6">Fecha de finalización</th>
-          <td>{{ estudiante.fecha_final }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+<table class="table table-sm table-responsive">
+  <tbody>
+    <tr>
+      <th class="text-end" scope="row" class="col-6">Nombre</th>
+      <td>{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</td>
+    </tr>
+    <tr>
+      <th class="text-end" scope="row" class="col-6">Carné</th>
+      <td>{{ estudiante.user }}</td>
+    </tr>
+    <tr>
+      <th class="text-end" scope="row" class="col-6">Carrera</th>
+      <td>{{ estudiante.carrera.nombre }}</td>
+    </tr>
+    <tr>
+      <th class="text-end" scope="row" class="col-6">Tutor</th>
+      <td>{{ estudiante.tutor }}</td>
+    </tr>
+    <tr>
+      <th class="text-end" scope="row" class="col-6">Fecha de inicio</th>
+      <td>{{ estudiante.fecha_inicio }}</td>
+    </tr>
+    <tr>
+      <th class="text-end" scope="row" class="col-6">Fecha de finalización</th>
+      <td>{{ estudiante.fecha_final }}</td>
+    </tr>
+  </tbody>
+</table>
 
 <br>
 
-<h3 id="ajustes">Ajustes</h3>
+<!-- Ajustes -->
+<h6 id="ajustes" class="text-uppercase font-weight-bolder opacity-6">Ajustes</h6>
+
+<!-- Cambio de contraseña -->
+<p>
+  <a class="btn btn-secondary" data-coreui-toggle="collapse" href="#cambioClave" role="button" aria-expanded="false"
+    aria-controls="cambioClave">
+    Cambio de contraseña
+  </a>
+</p>
 
 {% if messages %}
 {% for message in messages %}
@@ -62,21 +67,21 @@
 {% endfor %}
 {% endif %}
 
-<!-- Cambio de contraseña -->
-<div class="card">
-  <div class="card-header">
-    Cambio de contraseña
-  </div>
-  <div class="card-body">
-    <form method="POST">
-      {% csrf_token %}
-      <p>
-      {{ form | crispy }}
-      </p>
-      <button type="submit" class="btn btn-primary">Cambiar</button>
-    </form>
+<p>
+<div class="collapse" id="cambioClave">
+  <div class="card">
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+        <p>
+          {{ form | crispy }}
+        </p>
+        <button type="submit" class="btn btn-primary">Cambiar</button>
+      </form>
+    </div>
   </div>
 </div>
+</p>
 
 <br>
 
