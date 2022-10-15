@@ -47,28 +47,36 @@
         </tr>
       </tbody>
     </table>
-  </div>  
+  </div>
 </div>
 
 <br>
 
 <h3 id="ajustes">Ajustes</h3>
 
-<h4>Cambio de contraseña</h4>
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-info" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
 
-<!-- Por implementar -->
-
-<form>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Contraseña actual</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
+<!-- Cambio de contraseña -->
+<div class="card">
+  <div class="card-header">
+    Cambio de contraseña
   </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword2" class="form-label">Contraseña nueva</label>
-    <input type="password" class="form-control" id="exampleInputPassword2">
+  <div class="card-body">
+    <form method="POST">
+      {% csrf_token %}
+      <p>
+      {{ form | crispy }}
+      </p>
+      <button type="submit" class="btn btn-primary">Cambiar</button>
+    </form>
   </div>
-  <button type="submit" class="btn btn-primary">Cambiar</button>
-</form>
+</div>
 
 <br>
 
