@@ -1,12 +1,12 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% load static %}
 
-{% load crispy_forms_tags %} 
+{% load crispy_forms_tags %}
 
 {% block page_title %} Tareas {% endblock %}
 
-{% block main %} 
+{% block main %}
 
 <!-- Título -->
 <div class="d-flex justify-content-between">
@@ -28,164 +28,190 @@
   <a href="crear_tarea" type="button" class="btn btn-outline-info">Nueva tarea</a>
 </p>
 
- 
-<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de tareas</h6>
- 
+{% if not request.user.is_staff %}
 
-<!-- Lista de tareas -->
-<form method="post">
-  
-  {% csrf_token %}
-  
-  {% if tareas %}
+<h6 id="mis-tareas" class="text-uppercase font-weight-bolder opacity-6">Lista de mis tareas asignadas</h6>
 
-  <div class="card">
-    <div class="card-body">
-        <button type="button" class="btn btn-outline-dark btn-sm" onclick="esconderFiltros()">Filtros</button>
-        <!-- Opciones de filtrado -->
-        <div id="filtrosdiv" style = 'display: none;' class="card">
-          <div class="card-body">
-          
-            <form method="post">
-                  {% csrf_token %}
-                  <input type="hidden" name="next" value="{{ next }}" />
-          
-                  <div class="row">
-                  {% for field in filtros_form  %}
-                    <div class="col-sm-4">
-                      <b>{{ field.label_tag }}</b> - {{ field.label_tag }} 
-                      </br>
-                    </div>
-                    </br>
-                  {% endfor %}
-          
-                  </div>  
-              <button type="submit" class="btn bg-gradient-primary">Filtrar</button>
-            </form>
-          </div>
-          </br>
-        </div>
-      <!-- Tabla -->
-      <div class="table-responsive">
-        <table id="datatable" class="table align-items-center table-hover">
+<!-- Lista de mis tareas -->
+<div class="card">
+  <div class="card-body">
+    <!-- Tabla -->
+    <div class="table-responsive">
+      <table id="datatable" class="table align-items-center table-hover">
         <thead class="thead">
           <tr>
             <th scope="col"></th>
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
-            <th scope="col">Subtareas</th>
-            <th scope="col">Subordinada a</th>
             <th scope="col">Objetivo</th>
             <th scope="col">Proyecto</th>
-            <th scope="col">Área</th>
-            <th scope="col">Carné</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellido</th>
+            <th scope="col">Estudiante(s)</th>
           </tr>
         </thead>
         <tbody>
-          {% for tarea in tareas %}
-          {% if not tarea.enPapelera %}
+          {% for tarea in mis_tareas %}
           <tr>
+            <!-- Opciones -->
             <td>
-              <!-- Checkbox 
-              <input type="checkbox" name="inputs" value="{{actividad.id}}" /> <br>
-              -->
-                <!-- Edit button -->
-                <a   href="editar_tarea/{{ tarea.id }}" class="text-info" role="button">
-                  <i class="fas fa-edit"></i>
-                </a>
-
-                <!-- Delete button -->
-                <button onclick="return confirm('Está seguro de enviarlo a la papelera?')"  type="submit" 
-                class="text-danger" value="{{ tarea.id }}"  name="deleteButton"
-                style="background-color: transparent;  border: 0;">              
-                <i class="fas fa-trash-alt"></i>
-                </button>
-
-                <!-- Assign button -->
-              
-                <button onclick="return confirm('Está seguro de enviar correos de asignación?')"  type="submit" 
-                class="text-danger" value="{{ tarea.id }}"  name="assignButton"
-                style="background-color: transparent;  border: 0;">              
-                <i style="color: green" class="fa fa-envelope" ></i>
-                </button> 
+              <!-- Editar -->
+              <a href="editar_tarea/{{ tarea.id }}" class="text-info" role="button">
+                <i class="cil-pencil"></i>
+              </a>
+              <!-- Borrar -->
+              <button onclick="return confirm('Está seguro de enviarlo a la papelera?')" type="submit"
+                class="text-danger" value="{{ tarea.id }}" name="deleteButton"
+                style="background-color: transparent;  border: 0;">
+                <i class="cil-trash"></i>
+              </button>
             </td>
+            <!-- Nombre -->
             <td>{{ tarea.nombre }}</td>
-            <td>{{ tarea.descripcion}}</td>            
-            <!--Subtareas-->
+            <!-- Descripción -->
+            <td>{{ tarea.descripcion}}</td>
+            <!-- Objetivo -->
             <td>
-              {% for tarea in tarea.tarea_set.all %}
-                {% if not tarea.enPapelera %}
-                  {{ tarea.nombre }}<br/>
-                {% endif %}
-              {% endfor %}
-            </td>
-            <!-- Tarea superior -->
-            <td>
-              {% if not tarea.tareaSuperior.enPapelera %}
-                {{ tarea.tareaSuperior}}
+              {% if not tarea.objetivo.enPapelera %}
+              {{ tarea.objetivo }}
+              {% else %}
+              (Objetivo en papelera)
               {% endif %}
             </td>
-            <!-- Objetivo -->
-            {% if not tarea.objetivo.enPapelera %}
-            <td>{{ tarea.objetivo }}</td>
-            {% else %}  
-            <td></td>
-            {% endif %}
             <!-- Proyecto -->
-            {% if not tarea.objetivo.proyecto.enPapelera %}
-            <td>{{tarea.objetivo.proyecto}}</td>
-            {% else %}  
-            <td></td>
-            {% endif %}
-            <!-- Áreas multiples -->
             <td>
-              {% for area in tarea.objetivo.proyecto.area.all %}
-                {% if not area.enPapelera %}
-                    {{ area.nombre}}<br/>
-                  {% endif %}
-              {% endfor %}
+              {% if not tarea.objetivo.proyecto.enPapelera %}
+              {{tarea.objetivo.proyecto}}
+              {% else %}
+              (Proyecto en papelera)
+              {% endif %}
             </td>
-            <!--usuarios multiples-->
+            <!-- Estudiantes asignados (múltiples) -->
             <td>
               {% for estudiante in tarea.estudiante.all %}
-                
-                    {{ estudiante.user.username}}<br/>
-                  
+              {{ estudiante.user.first_name}} {{ estudiante.user.last_name}}<br />
               {% endfor %}
             </td>
-            <!--nombres multiples-->
-            <td>
-              {% for estudiante in tarea.estudiante.all %}
-                
-                    {{ estudiante.user.first_name}}<br/>
-                
-              {% endfor %}
-            </td>
-            <!--apellidos multiples-->
-            <td>
-              {% for estudiante in tarea.estudiante.all %}
-                
-                    {{ estudiante.user.last_name}}<br/>
-            
-              {% endfor %}
-            </td>
-            
           </tr>
-            {% endif %}
           {% endfor %}
-      </tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<br>
+
+<h6 id="todas-las-tareas" class="text-uppercase font-weight-bolder opacity-6">Lista de todas las tareas</h6>
+
+
+<!-- Lista de tareas -->
+<form method="post">
+
+  {% csrf_token %}
+
+  {% if tareas %}
+
+  <p>
+  <div class="card">
+    <div class="card-body">
+      <!-- Opciones de selección -->
+      <a class="btn btn-outline-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
+        aria-expanded="false" aria-controls="verFiltros">
+        Mostrar filtros
+      </a>
+      <!-- Opciones de filtrado -->
+      <div class="collapse" id="verFiltros">
+        <p>
+        <div class="card card-body">
+          <form id="filtro" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div class="row">
+              {% for field in filtros_form %}
+              <div class="col-sm-4">
+                <b>{{ field.label_tag }}</b> {{ field }}
+                </br>
+              </div>
+              </br>
+              {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-light">Filtrar</button>
+          </form>
+        </div>
+        </p>
+      </div>
+      <!-- Tabla -->
+      <div class="table-responsive">
+        <table id="datatable" class="table align-items-center table-hover">
+          <thead class="thead">
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Objetivo</th>
+              <th scope="col">Proyecto</th>
+              <th scope="col">Estudiante(s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for tarea in tareas %}
+            <tr>
+              <!-- Opciones -->
+              <td>
+                <!-- Editar -->
+                <a href="editar_tarea/{{ tarea.id }}" class="text-info" role="button">
+                  <i class="cil-pencil"></i>
+                </a>
+                <!-- Borrar -->
+                <button onclick="return confirm('Está seguro de enviarlo a la papelera?')" type="submit"
+                  class="text-danger" value="{{ tarea.id }}" name="deleteButton"
+                  style="background-color: transparent;  border: 0;">
+                  <i class="cil-trash"></i>
+                </button>
+              </td>
+              <!-- Nombre -->
+              <td>{{ tarea.nombre }}</td>
+              <!-- Descripción -->
+              <td>{{ tarea.descripcion}}</td>
+              <!-- Objetivo -->
+              <td>
+                {% if not tarea.objetivo.enPapelera %}
+                {{ tarea.objetivo }}
+                {% else %}
+                (Objetivo en papelera)
+                {% endif %}
+              </td>
+              <!-- Proyecto -->
+              <td>
+                {% if not tarea.objetivo.proyecto.enPapelera %}
+                {{tarea.objetivo.proyecto}}
+                {% else %}
+                (Proyecto en papelera)
+                {% endif %}
+              </td>
+              <!-- Estudiantes asignados (múltiples) -->
+              <td>
+                {% for estudiante in tarea.estudiante.all %}
+                {{ estudiante.user.first_name}} {{ estudiante.user.last_name}}<br />
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
       </div>
     </div>
   </div>
-{% else %}
-  <strong>No hay tareas registradas</strong>
-{% endif %}
+  </p>
+
+  {% else %}
+  <div class="alert alert-info" role="alert">
+    No hay actividades registradas.
+  </div>
+  {% endif %}
+
 </form>
 
+<br>
+
 {% endblock %}
-
-
-

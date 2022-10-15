@@ -15,9 +15,21 @@ from django.core.mail import send_mail
 @login_required(login_url='/cuentas/ingreso/')
 def tareas(request):
     '''Despliega una lista de tareas con su información.
+
+    Si el usuario es estudiante, separa las tareas en dos 
+    tablas: una con las tareas asignadas, y otra con todas
+    las tareas disponibles.
     '''
 
-    tareas_list = Tarea.objects.all()
+    lista_tareas = Tarea.objects.filter(enPapelera=False)
+
+    # Creación de tabla de tareas asignadas a estudiante actual
+    if request.user.is_staff == False:
+        estudiante_actual = Estudiante.objects.get(user=request.user)
+        mis_tareas = lista_tareas.filter(estudiante=estudiante_actual)
+        tareas = lista_tareas.exclude(estudiante=estudiante_actual)
+    else:
+        tareas = lista_tareas
 
     # Configura el filtrado de la tabla
     if request.method == "POST":
@@ -74,19 +86,19 @@ def tareas(request):
 
         if form.is_valid():
             if form.cleaned_data.get('nombre'):
-                tareas_list = tareas_list.filter(
+                lista_tareas = lista_tareas.filter(
                     nombre__contains=form.cleaned_data.get('nombre'))
             if form.cleaned_data.get('estudiante'):
-                tareas_list = tareas_list.filter(
+                lista_tareas = lista_tareas.filter(
                     estudiante=form.cleaned_data.get('estudiante'))
             if form.cleaned_data.get('descripcion'):
-                tareas_list = tareas_list.filter(
+                lista_tareas = lista_tareas.filter(
                     descripcion__contains=form.cleaned_data.get('descripcion'))
             if form.cleaned_data.get('objetivo'):
-                tareas_list = tareas_list.filter(
+                lista_tareas = lista_tareas.filter(
                     objetivo=form.cleaned_data.get('objetivo'))
             if form.cleaned_data.get('area'):
-                tareas_list = tareas_list.filter(
+                lista_tareas = lista_tareas.filter(
                     objetivo__proyecto__area=form.cleaned_data.get('area'))
 
         # return HttpResponseRedirect("/tareas")
@@ -94,7 +106,8 @@ def tareas(request):
     form = FiltrosTareaForm()
 
     context = {
-        "tareas": tareas_list,
+        "mis_tareas": mis_tareas if request.user.is_staff == False else '',
+        "tareas": tareas,
         "filtros_form": form
     }
 
@@ -148,8 +161,8 @@ def editar_tarea(request, id):
     if form.is_valid():
 
         # Para enviar correos a estudiantes nuevamente asignados
-        tareas_list = Tarea.objects.all()
-        tareaAEditar = tareas_list.filter(id=id)
+        lista_tareas = Tarea.objects.all()
+        tareaAEditar = lista_tareas.filter(id=id)
 
         estudiantesActualesEnTarea = tareaAEditar[0].estudiante.all()
 
