@@ -40,7 +40,7 @@
       <table id="datatable" class="table align-items-center table-hover">
         <thead class="thead">
           <tr>
-            <th scope="col"></th>
+            {% if request.user.is_staff %}<th scope="col"></th>{% else %}{% endif %}
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
             <th scope="col">Objetivo</th>
@@ -51,19 +51,20 @@
         <tbody>
           {% for tarea in mis_tareas %}
           <tr>
-            <!-- Opciones -->
+            <!-- Opciones de edición -->
+            {% if request.user.is_staff %}
             <td>
               <!-- Editar -->
-              <a href="editar_tarea/{{ tarea.id }}" class="text-info" role="button">
-                <i class="cil-pencil"></i>
+              <a href="editar_tarea/{{ tarea.id }}" class="text-warning" role="button" style="text-decoration: none;">
+                <i class="icon cil-pencil"></i>
               </a>
-              <!-- Borrar -->
-              <button onclick="return confirm('Está seguro de enviarlo a la papelera?')" type="submit"
-                class="text-danger" value="{{ tarea.id }}" name="deleteButton"
-                style="background-color: transparent;  border: 0;">
-                <i class="cil-trash"></i>
-              </button>
+              <!-- Eliminar -->
+              <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
+                class="text-danger" value="{{ tarea.id }}" name="deleteButton">
+                <i class="icon cil-trash"></i>
+              </a>
             </td>
+            {% endif %} 
             <!-- Nombre -->
             <td>{{ tarea.nombre }}</td>
             <!-- Descripción -->
@@ -145,7 +146,7 @@
         <table id="datatable" class="table align-items-center table-hover">
           <thead class="thead">
             <tr>
-              <th scope="col"></th>
+              {% if request.user.is_staff %}<th scope="col"></th>{% else %}{% endif %}
               <th scope="col">Nombre</th>
               <th scope="col">Descripción</th>
               <th scope="col">Objetivo</th>
@@ -156,19 +157,20 @@
           <tbody>
             {% for tarea in tareas %}
             <tr>
-              <!-- Opciones -->
+              <!-- Opciones de edición -->
+              {% if request.user.is_staff %}
               <td>
                 <!-- Editar -->
-                <a href="editar_tarea/{{ tarea.id }}" class="text-info" role="button">
-                  <i class="cil-pencil"></i>
+                <a href="editar_tarea/{{ tarea.id }}" class="text-warning" role="button" style="text-decoration: none;">
+                  <i class="icon cil-pencil"></i>
                 </a>
-                <!-- Borrar -->
-                <button onclick="return confirm('Está seguro de enviarlo a la papelera?')" type="submit"
-                  class="text-danger" value="{{ tarea.id }}" name="deleteButton"
-                  style="background-color: transparent;  border: 0;">
-                  <i class="cil-trash"></i>
-                </button>
+                <!-- Eliminar -->
+                <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
+                  class="text-danger" value="{{ tarea.id }}" name="deleteButton">
+                  <i class="icon cil-trash"></i>
+                </a>
               </td>
+              {% endif %}              
               <!-- Nombre -->
               <td>{{ tarea.nombre }}</td>
               <!-- Descripción -->
