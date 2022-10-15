@@ -13,7 +13,7 @@ class Solicitud(Registro):
     ESTADOS = (
         ('A', 'Aprobado'),
         ('R', 'Rechazado'),
-        ('P', 'En Revisión'),
+        ('P', 'En revisión'),
     )
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=1, choices=TIPOS)
