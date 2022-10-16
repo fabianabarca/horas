@@ -41,7 +41,8 @@ def index(request, id=9999):
     if id == 9999:
         id = request.user.id
 
-    # AQUÍ TODO LO QUE HAY QUE PONER EN EL PANEL DE PROFESOR
+    # Información para panel de profesores
+    # ------------------------------------
     if request.user.is_staff:
         # Datos de números de estudiantes y proyectos #
         estudiantes_list = Estudiante.objects.all() # Lista de estudiantes a trabajar
@@ -140,7 +141,8 @@ def index(request, id=9999):
             "color_list": color_list, # Listas con los colores para los gráficos desplegados
         }
     
-    # AQUÍ TODO LO QUE HAY QUE PONER EN EL PANEL DE ESTUDIANTE
+    # Información para resumen de estudiantes
+    # ---------------------------------------
     else:
         estudiante_actual = Estudiante.objects.get(user=request.user) # Estudiante actual a trabajar
 
@@ -170,7 +172,7 @@ def index(request, id=9999):
             porcentaje_tiempo = 0.01
         indice_avance_total = porcentaje_horas / porcentaje_tiempo # Índice de avance con todos los decimales
         indice_avance = round(indice_avance_total, 2) # Índice de avance redondeado a dos decimales
-        indice_avance_width = int(50/1 * indice_avance) # Porcentaje de la barra para mostrar el índice de avance
+        indice_avance_width = int(100 * indice_avance) # Porcentaje de la barra para mostrar el índice de avance
 
         # Calendario de Google Charts tipo heatmap de Github #
         actividades_calendario = Actividad.objects.raw( # Selecciona las actividades del estudiante
@@ -192,6 +194,7 @@ def index(request, id=9999):
         inicio = 'resumen.html'
         context = {
             "horas_totales_por_estudiante": horas_totales_por_estudiante, # Horas totales del estudiante actual
+            "dias_desde_inicio_TCU": dias_desde_inicio_TCU,
             "porcentaje_horas_width": porcentaje_horas_width, # Entero del porcentaje de avance de horas
             "porcentaje_tiempo_width": porcentaje_tiempo_width, # Entero del porcentaje de avance del tiempo disponible para el widget
             "indice_avance": indice_avance, # Índice de avance redondeado a dos decimales
