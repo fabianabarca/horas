@@ -6,131 +6,83 @@
 
 {% block main %}
 
-{% if not request.user.is_staff %} <!-- Si el usuario es estudiante -->
+<h1 class="display-4">¡Hola, {{ user.first_name }}!</h1>
 
-<h1 class="display-4">Resumen de horas</h1>
+<!-- Widgets de información -->
+<h6 class="text-uppercase font-weight-bolder opacity-6">Resumen de horas</h6>
 
-<dl> <!-- Datos del usuario -->
-    <dt>Usuario:</dt> <dd>{{user.username}}</dd>
-    <dt>Nombre:</dt> <dd>{{user.first_name}}</dd>
-    <dt>Apellido:</dt> <dd>{{user.last_name}}</dd>
-</dl>
-
-<!-- Widgets de datos para estudiante -->
-<div class="row">
-    <!-- Widget de Cantidad de horas -->
-    <div class="col-sm-6 col-md-2">
-        <div class="card">
+<div class="row justify-content-md-center">
+    <!-- Horas registradas -->
+    <div class="col-sm-6 col-lg-3 mb-3">
+        <div class="card text-white bg-success">
             <div class="card-body">
-                <div class="text-medium-emphasis text-end mb-4">
-                    <svg class="icon icon-xxl">
-                        <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-clock"></use>
-                    </svg>
+                <div class="d-flex justify-content-between">
+                    <div class="fs-4 fw-semibold">
+                        <h1 class="display-3">{{ horas_totales_por_estudiante }}</h1>
+                    </div>
+                    <div><i class="cil-clock icon icon-xxl"></i></div>
                 </div>
-                <div class="fs-4 fw-semibold">{{horas_totales_por_estudiante}}</div><small
-                    class="text-medium-emphasis text-uppercase fw-semibold">Cantidad de horas</small>
-                <div class="progress progress-thin mt-3 mb-0">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: {{porcentaje_horas_width}}%" aria-valuenow="{{horas_totales_por_estudiante}}"
-                        aria-valuemin="0" aria-valuemax="300"></div> <!-- Funciona aunque marque error de { } en IDE -->
+                <div class="text-uppercase fw-semibold">Horas registradas</div>
+                <div class="progress progress-white progress-thin my-2">
+                    <div class="progress-bar" role="progressbar" style="width: {{ porcentaje_horas_width }}%"
+                        aria-valuenow="{{ porcentaje_horas_width }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><small>{{ porcentaje_horas_width }}% de 300 horas totales</small>
+            </div>
+        </div>
+    </div>
+    <!-- Días en el TCU -->
+    <div class="col-sm-6 col-lg-3 mb-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="fs-4 fw-semibold">
+                        <h1 class="display-3">{{ dias_desde_inicio_TCU }}</h1>
+                    </div>
+                    <div><i class="cil-calendar icon icon-xxl"></i></div>
                 </div>
+                <div class="text-uppercase fw-semibold">Días en el TCU</div>
+                <div class="progress progress-white progress-thin my-2">
+                    <div class="progress-bar" role="progressbar" style="width: {{ porcentaje_tiempo_width }}%"
+                        aria-valuenow="{{ porcentaje_tiempo_width }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><small>{{ porcentaje_tiempo_width }}% de 365 días disponibles</small>
+            </div>
+        </div>
+    </div>
+    <!-- Índice de avance -->
+    <div class="col-sm-6 col-lg-3 mb-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="fs-4 fw-semibold">
+                        <h1 class="display-3">{{ indice_avance }}</h1>
+                    </div>
+                    <div><i class="cil-chart-line icon icon-xxl"></i></div>
+                </div>
+                <div class="text-uppercase fw-semibold">Índice de avance</div>
+                <div class="progress progress-white progress-thin my-2">
+                    <div class="progress-bar" role="progressbar" style="width: {{ indice_avance_width }}%"
+                        aria-valuenow="{{ indice_avance_width }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><small><i class="icon cil-happy"></i> > 1 &nbsp;&nbsp;&nbsp;&nbsp; <i class="icon cil-frown"></i> < 1</small>
             </div>
         </div>
     </div>
 
-    <!-- Widget de Tiempo transcurrido del TCU -->
-    <div class="col-sm-6 col-md-2">
-        <div class="card">
-            <div class="card-body">
-                <div class="text-medium-emphasis text-end mb-4">
-                    <svg class="icon icon-xxl">
-                        <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-calendar"></use>
-                    </svg>
-                </div>
-                <div class="fs-4 fw-semibold">{{porcentaje_tiempo_width}}%</div><small
-                    class="text-medium-emphasis text-uppercase fw-semibold">Tiempo transcurrido del TCU</small>
-                <div class="progress progress-thin mt-3 mb-0">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{porcentaje_tiempo_width}}%" aria-valuenow="{{porcentaje_tiempo_width}}"
-                        aria-valuemin="0" aria-valuemax="100"></div> <!-- Funciona aunque marque error de { } en IDE -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Widget de Índice de avance -->
-    <div class="col-sm-6 col-md-2">
-        <div class="card">
-            <div class="card-body">
-                <div class="text-medium-emphasis text-end mb-4">
-                    <svg class="icon icon-xxl">
-                        <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-battery-3"></use>
-                    </svg>
-                </div>
-                <div class="fs-4 fw-semibold">{{indice_avance}}</div><small
-                    class="text-medium-emphasis text-uppercase fw-semibold">Índice de avance</small>
-                <div class="progress progress-thin mt-3 mb-0">
-                    <div class="progress-bar" role="progressbar" style="width: {{ indice_avance_width }}%" aria-valuenow="{{indice_avance}}" aria-valuemin="0.001"
-                        aria-valuemax="29.197"></div> <!-- Funciona aunque marque error de { } en IDE -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Explicación del índice de avance -->
-    <div class="col-sm-6 col-md-3">
-        <div class="card">
-            <div class="card-body">
-                El "índice de avance" muestra el porcentaje de avance de horas entre el porcentaje de avance 
-                del tiempo disponible (oscila alrededor de 1, y preferiblemente tiene que ser mayor a 1).
-            </div>
-        </div>
-    </div>
 </div>
+
+<p class="opacity-6">
+    <small>
+    <strong>Notas</strong> 
+    <ul>
+        <li>Las horas registradas no incluyen las actividades que están en revisión.</li>
+        <li>El inicio del TCU es el día de matrícula reportado por VAS.</li>
+        <li>El "índice de avance" muestra el porcentaje de avance de horas entre el porcentaje de avance del tiempo disponible.</li>
+        <li>El índice de avance oscila alrededor de 1, y preferiblemente tiene que ser mayor a 1.</li> 
+    </ul>
+    </small>
+</p>
 
 <br>
 
-<!-- Calendario de Google Charts tipo heatmap de Github -->
-{% if horas_por_dia|length > 2 %} <!-- Si el estudiante tiene horas registradas -->
-    <h2>Gráfico de horas por día</h2>
-    <div id="calendar_basic" style="width: 1000px; height: 200px;"></div> <!-- Calendario -->
-{% else %} <!-- Si el estudiante no tiene horas registradas -->
-    <h3>El estudiante no tiene horas registradas para el calendario.</h3>
-{% endif %}
-
-<!-- Scripts del calendario de Google Charts -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load("current", { packages: ["calendar"],'language': 'es' }); // 'es' para el lenguaje de etiquetas
-    google.charts.setOnLoadCallback(drawChart); // Se llama a la función para crear el chart
-
-    function drawChart() { // Función para crear el chart
-        var horas = {{ horas_por_dia|safe }}; // Lista para los datos del calendario. Funciona aunque marque error de { } en IDE
-        var numero_actividades = "{{ numero_actividades|safe }}"; // Número de actividades del estudiante
-        var horas_dia = new Array(numero_actividades+1); // Lista de datos para el calendario: [día], [horas]
-        horas_dia[0] = [{ label: 'Fecha', type: 'date' }, { label: 'Horas', type: 'number' }]; // Primer fila con las etiquetas
-        
-        // Llena la lista con la fecha y las horas registradas
-        for (let i = 0; i < numero_actividades; i++) {
-            // En cada fila después de las etiquetas, guarda [la fecha (año, mes, día), con las horas del día]
-            horas_dia[i + 1] = [new Date(horas[i][0], (horas[i][1] - 1), horas[i][2]), horas[i][3]];
-        }
-        var data_table = new google.visualization.arrayToDataTable(horas_dia, false); // Pasa la lista a la tabla a usar del calendario
-
-        var chart = new google.visualization.Calendar(document.getElementById('calendar_basic')); // Crea el chart
-
-        var options = { // Opciones modificables del calendario
-            title: "Calendario", // Título
-            height: 350, // Tamaño
-            calendar: { // Opciones del calendario
-                daysOfWeek: 'DLMMJVS' // Etiquetas modificables de los días/filas
-            }
-        };
-
-        chart.draw(data_table, options); // Dibuja el calendario con la tabla y opciones especificadas
-    } // Funciona aunque marque error de { } en IDE
-</script>
-
-{% else %} <!-- Si el usuario no es estudiante -->
-    Aviso: Esta página muestra el resumen de datos de estudiantes. <!-- Aviso para profesores u otros -->
-{% endif %}
+<!-- Pronto: calendario de Google Charts -->
 
 {% endblock %}
