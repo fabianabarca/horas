@@ -27,9 +27,11 @@
 </p>
 
 <!-- Botón para agregar actividades -->
+{% if not request.user.is_staff %}
 <p>
   <a href="crear_actividad" type="button" class="btn btn-outline-info">Nueva actividad</a>
 </p>
+{% endif %}
 
 <!-- Lista de actividades--> 
 <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de actividades</h6>
