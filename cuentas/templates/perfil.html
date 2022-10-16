@@ -10,6 +10,8 @@
 
 <!-- Título y descripción -->
 <h1 class="display-4">¡Hola, {{ estudiante.user.first_name }}!</h1>
+
+{% if not request.user.is_staff %}
 <p class="lead">
   Información de matrícula en TC-691 "Tropicalización de la tecnología".
 </p>
@@ -45,6 +47,12 @@
     </tr>
   </tbody>
 </table>
+
+{% else %}
+
+<p>Saludos, distinguido profesor.</p>
+
+{% endif %}
 
 <br>
 

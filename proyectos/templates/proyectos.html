@@ -20,7 +20,7 @@
 
 <!-- Descripción -->
 <p class="lead">
-  Los proyectos tienen objetivos y tareas asignadas para su consecución.
+  Los proyectos tienen objetivos y tareas asignadas.
 </p>
 
 {% if request.user.is_staff %}
@@ -28,6 +28,8 @@
   <a href="crear_proyecto" type="button" class="btn btn-outline-info">Nuevo proyecto</a>
 </p>
 {% endif %}
+
+<br>
 
 <!-- Lista de proyectos -->
 <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h6>
@@ -42,10 +44,10 @@
   <p>
   <div class="card">
     <div class="card-body">
-      <!-- Filtros -->
-      <a class="btn btn-outline-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
+      <!-- Mostrar filtros -->
+      <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
         aria-expanded="false" aria-controls="verFiltros">
-        Mostrar filtros
+        <i class="icon cil-filter"></i> 
       </a>
       <!-- Opciones de filtrado -->
       <p>

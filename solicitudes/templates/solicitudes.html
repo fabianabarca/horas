@@ -24,12 +24,17 @@
 </p>
 
 <!-- Botón de nueva solicitud -->
+{% if not request.user.is_staff %}
 <div class="my-3">
   <a href="crear_solicitud" type="button" class="btn btn-outline-info">Nueva solicitud</a>
 </div>
+{% endif %}
+
+<br>
 
 <!-- Lista de solicitudes: finalización -->
 <h6 id="finalizacion" class="text-uppercase font-weight-bolder opacity-6">Lista de solicitudes de finalización</h6>
+<p>
 {% if solicitudes_F %}
 <form method="post">
   {% csrf_token %}
@@ -140,11 +145,13 @@
   No hay solicitudes registradas.
 </div>
 {% endif %}
+</p>
 
 <br>
 
 <!-- Lista de solicitudes: prórroga -->
 <h6 id="finalizacion" class="text-uppercase font-weight-bolder opacity-6">Lista de solicitudes de prórroga</h6>
+<p>
 {% if solicitudes_P %}
 <form method="post">
   {% csrf_token %}
@@ -255,11 +262,13 @@
   No hay solicitudes registradas.
 </div>
 {% endif %}
+</p>
 
 <br>
 
 <!-- Lista de solicitudes: pasantías -->
 <h6 id="finalizacion" class="text-uppercase font-weight-bolder opacity-6">Lista de solicitudes de pasantías</h6>
+<p>
 {% if solicitudes_A %}
 <form method="post">
   {% csrf_token %}
@@ -370,11 +379,13 @@
   No hay solicitudes registradas.
 </div>
 {% endif %}
+</p>
 
 <br>
 
 <!-- Lista de solicitudes: otros -->
 <h6 id="finalizacion" class="text-uppercase font-weight-bolder opacity-6">Lista de otras solicitudes</h6>
+<p>
 {% if solicitudes_O %}
 <form method="post">
   {% csrf_token %}
@@ -485,6 +496,7 @@
   No hay solicitudes registradas.
 </div>
 {% endif %}
+</p>
 
 <br>
 

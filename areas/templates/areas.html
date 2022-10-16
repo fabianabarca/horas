@@ -20,8 +20,7 @@
 
 <!-- Descripción -->
 <p class="lead">
-  Las áreas describen temáticas generales de trabajo dentro del TCU, y puede haber uno o más proyectos asociados con
-  cada área.
+  Las áreas describen temáticas generales de trabajo dentro del TCU.
 </p>
 
 <!--Boton para agregar areas-->
@@ -30,6 +29,8 @@
   <a href="crear_area" type="button" class="btn btn-outline-info">Nueva área</a>
 </p>
 {% endif %}
+
+<br>
 
 <!-- Lista de áreas -->
 <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de áreas</h6>
@@ -60,12 +61,12 @@
               {% if request.user.is_staff %}
               <td>
                 <!-- Editar -->
-                <a href="editar_tarea/{{ tarea.id }}" class="text-warning" role="button" style="text-decoration: none;">
+                <a href="editar_area/{{ area.id }}" class="text-warning" role="button" style="text-decoration: none;">
                   <i class="icon cil-pencil"></i>
                 </a>
                 <!-- Eliminar -->
                 <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
-                  class="text-danger" value="{{ tarea.id }}" name="deleteButton">
+                  class="text-danger" value="{{ area.id }}" name="deleteButton">
                   <i class="icon cil-trash"></i>
                 </a>
               </td>

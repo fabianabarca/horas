@@ -22,7 +22,9 @@
     </div>
   </div>
   <div class="card-body">
-    <p>Las horas de TCU son registradas como actividades.</p>
+    <p>
+      Las horas de TCU son registradas como actividades.
+    </p>
     <form method="POST" onsubmit="setFormSubmitting()">
       {% csrf_token %}
       <p>
@@ -43,6 +45,16 @@
       </p>
       <button type="submit" class="btn btn-primary btn-block">Registrar</button>
     </form>
+    <br>
+    <p><small>
+      <strong>Notas</strong>
+      <ul>
+        <li>Cada actividad está  vinculada con una tarea específica y cada tarea está vinculada con un objetivo de un proyecto.</li>
+        <li>Si la tarea vinculada con esta actividad no existe, usted puede crearla en la sección de <a href="{% url 'tareas' %}">tareas</a>. Si lo hace, asegúrese de que no es una tarea repetida, y de que es pertinente para el objetivo. También puede discutirlo antes con el docente tutor.</li>
+        <li>La descripción es importante para la aprobación de la actividad, y debe ser concordante con la cantidad de horas registradas.</li>
+        <li>La fecha es la fecha de realización de la actividad.</li>
+      </ul>
+    </small></p>
   </div>
 </div>
 

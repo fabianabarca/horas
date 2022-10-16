@@ -23,7 +23,7 @@
 
 <!-- Descripción -->
 <p class="lead">
-  Las horas de trabajo comunal están registradas como actividades asociadas a tareas dentro de los proyectos.
+  Las horas de TCU son registradas como actividades.
 </p>
 
 <!-- Botón para agregar actividades -->
@@ -32,6 +32,8 @@
   <a href="crear_actividad" type="button" class="btn btn-outline-info">Nueva actividad</a>
 </p>
 {% endif %}
+
+<br>
 
 <!-- Lista de actividades--> 
 <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de actividades</h6>
@@ -52,17 +54,21 @@
 
       {% if request.user.is_staff %}
       <!-- Opciones de aprobación -->
-      <input type="submit" class="btn btn-outline-success btn-sm" value="Aprobar" name="aprobar">
-      <input type="submit" class="btn btn-outline-danger btn-sm" value="Rechazar" name="rechazar">  
+      <div class="btn-group" role="group" aria-label="Aprobacion">
+        <input type="submit" class="btn btn-success btn-sm text-white" value="Aprobar" name="aprobar">
+        <input type="submit" class="btn btn-danger btn-sm text-white" value="Rechazar" name="rechazar">  
+      </div>
+      <div class="btn-group" role="group" aria-label="Basic example">
       <!-- Botón de filtros -->
-      <a class="btn btn-outline-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
+      <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
         aria-expanded="false" aria-controls="verFiltros">
-        Mostrar filtros
+        <i class="icon cil-filter"></i><!-- Mostrar filtros -->
       </a>
       <!-- Botón de selección -->
-      <button type="button" class="btn btn-outline-dark btn-sm" onclick="toggleCheck()">
-        Seleccionar todo
+      <button type="button" class="btn btn-dark btn-sm" onclick="toggleCheck()">
+        <i class="icon cil-task"></i> <!-- Seleccionar todo -->
       </button>
+      </div>
       <!-- Opciones de filtrado -->
       <div class="collapse" id="verFiltros">
         <p>
@@ -87,7 +93,6 @@
       {% endif %}
 
       <!-- Tabla de actividades -->
-      <p class="small opacity-6"><i class="cil-hand-point-up"></i> <em>Click en cada registro para ver más información</em></p>
       <div class="table table-responsive">
         <table id="datatable" class="table align-items-center table-hover">
           <thead class="thead">
@@ -108,19 +113,19 @@
           <tbody>
             {% for actividad in actividades %}
             {% if not actividad.enPapelera %}
-            <tr>
+            <tr title="Click para ver información de la actividad">
               <!-- Opciones de edición -->
               <td>
                 <!-- Seleccionar -->
                 {% if request.user.is_staff %}
                 <input class="form-check-input" type="checkbox" name="inputs" value="{{ solicitud.id }}" />
                 {% endif %}
-                <!-- Editar -->
+                <!-- Editar (inhabilitado, issue #118)
                 {% if request.user.is_staff %}
                 <a href="editar_actividad/{{ actividad.id }}" class="text-warning" role="button" style="text-decoration: none;">
                   <i class="icon cil-pencil"></i>
                 </a>
-                {% endif %}
+                {% endif %} -->
                 <!-- Eliminar -->
                 <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
                   class="text-danger" value="{{ actividad.id }}" name="deleteButton">
