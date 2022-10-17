@@ -83,6 +83,17 @@
             </div>
         </div>
     </div>
+
+    <div class="col-sm-6 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <small class="text-medium-emphasis text-uppercase fw-semibold">Horas semanales</small>
+                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                    <canvas id="barras1" width="273" height="166"></canvas>          
+                  </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Test:
@@ -146,6 +157,61 @@
     } // Funciona aunque marque error de { } en IDE
 </script>
 <!--Calendar google end-->
+
+
+<!--Pruebas de grafico de barras-->
+<script>
+    horas = {{ horas_semanales }}
+    dias = {{ dias_semana|safe }}
+    console.log(dias)
+    const barChart = new Chart(document.getElementById('barras1'), {
+      type: 'bar',
+      data: {
+        labels: dias,
+        datasets: [{
+          backgroundColor: 'rgba(2, 0, 221, 0.7)',
+          borderColor: 'rgba(220, 220, 220, 0.8)',
+          highlightFill: 'rgba(220, 220, 220, 0.75)',
+          highlightStroke: 'rgba(220, 220, 220, 1)',
+          data: horas
+        }]
+      },
+    options: {
+        layout: {padding: {right:0, left:-10}},
+        maintainAspectRatio: false,
+        legend: {
+            display: false
+        },
+        scales: {
+        display:false,
+        xAxes: [
+        {
+        barPercentage: 0.6,
+        gridLines: {
+          display: false,
+          drawBorder: false
+        },
+        ticks: {
+          display: false
+        }
+        }
+    ],
+      yAxes: [
+        {
+        ticks: {
+          display: false,
+          beginAtZero: false
+        },
+        gridLines: {
+          display: false,
+          drawBorder: false
+        }
+      }]
+    }}
+    }); // eslint-disable-next-line no-unused-vars
+    </script>
+
+
 
 <!--
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
