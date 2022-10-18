@@ -79,11 +79,11 @@
         <div class="card text-white bg-info">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <div class="c-chart-wrapper" style="height:90px;">
+                    <div class="c-chart-wrapper" style="height:129px;">
                         <canvas id="barras1" width="273" height="166"></canvas>          
                       </div>
                 </div>
-                <div class="text-uppercase fw-semibold">Horas aprobadas en los últimos 7 días</div>
+                <small>Horas aprobadas en los últimos 7 días</small>
             </div>
         </div>
     </div>
@@ -102,23 +102,24 @@
 </p>
 
 <!--Grafico de barras utimos 7 dias-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
 <script>
     horas = {{ horas_semanales }}
     dias = {{ dias_semana|safe }}
     console.log(dias)
     const barChart = new Chart(document.getElementById('barras1'), {
-      type: 'bar',
-      data: {
-        labels: dias,
-        datasets: [{
-          backgroundColor: 'rgba(97, 129, 208, 0.38)',
-          borderColor: 'rgba(220, 220, 220, 0.8)',
-          highlightFill: 'rgba(220, 220, 220, 0.75)',
-          highlightStroke: 'rgba(220, 220, 220, 1)',
-          data: horas
-        }]
-      },
-    options: {
+        type: 'bar',
+        data: {
+            labels: dias,
+            datasets: [{
+            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+            borderColor: 'rgba(220, 220, 220, 0.8)',
+            highlightFill: 'rgba(220, 220, 220, 0.75)',
+            highlightStroke: 'rgba(220, 220, 220, 1)',
+            data: horas
+            }]
+        },
+        options: {
         layout: {padding: {right:0, left:-10}},
         maintainAspectRatio: false,
         legend: {
@@ -128,28 +129,27 @@
         display:false,
         xAxes: [
         {
-        barPercentage: 0.6,
-        gridLines: {
-          display: false,
-          drawBorder: false
-        },
-        ticks: {
-          display: false
+            barPercentage: 0.6,
+            gridLines: {
+            display: false,
+            drawBorder: false
+            },
+            ticks: {
+            display: false
+            }
         }
-        }
-    ],
-      yAxes: [
+        ],
+        yAxes: [
         {
-        ticks: {
-          display: false,
-          beginAtZero: false
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false
-        }
-      }]
-    }}
+            ticks: {
+            display: false,
+            beginAtZero: false
+            },
+            gridLines: {
+            display: false,
+            drawBorder: false
+            }
+        }]}}
     });
     </script>
 
