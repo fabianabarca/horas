@@ -20,7 +20,7 @@
 
 <!-- Descripción -->
 <p class="lead">
-  Las tareas pertenecen a un objetivo, que son parte de un proyecto.
+  Las tareas están asociadas a un objetivo de un proyecto.
 </p>
 
 <!-- Botón para agregar tareas -->
@@ -28,11 +28,15 @@
   <a href="crear_tarea" type="button" class="btn btn-outline-info">Nueva tarea</a>
 </p>
 
+<!-- Lista de mis tareas -->
+
 {% if not request.user.is_staff %}
+
+<br>
 
 <h6 id="mis-tareas" class="text-uppercase font-weight-bolder opacity-6">Lista de mis tareas asignadas</h6>
 
-<!-- Lista de mis tareas -->
+<p>
 <div class="card">
   <div class="card-body">
     <!-- Tabla -->
@@ -40,7 +44,6 @@
       <table id="datatable" class="table align-items-center table-hover">
         <thead class="thead">
           <tr>
-            <th scope="col"></th>
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
             <th scope="col">Objetivo</th>
@@ -51,19 +54,6 @@
         <tbody>
           {% for tarea in mis_tareas %}
           <tr>
-            <!-- Opciones -->
-            <td>
-              <!-- Editar -->
-              <a href="editar_tarea/{{ tarea.id }}" class="text-info" role="button">
-                <i class="cil-pencil"></i>
-              </a>
-              <!-- Borrar -->
-              <button onclick="return confirm('Está seguro de enviarlo a la papelera?')" type="submit"
-                class="text-danger" value="{{ tarea.id }}" name="deleteButton"
-                style="background-color: transparent;  border: 0;">
-                <i class="cil-trash"></i>
-              </button>
-            </td>
             <!-- Nombre -->
             <td>{{ tarea.nombre }}</td>
             <!-- Descripción -->
@@ -98,13 +88,14 @@
   </div>
 </div>
 {% endif %}
+</p>
 
 <br>
 
+<!-- Lista de todas las tareas -->
+
 <h6 id="todas-las-tareas" class="text-uppercase font-weight-bolder opacity-6">Lista de todas las tareas</h6>
 
-
-<!-- Lista de tareas -->
 <form method="post">
 
   {% csrf_token %}
@@ -115,9 +106,10 @@
   <div class="card">
     <div class="card-body">
       <!-- Opciones de selección -->
-      <a class="btn btn-outline-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
+      <!-- Mostrar filtros -->
+      <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
         aria-expanded="false" aria-controls="verFiltros">
-        Mostrar filtros
+        <i class="icon cil-filter"></i> 
       </a>
       <!-- Opciones de filtrado -->
       <div class="collapse" id="verFiltros">
@@ -145,7 +137,7 @@
         <table id="datatable" class="table align-items-center table-hover">
           <thead class="thead">
             <tr>
-              <th scope="col"></th>
+              {% if request.user.is_staff %}<th scope="col"></th>{% else %}{% endif %}
               <th scope="col">Nombre</th>
               <th scope="col">Descripción</th>
               <th scope="col">Objetivo</th>
@@ -156,19 +148,20 @@
           <tbody>
             {% for tarea in tareas %}
             <tr>
-              <!-- Opciones -->
+              <!-- Opciones de edición -->
+              {% if request.user.is_staff %}
               <td>
                 <!-- Editar -->
-                <a href="editar_tarea/{{ tarea.id }}" class="text-info" role="button">
-                  <i class="cil-pencil"></i>
+                <a href="editar_tarea/{{ tarea.id }}" class="text-warning" role="button" style="text-decoration: none;">
+                  <i class="icon cil-pencil"></i>
                 </a>
-                <!-- Borrar -->
-                <button onclick="return confirm('Está seguro de enviarlo a la papelera?')" type="submit"
-                  class="text-danger" value="{{ tarea.id }}" name="deleteButton"
-                  style="background-color: transparent;  border: 0;">
-                  <i class="cil-trash"></i>
-                </button>
+                <!-- Eliminar -->
+                <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
+                  class="text-danger" value="{{ tarea.id }}" name="deleteButton">
+                  <i class="icon cil-trash"></i>
+                </a>
               </td>
+              {% endif %}              
               <!-- Nombre -->
               <td>{{ tarea.nombre }}</td>
               <!-- Descripción -->

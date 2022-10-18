@@ -20,7 +20,7 @@
 
 <!-- Descripción -->
 <p class="lead">
-  Los proyectos tienen objetivos y tareas asignadas para su consecución.
+  Los proyectos tienen objetivos y tareas asignadas.
 </p>
 
 {% if request.user.is_staff %}
@@ -28,6 +28,8 @@
   <a href="crear_proyecto" type="button" class="btn btn-outline-info">Nuevo proyecto</a>
 </p>
 {% endif %}
+
+<br>
 
 <!-- Lista de proyectos -->
 <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h6>
@@ -42,10 +44,10 @@
   <p>
   <div class="card">
     <div class="card-body">
-      <!-- Filtros -->
-      <a class="btn btn-outline-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
+      <!-- Mostrar filtros -->
+      <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
         aria-expanded="false" aria-controls="verFiltros">
-        Mostrar filtros
+        <i class="icon cil-filter"></i> 
       </a>
       <!-- Opciones de filtrado -->
       <p>
@@ -89,24 +91,17 @@
             <!-- Registro de proyectos -->
             <tr>
               {% if request.user.is_staff %}
+              <!-- Opciones de edición -->
               <td>
-                <!-- Checkbox 
-                        <input type="checkbox" name="inputs" value="{{proyecto.id}}" /> <br>
-                        -->
-                <!-- Edit button -->
-                <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button">
-                  <svg class="nav-icon" width="16" height="16">
-                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
-                  </svg>
+                <!-- Editar -->
+                <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button" style="text-decoration: none;">
+                  <i class="icon cil-pencil"></i>
                 </a>
-                <!-- Delete button -->
-                <button onclick="return confirm('¿Está seguro de enviarlo a la papelera?')" type="submit"
-                  class="text-danger" value="{{ proyecto.id }}" name="deleteButton"
-                  style="background-color: transparent;  border: 0;">
-                  <svg class="nav-icon" width="16" height="16">
-                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-trash"></use>
-                  </svg>
-                </button>
+                <!-- Eliminar -->
+                <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
+                  class="text-danger" value="{{ proyecto.id }}" name="deleteButton">
+                  <i class="icon cil-trash"></i>
+                </a>
               </td>
               {% endif %}
               <td>{{ proyecto.nombre }}</td>

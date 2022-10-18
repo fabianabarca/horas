@@ -6,160 +6,102 @@
 
 {% block main %}
 
-{% if not request.user.is_staff %}
+<h1 class="display-4">¡Hola, {{ user.first_name }}!</h1>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<p class="lead">
+    Este es un resumen de las horas de trabajo en el TCU.
+</p>
 
-<h1 class="display-4">Resumen de horas</h1>
+<!-- Widgets de información -->
+<h6 class="text-uppercase font-weight-bolder opacity-6">Resumen de horas</h6>
 
-<dl>
-    <dt>Usuario:</dt> <dd>{{user.username}}</dd>
-    <dt>Nombre:</dt> <dd>{{user.first_name}}</dd>
-    <dt>Apellido:</dt> <dd>{{user.last_name}}</dd>
-</dl>
+<br>
 
-<!-- Números principales -->
-
-<div class="row">
-    <div class="col-sm-6 col-md-2">
-        <div class="card">
+<div class="row justify-content-md-center">
+    <!-- Horas registradas -->
+    <div class="col-sm-6 col-lg-3 mb-3">
+        <div class="card text-white bg-success">
             <div class="card-body">
-                <div class="text-medium-emphasis text-end mb-4">
-                    <svg class="icon icon-xxl">
-                        <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-clock"></use>
-                    </svg>
+                <div class="d-flex justify-content-between">
+                    <div class="fs-4 fw-semibold">
+                        <h1 class="display-3">{{ horas_totales_por_estudiante }}</h1>
+                    </div>
+                    <div><i class="cil-clock icon icon-xxl"></i></div>
                 </div>
-                <div class="fs-4 fw-semibold">{{progreso}}</div><small
-                    class="text-medium-emphasis text-uppercase fw-semibold">Cantidad de horas</small>
-                <div class="progress progress-thin mt-3 mb-0">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: {{width}}%" aria-valuenow="{{progreso}}"
-                        aria-valuemin="0" aria-valuemax="300"></div> <!-- Funciona aunque marque error de { } en IDE -->
+                <div class="text-uppercase fw-semibold">Horas registradas</div>
+                <div class="progress progress-white progress-thin my-2">
+                    <div class="progress-bar" role="progressbar" style="width: {{ porcentaje_horas_width }}%"
+                        aria-valuenow="{{ porcentaje_horas_width }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><small>{{ porcentaje_horas_width }}% de 300 horas totales</small>
+            </div>
+        </div>
+    </div>
+    <!-- Días en el TCU -->
+    <div class="col-sm-6 col-lg-3 mb-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="fs-4 fw-semibold">
+                        <h1 class="display-3">{{ dias_desde_inicio_TCU }}</h1>
+                    </div>
+                    <div><i class="cil-calendar icon icon-xxl"></i></div>
                 </div>
+                <div class="text-uppercase fw-semibold">Días en el TCU</div>
+                <div class="progress progress-white progress-thin my-2">
+                    <div class="progress-bar" role="progressbar" style="width: {{ porcentaje_tiempo_width }}%"
+                        aria-valuenow="{{ porcentaje_tiempo_width }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><small>{{ porcentaje_tiempo_width }}% de 365 días disponibles</small>
+            </div>
+        </div>
+    </div>
+    <!-- Índice de avance -->
+    <div class="col-sm-6 col-lg-3 mb-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="fs-4 fw-semibold">
+                        <h1 class="display-3">{{ indice_avance }}</h1>
+                    </div>
+                    <div><i class="cil-chart-line icon icon-xxl"></i></div>
+                </div>
+                <div class="text-uppercase fw-semibold">Índice de avance</div>
+                <div class="progress progress-white progress-thin my-2">
+                    <div class="progress-bar" role="progressbar" style="width: {{ indice_avance_width }}%"
+                        aria-valuenow="{{ indice_avance_width }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><small><i class="icon cil-happy"></i> > 1 &nbsp;&nbsp;&nbsp;&nbsp; <i class="icon cil-frown"></i> < 1</small>
             </div>
         </div>
     </div>
 
-    <div class="col-sm-6 col-md-2">
-        <div class="card">
-            <div class="card-body">
-                <div class="text-medium-emphasis text-end mb-4">
-                    <svg class="icon icon-xxl">
-                        <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-calendar"></use>
-                    </svg>
-                </div>
-                <div class="fs-4 fw-semibold">{{porcentajeWidthDaysYear}}%</div><small
-                    class="text-medium-emphasis text-uppercase fw-semibold">Tiempo transcurrido del TCU</small>
-                <div class="progress progress-thin mt-3 mb-0">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{porcentajeWidthDaysYear}}%" aria-valuenow="{{porcentajeWidthDaysYear}}"
-                        aria-valuemin="0" aria-valuemax="100"></div> <!-- Funciona aunque marque error de { } en IDE -->
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="col-sm-6 col-md-2">
-        <div class="card">
+    <!-- Grafico barras -->
+    <div class="col-sm-6 col-lg-3 mb-3">
+        <div class="card text-white bg-info">
             <div class="card-body">
-                <div class="text-medium-emphasis text-end mb-4">
-                    <svg class="icon icon-xxl">
-                        <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-battery-3"></use>
-                    </svg>
+                <div class="d-flex justify-content-between">
+                    <div class="c-chart-wrapper" style="height:90px;">
+                        <canvas id="barras1" width="273" height="166"></canvas>          
+                      </div>
                 </div>
-                <div class="fs-4 fw-semibold">{{indiceAvance}}</div><small
-                    class="text-medium-emphasis text-uppercase fw-semibold">Índice de avance</small>
-                <div class="progress progress-thin mt-3 mb-0">
-                    <div class="progress-bar" role="progressbar" style="width: {{ indiceAvanceW }}%" aria-valuenow="{{indiceAvance}}" aria-valuemin="-3.00"
-                        aria-valuemax="3.00"></div> <!-- Funciona aunque marque error de { } en IDE -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-md-3">
-        <div class="card">
-            <div class="card-body">
-                El "índice de avance" muestra el porcentaje de avance de horas entre el porcentaje de avance 
-                del tiempo disponible (oscila alrededor de 1, y preferiblemente tiene que ser mayor a 1).
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-md-3">
-        <div class="card">
-            <div class="card-body">
-                <p>Horas aprobadas en los últimos 7 días</p>
-                <div class="c-chart-wrapper" style="height:90px;">
-                    <canvas id="barras1" width="273" height="166"></canvas>          
-                  </div>
+                <div class="text-uppercase fw-semibold">Horas aprobadas en los últimos 7 días</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Test:
-{{progreso}}: horasTotalesPorEstudiante,
-{{porcentaje}}: porcentaje,
-{{width}}: porcentajeWidth,
-{{diasTCU}}: diasTCU,
-{{inicioTCU}}: inicioTCU,
-{{finalTCU}}: finalTCU,
-{{totalDiasTCU}}: totalDiasTCU,
-{{porcentajeDaysYear}}: porcentajeDaysYear,
-{{porcentajeWidthDaysYear}}: porcentajeWidthDaysYear,
-{{labels}}: labels, 
-{{data}}: data,
-{{colorList}}: colorList,
-{{labelsRankingEstudiante}}: labelsRankingEstudiante,
-{{dataRankingEstudiante}}: dataRankingEstudiante,
-{{colorListRankingEstudiante}}: colorListRankingEstudiante,
-{{horasPorDia}}:horasPorDia,
-{{numeroActividades}}:numeroActividades, -->
+<p>
+    <small>
+    <strong>Notas</strong> 
+    <ul>
+        <li>Las horas registradas no incluyen las actividades que están en revisión.</li>
+        <li>El inicio del TCU es el día de matrícula reportado por VAS.</li>
+        <li>El "índice de avance" muestra el porcentaje de avance de horas entre el porcentaje de avance del tiempo disponible.</li>
+        <li>El índice de avance oscila alrededor de 1, y preferiblemente tiene que ser mayor a 1.</li> 
+    </ul>
+    </small>
+</p>
 
-<br>
-
-<!-- Calendar -->
-{% if horasPorDia|length > 2 %}
-    <h2>Gráfico de horas por día</h2>
-    <div id="calendar_basic" style="width: 1000px; height: 200px;"></div>
-{% else %}
-    <h3>El estudiante no tiene actividades registradas para el calendario.</h3>
-{% endif %}
-
-<!--Calendar google start-->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load("current", { packages: ["calendar"],'language': 'es' });
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-        var horas = {{ horasPorDia|safe }}; // Funciona aunque marque error de { } en IDE
-        var numeroActividades = "{{ numeroActividades|safe }}";
-        //console.log(horas, numeroActividades);
-        var horasDia = new Array(numeroActividades+1);
-        horasDia[0] = [{ label: 'Fecha', type: 'date' }, { label: 'Horas', type: 'number' }];
-        for (let i = 0; i < numeroActividades; i++) {
-            //console.log(horas[i][0]);
-            horasDia[i + 1] = [new Date(horas[i][0], (horas[i][1] - 1), horas[i][2]), horas[i][3]];
-        }
-        var dataTable = new google.visualization.arrayToDataTable(horasDia, false);
-
-        var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
-
-        var options = {
-            title: "Calendario",
-            height: 350,
-            calendar: {
-                daysOfWeek: 'DLMMJVS'
-            }
-        };
-
-        chart.draw(dataTable, options);
-    } // Funciona aunque marque error de { } en IDE
-</script>
-<!--Calendar google end-->
-
-
-<!--Pruebas de grafico de barras-->
+<!--Grafico de barras utimos 7 dias-->
 <script>
     horas = {{ horas_semanales }}
     dias = {{ dias_semana|safe }}
@@ -169,7 +111,7 @@
       data: {
         labels: dias,
         datasets: [{
-          backgroundColor: 'rgba(2, 0, 221, 0.7)',
+          backgroundColor: 'rgba(97, 129, 208, 0.38)',
           borderColor: 'rgba(220, 220, 220, 0.8)',
           highlightFill: 'rgba(220, 220, 220, 0.75)',
           highlightStroke: 'rgba(220, 220, 220, 1)',
@@ -208,201 +150,10 @@
         }
       }]
     }}
-    }); // eslint-disable-next-line no-unused-vars
+    });
     </script>
 
 
-
-<!--
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-
-    const ctxRanking = document.getElementById('ranking-estudiantes-actividades').getContext('2d');
-    var listData = "{{ dataRankingEstudiante|safe }}"
-    var listLabels = "{{ labelsRankingEstudiante|safe }}"
-    var colorList = "{{ colorListRankingEstudiante|safe }}"
-
-    listData = listData.slice(1);
-    listData = listData.slice(0, listData.length - 1);
-    listLabels = listLabels.slice(1);
-    listLabels = listLabels.slice(0, listLabels.length - 1);
-    colorList = colorList.slice(1);
-    colorList = colorList.slice(0, colorList.length - 1);
-
-    var newlistData = listData.split(',')
-    var newlistLabels = listLabels.split(',')
-    var newcolorList = colorList.split(', ')
-
-    count = 0
-    for (color in newcolorList) {
-
-        newcolorList[count] = newcolorList[count].slice(1)
-        newcolorList[count] = newcolorList[count].slice(0, newcolorList[count].length - 1)
-        console.log(newcolorList[count])
-        count = count + 1
-
-    }
-
-    const myChartRanking = new Chart(ctxRanking, {
-        type: 'bar',
-        data: {
-            labels: newlistLabels,
-            datasets: [{
-
-                barThickness: 30,
-                label: 'Horas por estudiantes',
-                data: newlistData,
-                backgroundColor: newcolorList
-            }],
-            //borderWidth: 20
-
-        },
-        options: {
-
-            //responsive: true,
-            indexAxis: 'y',
-            scales: {
-
-                y: {
-                    /*ticks: {
-                      
-                      beginAtZero: true,
-                      stepSize: 1
-                    },*/
-
-                },
-            },
-
-
-
-        }
-
-    });
-</script>
-
-
-<script>
-
-    const ctx = document.getElementById('bar-chart').getContext('2d');
-    var listData = "{{ data|safe }}"
-    var listLabels = "{{ labels|safe }}"
-    var colorList = "{{ colorList|safe }}"
-
-    listData = listData.slice(1);
-    listData = listData.slice(0, listData.length - 1);
-    listLabels = listLabels.slice(1);
-    listLabels = listLabels.slice(0, listLabels.length - 1);
-    colorList = colorList.slice(1);
-    colorList = colorList.slice(0, colorList.length - 1);
-
-    var newlistData = listData.split(',')
-    var newlistLabels = listLabels.split(',')
-    var newcolorList = colorList.split(', ')
-
-    count = 0
-    for (color in newcolorList) {
-
-        newcolorList[count] = newcolorList[count].slice(1)
-        newcolorList[count] = newcolorList[count].slice(0, newcolorList[count].length - 1)
-        console.log(newcolorList[count])
-        count = count + 1
-
-    }
-
-    const myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: newlistLabels,
-            datasets: [{
-
-                barThickness: 30,
-                label: 'Horas por proyectos',
-                data: newlistData,
-                backgroundColor: newcolorList
-            }],
-            //borderWidth: 20
-
-        },
-        options: {
-
-            //responsive: true,
-            indexAxis: 'y',
-            scales: {
-
-                y: {
-                    /*ticks: {
-                      
-                      beginAtZero: true,
-                      stepSize: 1
-                    },*/
-
-                },
-            },
-
-
-
-        }
-
-    });
-</script>
-
-<script>
-
-    const ctx2 = document.getElementById('pie-chart').getContext('2d');
-    var listData = "{{ data|safe }}"
-    var listLabels = "{{ labels|safe }}"
-    var colorList = "{{ colorList|safe }}"
-
-    console.log(colorList)
-    colorList = colorList.slice(1);
-    colorList = colorList.slice(0, colorList.length - 1);
-
-    listData = listData.slice(1);
-    listData = listData.slice(0, listData.length - 1);
-    listLabels = listLabels.slice(1);
-    listLabels = listLabels.slice(0, listLabels.length - 1);
-
-    var newlistData = listData.split(',')
-    var newlistLabels = listLabels.split(',')
-    var newcolorList = colorList.split(', ')
-
-    console.log(newcolorList)
-    count = 0
-    for (color in newcolorList) {
-
-        newcolorList[count] = newcolorList[count].slice(1)
-        newcolorList[count] = newcolorList[count].slice(0, newcolorList[count].length - 1)
-        console.log(newcolorList[count])
-        count = count + 1
-
-    }
-    console.log(newcolorList)
-    const myChart2 = new Chart(ctx2, {
-        type: 'pie',
-        data: {
-
-            datasets: [{
-
-                data: newlistData,
-                backgroundColor: newcolorList,
-                label: 'Horas por proyectos'
-
-
-            }],
-            labels: newlistLabels
-
-        },
-        options: {
-            //responsive: true,
-
-        }
-    });
-</script> -->
-
-{% else %}
-Aviso: Esta página muestra el resumen de datos de estudiantes.
-{% endif %}
+<!-- Pronto: calendario de Google Charts -->
 
 {% endblock %}

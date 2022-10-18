@@ -35,18 +35,27 @@ class FileFieldFormView(FormView):
 
 
 @login_required(login_url='/cuentas/ingreso/')
-def solicitudes_request(request):
+def solicitudes(request):
 
     list_of_inputs = request.POST.getlist('inputs')
-    if request.user.is_staff:
-        solicitudes_list = Solicitud.objects.all()
 
+    # Obtener solicitudes según sea docente (todas)
+    # o estudiante (las propias)
+    if request.user.is_staff:
+        solicitudes_list = Solicitud.objects.all().exclude(enPapelera=True)
     else:
         estudiante_actual = Estudiante.objects.get(user=request.user)
         solicitudes_list = Solicitud.objects.filter(
-            estudiante=estudiante_actual)
+            estudiante=estudiante_actual).exclude(enPapelera=True)
 
-    if request.method == "POST":
+    # Clasificación de solicitudes por tipo
+    solicitudes_F = solicitudes_list.filter(tipo='F')
+    solicitudes_P = solicitudes_list.filter(tipo='P')
+    solicitudes_A = solicitudes_list.filter(tipo='A')
+    solicitudes_O = solicitudes_list.filter(tipo='O')
+
+    # Formulario de filtros
+    if request.method == "POST" and request.user.is_staff:
         form = FiltrosGestionForm(request.POST or None)
         list_of_inputs = request.POST.getlist('inputs')
 
@@ -89,7 +98,16 @@ def solicitudes_request(request):
 
     form = FiltrosGestionForm()
 
-    return render(request=request, template_name="../templates/solicitudes.html", context={"solicitudes": solicitudes_list, "archivos": archivos_list, "filtros_form": form})
+    context = { 
+        "solicitudes_F": solicitudes_F,
+        "solicitudes_P": solicitudes_P,
+        "solicitudes_A": solicitudes_A,
+        "solicitudes_O": solicitudes_O,
+        "archivos": archivos_list, 
+        "filtros_form": form,
+    }
+
+    return render(request, "solicitudes.html", context)
 
 
 @login_required(login_url='/cuentas/ingreso/')

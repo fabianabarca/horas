@@ -232,7 +232,7 @@ class SolicitudesForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SolicitudesForm, self).__init__(*args, **kwargs)
         self.fields['estudiante'].initial = Estudiante.objects.get(
-            user=User.objects.get(id=1))
+            user=User.objects.get(id=42))
         self.fields['estado'].initial = "P"
 
 

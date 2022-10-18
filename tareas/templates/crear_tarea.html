@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="card-body">
-    <p>Las tareas son esto y aquello.</p>
+    <p>Las tareas son pasos necesarios para lograr un objetivo de un proyecto.</p>
     <form method="POST" onsubmit="setFormSubmitting()">
       {% csrf_token %}
       <p>
@@ -43,6 +43,15 @@
       </p>
       <button type="submit" class="btn btn-primary btn-block" onClick="return confirmarRegistro();">Registrar</button>
     </form>
+    <br>
+    <p><small>
+      <strong>Notas</strong>
+      <ul>
+        <li>La descripción debe ser clara para que otras personas puedan participar también.</li>
+        <li>Es posible asignar esta tarea a una o más personas. Si usted asigna una tarea a alguien más, por favor discuta con esa persona los detalles.</li>
+        <li>Es posible crear "subtareas" vinculadas a otra tarea superior.</li>
+       </ul>
+    </small></p>
   </div>
 </div>
 

@@ -142,7 +142,7 @@
         <ul class="header-nav ms-3">
           <li class="nav-item dropdown"><a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button"
               aria-haspopup="true" aria-expanded="false">
-              <button type="button" class="btn btn-warning btn-sm">
+              <button type="button" class="btn btn-{% if request.user.is_staff %}warning{% else %}success{% endif %} btn-sm">
                 <svg class="icon me-2">
                   <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-user"></use>
                 </svg>
@@ -193,7 +193,7 @@
 
     {% endif %}
     <footer class="footer">
-      <div>© 2022 <a href="/acerca/" target="_blank">Tropicalización de la tecnología</a></div>
+      <div>© 2022 | TC-691 <a href="/acerca/" target="_blank">Tropicalización de la tecnología</a></div>
     </footer>
   </div>
   <!-- CoreUI and necessary plugins-->

@@ -20,8 +20,7 @@
 
 <!-- Descripción -->
 <p class="lead">
-  Las áreas describen temáticas generales de trabajo dentro del TCU, y puede haber uno o más proyectos asociados con
-  cada área.
+  Las áreas describen temáticas generales de trabajo dentro del TCU.
 </p>
 
 <!--Boton para agregar areas-->
@@ -30,6 +29,8 @@
   <a href="crear_area" type="button" class="btn btn-outline-info">Nueva área</a>
 </p>
 {% endif %}
+
+<br>
 
 <!-- Lista de áreas -->
 <h6 class="text-uppercase font-weight-bolder opacity-6">Lista de áreas</h6>
@@ -47,7 +48,7 @@
         <table id="areas-table" class="table align-items-center table-hover">
           <thead>
             <tr>
-              <th scope="col"></th>
+              {% if request.user.is_staff %}<th scope="col"></th>{% else %}{% endif %}
               <th scope="col">Nombre</th>
               <th scope="col">Descripción</th>
             </tr>
@@ -56,23 +57,23 @@
             {% for area in areas %}
             {% if not area.enPapelera %}
             <tr>
+              <!-- Opciones de edición -->
+              {% if request.user.is_staff %}
               <td>
                 <!-- Editar -->
-                <a href="editar_area/{{ area.id }}" class="text-warning" role="button">
-                  <svg class="nav-icon" width="16" height="16">
-                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
-                  </svg>
+                <a href="editar_area/{{ area.id }}" class="text-warning" role="button" style="text-decoration: none;">
+                  <i class="icon cil-pencil"></i>
                 </a>
-
                 <!-- Eliminar -->
-                <a onclick="return confirm('¿Está seguro de enviarlo a la papelera?')" type="submit"
+                <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
                   class="text-danger" value="{{ area.id }}" name="deleteButton">
-                  <svg class="nav-icon" width="16" height="16">
-                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-trash"></use>
-                  </svg>
+                  <i class="icon cil-trash"></i>
                 </a>
               </td>
+              {% endif %}
+              <!-- Nombre -->
               <td>{{ area }}</td>
+              <!-- Descripción -->
               <td>{{ area.descripcion }}</td>
             </tr>
             {% endif %}
