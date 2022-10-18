@@ -96,8 +96,11 @@ def index(request, id=9999):
             labelsRankingEstudiante.append(element[0].user.username)
             dataRankingEstudiante.append(element[1])
             if(element[0].fecha_inicio != None):
-                rankingIndiceAvance.append(((100 / 300) * element[1]) / 
-                ((100 / 365) * (datetime.date.today()-element[0].fecha_inicio).days))
+                try:
+                    rankingIndiceAvance.append(((100 / 300) * element[1]) / 
+                    ((100 / 365) * (datetime.date.today()-element[0].fecha_inicio).days))
+                except:
+                    print("Division por 0")
 
         colorListRankingEstudiante = color_list(mapEstudianteCantidadActividades)
 
@@ -155,67 +158,58 @@ def index(request, id=9999):
     
 
         
-        #[Calcular la cantidad de horas semanales de cada estudiante]
+        #[Calcular la cantidad de horas aprobadas en los últimos 7 días de cada estudiante]
 
         #Calcular el ultimo dia de los 7 de la semana, (dia actual - 7)
-        last_date = current_datetime - timedelta(days=6)
-        last_day = last_date.day
+        fecha_primer_dia = current_datetime - timedelta(days=6)
+        primer_dia = fecha_primer_dia.day
 
-        #Arreglo para almacenar las actividades semanales
-        weekly_activities = []
-        activity_index = 0
+        #Arreglo para almacenar las actividades registradas en los últimos 7 días
+        actividades_semana = []
+        act_indx = 0
         for actividad in horasPorDia:
-            if(horasPorDia[activity_index][0] == current_datetime.year and (horasPorDia[activity_index][1] == current_datetime.month or horasPorDia[activity_index][1] == current_datetime.month-1) ):
-                if(horasPorDia[activity_index][2] >= last_day and horasPorDia[activity_index][2] <= current_datetime.day):
-                    weekly_activities.append(horasPorDia[activity_index])
-            activity_index+=1
+            if(horasPorDia[act_indx][0] == current_datetime.year and (horasPorDia[act_indx][1] == current_datetime.month or horasPorDia[act_indx][1] == current_datetime.month-1) ):
+                if(horasPorDia[act_indx][2] >= primer_dia and horasPorDia[act_indx][2] <= current_datetime.day):
+                    actividades_semana.append(horasPorDia[act_indx])
+            act_indx+=1
 
-        #Ordenar weekly_activities por dia
-        weekly_activities.sort()
-        
-        #Para imprimir y ver que todo esta bien
-        '''
-        i = 0
-        for act in weekly_activities:
-            print("Semana:")
-            print(weekly_activities[i])
-            i+=1
-        '''
+        #Ordenar actividades_semana por la fecha del día
+        actividades_semana.sort()
 
         #Almacena la cantidad de horas por cada uno de los 7 ultimos dias
-        #Inicializa todos los valores en 0
-        weekly_hours = [0] * 7
-        #indice para el arreglo weekly_hours
-        i = 0
-        #indice para weekly activities
-        j = 0
+        horas_semana = [0] * 7
+        #indice para el arreglo horas_semana
+        horas_indx = 0
+        #indice para actividades_semana
+        act_fila = 0
         
-        #Para control
-        pr_day = last_day
-        for activity in weekly_activities:
-            if(pr_day != weekly_activities[j][2]):
-                i += (weekly_activities[j][2] - pr_day)
+        #Variable para controlar cual es el dia actual dentro del ciclo
+        pr_day = primer_dia
+
+        for activity in actividades_semana:
+            if(pr_day != actividades_semana[act_fila][2]):
+                horas_indx += (actividades_semana[act_fila][2] - pr_day)
             
-            weekly_hours[i]+= weekly_activities[j][3]
-            pr_day = weekly_activities[j][2]
-            j+=1
+            horas_semana[horas_indx]+= actividades_semana[act_fila][3]
+            pr_day = actividades_semana[act_fila][2]
+            act_fila+=1
 
 
-        #Almacena el nombre de los dias
-        week_days = []
+        #Almacena el nombre de los dias para enviarlo al grafico
+        dias_labels = []
         #Arreglo con los nombres de los dias de la semana
-        days_names = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
+        dias_semana = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
         #Se obtiene el numero del utimo dia en la semana
-        day_of_week = last_date.weekday()
+        ultimo_dia = fecha_primer_dia.weekday()
 
-        days_index = day_of_week
+        dias_indx = ultimo_dia
 
-        while (days_index <= 6):
-            week_days.append(days_names[days_index])
-            days_index += 1
-            if(days_index == 7):
-                days_index = 0
-            if(days_index == day_of_week):
+        while (dias_indx <= 6):
+            dias_labels.append(dias_semana[dias_indx])
+            dias_indx += 1
+            if(dias_indx == 7):
+                dias_indx = 0
+            if(dias_indx == ultimo_dia):
                 break
 
 
@@ -228,8 +222,8 @@ def index(request, id=9999):
             "indiceAvanceW":indiceAvanceW,
             "horasPorDia":json.dumps(horasPorDia),
             "numeroActividades":numeroActividades,
-            "horas_semanales": json.dumps(weekly_hours),
-            "dias_semana": json.dumps(week_days)
+            "horas_semanales": json.dumps(horas_semana),
+            "dias_semana": json.dumps(dias_labels)
         }
 
     return render(request, inicio, context)
