@@ -31,104 +31,126 @@
 
 <br>
 
-<!-- Lista de proyectos -->
-<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h6>
-
 <form method="post">
-
   {% csrf_token %}
 
   {% if proyectos %}
+    <div class="card">
+      <div class="card-body">
 
-  <!-- Tabla -->
-  <p>
-  <div class="card">
-    <div class="card-body">
-      <!-- Mostrar filtros -->
-      <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
+        <!-- Mostrar filtros -->
+        <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
         aria-expanded="false" aria-controls="verFiltros">
-        <i class="icon cil-filter"></i> 
-      </a>
-      <!-- Opciones de filtrado -->
-      <p>
-      <div class="collapse" id="verFiltros">
-        <div class="card card-body">
-          <form id="filtro" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}" />
-            <div class="row">
-              {% for field in filtros_form %}
-              <div class="col-sm-4">
-                <b>{{ field.label_tag }}</b> {{ field }}
+          <i class="icon cil-filter"></i> 
+        </a>
+
+        <!-- Opciones de filtrado -->
+        <p>
+        <div class="collapse" id="verFiltros">
+          <div class="card card-body">
+            <form id="filtro" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ next }}" />
+              <div class="row">
+                {% for field in filtros_form %}
+                <div class="col-sm-4">
+                  <b>{{ field.label_tag }}</b> {{ field }}
+                  </br>
+                </div>
                 </br>
-              </div>
-              </br>
-              {% endfor %}
-            </div>
-            <button type="submit" class="btn btn-light">Filtrar</button>
-          </form>
-        </div>
-      </div>
-      </p>
-      <!-- Tabla -->
-      <div class="table-responsive">
-        <table id="datatable" class="table align-items-center table-hover">
-          <thead class="thead">
-            <tr>
-              {% if request.user.is_staff %}
-              <th scope="col"></th>
-              {% endif %}
-              <th scope="col">Nombre</th>
-              <th scope="col">Descripción</th>
-              <th scope="col">Profesor</th>
-              <th scope="col">Áreas</th>
-              <th scope="col">Ubicación</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for proyecto in proyectos %}
-            {% if not proyecto.enPapelera %}
-            <!-- Registro de proyectos -->
-            <tr>
-              {% if request.user.is_staff %}
-              <!-- Opciones de edición -->
-              <td>
-                <!-- Editar -->
-                <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button" style="text-decoration: none;">
-                  <i class="icon cil-pencil"></i>
-                </a>
-                <!-- Eliminar -->
-                <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
-                  class="text-danger" value="{{ proyecto.id }}" name="deleteButton">
-                  <i class="icon cil-trash"></i>
-                </a>
-              </td>
-              {% endif %}
-              <td>{{ proyecto.nombre }}</td>
-              <td>{{ proyecto.descripcion }}</td>
-              <td>{{ proyecto.profesor.user.first_name }}</td>
-              <td>
-                {% for area in proyecto.area.all %}
-                {% if not area.enPapelera %}
-                {{ area.nombre}}<br />
-                {% endif %}
                 {% endfor %}
-              </td>
-              <td>{{ proyecto.ubicacion }}</td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-          </tbody>
-        </table>
+              </div>
+              <button type="submit" class="btn btn-light">Filtrar</button>
+            </form>
+          </div>
+        </div>
+        </p>
+      
+        <!--Lista de Proyectos-->
+        {% for area in areas %}
+          <h4 class="font-weight-bolder opacity-6 mb-4">{{ area.nombre }}</h4>
+          <div class="card mb-5">
+            <div class="card-body">
+              <div class="accordion ">
+                {% for proyecto in proyectos %}
+                  {% if proyecto.area.nombre == area.nombre %}
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button bg-light" style="color: black; box-shadow: none;" type="button" data-coreui-toggle="collapse" data-coreui-target="#collapse_{{ forloop.counter }}">
+                          {{ proyecto.nombre }}
+                        </button>
+                      </h2>
+                      <div id="collapse_{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-coreui-parent="#accordionExample">
+                        <div class="accordion-body">
+
+                          <div class="table-responsive">
+                            <table id="datatable" class="table align-items-center">
+                              <thead class="thead">
+                                <tr>
+                                  {% if request.user.is_staff %}
+                                  <th scope="col"></th>
+                                  {% endif %}
+                                  <th scope="col">Descripción</th>
+                                  {% if proyecto.profesor.all.count > 1 %}
+                                    <th scope="col">Profesores</th>
+                                    {% else %}
+                                    <th scope="col">Profesor</th>
+                                  {% endif %}
+                                  <th scope="col">Objetivos</th>
+                                  <th scope="col">Ubicación</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  {% if request.user.is_staff %}
+                                    <td>
+                                      <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button" style="text-decoration: none;">
+                                        <i class="icon cil-pencil"></i>
+                                      </a>
+                                      <button onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
+                                        class="text-danger" value="{{ proyecto.id }}" name="deleteButton" style="border: none; background-color: transparent;">
+                                        <i class="icon cil-trash"></i>
+                                      </button>
+                                    </td>
+                                  {% endif %}
+                                  <td>{{ proyecto.descripcion }}</td>
+                                  <td>
+                                    {% for profesor in proyecto.profesor.all %}
+                                      {{ profesor.user.first_name }}
+                                      <br>
+                                    {% endfor %}
+                                  </td>
+                                  <td>
+                                    {% for objetivo in objetivos %}
+                                      {% if objetivo.proyecto.nombre == proyecto.nombre %}
+                                        {{ objetivo.descripcion }}
+                                        <br>
+                                      {% endif %}
+                                    {% endfor %}
+                                  </td>
+                                  <td>{{ proyecto.ubicacion }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}    
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      
       </div>
     </div>
-  </div>
-  </p>
 
   {% else %}
-  <div class="alert alert-info" role="alert">
-    No hay proyectos registrados.
-  </div>
+    <div class="alert alert-info" role="alert">
+      No hay proyectos registrados.
+    </div>
   {% endif %}
 
 </form>

@@ -32,7 +32,13 @@ def proyectos(request):
     '''
 
     # Obtiene la lista de proyectos
-    proyectos = Proyecto.objects.all()
+    proyectos = Proyecto.objects.all().filter(enPapelera=False)
+
+    # Obtiene lista de areas que no estan la papelera
+    areas = Area.objects.all().filter(enPapelera=False)
+
+    # Obtiene lista de objetivos que no estan la papelera
+    objetivos = Objetivo.objects.all().filter(enPapelera=False)
 
     # Formulario para los filtros
     if request.method == "POST":
@@ -70,6 +76,8 @@ def proyectos(request):
     form = FiltrosProyectoForm()
 
     context = {
+        "areas": areas,
+        "objetivos": objetivos,
         "proyectos": proyectos,
         "filtros_form": form
     }
