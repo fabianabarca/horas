@@ -24,6 +24,7 @@
 </p>
 
 {% if request.user.is_staff %}
+<!-- Botón para crear nuevo proyecto -->
 <p>
   <a href="crear_proyecto" type="button" class="btn btn-outline-info">Nuevo proyecto</a>
 </p>
@@ -31,40 +32,9 @@
 
 <br>
 
-<form method="post">
-  {% csrf_token %}
-
   {% if proyectos %}
     <div class="card">
       <div class="card-body">
-
-        <!-- Mostrar filtros -->
-        <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
-        aria-expanded="false" aria-controls="verFiltros">
-          <i class="icon cil-filter"></i> 
-        </a>
-
-        <!-- Opciones de filtrado -->
-        <p>
-        <div class="collapse" id="verFiltros">
-          <div class="card card-body">
-            <form id="filtro" method="post">
-              {% csrf_token %}
-              <input type="hidden" name="next" value="{{ next }}" />
-              <div class="row">
-                {% for field in filtros_form %}
-                <div class="col-sm-4">
-                  <b>{{ field.label_tag }}</b> {{ field }}
-                  </br>
-                </div>
-                </br>
-                {% endfor %}
-              </div>
-              <button type="submit" class="btn btn-light">Filtrar</button>
-            </form>
-          </div>
-        </div>
-        </p>
       
         <!--Lista de Proyectos-->
         {% for area in areas %}
@@ -152,7 +122,5 @@
       No hay proyectos registrados.
     </div>
   {% endif %}
-
-</form>
 
 {% endblock %}
