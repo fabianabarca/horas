@@ -35,59 +35,63 @@
 {% if proyectos %}
 
 <!-- Lista de áreas y sus proyectos -->
+{% for area in areas %}
 <div class="card">
+  <div class="card-header">
+    <span class="small text-dark font-weight-bolder"><i class="icon cil-star text-warning"></i>
+      Área</span> | <strong>{{ area.nombre }}</strong>
+  </div>
   <div class="card-body">
-
-    {% for area in areas %}
-    <span class="small text-dark text-uppercase font-weight-bolder"><i class="icon cil-star text-warning"></i>
-      Área</span>
-    <h4 class="font-weight-bolder opacity-6 mb-4">{{ area.nombre }}</h4>
-    {% for proyecto in proyectos %}
-    {% if proyecto.area.nombre == area.nombre %}
-    <p class="lead">
-      <a data-coreui-toggle="collapse" href="#collapse_{{ forloop.counter }}" role="button" aria-expanded="false"
-        aria-controls="collapse_{{ forloop.counter }}" style="text-decoration: none;">
-        <i class="icon cil-plus"></i>
-      </a> {{ proyecto.nombre }}
-    </p>
-    <div class="collapse" id="collapse_{{ forloop.counter }}">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">{{ proyecto.nombre }}</h5>
-          <p class="card-text">{{ proyecto.descripcion }}</p>
-          <h6 class="card-title">Objetivos</h6>
-          <ol>
-            {% for objetivo in objetivos %}
-            {% if objetivo.proyecto.nombre == proyecto.nombre %}
-            <li>{{ objetivo.descripcion }}</li>
+    <p>{{ area.descripcion }}</p>
+    <div class="accordion accordion-flush" id="proyectos_{{ area.id }}">
+      {% for proyecto in proyectos %}
+      {% if proyecto.area.nombre == area.nombre %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_{{ forloop.counter }}">
+          <button class="accordion-button collapsed" type="button" data-coreui-toggle="collapse"
+            data-coreui-target="#collapse_{{ forloop.counter }}" aria-expanded="false"
+            aria-controls="collapse_{{ forloop.counter }}">
+            <span>{{ proyecto.nombre }}</span>
+          </button>
+        </h2>
+        <div id="collapse_{{ forloop.counter }}" class="accordion-collapse collapse"
+          aria-labelledby="heading_{{ forloop.counter }}" data-coreui-parent="#proyectos_{{ area.id }}">
+          <div class="accordion-body">
+            <h5 class="card-title">{{ proyecto.nombre }}</h5>
+            <p class="card-text">{{ proyecto.descripcion }}</p>
+            <h6 class="card-title">Objetivos</h6>
+            <ol>
+              {% for objetivo in objetivos %}
+              {% if objetivo.proyecto.nombre == proyecto.nombre %}
+              <li>{{ objetivo.descripcion }}</li>
+              {% endif %}
+              {% endfor %}
+            </ol>
+            <h6 class="card-title">Docente{{ proyecto.profesor.all.count | pluralize }}</h6>
+            <p>
+              {% for profesor in proyecto.profesor.all %}
+              {{ profesor.user.first_name }} {{ profesor.user.last_name }} <br>
+              {% endfor %}
+            </p>
+            <h6 class="card-title">Ubicación</h6>
+            <p>{{ proyecto.ubicacion }}</p>
+            {% if request.user.is_staff %}
+            <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button"
+              style="text-decoration: none;">
+              <i class="icon cil-pencil"></i> <span class="small">Editar proyecto</span>
+            </a>
             {% endif %}
-            {% endfor %}
-          </ol>
-          <h6 class="card-title">Docente{{ proyecto.profesor.all.count | pluralize }}</h6>
-          <p>
-            {% for profesor in proyecto.profesor.all %}
-            {{ profesor.user.first_name }} {{ profesor.user.last_name }} <br>
-            {% endfor %}
-          </p>
-          <h6 class="card-title">Ubicación</h6>
-          <p>{{ proyecto.ubicacion }}</p>
-          {% if request.user.is_staff %}
-          <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button" style="text-decoration: none;">
-            <i class="icon cil-pencil"></i> <span class="small">Editar proyecto</span> 
-          </a> 
-          {% endif %}
+          </div>
         </div>
       </div>
+      {% endif %}
+      {% endfor %}
     </div>
-    {% endif %}
-    {% endfor %}
-    <br>
-    {% endfor %}
-
   </div>
 </div>
 
 <br>
+{% endfor %}
 
 {% else %}
 <div class="alert alert-info" role="alert">
