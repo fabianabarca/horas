@@ -32,6 +32,8 @@ class Objetivo(Registro):
     descripcion = models.TextField(blank=False)
     proyecto = models.ForeignKey(Proyecto, on_delete=models.SET_NULL, null=True)
     general = models.BooleanField('¿Es objetivo general?', default=False)
+    numero = models.IntegerField()
 
     def __str__(self):
-        return self.descripcion
+        titulo = f'{self.proyecto} {self.numero}'
+        return titulo

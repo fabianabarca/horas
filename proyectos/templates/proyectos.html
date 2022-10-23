@@ -73,13 +73,8 @@
           <p>{{ proyecto.ubicacion }}</p>
           {% if request.user.is_staff %}
           <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button" style="text-decoration: none;">
-            <i class="icon cil-pencil"></i>
-          </a>
-          <button onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
-            class="text-danger" value="{{ proyecto.id }}" name="deleteButton"
-            style="border: none; background-color: transparent;">
-            <i class="icon cil-trash"></i>
-          </button>
+            <i class="icon cil-pencil"></i> <span class="small">Editar proyecto</span> 
+          </a> 
           {% endif %}
         </div>
       </div>

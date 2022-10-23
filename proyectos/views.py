@@ -31,55 +31,19 @@ def proyectos(request):
     para filtrar los proyectos según categorías.
     '''
 
-    # Obtiene la lista de proyectos
+    # Obtiene la lista de proyectos que no están en la papelera
     proyectos = Proyecto.objects.all().filter(enPapelera=False)
 
-    # Obtiene lista de areas que no estan la papelera
+    # Obtiene la lista de áreas que no están en la papelera
     areas = Area.objects.all().filter(enPapelera=False)
 
-    # Obtiene lista de objetivos que no estan la papelera
-    objetivos = Objetivo.objects.all().filter(enPapelera=False)
-
-    # Formulario para los filtros
-    if request.method == "POST":
-
-        # Crea el filtro para la tabla de proyectos
-        form = FiltrosProyectoForm(request.POST or None)
-
-        if form.is_valid():
-            if form.cleaned_data.get('nombre'):
-                proyectos = proyectos.filter(
-                    nombre__contains=form.cleaned_data.get('nombre'))
-            if form.cleaned_data.get('descripcion'):
-                proyectos = proyectos.filter(
-                    descripcion__contains=form.cleaned_data.get('descripcion'))
-            if form.cleaned_data.get('profesor'):
-                proyectos = proyectos.filter(
-                    profesor=form.cleaned_data.get('profesor'))
-            if form.cleaned_data.get('area'):
-                proyectos = proyectos.filter(
-                    area=form.cleaned_data.get('area'))
-            if form.cleaned_data.get('ubicacion'):
-                proyectos = proyectos.filter(
-                    ubicacion__contains=form.cleaned_data.get('ubicacion'))
-
-        # Crea el botón de enviar a papelera
-        if request.POST.get('deleteButton'):
-            deleteButtonItemValue = request.POST.getlist('deleteButton')
-            obj = Proyecto(id=deleteButtonItemValue[0])
-            Proyecto.objects.filter(
-                id=deleteButtonItemValue[0]).update(enPapelera='True')
-
-        # return HttpResponseRedirect("/proyectos")
-
-    # Crea el objeto para enviar
-    form = FiltrosProyectoForm()
+    # Obtiene la lista de objetivos que no están en la papelera
+    objetivos = Objetivo.objects.all().filter(enPapelera=False).order_by('numero')
 
     context = {
         "areas": areas,
         "objetivos": objetivos,
         "proyectos": proyectos,
-        "filtros_form": form
     }
 
     return render(request, "proyectos.html", context)
