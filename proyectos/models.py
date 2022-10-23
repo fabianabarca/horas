@@ -20,6 +20,7 @@ class Proyecto(Registro):
     profesor = models.ManyToManyField(Profesor)
     area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True)
     ubicacion = models.CharField(max_length=500)
+    icono = models.CharField(max_length=32, help_text='Nombre del icono en FontAwesome v6.x. Ejemplo: house.')
 
     def __str__(self):
         return self.nombre
