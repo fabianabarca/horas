@@ -21,6 +21,7 @@ class Proyecto(Registro):
     area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True)
     ubicacion = models.CharField(max_length=500)
     icono = models.CharField(max_length=32, help_text='Nombre del icono en FontAwesome v6.x. Ejemplo: house.')
+    url_proyecto = models.CharField(max_length=32, help_text='Última parte de la dirección URL del proyecto. Ejemplo: talleres-programacion.')
 
     def __str__(self):
         return self.nombre

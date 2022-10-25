@@ -1,9 +1,11 @@
+from re import T
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from horas.forms import AreasForm, ProyectosForm, ObjetivosForm, FiltrosProyectoForm
 from proyectos.models import Area
 from proyectos.models import Proyecto
 from proyectos.models import Objetivo
+from tareas.models import Tarea
 from django.contrib.auth.decorators import login_required
 from django import forms
 import time
@@ -188,16 +190,20 @@ def proyectosInfo(request):
     return render(request=request,  template_name="../templates/proyectosInfo.html", context={"listaProyectos": listaProyectos})
 
 
-def proyecto(request, id):
-    proyecto = Proyecto.objects.filter(id=id)
-    proyectoHoras = 1
-    objetivos = proyecto[0].objetivo_set.filter(enPapelera=False)
+def proyecto(request, url_proyecto):
+    
+    proyecto = get_object_or_404(Proyecto, url_proyecto=url_proyecto)
+    objetivos = Objetivo.objects.filter(proyecto=proyecto).order_by('numero')
+    tareas = []
+    contador = {}
+    for i, objetivo in enumerate(objetivos):
+        tareas.append(Tarea.objects.filter(objetivo=objetivo))
+        
 
-    listatareas = []
-    for objetivo in objetivos:
-        tareas = objetivo.tarea_set.filter(enPapelera=False)
-        for tarea in tareas:
-            listatareas.append(tarea.nombre)
+    context = {
+        'proyecto': proyecto,
+        'objetivos': objetivos,
+        'tareas': tareas,
+    }
 
-    return render(request, "proyecto.html", context={"proyecto": proyecto[0],
-                                                     "proyectoHoras": proyectoHoras, "objetivos": objetivos, "tareas": listatareas})
+    return render(request, "proyecto.html", context)
