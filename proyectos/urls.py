@@ -9,6 +9,6 @@ urlpatterns = [
     path('editar_proyecto/<int:id>', editar_proyecto, name='editar_proyecto'),
     path('editar_objetivo/<int:id>', editar_objetivo, name='editar_objetivo'),
     path('proyectosInfo', proyectosInfo, name='proyectosInfo'),
-    path('<int:id>/', proyecto, name='proyectoIndividual'),
+    path('<url_proyecto>/', proyecto, name='proyecto'),
 
 ]

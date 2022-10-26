@@ -20,10 +20,11 @@
 
 <!-- Descripción -->
 <p class="lead">
-  Los proyectos tienen objetivos y tareas asignadas.
+  Lista de proyectos, su descripción y sus objetivos, clasificados por área de trabajo. Hay un total de {{ proyectos.count }} proyectos en {{ areas.count }} áreas distintas.
 </p>
 
 {% if request.user.is_staff %}
+<!-- Botón para crear nuevo proyecto -->
 <p>
   <a href="crear_proyecto" type="button" class="btn btn-outline-info">Nuevo proyecto</a>
 </p>
@@ -31,106 +32,80 @@
 
 <br>
 
-<!-- Lista de proyectos -->
-<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de proyectos</h6>
+{% if proyectos %}
 
-<form method="post">
-
-  {% csrf_token %}
-
-  {% if proyectos %}
-
-  <!-- Tabla -->
-  <p>
-  <div class="card">
-    <div class="card-body">
-      <!-- Mostrar filtros -->
-      <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#verFiltros" role="button"
-        aria-expanded="false" aria-controls="verFiltros">
-        <i class="icon cil-filter"></i> 
-      </a>
-      <!-- Opciones de filtrado -->
-      <p>
-      <div class="collapse" id="verFiltros">
-        <div class="card card-body">
-          <form id="filtro" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}" />
-            <div class="row">
-              {% for field in filtros_form %}
-              <div class="col-sm-4">
-                <b>{{ field.label_tag }}</b> {{ field }}
-                </br>
-              </div>
-              </br>
-              {% endfor %}
+<!-- Lista de áreas y sus proyectos -->
+{% for area in areas %}
+<div class="card">
+  <div class="card-header">
+    <span class="small text-dark font-weight-bolder"><i class="icon cil-star text-warning"></i>
+      Área</span> | <strong>{{ area.nombre }}</strong>
+  </div>
+  <div class="card-body">
+    <p>{{ area.descripcion }}</p>
+    <div class="accordion accordion-flush" id="proyectos_{{ area.id }}">
+      {% for proyecto in proyectos %}
+      {% if proyecto.area.nombre == area.nombre %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_{{ forloop.counter }}">
+          <button class="accordion-button collapsed" type="button" data-coreui-toggle="collapse"
+            data-coreui-target="#collapse_{{ forloop.counter }}" aria-expanded="false"
+            aria-controls="collapse_{{ forloop.counter }}">
+            <div class="d-flex align-items-center">
+              <div class="p-1"><i class="fa-solid fa-{{ proyecto.icono }}"></i></div>
+              <div class="p-1">{{ proyecto.nombre }}</div>
             </div>
-            <button type="submit" class="btn btn-light">Filtrar</button>
-          </form>
+          </button>
+        </h2>
+        <div id="collapse_{{ forloop.counter }}" class="accordion-collapse collapse"
+          aria-labelledby="heading_{{ forloop.counter }}" data-coreui-parent="#proyectos_{{ area.id }}">
+          <div class="accordion-body">
+            <h5 class="card-title">{{ proyecto.nombre }}</h5>
+            <p class="card-text">{{ proyecto.descripcion }}</p>
+            <!-- Objetivos -->
+            <h6 class="card-title">Objetivos</h6>
+            <ol>
+              {% for objetivo in objetivos %}
+              {% if objetivo.proyecto.nombre == proyecto.nombre %}
+              <li>{{ objetivo.descripcion }}</li>
+              {% endif %}
+              {% endfor %}
+            </ol>
+            <!-- Docentes -->
+            <h6 class="card-title">Docente{{ proyecto.profesor.all.count | pluralize }}</h6>
+            <p>
+              {% for profesor in proyecto.profesor.all %}
+              {{ profesor.user.first_name }} {{ profesor.user.last_name }} <br>
+              {% endfor %}
+            </p>
+            <!-- Ubicación -->
+            <h6 class="card-title">Ubicación</h6>
+            <p>{{ proyecto.ubicacion }}</p>
+            <!-- Links -->
+            <a href="{{ proyecto.url_proyecto }}" class="card-link text-info small" style="text-decoration: none;">
+              <i class="icon cil-info"></i> Más información
+            </a>
+            {% if request.user.is_staff %}
+            <a href="editar_proyecto/{{ proyecto.id }}" class="card-link text-warning small" role="button" style="text-decoration: none;">
+              <i class="icon cil-pencil"></i> Editar
+            </a>
+            {% endif %}
+          </div>
         </div>
       </div>
-      </p>
-      <!-- Tabla -->
-      <div class="table-responsive">
-        <table id="datatable" class="table align-items-center table-hover">
-          <thead class="thead">
-            <tr>
-              {% if request.user.is_staff %}
-              <th scope="col"></th>
-              {% endif %}
-              <th scope="col">Nombre</th>
-              <th scope="col">Descripción</th>
-              <th scope="col">Profesor</th>
-              <th scope="col">Áreas</th>
-              <th scope="col">Ubicación</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for proyecto in proyectos %}
-            {% if not proyecto.enPapelera %}
-            <!-- Registro de proyectos -->
-            <tr>
-              {% if request.user.is_staff %}
-              <!-- Opciones de edición -->
-              <td>
-                <!-- Editar -->
-                <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button" style="text-decoration: none;">
-                  <i class="icon cil-pencil"></i>
-                </a>
-                <!-- Eliminar -->
-                <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
-                  class="text-danger" value="{{ proyecto.id }}" name="deleteButton">
-                  <i class="icon cil-trash"></i>
-                </a>
-              </td>
-              {% endif %}
-              <td>{{ proyecto.nombre }}</td>
-              <td>{{ proyecto.descripcion }}</td>
-              <td>{{ proyecto.profesor.user.first_name }}</td>
-              <td>
-                {% for area in proyecto.area.all %}
-                {% if not area.enPapelera %}
-                {{ area.nombre}}<br />
-                {% endif %}
-                {% endfor %}
-              </td>
-              <td>{{ proyecto.ubicacion }}</td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+      {% endif %}
+      {% endfor %}
     </div>
   </div>
-  </p>
+</div>
 
-  {% else %}
-  <div class="alert alert-info" role="alert">
-    No hay proyectos registrados.
-  </div>
-  {% endif %}
+<br>
+{% endfor %}
 
-</form>
+{% else %}
+<div class="alert alert-info" role="alert">
+  No hay proyectos registrados.
+</div>
+{% endif %}
 
 {% endblock %}

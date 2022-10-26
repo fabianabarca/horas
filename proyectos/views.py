@@ -1,9 +1,11 @@
+from re import T
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from horas.forms import AreasForm, ProyectosForm, ObjetivosForm, FiltrosProyectoForm
 from proyectos.models import Area
 from proyectos.models import Proyecto
 from proyectos.models import Objetivo
+from tareas.models import Tarea
 from django.contrib.auth.decorators import login_required
 from django import forms
 import time
@@ -31,47 +33,19 @@ def proyectos(request):
     para filtrar los proyectos según categorías.
     '''
 
-    # Obtiene la lista de proyectos
-    proyectos = Proyecto.objects.all()
+    # Obtiene la lista de proyectos que no están en la papelera
+    proyectos = Proyecto.objects.all().filter(enPapelera=False)
 
-    # Formulario para los filtros
-    if request.method == "POST":
+    # Obtiene la lista de áreas que no están en la papelera
+    areas = Area.objects.all().filter(enPapelera=False)
 
-        # Crea el filtro para la tabla de proyectos
-        form = FiltrosProyectoForm(request.POST or None)
-
-        if form.is_valid():
-            if form.cleaned_data.get('nombre'):
-                proyectos = proyectos.filter(
-                    nombre__contains=form.cleaned_data.get('nombre'))
-            if form.cleaned_data.get('descripcion'):
-                proyectos = proyectos.filter(
-                    descripcion__contains=form.cleaned_data.get('descripcion'))
-            if form.cleaned_data.get('profesor'):
-                proyectos = proyectos.filter(
-                    profesor=form.cleaned_data.get('profesor'))
-            if form.cleaned_data.get('area'):
-                proyectos = proyectos.filter(
-                    area=form.cleaned_data.get('area'))
-            if form.cleaned_data.get('ubicacion'):
-                proyectos = proyectos.filter(
-                    ubicacion__contains=form.cleaned_data.get('ubicacion'))
-
-        # Crea el botón de enviar a papelera
-        if request.POST.get('deleteButton'):
-            deleteButtonItemValue = request.POST.getlist('deleteButton')
-            obj = Proyecto(id=deleteButtonItemValue[0])
-            Proyecto.objects.filter(
-                id=deleteButtonItemValue[0]).update(enPapelera='True')
-
-        # return HttpResponseRedirect("/proyectos")
-
-    # Crea el objeto para enviar
-    form = FiltrosProyectoForm()
+    # Obtiene la lista de objetivos que no están en la papelera
+    objetivos = Objetivo.objects.all().filter(enPapelera=False).order_by('numero')
 
     context = {
+        "areas": areas,
+        "objetivos": objetivos,
         "proyectos": proyectos,
-        "filtros_form": form
     }
 
     return render(request, "proyectos.html", context)
@@ -216,16 +190,20 @@ def proyectosInfo(request):
     return render(request=request,  template_name="../templates/proyectosInfo.html", context={"listaProyectos": listaProyectos})
 
 
-def proyecto(request, id):
-    proyecto = Proyecto.objects.filter(id=id)
-    proyectoHoras = 1
-    objetivos = proyecto[0].objetivo_set.filter(enPapelera=False)
+def proyecto(request, url_proyecto):
+    
+    proyecto = get_object_or_404(Proyecto, url_proyecto=url_proyecto)
+    objetivos = Objetivo.objects.filter(proyecto=proyecto).order_by('numero')
+    tareas = []
+    contador = {}
+    for i, objetivo in enumerate(objetivos):
+        tareas.append(Tarea.objects.filter(objetivo=objetivo))
+        
 
-    listatareas = []
-    for objetivo in objetivos:
-        tareas = objetivo.tarea_set.filter(enPapelera=False)
-        for tarea in tareas:
-            listatareas.append(tarea.nombre)
+    context = {
+        'proyecto': proyecto,
+        'objetivos': objetivos,
+        'tareas': tareas,
+    }
 
-    return render(request, "proyecto.html", context={"proyecto": proyecto[0],
-                                                     "proyectoHoras": proyectoHoras, "objetivos": objetivos, "tareas": listatareas})
+    return render(request, "proyecto.html", context)
