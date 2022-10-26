@@ -20,7 +20,7 @@
 
 <!-- Descripción -->
 <p class="lead">
-  Lista de proyectos, su descripción y sus objetivos, clasificados por área de trabajo.
+  Lista de proyectos, su descripción y sus objetivos, clasificados por área de trabajo. Hay un total de {{ proyectos.count }} proyectos en {{ areas.count }} áreas distintas.
 </p>
 
 {% if request.user.is_staff %}
@@ -51,7 +51,10 @@
           <button class="accordion-button collapsed" type="button" data-coreui-toggle="collapse"
             data-coreui-target="#collapse_{{ forloop.counter }}" aria-expanded="false"
             aria-controls="collapse_{{ forloop.counter }}">
-            <span><i class="fa-solid fa-{{ proyecto.icono }}"></i> &nbsp; {{ proyecto.nombre }}</span>
+            <div class="d-flex align-items-center">
+              <div class="p-1"><i class="fa-solid fa-{{ proyecto.icono }}"></i></div>
+              <div class="p-1">{{ proyecto.nombre }}</div>
+            </div>
           </button>
         </h2>
         <div id="collapse_{{ forloop.counter }}" class="accordion-collapse collapse"
@@ -59,6 +62,7 @@
           <div class="accordion-body">
             <h5 class="card-title">{{ proyecto.nombre }}</h5>
             <p class="card-text">{{ proyecto.descripcion }}</p>
+            <!-- Objetivos -->
             <h6 class="card-title">Objetivos</h6>
             <ol>
               {% for objetivo in objetivos %}
@@ -67,18 +71,23 @@
               {% endif %}
               {% endfor %}
             </ol>
+            <!-- Docentes -->
             <h6 class="card-title">Docente{{ proyecto.profesor.all.count | pluralize }}</h6>
             <p>
               {% for profesor in proyecto.profesor.all %}
               {{ profesor.user.first_name }} {{ profesor.user.last_name }} <br>
               {% endfor %}
             </p>
+            <!-- Ubicación -->
             <h6 class="card-title">Ubicación</h6>
             <p>{{ proyecto.ubicacion }}</p>
+            <!-- Links -->
+            <a href="{{ proyecto.url_proyecto }}" class="card-link text-info small" style="text-decoration: none;">
+              <i class="icon cil-info"></i> Más información
+            </a>
             {% if request.user.is_staff %}
-            <a href="editar_proyecto/{{ proyecto.id }}" class="text-warning" role="button"
-              style="text-decoration: none;">
-              <i class="icon cil-pencil"></i> <span class="small">Editar proyecto</span>
+            <a href="editar_proyecto/{{ proyecto.id }}" class="card-link text-warning small" role="button" style="text-decoration: none;">
+              <i class="icon cil-pencil"></i> Editar
             </a>
             {% endif %}
           </div>
