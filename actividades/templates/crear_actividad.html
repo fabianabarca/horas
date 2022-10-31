@@ -25,7 +25,7 @@
     <p>
       Las horas de TCU son registradas como actividades.
     </p>
-    <form method="POST" onsubmit="setFormSubmitting()">
+    <form method="POST" id="crear_actividad_form" proyectos-url="{% url 'load-proyectosActividades' %}" objetivos-url="{% url 'load-objetivosActividades' %}" tareas-url="{% url 'load-tareasActividades' %}" onsubmit="setFormSubmitting()">
       {% csrf_token %}
       <p>
       <!-- Mensajes -->
@@ -63,7 +63,8 @@
 <!--Usando código modificado de https://github.com/akjasim/cb_dj_dependent_dropdown
 Para permitir que el dropdown sea limitado por la eleccion de proyecto
 -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!--
 <script>
   $("#id_proyecto").change(function () {
     console.log("activado accion proyecto");
@@ -93,8 +94,6 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
 
 </script>
 
-
-
 <script>
   $("#id_objetivo").change(function () {
     console.log("activado accion objetivo");
@@ -117,6 +116,61 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
         console.log(html_data);
         $("#id_objetivo").html(html_data);
 */
+      }
+    });
+  });
+</script>
+-->
+
+<!--Para cargar los proyectos del area-->
+<script>
+  $("#id_area").change(function () {
+    $('#id_proyecto').empty();
+    $('#id_objetivo').empty();
+    $('#id_tarea').empty();
+    var url = $("#crear_actividad_form").attr("proyectos-url");
+    var areaId = $(this).val();
+    $.ajax({
+      url: url,
+      data: {
+        'area':areaId
+      },
+      success: function (data){
+        $("#id_proyecto").html(data);
+      }
+    });
+  });
+</script>
+
+<!--Para cargar los objetivos del proyecto-->
+<script>
+  $("#id_proyecto").click(function () {
+    var url = $("#crear_actividad_form").attr("objetivos-url");
+    var proyectoId = $(this).val();
+    $.ajax({
+      url: url,
+      data: {
+        'proyecto':proyectoId
+      },
+      success: function (data){
+        $("#id_objetivo").html(data);
+      }
+    });
+  });
+</script>
+
+<!--Para cargar las tareas-->
+<script>
+  $("#id_objetivo").click(function () {
+    var url = $("#crear_actividad_form").attr("tareas-url");
+    var objetivoId = $(this).val();
+    $.ajax({
+      url: url,
+      data: {
+        'objetivo':objetivoId
+      },
+      success: function (data){
+        $("#id_tarea").html(data);
       }
     });
   });

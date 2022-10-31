@@ -5,7 +5,7 @@ from horas.forms import *
 from django.contrib.auth.models import User
 from actividades.models import Actividad
 from tareas.models import Tarea
-from proyectos.models import Proyecto
+from proyectos.models import Proyecto, Objetivo
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 import time
@@ -91,13 +91,24 @@ def crear_actividad(request):
 
     if request.method == "POST":
         form = ActividadesForm(request.POST or None)
-
+        
+        # Se obtiene el id del proyecto, objetivo y la tarea seleccionadas por el usuario 
+        # con el fin de asignarselos al form y que este se pueda validar.
+        proyecto_id = request.POST.get('proyecto')
+        objetivo_id = request.POST.get('objetivo')
+        tarea_id = request.POST.get('tarea')
+        form.fields['proyecto'].choices = [(proyecto_id, proyecto_id)]
+        form.fields['objetivo'].choices = [(objetivo_id, objetivo_id)]
+        form.fields['tarea'].choices = [(tarea_id, tarea_id)]
+        
         if form.is_valid():
             post = form.save(commit=False)
             post.estudiante = estudiante_actual
             post.save()
             time.sleep(1)  # para que mensaje de que se creo pueda verse
             return HttpResponseRedirect("/actividades")
+        else:
+            print(form.errors.as_data())
 
     form = ActividadesForm()
     form.fields['estado'].widget = forms.HiddenInput()
@@ -159,35 +170,20 @@ def editar_actividad(request, id):
     return render(request, "crear_actividad.html", context)
 
 
+def load_proyectos(request):
+    area_id = request.GET.get('area')
+    proyectos = Proyecto.objects.filter(area=area_id, enPapelera=False).order_by('nombre')
+    return render(request, '../templates/proyectoActividad_dropdown_list_options.html', {'proyectos': proyectos})
+
 # AJAX
-def load_objetivosActividades(request):
-    proyecto_id = request.GET.get('proyecto_id')
-    # print(proyecto_id)
-
-    if (proyecto_id == ''):
-        # print("aqui")
-
-        objetivos = Objetivo.objects.filter(enPapelera=False)
-    else:
-        # print("aca")
-
-        objetivos = Objetivo.objects.filter(
-            proyecto__id=proyecto_id, enPapelera=False)
-    # print(objetivos)
+def load_objetivos(request):
+    proyecto_id = request.GET.get('proyecto')
+    objetivos = Objetivo.objects.filter(proyecto=proyecto_id, enPapelera=False)
     return render(request, '../templates/objetivoActividad_dropdown_list_options.html', {'objetivos': objetivos})
-    # return JsonResponse(list(objetivos.values('id', 'nombre')), safe=False)
 
 
 # AJAX
 def load_tareas(request):
-    objetivo_id = request.GET.get('objetivo_id')
-    # print(tarea_id)
-
-    if (objetivo_id == ''):
-        tareas = Tarea.objects.filter(enPapelera=False)
-    else:
-        tareas = Tarea.objects.filter(
-            objetivo__id=objetivo_id, enPapelera=False)
-    # print(objetivos)
-    return render(request, '../templates/tarea_dropdown_list_options.html', {'tareas': tareas})
-    # return JsonResponse(list(objetivos.values('id', 'nombre')), safe=False)
+    objetivo_id = request.GET.get('objetivo')
+    tareas = Tarea.objects.filter(objetivo=objetivo_id, enPapelera=False).order_by('nombre')
+    return render(request, '../templates/tareaActividad_dropdown_list_options.html', {'tareas': tareas})
