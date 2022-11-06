@@ -134,7 +134,7 @@
               </td>
               <td><span class="label Descripcion">{{ actividad.descripcion }}</span></td>
               <td class="fila_tabla"><span class="label Horas">{{ actividad.horas }}</span></td>
-              <td class="fila_tabla"><span class="label Fecha">{{ actividad.fecha }}</span></td>
+              <td class="fila_tabla"><span class="label Fecha">{{ actividad.fecha|date:"j b Y" }}</span></td>
               {% if not actividad.tarea.objetivo.proyecto.enPapelera %}
               <td class="fila_tabla"><span class="label Proyecto">{{actividad.tarea.objetivo.proyecto.nombre}}</span></td>
               {% else %}
