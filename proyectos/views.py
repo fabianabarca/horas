@@ -185,12 +185,6 @@ def editar_objetivo(request, id):
     return render(request, "crear_objetivo.html", context={"tipoAccion": creacionOedicion, "objetivo_form": form})
 
 
-def proyectosInfo(request):
-    listaProyectos = Proyecto.objects.all()
-
-    return render(request=request,  template_name="../templates/proyectosInfo.html", context={"listaProyectos": listaProyectos})
-
-
 def proyecto(request, url_proyecto):
     
     proyecto = get_object_or_404(Proyecto, url_proyecto=url_proyecto)
