@@ -190,15 +190,13 @@ def proyecto(request, url_proyecto):
     proyecto = get_object_or_404(Proyecto, url_proyecto=url_proyecto)
     objetivos = Objetivo.objects.filter(proyecto=proyecto).order_by('numero')
     tareas = []
-    for i, objetivo in enumerate(objetivos):
+    for objetivo in objetivos:
         tareas.append(Tarea.objects.filter(objetivo=objetivo))
 
     objetivos_tareas = zip(objetivos, tareas)
 
     context = {
         'proyecto': proyecto,
-        'objetivos': objetivos,
-        'tareas': tareas,
         'objetivos_tareas': objetivos_tareas,
     }
 
