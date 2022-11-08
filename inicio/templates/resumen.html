@@ -68,7 +68,7 @@
                 <div class="progress progress-white progress-thin my-2">
                     <div class="progress-bar" role="progressbar" style="width: {{ indice_avance_width }}%"
                         aria-valuenow="{{ indice_avance_width }}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><small><i class="icon cil-happy"></i> > 1 &nbsp;&nbsp;&nbsp;&nbsp; <i class="icon cil-frown"></i> < 1</small>
+                </div><small><i class="icon cil-happy text-success"></i> > 1 &nbsp;&nbsp;&nbsp;&nbsp; <i class="icon cil-frown text-danger"></i> < 1</small>
             </div>
         </div>
     </div>
@@ -79,10 +79,10 @@
     <small>
     <strong>Notas</strong> 
     <ul>
+        <li>Fecha de matrícula: {{ estudiante.fecha_inicio }}.</li>
         <li>Las horas registradas no incluyen las actividades que están en revisión.</li>
-        <li>El inicio del TCU es el día de matrícula reportado por VAS.</li>
         <li>El "índice de avance" muestra el porcentaje de avance de horas entre el porcentaje de avance del tiempo disponible.</li>
-        <li>El índice de avance oscila alrededor de 1, y preferiblemente tiene que ser mayor a 1.</li> 
+        <li>El índice de avance oscila alrededor de 1, y preferiblemente debe ser mayor a 1.</li> 
     </ul>
     </small>
 </p>

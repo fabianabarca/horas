@@ -193,6 +193,7 @@ def index(request, id=9999):
         # Inicio y contexto si el usuario es estudiante #
         inicio = 'resumen.html'
         context = {
+            "estudiante": estudiante_actual,
             "horas_totales_por_estudiante": horas_totales_por_estudiante, # Horas totales del estudiante actual
             "dias_desde_inicio_TCU": dias_desde_inicio_TCU,
             "porcentaje_horas_width": porcentaje_horas_width, # Entero del porcentaje de avance de horas
