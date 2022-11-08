@@ -38,4 +38,4 @@ class Objetivo(Registro):
 
     def __str__(self):
         titulo = f'{self.proyecto} {self.numero}'
-        return titulo
+        return self.descripcion

@@ -7,6 +7,7 @@ from proyectos.models import Proyecto
 from proyectos.models import Objetivo
 from tareas.models import Tarea
 from django.contrib.auth.decorators import login_required
+from django.db.models import Subquery
 from django import forms
 import time
 
@@ -184,26 +185,19 @@ def editar_objetivo(request, id):
     return render(request, "crear_objetivo.html", context={"tipoAccion": creacionOedicion, "objetivo_form": form})
 
 
-def proyectosInfo(request):
-    listaProyectos = Proyecto.objects.all()
-
-    return render(request=request,  template_name="../templates/proyectosInfo.html", context={"listaProyectos": listaProyectos})
-
-
 def proyecto(request, url_proyecto):
     
     proyecto = get_object_or_404(Proyecto, url_proyecto=url_proyecto)
     objetivos = Objetivo.objects.filter(proyecto=proyecto).order_by('numero')
     tareas = []
-    contador = {}
-    for i, objetivo in enumerate(objetivos):
+    for objetivo in objetivos:
         tareas.append(Tarea.objects.filter(objetivo=objetivo))
-        
+
+    objetivos_tareas = zip(objetivos, tareas)
 
     context = {
         'proyecto': proyecto,
-        'objetivos': objetivos,
-        'tareas': tareas,
+        'objetivos_tareas': objetivos_tareas,
     }
 
     return render(request, "proyecto.html", context)
