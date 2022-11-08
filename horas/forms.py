@@ -1,6 +1,7 @@
 from cuentas.models import Estudiante, Profesor, Carrera
 from solicitudes.models import Solicitud, SolicitudArchivo
 from actividades.models import Actividad
+from areas.models import Area
 from proyectos.models import *
 from tareas.models import Tarea
 from django import forms
@@ -145,21 +146,17 @@ class CustomAuthenticationForm(AuthenticationForm):
 class ActividadesForm(forms.ModelForm):
     '''Crea formulario para registro de actividades.'''
 
-    # Lista de proyectos
-    #proyecto = forms.ModelChoiceField(queryset=Proyecto.objects.filter(
-    #    enPapelera=False), required=False, widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    #objetivo = forms.ModelChoiceField(queryset=Objetivo.objects.filter(
-    #    enPapelera=False), required=False, widget=forms.Select(attrs={'style': 'width: 200px;', 'class': 'form-control'}))
-    
-    # Orden de aparición de los campos del formulario
-    #field_order = ['proyecto', 'objetivo',
-    #               'tarea', 'descripcion', 'horas', 'fecha']
-    field_order = ['tarea', 'descripcion', 'horas', 'fecha']
+    #Se crean los campos para area, proyecto, objetivo
+    area = forms.ModelChoiceField(queryset=Area.objects.all())
+    proyecto = forms.ChoiceField()
+    objetivo = forms.ChoiceField()
+
+    field_order = ['area', 'proyecto', 'objetivo', 'tarea', 'descripcion', 'horas', 'fecha']
 
     # Carga todos los campos del modelo de actividades
     class Meta:
         model = Actividad
-        fields = "__all__"
+        fields = '__all__'
         widgets = {
             'fecha': DateInput(
                 format=('%Y-%m-%d'),
@@ -167,7 +164,6 @@ class ActividadesForm(forms.ModelForm):
                        'placeholder': 'Select a date',
                        'type': 'date'}
             ),
-
         }
 
     # Parte de implementación de restringir seleccion de tarea por proyecto
@@ -179,40 +175,14 @@ class ActividadesForm(forms.ModelForm):
             user=User.objects.get(id=42))
         self.fields['estado'].initial = "P"
 
-        #self.fields['objetivo'].queryset = Objetivo.objects.none()
-        #self.fields['tarea'].queryset = Tarea.objects.none()
+        #Inicializar, proyectos, objetivos y tareas en blanco.
+        self.fields['proyecto'].queryset = Proyecto.objects.none()
+        self.fields['objetivo'].queryset = Objetivo.objects.none()
+        self.fields['tarea'].choices = []
 
-        # for value in self.data.keys():
-        # print('aqui')
 
-        # Busca objetivos en proyecto seleccionado
-        if 'proyecto' in self.data:
-            # print('alla')
-            try:
-                proyecto_id = int(self.data.get('proyecto'))
-                #print("forms: " + Objetivo.objects.filter(proyecto__id=proyecto_id).order_by('nombre'))
-                self.fields['objetivo'].queryset = Objetivo.objects.filter(
-                    proyecto__id=proyecto_id).order_by('descripcion')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        elif self.instance.pk:
-            # print('acaa')
-            #self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea=self.instance)
-            self.fields['objetivo'].queryset = Objetivo.objects.filter(
-                enPapelera=False)
 
-        # Busca tareas en objetivo seleccionado
-        if 'objetivo' in self.data:
-            try:
-                objetivo_id = int(self.data.get('objetivo'))
-                #print("forms: " + Tarea.objects.filter(objetivo__id=objetivo_id).order_by('nombre'))
-                self.fields['tarea'].queryset = Tarea.objects.filter(
-                    objetivo__id=objetivo_id, enPapelera=False).order_by('nombre')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        elif self.instance.pk:
-            #self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea=self.instance)
-            self.fields['tarea'].queryset = Tarea.objects.filter(enPapelera=False)
+
 
 class SolicitudesForm(forms.ModelForm):
     class Meta:

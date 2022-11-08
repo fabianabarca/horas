@@ -28,7 +28,7 @@
 <h6 class="text-uppercase font-weight-bolder opacity-6">Objetivos y tareas</h6>
 <p>
 <div class="accordion accordion-flush" id="objetivos">
-  {% for objetivo in objetivos %}
+  {% for objetivo, tareas in objetivos_tareas %}
   <div class="accordion-item">
     <h2 class="accordion-header" id="heading_{{ forloop.counter }}">
       <button class="accordion-button collapsed bg-light" type="button" data-coreui-toggle="collapse" data-coreui-target="#collapse_{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse_{{ forloop.counter }}">
@@ -40,7 +40,16 @@
     </h2>
     <div id="collapse_{{ forloop.counter }}" class="accordion-collapse collapse bg-light" aria-labelledby="heading_{{ forloop.counter }}" data-coreui-parent="#objetivos">
       <div class="accordion-body">
-        Lista de tareas (pendiente).
+        <p><i class="icon cil-task"></i> <strong>Tareas</strong></p>
+        <dl>
+          {% for tarea in tareas %}
+          <dt>{{ tarea.nombre }}</dt>
+          <dd>{{ tarea.descripcion }}</dd>
+          {% empty %}
+          <dt><em>¡No hay tareas todavía!</em></dt>
+          <dd>Es posible crear tareas para este objetivo <a href="{% url 'crear_tarea' %}" target="_blank">aquí</a>.</dd>          
+          {% endfor %}
+        </dl>
       </div>
     </div>
   </div>
@@ -59,14 +68,5 @@
 <!-- Ubicación -->
 <h6 class="text-uppercase font-weight-bolder opacity-6">Ubicación</h6>
 <p>{{ proyecto.ubicacion }}</p>
-
-
-
-
-<h1 class="display-1">Vamos a ver</h1>
-
-
-
-
 
 {% endblock %}
