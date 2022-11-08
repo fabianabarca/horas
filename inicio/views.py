@@ -1,4 +1,5 @@
 import json
+from tkinter import W
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -10,6 +11,7 @@ from actividades.models import Actividad
 from cuentas.models import Estudiante
 from proyectos.models import Proyecto
 import datetime
+from datetime import timedelta
 
 # Recibe: Diccionario o lista con elementos y sus cantidades
 # Modifica: ---
@@ -99,6 +101,7 @@ def index(request, id=9999):
         for estudiante in ranking_estudiantes_list:
             horas_actividades = Actividad.objects.filter(
                 estudiante=estudiante, enPapelera=False)
+
             horas_estudiante = 0
             for actividad in horas_actividades:
                 horas_estudiante = horas_estudiante + actividad.horas
@@ -190,6 +193,62 @@ def index(request, id=9999):
                 horas_por_dia[numero_actividades][3]=actividad.horas # Horas de la actividad
                 numero_actividades+=1 # Cantidad de actividades
 
+
+        #[Calcular la cantidad de horas aprobadas en los últimos 7 días de cada estudiante]
+
+        #Calcular el ultimo dia de los 7 de la semana, (dia actual - 7)
+        fecha_primer_dia = fecha_hoy - timedelta(days=6)
+        primer_dia = fecha_primer_dia.day
+
+        #Arreglo para almacenar las actividades registradas en los últimos 7 días
+        actividades_semana = []
+        act_indx = 0
+        for actividad in horas_por_dia:
+            if(horas_por_dia[act_indx][0] == fecha_hoy.year and (horas_por_dia[act_indx][1] == fecha_hoy.month or horas_por_dia[act_indx][1] == fecha_hoy.month-1) ):
+                if(horas_por_dia[act_indx][2] >= primer_dia and horas_por_dia[act_indx][2] <= fecha_hoy.day):
+                    actividades_semana.append(horas_por_dia[act_indx])
+            act_indx+=1
+
+        #Ordenar actividades_semana por la fecha del día
+        actividades_semana.sort()
+
+        #Almacena la cantidad de horas por cada uno de los 7 ultimos dias
+        horas_semana = [0] * 7
+        #indice para el arreglo horas_semana
+        horas_indx = 0
+        #indice para actividades_semana
+        act_fila = 0
+        
+        #Variable para controlar cual es el dia actual dentro del ciclo
+        pr_day = primer_dia
+
+        for activity in actividades_semana:
+            if(pr_day != actividades_semana[act_fila][2]):
+                horas_indx += (actividades_semana[act_fila][2] - pr_day)
+            
+            horas_semana[horas_indx]+= actividades_semana[act_fila][3]
+            pr_day = actividades_semana[act_fila][2]
+            act_fila+=1
+
+
+        #Almacena el nombre de los dias para enviarlo al grafico
+        dias_labels = []
+        #Arreglo con los nombres de los dias de la semana
+        dias_semana = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
+        #Se obtiene el numero del utimo dia en la semana
+        ultimo_dia = fecha_primer_dia.weekday()
+
+        dias_indx = ultimo_dia
+
+        while (dias_indx <= 6):
+            dias_labels.append(dias_semana[dias_indx])
+            dias_indx += 1
+            if(dias_indx == 7):
+                dias_indx = 0
+            if(dias_indx == ultimo_dia):
+                break
+
+
         # Inicio y contexto si el usuario es estudiante #
         inicio = 'resumen.html'
         context = {
@@ -202,6 +261,8 @@ def index(request, id=9999):
             "indice_avance_width": indice_avance_width, # Porcentaje de la barra para mostrar el índice de avance
             "horas_por_dia": json.dumps(horas_por_dia), # Lista para los datos del calendario, convertida con json
             "numero_actividades": numero_actividades, # Número de actividades del estudiante
+            "horas_semanales": json.dumps(horas_semana),
+            "dias_semana": json.dumps(dias_labels)
         }
 
     # Inicio y contexto según el usuario sea estudiante o profesor

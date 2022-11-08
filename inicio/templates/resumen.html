@@ -73,6 +73,20 @@
         </div>
     </div>
 
+
+    <!-- Grafico barras -->
+    <div class="col-sm-6 col-lg-3 mb-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="c-chart-wrapper" style="height:129px;">
+                        <canvas id="barras1" width="273" height="166"></canvas>          
+                      </div>
+                </div>
+                <small>Horas aprobadas en los últimos 7 días</small>
+            </div>
+        </div>
+    </div>
 </div>
 
 <p>
@@ -87,7 +101,58 @@
     </small>
 </p>
 
-<br>
+<!--Grafico de barras utimos 7 dias-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
+<script>
+    horas = {{ horas_semanales }}
+    dias = {{ dias_semana|safe }}
+    console.log(dias)
+    const barChart = new Chart(document.getElementById('barras1'), {
+        type: 'bar',
+        data: {
+            labels: dias,
+            datasets: [{
+            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+            borderColor: 'rgba(220, 220, 220, 0.8)',
+            highlightFill: 'rgba(220, 220, 220, 0.75)',
+            highlightStroke: 'rgba(220, 220, 220, 1)',
+            data: horas
+            }]
+        },
+        options: {
+        layout: {padding: {right:0, left:-10}},
+        maintainAspectRatio: false,
+        legend: {
+            display: false
+        },
+        scales: {
+        display:false,
+        xAxes: [
+        {
+            barPercentage: 0.6,
+            gridLines: {
+            display: false,
+            drawBorder: false
+            },
+            ticks: {
+            display: false
+            }
+        }
+        ],
+        yAxes: [
+        {
+            ticks: {
+            display: false,
+            beginAtZero: false
+            },
+            gridLines: {
+            display: false,
+            drawBorder: false
+            }
+        }]}}
+    });
+    </script>
+
 
 <!-- Pronto: calendario de Google Charts -->
 
