@@ -17,17 +17,17 @@ def actividades(request):
 
     list_of_inputs = request.POST.getlist('inputs')
 
-    is_staff = request.user.is_staff
-
-    # Put the logging info within your django view
-
+    # Obtener lista de actividades para profesores o cada estudiante
     if request.user.is_staff:
-        actividades_list = Actividad.objects.all()
+        actividades = Actividad.objects.filter(enPapelera=False)
     else:
         estudiante_actual = Estudiante.objects.get(user=request.user)
-        actividades_list = Actividad.objects.filter(
-            estudiante=estudiante_actual)
+        actividades = Actividad.objects.filter(
+            estudiante=estudiante_actual,
+            enPapelera=False,
+            )
 
+    # Procesar el formulario de filtros
     if request.method == "POST":
         form = FiltrosForm(request.POST or None)
         list_of_inputs = request.POST.getlist('inputs')
@@ -49,21 +49,21 @@ def actividades(request):
 
         if form.is_valid():
             if form.cleaned_data.get('estudiante'):
-                actividades_list = actividades_list.filter(
+                actividades = actividades.filter(
                     estudiante=form.cleaned_data.get('estudiante'))
             # if form.cleaned_data.get('proyecto'):
-                #actividades_list =  actividades_list.filter(proyecto = form.cleaned_data.get('proyecto'))
+                #actividades =  actividades.filter(proyecto = form.cleaned_data.get('proyecto'))
             if form.cleaned_data.get('tarea'):
-                actividades_list = actividades_list.filter(
+                actividades = actividades.filter(
                     tarea=form.cleaned_data.get('tarea'))
             if form.cleaned_data.get('estado'):
-                actividades_list = actividades_list.filter(
+                actividades = actividades.filter(
                     estado=form.cleaned_data.get('estado'))
             if form.cleaned_data.get('descripcion'):
-                actividades_list = actividades_list.filter(
+                actividades = actividades.filter(
                     descripcion__contains=form.cleaned_data.get('descripcion'))
             if form.cleaned_data.get('fecha_inicio') or form.cleaned_data.get('fecha_final'):
-                actividades_list = actividades_list.filter(fecha__range=[form.cleaned_data.get(
+                actividades = actividades.filter(fecha__range=[form.cleaned_data.get(
                     'fecha_inicio'), form.cleaned_data.get('fecha_final')])
 
             # return HttpResponseRedirect("/actividades")
@@ -73,7 +73,7 @@ def actividades(request):
 
     # Contexto
     context = {
-        "actividades": actividades_list,
+        "actividades": actividades,
         "filtros_form": form
     }
 
