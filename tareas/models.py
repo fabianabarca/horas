@@ -13,6 +13,11 @@ class Tarea(Registro):
         ('V', 'Vencida'),
         ('F', 'Finalizada'),
     )
+    PRIORIDADES = (
+        ('B', 'Baja'),
+        ('M', 'Media'),
+        ('A', 'Alta'),
+    )
     nombre = models.CharField(max_length=500, blank=False)
     descripcion = models.TextField(blank=True, null=True)
     estudiante = models.ManyToManyField(Estudiante)
@@ -21,8 +26,8 @@ class Tarea(Registro):
     creado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     fecha_creacion = models.DateField(auto_now_add=True, blank=True, null=True)
     fecha_limite = models.DateField(blank=True, null=True)
-    urgente = models.BooleanField(default=False)
-    estado = models.CharField(blank=True, null=True, choices=ESTADOS, max_length=1, default='A')
+    prioridad = models.CharField(choices=PRIORIDADES, max_length=1, default='B', blank=True, null=True)
+    estado = models.CharField(choices=ESTADOS, max_length=1, default='A', blank=True, null=True)
 
     def __str__(self):
         if self.nombre==None:
