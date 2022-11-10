@@ -44,6 +44,7 @@
       <table id="datatable" class="table align-items-center table-hover">
         <thead class="thead">
           <tr>
+            <th scope="col"></th>
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
             <th scope="col">Objetivo</th>
@@ -54,6 +55,18 @@
         <tbody>
           {% for tarea in mis_tareas %}
           <tr>
+            <!-- Opciones de edición -->
+            <td>
+              <!-- Editar -->
+              <a href="editar_tarea/{{ tarea.id }}" class="text-warning" role="button" style="text-decoration: none;">
+                <i class="icon cil-pencil"></i>
+              </a>
+              <!-- Eliminar -->
+              <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
+                class="text-danger" value="{{ tarea.id }}" name="deleteButton">
+                <i class="icon cil-trash"></i>
+              </a>
+            </td>              
             <!-- Nombre -->
             <td>{{ tarea.nombre }}</td>
             <!-- Descripción -->
@@ -87,10 +100,17 @@
     </div>
   </div>
 </div>
-{% endif %}
 </p>
 
+<div class="alert alert-info" role="alert">
+  La lista de todas las tareas disponibles está en la página de cada proyecto. Recuerde que usted también puede crear tareas para un objetivo.
+</div>
+
+{% endif %}
+
 <br>
+
+{% if request.user.is_staff %}
 
 <!-- Lista de todas las tareas -->
 
@@ -137,7 +157,7 @@
         <table id="datatable" class="table align-items-center table-hover">
           <thead class="thead">
             <tr>
-              {% if request.user.is_staff %}<th scope="col"></th>{% else %}{% endif %}
+              <th scope="col"></th>
               <th scope="col">Nombre</th>
               <th scope="col">Descripción</th>
               <th scope="col">Objetivo</th>
@@ -149,7 +169,6 @@
             {% for tarea in tareas %}
             <tr>
               <!-- Opciones de edición -->
-              {% if request.user.is_staff %}
               <td>
                 <!-- Editar -->
                 <a href="editar_tarea/{{ tarea.id }}" class="text-warning" role="button" style="text-decoration: none;">
@@ -160,8 +179,7 @@
                   class="text-danger" value="{{ tarea.id }}" name="deleteButton">
                   <i class="icon cil-trash"></i>
                 </a>
-              </td>
-              {% endif %}              
+              </td>              
               <!-- Nombre -->
               <td>{{ tarea.nombre }}</td>
               <!-- Descripción -->
@@ -204,6 +222,8 @@
   {% endif %}
 
 </form>
+
+{% endif %}
 
 <br>
 

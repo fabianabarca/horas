@@ -69,20 +69,10 @@
           </svg> Actividades</a></li>
       <li class="nav-divider"></li>
       <li class="nav-title">Proyectos</li>
-      <li class="nav-group"><a class="nav-link nav-group-toggle" href="{% url 'tareas' %}">
-          <svg class="nav-icon">
-            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-task"></use>
-          </svg> Tareas</a>
-        <ul class="nav-group-items">
-          <li class="nav-item"><a class="nav-link" href="{% url 'tareas' %}#mis-tareas" target="_top">
-              <svg class="nav-icon">
-                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-bookmark"></use>
-              </svg> Mis tareas</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'tareas' %}#todas-las-tareas" target="_top">
-              <svg class="nav-icon">
-                <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-list"></use>
-              </svg> Todas las tareas</a></li>
-        </ul>
+      <li class="nav-item"><a class="nav-link" href="{% url 'tareas' %}">
+        <svg class="nav-icon">
+          <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-task"></use>
+        </svg> Tareas</a></li>
       <li class="nav-item"><a class="nav-link" href="{% url 'proyectos' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-description"></use>
