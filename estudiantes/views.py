@@ -32,9 +32,9 @@ def estudiantes(request):
             # return render (request=request, template_name="../../inicio/templates/index.html", context={"estudianteID":estudianteAVer[0].id,})
 
     estudiantes_list = Estudiante.objects.all().filter(user__is_staff=False)
-    if request.user.is_staff:
-        actividades_list = Actividad.objects.all()
-    #Actividad.objects.raw('SELECT id, horas FROM myapp_actividad ')
+    
+    actividades_list = Actividad.objects.all()
+
     horasEstudianteslist = []
     porcentajeEstudianteslist = []
     porcentajeWidthEstudianteslist = []

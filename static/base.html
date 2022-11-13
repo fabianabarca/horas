@@ -106,14 +106,12 @@
               </svg> Otros</a></li>
         </ul>
       </li>
-      {% if request.user.is_staff %}
       <li class="nav-divider"></li>
-      <li class="nav-title">Administración</li>
+      <li class="nav-title">Personas</li>
       <li class="nav-item"><a class="nav-link" href="{% url 'estudiantes' %}">
           <svg class="nav-icon">
-            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-people"></use>
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-address-book"></use>
           </svg> Estudiantes</a></li>
-      {% endif %}
     </ul>
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
   </div>
