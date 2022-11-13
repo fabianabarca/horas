@@ -77,10 +77,12 @@
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-description"></use>
           </svg> Proyectos</a></li>
+      {% if request.user.is_staff %}
       <li class="nav-item"><a class="nav-link" href="{% url 'areas' %}">
           <svg class="nav-icon">
             <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-folder-open"></use>
           </svg> Áreas</a></li>
+      {% endif %}
       <li class="nav-divider"></li>
       <li class="nav-title">Trámites</li>
       <li class="nav-group"><a class="nav-link nav-group-toggle" href="{% url 'solicitudes' %}">
