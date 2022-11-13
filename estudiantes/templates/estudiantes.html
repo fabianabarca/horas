@@ -62,7 +62,7 @@
               <th scope="col">Finalización</th>
               <th scope="col" class="text-center"><i class="icon cil-contact"></i></th>
               {% if request.user.is_staff %}
-              <th scope="col">Horas totales</th>
+              <th scope="col">Progreso</th>
               {% endif %}
             </tr>
           </thead>
@@ -80,10 +80,10 @@
                 <a  class="text-info"  href="/index/{{estudiante.id }}" role="button">
                   <i class="	fa fa-address-card"></i>
                 </a>
-                -->
-                <!-- Editar -->
-                <a href="editar_estudiante/{{ estudiante.id }}" role="button" style="text-decoration: none;">
-                  <i class="icon cil-pencil text-warning"></i>
+                -->              
+                <!-- Información -->
+                <a href="{{ estudiante.user.username }}" style="text-decoration: none;">
+                  <i class="icon cil-description text-success"></i>
                 </a>               
               </td>
               {% endif %}
