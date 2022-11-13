@@ -5,4 +5,5 @@ from django.urls import path
 urlpatterns = [
     path('', estudiantes, name='estudiantes'),
     path('editar_estudiante/<int:id>', editar_estudiante, name='editar_estudiante'),
+    path('equipos', equipos, name='equipos'),
 ]

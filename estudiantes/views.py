@@ -95,3 +95,15 @@ def editar_estudiante(request, id):
     }
 
     return render(request, "editar_estudiante.html", context)
+
+
+@login_required(login_url='/cuentas/ingreso/')
+def equipos(request):
+    '''Lista de equipos de estudiantes.
+
+    Incluye información el nombre y descripción.
+    '''
+    context = {
+        'saludo': 'hola',
+    }
+    return render(request, 'equipos.html', context)

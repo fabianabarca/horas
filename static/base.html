@@ -110,8 +110,12 @@
       <li class="nav-title">Personas</li>
       <li class="nav-item"><a class="nav-link" href="{% url 'estudiantes' %}">
           <svg class="nav-icon">
-            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-address-book"></use>
+            <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-user"></use>
           </svg> Estudiantes</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'equipos' %}">
+            <svg class="nav-icon">
+              <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-group"></use>
+            </svg> Equipos</a></li>  
     </ul>
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
   </div>
