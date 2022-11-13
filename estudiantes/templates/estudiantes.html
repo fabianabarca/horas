@@ -50,7 +50,10 @@
         <table id="estudiantes-table" class="table align-items-center table-hover">
           <thead>
             <tr>
-              <th scope="col"></th>
+              {% if request.user.is_staff %}
+              <th scope="col" class="text-center"><i class="icon cil-user"></i></th>
+              {% endif %}
+              <th scope="col"><i class="icon cil-envelope-letter"></i></th>
               {% if request.user.is_staff %}
               <th scope="col">Carné</th>
               {% endif %}
@@ -67,7 +70,8 @@
             {% for estudiante, horas, porcentaje, porcentajeWidth in zipHoras %}
             <tr>
               <!-- Información -->
-              <td>
+              {% if request.user.is_staff %}
+              <td scope="col" class="text-center">
                 <!-- A pagina de estudiante button
                 <button  class="text-info"  value="{{ estudiante.user.id }}" name="studentButton" type="submit">
                   <i class="	fa fa-address-card"></i>
@@ -77,12 +81,14 @@
                   <i class="	fa fa-address-card"></i>
                 </a>
                 -->
-                {% if request.user.is_staff %}
                 <!-- Editar -->
                 <a href="editar_estudiante/{{ estudiante.id }}" role="button" style="text-decoration: none;">
                   <i class="icon cil-pencil text-warning"></i>
-                </a>
-                {% endif %}
+                </a>               
+              </td>
+              {% endif %}
+              <!-- Correo electrónico -->
+              <td>
                 <!-- Correo -->
                 <a href="mailto:{{ estudiante.user.email }}" target="_blank" style="text-decoration: none;">
                   <i class="icon cil-at text-info"></i>
