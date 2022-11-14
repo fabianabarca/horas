@@ -12,83 +12,10 @@
     Este es un resumen de las horas de trabajo en el TCU.
 </p>
 
-<!-- Widgets de información -->
-<h6 class="text-uppercase font-weight-bolder opacity-6">Resumen de horas</h6>
+<!-- Información de horas -->
+
+{% include "resumen_estudiante.html" %}
 
 <br>
-
-<div class="row justify-content-md-center">
-    <!-- Horas registradas -->
-    <div class="col-sm-6 col-lg-3 mb-3">
-        <div class="card text-white bg-success">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div class="fs-4 fw-semibold">
-                        <h1 class="display-3">{{ horas_totales_por_estudiante }}</h1>
-                    </div>
-                    <div><i class="cil-clock icon icon-xxl"></i></div>
-                </div>
-                <div class="text-uppercase fw-semibold">Horas registradas</div>
-                <div class="progress progress-white progress-thin my-2">
-                    <div class="progress-bar" role="progressbar" style="width: {{ porcentaje_horas_width }}%"
-                        aria-valuenow="{{ porcentaje_horas_width }}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><small>{{ porcentaje_horas_width }}% de 300 horas totales</small>
-            </div>
-        </div>
-    </div>
-    <!-- Días en el TCU -->
-    <div class="col-sm-6 col-lg-3 mb-3">
-        <div class="card text-white bg-danger">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div class="fs-4 fw-semibold">
-                        <h1 class="display-3">{{ dias_desde_inicio_TCU }}</h1>
-                    </div>
-                    <div><i class="cil-calendar icon icon-xxl"></i></div>
-                </div>
-                <div class="text-uppercase fw-semibold">Días en el TCU</div>
-                <div class="progress progress-white progress-thin my-2">
-                    <div class="progress-bar" role="progressbar" style="width: {{ porcentaje_tiempo_width }}%"
-                        aria-valuenow="{{ porcentaje_tiempo_width }}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><small>{{ porcentaje_tiempo_width }}% de 365 días disponibles</small>
-            </div>
-        </div>
-    </div>
-    <!-- Índice de avance -->
-    <div class="col-sm-6 col-lg-3 mb-3">
-        <div class="card text-white bg-warning">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div class="fs-4 fw-semibold">
-                        <h1 class="display-3">{{ indice_avance }}</h1>
-                    </div>
-                    <div><i class="cil-chart-line icon icon-xxl"></i></div>
-                </div>
-                <div class="text-uppercase fw-semibold">Índice de avance</div>
-                <div class="progress progress-white progress-thin my-2">
-                    <div class="progress-bar" role="progressbar" style="width: {{ indice_avance_width }}%"
-                        aria-valuenow="{{ indice_avance_width }}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><small><i class="icon cil-happy text-success"></i> > 1 &nbsp;&nbsp;&nbsp;&nbsp; <i class="icon cil-frown text-danger"></i> < 1</small>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<p>
-    <small>
-    <strong>Notas</strong> 
-    <ul>
-        <li>Fecha de matrícula: {{ estudiante.fecha_inicio }}.</li>
-        <li>Las horas registradas no incluyen las actividades que están en revisión.</li>
-        <li>El "índice de avance" muestra el porcentaje de avance de horas entre el porcentaje de avance del tiempo disponible.</li>
-        <li>El índice de avance oscila alrededor de 1, y preferiblemente debe ser mayor a 1.</li> 
-    </ul>
-    </small>
-</p>
-
-<br>
-
-<!-- Pronto: calendario de Google Charts -->
 
 {% endblock %}
