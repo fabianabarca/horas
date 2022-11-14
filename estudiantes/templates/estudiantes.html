@@ -14,7 +14,7 @@
     <h1 class="display-4">Estudiantes</h1>
   </div>
   <div>
-    <h1><span class="badge text-bg-dark"><i class="cil-people"></i></span></h1>
+    <h1><span class="badge text-bg-dark"><i class="cil-user"></i></span></h1>
   </div>
 </div>
 
@@ -23,10 +23,12 @@
   Lista de personas matriculadas y activas en TC-691 "Tropicalización de la tecnología".
 </p>
 
+{% if request.user.is_staff %}
 <!-- Botón para agregar estudiantes -->
 <p>
   <a href="{% url 'registro' %}" type="button" class="btn btn-outline-info">Nuevo estudiante</a>
 </p>
+{% endif %}
 
 <br>
 
@@ -48,21 +50,28 @@
         <table id="estudiantes-table" class="table align-items-center table-hover">
           <thead>
             <tr>
-              <th scope="col"></th>
+              {% if request.user.is_staff %}
+              <th scope="col" class="text-center"><i class="icon cil-user"></i></th>
+              {% endif %}
+              <th scope="col"><i class="icon cil-envelope-letter"></i></th>
+              {% if request.user.is_staff %}
               <th scope="col">Carné</th>
+              {% endif %}
               <th scope="col">Nombre</th>
-              <th scope="col">Correo</th>
               <th scope="col">Carrera</th>
-              <th scope="col">Tutor</th>
-              <th scope="col">Inicio del TCU</th>
-              <th scope="col">Finalización del TCU</th>
-              <th scope="col">Horas totales</th>
+              <th scope="col">Finalización</th>
+              <th scope="col" class="text-center"><i class="icon cil-contact"></i></th>
+              {% if request.user.is_staff %}
+              <th scope="col">Progreso</th>
+              {% endif %}
             </tr>
           </thead>
           <tbody>
             {% for estudiante, horas, porcentaje, porcentajeWidth in zipHoras %}
             <tr>
-              <td>
+              <!-- Información -->
+              {% if request.user.is_staff %}
+              <td scope="col" class="text-center">
                 <!-- A pagina de estudiante button
                 <button  class="text-info"  value="{{ estudiante.user.id }}" name="studentButton" type="submit">
                   <i class="	fa fa-address-card"></i>
@@ -71,28 +80,57 @@
                 <a  class="text-info"  href="/index/{{estudiante.id }}" role="button">
                   <i class="	fa fa-address-card"></i>
                 </a>
-                -->
-                <!-- Editar -->
-                <a href="editar_estudiante/{{ estudiante.id }}" class="text-warning" role="button">
-                  <svg class="nav-icon" width="16" height="16">
-                    <use xlink:href="{% static 'vendors/@coreui/icons/svg/free.svg' %}#cil-pencil"></use>
-                  </svg>
+                -->              
+                <!-- Información -->
+                <a href="{{ estudiante.user.username }}" style="text-decoration: none;">
+                  <i class="icon cil-bar-chart text-success"></i>
+                </a>               
+              </td>
+              {% endif %}
+              <!-- Correo electrónico -->
+              <td>
+                <!-- Correo -->
+                <a href="mailto:{{ estudiante.user.email }}" target="_blank" style="text-decoration: none;">
+                  <i class="icon cil-at text-info"></i>
                 </a>
               </td>
-
-              <td class="fila_tabla"><span class="label Carne">{{ estudiante.user.username }}</span></td>
-              <td class="fila_tabla"><span class="label Nombre">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</span></td>
-              <td class="fila_tabla"><span class="label Correo">{{ estudiante.user.email }}</span></td>
-              <td class="fila_tabla"><span class="label Carrera">{{ estudiante.carrera.nombre }}</span></td>
-              <td class="fila_tabla"><span class="label Tutor">{{ estudiante.tutor}}</span></td>
-              <td class="fila_tabla"><span class="label Inicio">{{ estudiante.fecha_inicio}}</span></td>
-              <td class="fila_tabla"><span class="label Fin">{{ estudiante.fecha_final}}</span></td>
-              <td class="fila_tabla">
+              {% if request.user.is_staff %}
+              <!-- ID -->
+              <td>{{ estudiante.user.username }}</td>
+              {% endif %}
+              <!-- Nombre -->
+              <td>{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</span></td>
+              <!-- Carrera -->
+              <td>{{ estudiante.carrera.nombre }}</td>
+              <!-- Finalización -->
+              <td>{{ estudiante.fecha_final|date:"j b Y" }}</td>
+              <!-- Tutor -->
+              <td class="text-center">
+                <span class="small">
+                  <span class="badge rounded-pill text-bg-secondary">
+                    {% if estudiante.tutor.user.username == 'Fabián' %}
+                    FAC
+                    {% elif estudiante.tutor.user.username == 'teodoro' %}
+                    TWC
+                    {% elif estudiante.tutor.user.username == 'helber' %}
+                    HMN
+                    {% elif estudiante.tutor.user.username == 'david' %}
+                    DMR
+                    {% else %}
+                    N/A
+                    {% endif %}
+                  </span>
+                </span>
+              </td>
+              {% if request.user.is_staff %}
+              <!-- Horas -->
+              <td>
                 <span class="small">{{ horas }} de 300 <span class="text-muted">({{ porcentaje }}%)</span></span>
                 <div class="progress progress-thin">
                   <div class="progress-bar bg-warning" role="progressbar" style="width: {{ porcentajeWidth }}%" aria-valuenow="{{ porcentajeWidth }}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
               </td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>
@@ -110,69 +148,12 @@
 
 </form>
 
-<!--Modal-->
-<div id="myModal" class="modal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Información adicional</h5>
-        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <dl>
-          <dt>Carné</dt>
-          <dd id="d_carne"></dd>
-          <dt>Nombre</dt>
-          <dd id="d_nombre"></dd>
-          <dt>Correo</dt>
-          <dd id="d_correo"></dd>
-          <dt>Carrera</dt>
-          <dd id="d_carrera"></dd>
-          <dt>Tutor</dt>
-          <dd id="d_tutor"></dd>
-          <dt>Inicio del TCU</dt>
-          <dd id="d_inicio"></dd>
-          <dt>Finalización del TCU</dt>
-          <dd id="d_fin"></dd>
-          <dt>Horas totales</dt>
-          <dd id="d_horas"></dd>
-        </dl>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--JQuery para el modal-->
-<script>
-  $(".fila_tabla").click(function () {
-    $('#myModal').modal('show')
-    var row = $(this).closest("tr");
-    var carne = row.find(".label.Carne").html()
-    var nombre = row.find(".label.Nombre").html()
-    var correo = row.find(".label.Correo").html()
-    var carrera = row.find(".label.Carrera").html()
-    var tutor = row.find(".label.Tutor").html()
-    var inicio = row.find(".label.Inicio").html()
-    var fin = row.find(".label.Fin").html()
-    var horas = row.find(".label.Horas").html()
-
-    $('#d_carne').text(carne)
-    $('#d_nombre').text(nombre)
-    $('#d_correo').text(correo)
-    $('#d_carrera').text(carrera)
-    $('#d_tutor').text(tutor)
-    $('#d_inicio').text(inicio)
-    $('#d_fin').text(fin)
-    $('#d_horas').text(horas)
-  });
-
-  $('td:nth-child(4),th:nth-child(4)').hide();
-  $('td:nth-child(5),th:nth-child(5)').hide();
-  $('td:nth-child(6),th:nth-child(6)').hide();
-  $('td:nth-child(7),th:nth-child(7)').hide();
-
-</script>
+<p>
+  Cada estudiante tiene asignado un docente tutor, indicado como 
+  <span class="small"><span class="badge small rounded-pill text-bg-secondary">FAC</span></span> Fabián, 
+  <span class="small"><span class="badge rounded-pill text-bg-secondary">HMN</span></span> Helber, 
+  <span class="small"><span class="badge rounded-pill text-bg-secondary">DMR</span></span> David y 
+  <span class="small"><span class="badge rounded-pill text-bg-secondary">TWC</span></span> Teodoro.
+</p>
 
 {% endblock %}

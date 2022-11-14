@@ -69,4 +69,13 @@
 <h6 class="text-uppercase font-weight-bolder opacity-6">Ubicación</h6>
 <p>{{ proyecto.ubicacion }}</p>
 
+<!-- Edición -->
+{% if request.user.is_staff %}
+<p>
+<a href="editar_proyecto/{{ proyecto.id }}" class="text-warning small" role="button" style="text-decoration: none;">
+  <i class="icon cil-pencil"></i> Editar
+</a>
+</p>
+{% endif %}
+
 {% endblock %}
