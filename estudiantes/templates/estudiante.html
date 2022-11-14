@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block page_title %} {{ estudiante.user.first_name }} {{ estudiante.user.last_name }} {% endblock %}
+
+{% block main %}
+
+<!-- Título -->
+<div class="d-flex justify-content-between">
+  <div>
+    <h1 class="display-4">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</h1>
+  </div>
+  <div>
+    <h1><span class="badge text-bg-dark"><i class="cil-user"></i></span></h1>
+  </div>
+</div>
+
+<!-- Descripción -->
+<p class="lead">
+    Este es un resumen de las horas de trabajo en el TCU y la información personal de {{ estudiante.user.first_name }}.
+</p>
+
+<div class="d-flex justify-content-center">
+    <div class="p-2">
+        <dl>
+            <dt>Carné</dt>
+            <dd>{{ estudiante.user.username }}</dd>
+            <dt>Carrera</dt>
+            <dd>{{ estudiante.carrera }}</dd>
+            <dt>Estado</dt>
+            <dd>{{ estudiante.get_estado_display }} <a href="editar_estudiante/{{ estudiante.id }}" class="text-warning" role="button" style="text-decoration: none;"><i class="icon cil-pencil"></i></a></dd>
+        </dl>
+    </div>
+    <div class="p-2">
+        <dl>
+            <dt>Nombre</dt>
+            <dd>{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</dd>
+            <dt>Fecha de finalización</dt>
+            <dd>{{ estudiante.fecha_final|date:"j b Y" }}</dd>
+            <dt>Docente tutor</dt>
+            <dd>{{ estudiante.tutor }} <a href="editar_estudiante/{{ estudiante.id }}" class="text-warning" role="button" style="text-decoration: none;"><i class="icon cil-pencil"></i></a></dd>
+        </dl>
+    </div>
+</div>
+
+<br>
+
+<!-- Información de horas -->
+
+{% include "resumen_estudiante.html" %}
+
+{% endblock %}
