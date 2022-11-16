@@ -39,7 +39,7 @@
   
   {% csrf_token %}
       
-  {% if estudiantes %}
+  {% if informacion %}
   
   <!-- Tabla -->
   <p>
@@ -67,7 +67,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for estudiante, horas, porcentaje, porcentajeWidth in zipHoras %}
+            {% for estudiante, horas, porcentaje, porcentajeWidth in informacion %}
             <tr>
               <!-- Información -->
               {% if request.user.is_staff %}
@@ -108,7 +108,7 @@
               <td class="text-center">
                 <span class="small">
                   <span class="badge rounded-pill text-bg-secondary">
-                    {% if estudiante.tutor.user.username == 'Fabián' %}
+                    {% if estudiante.tutor.user.username == 'fabian' %}
                     FAC
                     {% elif estudiante.tutor.user.username == 'teodoro' %}
                     TWC
@@ -148,6 +148,7 @@
 
 </form>
 
+<!-- Sobre profesores tutores -->
 <p>
   Cada estudiante tiene asignado un docente tutor, indicado como 
   <span class="small"><span class="badge small rounded-pill text-bg-secondary">FAC</span></span> Fabián, 

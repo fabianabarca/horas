@@ -17,54 +17,41 @@ def estudiantes(request):
     '''Recopila la información de todos los estudiantes
     registrados para mostrarla en una lista.
     '''
-    staffBotonVistaEstudiante = False
-
-    if request.method == "POST":
-        list_of_inputs = request.POST.getlist('inputs')
-        if request.POST.get('studentButton'):
-            studentButtonItemValue = request.POST.getlist('studentButton')
-            estudianteAVer = Estudiante.objects.filter(
-                id=studentButtonItemValue[0])
-            staffBotonVistaEstudiante = True
-            response = HttpResponseRedirect("/")
-            response.headers["estudiante"] = estudianteAVer[0].id
-            user = estudianteAVer[0].user
-            return response
-            # return render (request=request, template_name="../../inicio/templates/index.html", context={"estudianteID":estudianteAVer[0].id,})
-
-    estudiantes_list = Estudiante.objects.all().filter(user__is_staff=False)
+    estudiantes = Estudiante.objects.all().filter(user__is_staff=False, estado='A')
     
-    actividades_list = Actividad.objects.all()
+    if request.user.is_staff:
+        actividades = Actividad.objects.all()
 
-    horasEstudianteslist = []
-    porcentajeEstudianteslist = []
-    porcentajeWidthEstudianteslist = []
-
-    horasTotalesPorEstudiante = 0
-    for estudiante in estudiantes_list:
+        horasEstudianteslist = []
+        porcentajeEstudianteslist = []
+        porcentajeWidthEstudianteslist = []
 
         horasTotalesPorEstudiante = 0
-        for actividad in actividades_list:
+        for estudiante in estudiantes:
 
-            if actividad.estudiante.user.username == estudiante.user.username:
-                if actividad.estado == "A":
-                    horasTotalesPorEstudiante += actividad.horas
+            horasTotalesPorEstudiante = 0
+            for actividad in actividades:
 
-        horasEstudianteslist.append(horasTotalesPorEstudiante)
-        porcentaje = round((100 / 300) * horasTotalesPorEstudiante)
-        porcentajeEstudianteslist.append(porcentaje)
-        porcentajeWidthEstudianteslist.append(int(porcentaje))
+                if actividad.estudiante.user.username == estudiante.user.username:
+                    if actividad.estado == "A":
+                        horasTotalesPorEstudiante += actividad.horas
 
-    zipHoras = zip(estudiantes_list, horasEstudianteslist,
-                   porcentajeEstudianteslist, porcentajeWidthEstudianteslist)
+            horasEstudianteslist.append(horasTotalesPorEstudiante)
+            porcentaje = round((100 / 300) * horasTotalesPorEstudiante)
+            porcentajeEstudianteslist.append(porcentaje)
+            porcentajeWidthEstudianteslist.append(int(porcentaje))
+
+        informacion = zip(estudiantes, horasEstudianteslist,
+                    porcentajeEstudianteslist, porcentajeWidthEstudianteslist)
+    else:
+        horasEstudianteslist = [1] * len(estudiantes)
+        porcentajeEstudianteslist = [1] * len(estudiantes)
+        porcentajeWidthEstudianteslist = [1] * len(estudiantes)
+        informacion = zip(estudiantes, horasEstudianteslist,
+                    porcentajeEstudianteslist, porcentajeWidthEstudianteslist)
 
     context = {
-        "zipHoras": zipHoras,
-        "horaslist": horasEstudianteslist,
-        "estudiantes": estudiantes_list,
-        "actividades": actividades_list,
-        "porcentajeList": porcentajeEstudianteslist,
-        "porcentajeWidthList": porcentajeWidthEstudianteslist
+        "informacion": informacion,
     }
 
     return render(request, "estudiantes.html", context)
