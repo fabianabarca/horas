@@ -43,15 +43,43 @@
   {% csrf_token %}
 
   {% if actividades %}
+  <br/>
+  <div class="btn-group" role="group" aria-label="Aprobacion">
+    {% if boton_activo == 'T' %}
+      <input type="submit" class="btn btn-success btn-sm text-white" value="Todas" name="todas">
+    {% else %}
+      <input type="submit" class="btn btn-sm text-black" value="Todas" name="todas">
+    {% endif %}
 
+    {% if boton_activo == 'A' %}
+    <input type="submit" class="btn btn-success btn-sm text-white" value="Aprobadas" name="aprobadas">
+    {% else %}
+    <input type="submit" class="btn btn-light btn-sm text-black" value="Aprobadas" name="aprobadas">
+    {% endif %}
+
+    {% if boton_activo == 'P' %}
+    <input type="submit" class="btn btn-warning btn-sm text-white" value="En revisión" name="revision"> 
+    {% else %}
+    <input type="submit" class="btn btn-light btn-sm text-black" value="Pending" name="revision"> 
+    {% endif %}
+
+    {% if boton_activo == 'R' %}
+    <input type="submit" class="btn btn-danger btn-sm text-white" value="Rechazadas" name="rechazadas">  
+    {% else %}
+    <input type="submit" class="btn btn-light btn-sm text-black" value="Rechazadas" name="rechazadas">  
+    {% endif %}
+
+  </div>
+<br/>
   <p>
+    
   <div class="card">
     <!-- Otra opción de encabezado: -->
     <div class="card-header">
       Estados de la actividad: <i class="icon cil-check-circle text-success"></i> aprobada | <i class="icon cil-clock text-warning"></i> en revisión | <i class="icon cil-x-circle text-danger"></i> rechazada.
     </div>
     <div class="card-body">
-
+     
       {% if request.user.is_staff %}
       <!-- Opciones de aprobación -->
       <div class="btn-group" role="group" aria-label="Aprobacion">
