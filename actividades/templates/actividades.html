@@ -130,6 +130,10 @@
                   class="text-danger" value="{{ actividad.id }}" name="deleteButton">
                   <i class="icon cil-trash"></i>
                 </a>
+
+                <a type="submit" class="text-warning" href="editar_actividad/{{ actividad.id }}" name="editButton">
+                  <i class="icon cil-pencil"></i>
+                </a>
               </td>
               <!-- Horas -->
               <td class="lead">{{ actividad.horas }}</td>
