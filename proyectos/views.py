@@ -67,13 +67,19 @@ def crear_proyecto(request):
        
         if form.is_valid():
             form.save()
-            #hallar forma más específica de encontrar proyecto
+
+            #TODO: hallar forma más específica de encontrar proyecto recién creado
+            #recupera el proyecto recién guardado
             proyecto = Proyecto.objects.get(nombre= form.cleaned_data.get('nombre'))
 
+            #recupera string JSON generado desde el template
             objetivos = json.loads(form.cleaned_data.get('temp_obj_json'))
             
             index = 1
-            for objetivo in objetivos:    
+            #por cada objetivo indicado por el usuario, crear una entrada en la BD
+            #vinculada con el proyecto recién creado
+            for objetivo in objetivos:
+                
                 obj = Objetivo(descripcion=objetivo,
                                proyecto=proyecto,
                                general=False,numero=index)
@@ -96,10 +102,14 @@ def crear_proyecto(request):
     areas_noborrados = areas_noborrados.filter(enPapelera=False)
     form.fields["area"].queryset = areas_noborrados
     
+    #Form de objetivos. Esconde campos que se pueblan automáticamente
     obj = ObjetivosForm()
+    obj.fields['numero'].widget = forms.HiddenInput() 
+    obj.fields['proyecto'].widget = forms.HiddenInput()
     obj.fields['general'].widget = forms.HiddenInput()
     obj.fields['enPapelera'].widget = forms.HiddenInput()
     obj.fields['fechaPapelera'].widget = forms.HiddenInput()
+    
     # Crear o editar
     crear = True
 
