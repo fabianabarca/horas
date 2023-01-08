@@ -55,10 +55,7 @@
       <br/>
 
       
-      <div class = "collapse" id ="incluirObjetivo">
-        {{ obj | crispy }}
-        <button type="button" onclick="saveObjective()">Guardar</button>
-      </div>
+    
       </p>
       <button type="submit" class="btn btn-primary btn-block" onClick="return confirmarRegistro();">Registrar</button>
     </form>
@@ -66,7 +63,11 @@
 </div>
 
 <br>
-
+<!--Formulario para incluir objetivos. No puede estar dentro del div de arriba-->
+<div class = "collapse" id ="incluirObjetivo">
+  {{ obj | crispy }}
+  <button type="button" onclick="saveObjective()">Guardar</button>
+</div>
 <!-- Advertencia de abandonar sin guardar cambios -->
 <script>
   var formSubmitting = false;
@@ -97,13 +98,13 @@ function saveObjective(){
     const listaDeObjetivos = document.querySelector("#listaDeObjetivos")
     const descripcion = objForm.querySelector("#id_descripcion")
     const tmp_json = document.querySelector("#id_temp_obj_json")
+    
     objetivos.push(descripcion.value);
     const nuevoObjetivo = document.createElement("li")
     nuevoObjetivo.id = objetivos.length -1;
     nuevoObjetivo.innerHTML = descripcion.value
     listaDeObjetivos.appendChild(nuevoObjetivo)
     tmp_json.value = JSON.stringify(objetivos)
-    console.log(`${tmp_json.value}`)
   }
 </script>
 
