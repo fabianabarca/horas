@@ -40,6 +40,25 @@
       {% endif %}
       <!-- Formulario -->
       {{ proyecto_form | crispy }}
+
+      
+      <h6>Objetivos</h6>
+      <ul id="listaDeObjetivos">
+
+      </ul>
+      <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#incluirObjetivo" role="button"
+        aria-expanded="false" aria-controls="incluirObjetivo">
+        <i class="bi bi-plus-circle"></i>Añadir objetivo<!-- Mostrar filtros -->
+      </a>
+      
+      <br/>
+      <br/>
+
+      
+      <div class = "collapse" id ="incluirObjetivo">
+        {{ obj | crispy }}
+        <button type="button" onclick="saveObjective()">Guardar</button>
+      </div>
       </p>
       <button type="submit" class="btn btn-primary btn-block" onClick="return confirmarRegistro();">Registrar</button>
     </form>
@@ -66,6 +85,26 @@
       return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
     });
   };
+
+
+</script>
+
+<script>
+const objetivos = [];
+
+function saveObjective(){
+    const objForm = document.querySelector("#incluirObjetivo")
+    const listaDeObjetivos = document.querySelector("#listaDeObjetivos")
+    const descripcion = objForm.querySelector("#id_descripcion")
+    const tmp_json = document.querySelector("#id_temp_obj_json")
+    objetivos.push(descripcion.value);
+    const nuevoObjetivo = document.createElement("li")
+    nuevoObjetivo.id = objetivos.length -1;
+    nuevoObjetivo.innerHTML = descripcion.value
+    listaDeObjetivos.appendChild(nuevoObjetivo)
+    tmp_json.value = JSON.stringify(objetivos)
+    console.log(`${tmp_json.value}`)
+  }
 </script>
 
 <!-- Confirmación de creación de registro -->

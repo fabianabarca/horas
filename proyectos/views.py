@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Subquery
 from django import forms
 import time
+import json
 
 # Create your views here.
 
@@ -61,30 +62,51 @@ def crear_proyecto(request):
 
     # Crea formulario con todos los campos de información
     if request.method == "POST":
+
         form = ProyectosForm(request.POST)
+       
         if form.is_valid():
             form.save()
+            #hallar forma más específica de encontrar proyecto
+            proyecto = Proyecto.objects.get(nombre= form.cleaned_data.get('nombre'))
 
+            objetivos = json.loads(form.cleaned_data.get('temp_obj_json'))
+            
+            index = 1
+            for objetivo in objetivos:    
+                obj = Objetivo(descripcion=objetivo,
+                               proyecto=proyecto,
+                               general=False,numero=index)
+                obj.save()
+                index += 1
+        
             return HttpResponseRedirect("/proyectos")
 
     # Utiliza el formulario de proyectos
     form = ProyectosForm()
 
+    
     # Ocula los campos de papelera
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
+    form.fields['temp_obj_json'].widget = forms.HiddenInput()
 
     # Quita del formulario las áreas borradas
     areas_noborrados = Area.objects.all()
     areas_noborrados = areas_noborrados.filter(enPapelera=False)
     form.fields["area"].queryset = areas_noborrados
-
+    
+    obj = ObjetivosForm()
+    obj.fields['general'].widget = forms.HiddenInput()
+    obj.fields['enPapelera'].widget = forms.HiddenInput()
+    obj.fields['fechaPapelera'].widget = forms.HiddenInput()
     # Crear o editar
     crear = True
 
     context = {
         "crear": crear,
-        "proyecto_form": form
+        "proyecto_form": form,
+        "obj":obj
     }
 
     return render(request, "crear_proyecto.html", context)

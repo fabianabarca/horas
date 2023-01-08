@@ -222,6 +222,8 @@ class AreasForm(forms.ModelForm):
 
 
 class ProyectosForm(forms.ModelForm):
+    temp_obj_json = forms.CharField()#Este campo guarda temporalmente un JSON con los objetivos del proyecto
+    
     class Meta:
         model = Proyecto
         fields = "__all__"
