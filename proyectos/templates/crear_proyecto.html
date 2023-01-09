@@ -41,16 +41,26 @@
       <!-- Formulario -->
       {{ proyecto_form | crispy }}
 
-      
+      <br/>
+      <br/>      
       <h6>Objetivos</h6>
       <ul id="listaDeObjetivos">
 
       </ul>
+    
       <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#incluirObjetivo" role="button"
         aria-expanded="false" aria-controls="incluirObjetivo">
         <i class="bi bi-plus-circle"></i>Añadir objetivo<!-- Mostrar filtros -->
       </a>
-      
+      <br/>
+      <br/>
+        <!--Espacio para incluir objetivos.-->
+        <div class = "collapse" id ="incluirObjetivo">
+          <h6>Descripción del objetivo</h6>
+          <textarea class="textinput textInput form-control" id="descripcionObjetivo"></textarea>
+          <br/>
+          <button class="btn btn-primary"type="button" onclick="saveObjective()">Guardar</button>
+        </div>
       <br/>
       <br/>
 
@@ -63,11 +73,7 @@
 </div>
 
 <br>
-<!--Formulario para incluir objetivos. No puede estar dentro del div de arriba-->
-<div class = "collapse" id ="incluirObjetivo">
-  {{ obj | crispy }}
-  <button type="button" onclick="saveObjective()">Guardar</button>
-</div>
+
 <!-- Advertencia de abandonar sin guardar cambios -->
 <script>
   var formSubmitting = false;
@@ -92,36 +98,74 @@
 
 <script>
 const objetivos = [];
-//TODO: dar al usuario posibilidad de eliminar objetivos, vaciar campos y esconder 
-//el form de objetivos cuando usuario guarda objetivo.
-//Acomodar form de objetivos más bonito
+
+//Recupera field escondido del form que permitirá llevar string de objetivos
+//al servidor
+const tmp_json = document.querySelector("#id_temp_obj_json")
+
+//TODO: dar al usuario posibilidad de eliminar objetivos
 function saveObjective(){
-    //Recupera div que contiene descripcion del objetivo
-    const objForm = document.querySelector("#incluirObjetivo")
-    //Recupera elemento <ul> que contendrá lista de objetivos definida por usuario
-    const listaDeObjetivos = document.querySelector("#listaDeObjetivos")
-    //Del div que contiene form del objetivo, recupera campo de descripcion
-    //del objetivo
-    const descripcion = objForm.querySelector("#id_descripcion")
-    //Recupera field escondido del form que permitirá llevar string de objetivos
-    //al servidor
-    const tmp_json = document.querySelector("#id_temp_obj_json")
-    
-    //Guarda descripcion del objetivo en arreglo temporal
-    objetivos.push(descripcion.value);
-    
-    //Crea elemento que dará feedback al usuario cuando este cree un objetivo
-    //y puebla su contenido
-    const nuevoObjetivo = document.createElement("li")
-    nuevoObjetivo.id = objetivos.length -1;
-    nuevoObjetivo.innerHTML = descripcion.value
-    
-    //Añade elemento recién creado a lista de objetivos
-    listaDeObjetivos.appendChild(nuevoObjetivo)
-    
-    //Guarda string JSON de lista actual de objetivos en campo 
-    //escondido de form de proyectos.
-    tmp_json.value = JSON.stringify(objetivos)
+  
+  //Recupera div que contiene descripcion del objetivo
+  const objForm = document.querySelector("#incluirObjetivo")
+
+  //Del div que contiene form del objetivo, recupera campo de descripcion
+  //del objetivo
+  const descripcion = objForm.querySelector("#descripcionObjetivo")
+  
+  //No incluir objetivos vacíos
+  if(descripcion.value != ""){
+      //Recupera elemento <ul> que contendrá lista de objetivos definida por usuario
+      const listaDeObjetivos = document.querySelector("#listaDeObjetivos")
+      
+      //Guarda descripcion del objetivo en arreglo temporal
+      objetivos.push(descripcion.value);
+      
+      //Crea elemento que dará feedback al usuario cuando este cree un objetivo
+      //y puebla su contenido
+      const nuevoObjetivo = document.createElement("li")
+      nuevoObjetivo.id = objetivos.length -1;
+      nuevoObjetivo.innerHTML = descripcion.value
+      
+      appendDeleteButton(objetivos.length -1, nuevoObjetivo)
+      
+      //Añade elemento recién creado a lista de objetivos
+      listaDeObjetivos.appendChild(nuevoObjetivo)
+      
+      //Guarda string JSON de lista actual de objetivos en campo 
+      //escondido de form de proyectos.
+      tmp_json.value = JSON.stringify(objetivos)
+      
+      descripcion.value = ""
+    }
+
+    function appendDeleteButton(id, objectiveElement){
+      //Crea botón e icono para eliminar objetivo
+      const deleteButton = document.createElement("a")
+      const trashIcon = document.createElement("i")
+      //Asigna clases para que los elementos reciban estilos
+      trashIcon.classList.add("icon")
+      trashIcon.classList.add("cil-trash")
+      deleteButton.classList.add("text-danger")
+      //El elemento <a> adopta al icono para mejor UI
+      deleteButton.appendChild(trashIcon)
+      //Por último, el elemento <li> que contiene el objetivo
+      //adopta a <a>
+      objectiveElement.appendChild(deleteButton)
+     
+      deleteButton.addEventListener("click",()=>{
+        //Elimina objetivo del arreglo y deja espacio vacío
+        delete objetivos[id]
+        //Elimina el elemento del DOM
+        objectiveElement.remove()
+
+        //Guarda el arreglo actual
+        tmp_json.value = JSON.stringify(objetivos)
+      
+        console.log(`Objetivos: ${objetivos}`)
+      })
+
+    }
   }
 </script>
 

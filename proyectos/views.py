@@ -67,24 +67,28 @@ def crear_proyecto(request):
        
         if form.is_valid():
             form.save()
-
+        
             #TODO: hallar forma más específica de encontrar proyecto recién creado
             #recupera el proyecto recién guardado
             proyecto = Proyecto.objects.get(nombre= form.cleaned_data.get('nombre'))
 
             #recupera string JSON generado desde el template
             objetivos = json.loads(form.cleaned_data.get('temp_obj_json'))
-            
+            print(objetivos)
             index = 1
             #por cada objetivo indicado por el usuario, crear una entrada en la BD
             #vinculada con el proyecto recién creado
             for objetivo in objetivos:
-                
-                obj = Objetivo(descripcion=objetivo,
-                               proyecto=proyecto,
-                               general=False,numero=index)
-                obj.save()
-                index += 1
+                #Debido a la forma en la que se eliminan elementos del 
+                #arreglo de objetivos en javascript, el server debe
+                #verificar que no está incluyendo objetivos con descripción
+                #vacía
+                if objetivo:
+                    obj = Objetivo(descripcion=objetivo,
+                                   proyecto=proyecto,
+                                   general=False,numero=index)
+                    obj.save()
+                    index += 1
         
             return HttpResponseRedirect("/proyectos")
 
