@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.core.mail import send_mail
 
 
 @staff_member_required(login_url='/cuentas/ingreso/')
@@ -69,20 +70,39 @@ def login_request(request):
     form = CustomAuthenticationForm(request.POST or None)
     if request.method == "POST":
         form = CustomAuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                #messages.info(request, "You are now logged in as {username}.")
-
-                return redirect(index)
-            else:
-
-                messages.error(request, "Usuario o contraseña inválido.")
+        
+        if request.POST.get("recuperar"):
+            carnet = request.POST["carnet"]
+            messages.error(request, "Si el carnet fue registrado anteriormente, usted recibirá un mensaje al correo electrónico asociado.")
+            #setear setting.py
+            try:
+                estudiante = Estudiante.objects.get(user__username = carnet)
+                send_mail(
+                    'Cambio de contraseña en Sistema de Horas',
+                    'Here is the message.',
+                    [estudiante.email],
+                    fail_silently=False,
+)
+            except:
+                print('Estudiante no existe')
+            
         else:
-            messages.error(request, "Usuario o contraseña inválido.")
+           
+            print(request.POST)
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    #messages.info(request, "You are now logged in as {username}.")
+
+                    return redirect(index)
+                else:
+
+                    messages.error(request, "Usuario o contraseña inválido.")
+            else:
+                messages.error(request, "Usuario o contraseña inválido.")
     form = CustomAuthenticationForm()
     return render(request, "ingreso.html", context={"login_form": form})
 
