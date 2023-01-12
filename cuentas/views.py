@@ -10,7 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.mail import send_mail
+from django.conf import settings
 
+import string, random
 
 @staff_member_required(login_url='/cuentas/ingreso/')
 def register_request(request):
@@ -64,6 +66,17 @@ def register_request(request):
 
     return render(request, "registro.html", context)
 
+def generar_contrasenya_temporal():
+    contrasenya_temporal = ''
+    
+    index = 0
+    while index < 10:
+        #De un string que contiene letras mayúsculas y minúsculas, elige una
+        #al azar y la incluye en la contraseña temporal
+        contrasenya_temporal += random.choice(string.ascii_letters)
+        index +=1
+
+    return contrasenya_temporal
 
 def login_request(request):
 
@@ -71,20 +84,34 @@ def login_request(request):
     if request.method == "POST":
         form = CustomAuthenticationForm(request, data=request.POST)
         
+        #Si el botón de recuperar contraseña fue clickeado
         if request.POST.get("recuperar"):
             carnet = request.POST["carnet"]
             messages.error(request, "Si el carnet fue registrado anteriormente, usted recibirá un mensaje al correo electrónico asociado.")
             #setear setting.py
             try:
                 estudiante = Estudiante.objects.get(user__username = carnet)
-                send_mail(
-                    'Cambio de contraseña en Sistema de Horas',
-                    'Here is the message.',
-                    [estudiante.email],
-                    fail_silently=False,
-)
-            except:
-                print('Estudiante no existe')
+                contrasenya_temporal = generar_contrasenya_temporal()
+                asunto = 'Cambio de contraseña en Sistema de Horas'
+                cuerpo =  '¡Hola! En este mensaje encontrarás tu contraseña temporal.\nContraseña temporal: '+ contrasenya_temporal + '\nNo olvide cambiar su contraseña temporal en la sección "Perfil".' 
+                #El mensaje será enviado desde la dirección email definida en settings.py
+                remitente = settings.EMAIL_HOST_USER 
+                destinatario = estudiante.user.email   
+                mensajes_enviados = send_mail(
+                    asunto,
+                    cuerpo,  
+                    remitente,
+                    [destinatario],
+                    fail_silently=False)
+                #send_email devuelve la cantidad de correos que fueron exitosamente
+                #enviados.
+                if mensajes_enviados > 0:
+                    #Sólo cambia contraseña si el envio fue exitoso.
+                    estudiante.user.set_password(contrasenya_temporal)
+                    estudiante.user.save()
+            
+            except Exception as e:
+                print(e)
             
         else:
            

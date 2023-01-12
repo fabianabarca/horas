@@ -166,3 +166,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Adjuntar archivo
 
 # Custom setting. To email
 RECIPIENT_ADDRESS = 'testertesrter3@gmail.com'
+
+#Campos necesarios para enviar correo
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True  
+
+#Servidor que enviará correo. Funciona con direcciones hotmail, outlook. 
+EMAIL_HOST = 'smtp-mail.outlook.com' 
+EMAIL_PORT = 587  
+
+#Dirección de email que enviará mensaje
+EMAIL_HOST_USER = 'correo@mail.com'
+
+#Contraseña de la cuenta indicada en EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = 'CONTRASEÑA'  
