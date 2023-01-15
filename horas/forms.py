@@ -31,7 +31,12 @@ class NewUserForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(NewUserForm, self).__init__(*args, **kwargs)
-
+        #La contraseña se establece aleatoriamente y se envia al correo del usuario
+        self.fields["password1"].required = False
+        self.fields["password2"].required = False
+        self.fields["password1"].widget = forms.HiddenInput()
+        self.fields["password2"].widget = forms.HiddenInput()
+  
         for fieldname in ['username']:
             self.fields[fieldname].label = 'ID (carné)'
 

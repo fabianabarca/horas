@@ -17,18 +17,22 @@ import string, random
 @staff_member_required(login_url='/cuentas/ingreso/')
 def register_request(request):
     form = NewUserForm(request.POST or None)
+
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-
+    
             carrera = form.cleaned_data.get('carrera')
 
             if (not Carrera.objects.filter(nombre__contains=carrera).exists()):
 
                 c = Carrera(nombre=carrera)
                 c.save()
-
+            
+            contrasenya_temporal = generar_contrasenya_temporal()
+            user.set_password(contrasenya_temporal)
+            user.save()
             # Actualmente en la base de datos crear usuario significa crearlo como estudiante
             # aqui diferencia entre asignar valores al estudiante creado o asignar estudiante como profesor tambien
             estudiante = Estudiante.objects.get(id=user.id)
@@ -39,7 +43,6 @@ def register_request(request):
             fecha_final = form.cleaned_data.get('fecha_final')
             estudiante.fecha_inicio = fecha_inicio
             estudiante.fecha_final = fecha_final
-
             estudiante.save()
 
             is_staff = form.cleaned_data.get('is_staff')
@@ -51,7 +54,15 @@ def register_request(request):
 
                 profesor = Profesor(user_id=user.id)
                 profesor.save()
-
+            
+            #Envio de email con credenciales.
+            destinatarios = []
+            destinatarios.append(user.email)
+            asunto = "Creación de su usuario en el Sistema de Horas"
+            cuerpo = "¡Hola!\nEn este correo, encontrará la información que necesita para acceder al sistema de horas.\n\nUsuario: "+ estudiante.user.username + "\nContraseña: " + contrasenya_temporal +"\n\nNo olvide establecer su propia contraseña desde 'Perfil'"
+            email_sender = EmailSender()
+            email_sender.send_email(destinatarios,asunto,cuerpo)
+            
             #login(request, user)
             messages.success(request, "Registro de " +
                              user.username+" exitoso.")
