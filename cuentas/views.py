@@ -9,8 +9,8 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import PasswordChangeForm
-from django.core.mail import send_mail
-from django.conf import settings
+from horas.services.email_sender import EmailSender
+
 
 import string, random
 
@@ -88,21 +88,17 @@ def login_request(request):
         if request.POST.get("recuperar"):
             carnet = request.POST["carnet"]
             messages.error(request, "Si el carnet fue registrado anteriormente, usted recibirá un mensaje al correo electrónico asociado.")
-            #setear setting.py
             try:
+                email_sender = EmailSender()
+                destinatarios = []
+
                 estudiante = Estudiante.objects.get(user__username = carnet)
                 contrasenya_temporal = generar_contrasenya_temporal()
                 asunto = 'Cambio de contraseña en Sistema de Horas'
                 cuerpo =  '¡Hola! En este mensaje encontrarás tu contraseña temporal.\nContraseña temporal: '+ contrasenya_temporal + '\nNo olvide cambiar su contraseña temporal en la sección "Perfil".' 
-                #El mensaje será enviado desde la dirección email definida en settings.py
-                remitente = settings.EMAIL_HOST_USER 
-                destinatario = estudiante.user.email   
-                mensajes_enviados = send_mail(
-                    asunto,
-                    cuerpo,  
-                    remitente,
-                    [destinatario],
-                    fail_silently=False)
+                destinatarios.append(estudiante.user.email)   
+                mensajes_enviados = email_sender.send_email(destinatarios,asunto,cuerpo)
+
                 #send_email devuelve la cantidad de correos que fueron exitosamente
                 #enviados.
                 if mensajes_enviados > 0:
