@@ -59,6 +59,17 @@
     </div>
 
 </div>
+<br/>
+
+<h6 class="text-uppercase font-weight-bolder opacity-6">Tareas asignadas</h6>
+<ul>
+{% for tarea in tareas %}
+
+<li>{{tarea.nombre}}</li>
+
+{% endfor %}
+</ul>
+<br>
 
 <p>
     <small>
