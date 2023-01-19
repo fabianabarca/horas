@@ -47,7 +47,7 @@
       <ul id="listaDeObjetivos">
         {% if objetivos %}
           {% for objetivo in objetivos%}
-          <li>{{ objetivo.descripcion }}</li>
+          <li class = "objetivo">{{ objetivo.descripcion }}</li>
           {% endfor %}
         {% endif %}
       </ul>
@@ -101,11 +101,28 @@
 </script>
 
 <script>
-const objetivos = [];
+const descripcionObjetivos = [];
 
 //Recupera field escondido del form que permitirá llevar string de objetivos
 //al servidor
 const tmp_json = document.querySelector("#id_temp_obj_json")
+
+const objetivos = document.getElementsByClassName("objetivo")
+initializeObjectives()
+
+function initializeObjectives(){
+  //Puebla arreglo de descripciones con objetivos existentes.
+  //A cada entrada le asigna el botón de borrado.
+  for(let i = 0; i < objetivos.length; i++){
+    descripcionObjetivos.push(objetivos[i].innerHTML)
+    appendDeleteButton(i, objetivos[i])
+  }
+
+  //Valor default, indica si objetivos fueron modificados
+  tmp_json.value = "!#!"
+}
+
+
 
 //TODO: dar al usuario posibilidad de eliminar objetivos
 function saveObjective(){
@@ -123,53 +140,53 @@ function saveObjective(){
       const listaDeObjetivos = document.querySelector("#listaDeObjetivos")
       
       //Guarda descripcion del objetivo en arreglo temporal
-      objetivos.push(descripcion.value);
+      descripcionObjetivos.push(descripcion.value);
       
       //Crea elemento que dará feedback al usuario cuando este cree un objetivo
       //y puebla su contenido
       const nuevoObjetivo = document.createElement("li")
-      nuevoObjetivo.id = objetivos.length -1;
+      nuevoObjetivo.id = descripcionObjetivos.length -1;
       nuevoObjetivo.innerHTML = descripcion.value
       
-      appendDeleteButton(objetivos.length -1, nuevoObjetivo)
+      appendDeleteButton(descripcionObjetivos.length -1, nuevoObjetivo)
       
       //Añade elemento recién creado a lista de objetivos
       listaDeObjetivos.appendChild(nuevoObjetivo)
       
       //Guarda string JSON de lista actual de objetivos en campo 
       //escondido de form de proyectos.
-      tmp_json.value = JSON.stringify(objetivos)
+      tmp_json.value = JSON.stringify(descripcionObjetivos)
       
       descripcion.value = ""
     }
+  }
 
-    function appendDeleteButton(id, objectiveElement){
-      //Crea botón e icono para eliminar objetivo
-      const deleteButton = document.createElement("a")
-      const trashIcon = document.createElement("i")
-      //Asigna clases para que los elementos reciban estilos
-      trashIcon.classList.add("icon")
-      trashIcon.classList.add("cil-trash")
-      deleteButton.classList.add("text-danger")
-      //El elemento <a> adopta al icono para mejor UI
-      deleteButton.appendChild(trashIcon)
-      //Por último, el elemento <li> que contiene el objetivo
-      //adopta a <a>
-      objectiveElement.appendChild(deleteButton)
-     
-      deleteButton.addEventListener("click",()=>{
-        //Elimina objetivo del arreglo y deja espacio vacío
-        delete objetivos[id]
-        //Elimina el elemento del DOM
-        objectiveElement.remove()
+  function appendDeleteButton(id, objectiveElement){
+    //Crea botón e icono para eliminar objetivo
+    const deleteButton = document.createElement("a")
+    const trashIcon = document.createElement("i")
+    //Asigna clases para que los elementos reciban estilos
+    trashIcon.classList.add("icon")
+    trashIcon.classList.add("cil-trash")
+    deleteButton.classList.add("text-danger")
+    //El elemento <a> adopta al icono para mejor UI
+    deleteButton.appendChild(trashIcon)
+    //Por último, el elemento <li> que contiene el objetivo
+    //adopta a <a>
+    objectiveElement.appendChild(deleteButton)
+    
+    deleteButton.addEventListener("click",()=>{
+      //Elimina objetivo del arreglo y deja espacio vacío
+      delete descripcionObjetivos[id]
+      //Elimina el elemento del DOM
+      objectiveElement.remove()
 
-        //Guarda el arreglo actual
-        tmp_json.value = JSON.stringify(objetivos)
-      
-        console.log(`Objetivos: ${objetivos}`)
-      })
+      //Guarda el arreglo actual
+      tmp_json.value = JSON.stringify(descripcionObjetivos)
+    
+      console.log(`Objetivos: ${descripcionObjetivos}`)
+    })
 
-    }
   }
 </script>
 

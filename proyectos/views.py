@@ -66,29 +66,15 @@ def crear_proyecto(request):
         form = ProyectosForm(request.POST)
        
         if form.is_valid():
-            form.save()
-        
-            #TODO: hallar forma más específica de encontrar proyecto recién creado
-            #recupera el proyecto recién guardado
-            proyecto = Proyecto.objects.get(nombre= form.cleaned_data.get('nombre'))
-
+            proyecto = form.save()
             #recupera string JSON generado desde el template
-            objetivos = json.loads(form.cleaned_data.get('temp_obj_json'))
-            print(objetivos)
-            index = 1
-            #por cada objetivo indicado por el usuario, crear una entrada en la BD
-            #vinculada con el proyecto recién creado
-            for objetivo in objetivos:
-                #Debido a la forma en la que se eliminan elementos del 
-                #arreglo de objetivos en javascript, el server debe
-                #verificar que no está incluyendo objetivos con descripción
-                #vacía
-                if objetivo:
-                    obj = Objetivo(descripcion=objetivo,
-                                   proyecto=proyecto,
-                                   general=False,numero=index)
-                    obj.save()
-                    index += 1
+            objetivos = form.cleaned_data.get('temp_obj_json')
+            
+            #Si el valor del campo dummy es !#!, entonces el usuario no añadió
+            #objetivos
+            if objetivos != '!#!':
+                guardar_objetivos(proyecto, objetivos)
+           
         
             return HttpResponseRedirect("/proyectos")
 
@@ -106,13 +92,6 @@ def crear_proyecto(request):
     areas_noborrados = areas_noborrados.filter(enPapelera=False)
     form.fields["area"].queryset = areas_noborrados
     
-    #Form de objetivos. Esconde campos que se pueblan automáticamente
-    obj = ObjetivosForm()
-    obj.fields['numero'].widget = forms.HiddenInput() 
-    obj.fields['proyecto'].widget = forms.HiddenInput()
-    obj.fields['general'].widget = forms.HiddenInput()
-    obj.fields['enPapelera'].widget = forms.HiddenInput()
-    obj.fields['fechaPapelera'].widget = forms.HiddenInput()
     
     # Crear o editar
     crear = True
@@ -120,10 +99,29 @@ def crear_proyecto(request):
     context = {
         "crear": crear,
         "proyecto_form": form,
-        "obj":obj
     }
 
     return render(request, "crear_proyecto.html", context)
+
+
+def guardar_objetivos(proyecto, objetivos):
+    #genera arreglo a partir de string JSON
+    objetivos = json.loads(objetivos)
+    print(objetivos)
+    index = 1
+    #por cada objetivo indicado por el usuario, crear una entrada en la BD
+    #vinculada con el proyecto recién creado
+    for objetivo in objetivos:
+        #Debido a la forma en la que se eliminan elementos del 
+        #arreglo de objetivos en javascript, el server debe
+        #verificar que no está incluyendo objetivos con descripción
+        #vacía
+        if objetivo:
+            obj = Objetivo(descripcion=objetivo,
+                            proyecto=proyecto,
+                            general=False,numero=index)
+            obj.save()
+            index += 1
 
 
 @login_required(login_url='/cuentas/ingreso/')
@@ -137,7 +135,6 @@ def editar_proyecto(request, id):
     proyecto = get_object_or_404(Proyecto, id=id)
     
     objetivos = Objetivo.objects.filter(proyecto=proyecto)
-    print(objetivos)
     # Carga el formulario con la instancia del proyecto
     form = ProyectosForm(request.POST or None, instance=proyecto)
 
@@ -154,6 +151,18 @@ def editar_proyecto(request, id):
 
     # Valida el formulario y lo guarda
     if form.is_valid():
+        objetivos_actualizados = form.cleaned_data.get('temp_obj_json')
+
+        #Si el valor devuelto por el campo dummy es !#!, significa que no hubo
+        #cambios en los objetivos.
+        if objetivos_actualizados != '!#!':
+            #Elimina los objetivos que hay para reemplazarlos con
+            #los nuevos
+            for objetivo in objetivos:
+                objetivo.delete()
+
+            guardar_objetivos(proyecto, objetivos_actualizados)
+
         form.save()
         return HttpResponseRedirect("/proyectos")
 
