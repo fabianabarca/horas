@@ -135,13 +135,16 @@ def editar_proyecto(request, id):
 
     # Recupera la información del proyecto seleccionado
     proyecto = get_object_or_404(Proyecto, id=id)
-
+    
+    objetivos = Objetivo.objects.filter(proyecto=proyecto)
+    print(objetivos)
     # Carga el formulario con la instancia del proyecto
     form = ProyectosForm(request.POST or None, instance=proyecto)
 
     # Oculta los campos de papelera
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
+    form.fields['temp_obj_json'].widget = forms.HiddenInput()
 
     # Quita del formulario los proyectos asociados con
     # las áreas que están en papelera
@@ -161,6 +164,7 @@ def editar_proyecto(request, id):
         "crear": crear,
         "proyecto_form": form,
         "proyecto": proyecto,
+        "objetivos": objetivos,
     }
 
     return render(request, "crear_proyecto.html", context)

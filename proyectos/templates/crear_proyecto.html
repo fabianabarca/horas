@@ -45,7 +45,11 @@
       <br/>      
       <h6>Objetivos</h6>
       <ul id="listaDeObjetivos">
-
+        {% if objetivos %}
+          {% for objetivo in objetivos%}
+          <li>{{ objetivo.descripcion }}</li>
+          {% endfor %}
+        {% endif %}
       </ul>
     
       <a class="btn btn-dark btn-sm" data-coreui-toggle="collapse" href="#incluirObjetivo" role="button"
