@@ -16,7 +16,7 @@ import time
 def actividades(request):
 
     list_of_inputs = request.POST.getlist('inputs')
-
+    boton_activo = 'T'
     # Obtener lista de actividades para profesores o cada estudiante
     if request.user.is_staff:
         actividades = Actividad.objects.filter(enPapelera=False)
@@ -47,6 +47,21 @@ def actividades(request):
             Actividad.objects.filter(
                 id=deleteButtonItemValue[0]).update(enPapelera='True')
 
+        #Los siguientes 3 If BLOCKS son para detectar cuándo el usuario
+        #dio click a algún botón del div de la línea 47 de actividades.html,
+        #los cuales son usados para separar las actividades por estados.
+        if request.POST.get('aprobadas'):
+            boton_activo = 'A'
+
+        if request.POST.get('rechazadas'):
+            boton_activo = 'R'
+
+        if request.POST.get('revision'):
+            boton_activo = 'P'
+        
+        if boton_activo is not 'T':
+            actividades = actividades.filter(estado= boton_activo).order_by('-fecha')
+
         if form.is_valid():
             if form.cleaned_data.get('estudiante'):
                 actividades = actividades.filter(
@@ -74,7 +89,8 @@ def actividades(request):
     # Contexto
     context = {
         "actividades": actividades,
-        "filtros_form": form
+        "filtros_form": form,
+        "boton_activo": boton_activo
     }
 
     return render(request, "actividades.html", context)
