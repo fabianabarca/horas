@@ -7,6 +7,7 @@ from django.http.response import HttpResponseRedirect
 import time
 from cuentas.models import *
 from actividades.models import Actividad
+from tareas.models import Tarea
 from cuentas.models import Estudiante
 from proyectos.models import Proyecto
 import datetime
@@ -145,7 +146,7 @@ def index(request, id=9999):
     # ---------------------------------------
     else:
         estudiante_actual = Estudiante.objects.get(user=request.user) # Estudiante actual a trabajar
-
+        tareas_estudiante = Tarea.objects.filter(estudiante = estudiante_actual)
         # Desde aqui se procesa la barra de progreso de dias del TCU por estudiante #
         fecha_hoy = datetime.date.today() # Fecha del día actual de tipo fecha
         inicio_TCU = estudiante_actual.fecha_inicio # Fecha de inicio del TCU del estudiante actual
@@ -202,6 +203,7 @@ def index(request, id=9999):
             "indice_avance_width": indice_avance_width, # Porcentaje de la barra para mostrar el índice de avance
             "horas_por_dia": json.dumps(horas_por_dia), # Lista para los datos del calendario, convertida con json
             "numero_actividades": numero_actividades, # Número de actividades del estudiante
+            "tareas": tareas_estudiante, # Tareas asignadas a estudiante.
         }
 
     # Inicio y contexto según el usuario sea estudiante o profesor
