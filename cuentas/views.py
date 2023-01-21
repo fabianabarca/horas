@@ -9,23 +9,30 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import PasswordChangeForm
+from horas.services.email_sender import EmailSender
 
+
+import string, random
 
 @staff_member_required(login_url='/cuentas/ingreso/')
 def register_request(request):
     form = NewUserForm(request.POST or None)
+
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-
+    
             carrera = form.cleaned_data.get('carrera')
 
             if (not Carrera.objects.filter(nombre__contains=carrera).exists()):
 
                 c = Carrera(nombre=carrera)
                 c.save()
-
+            
+            contrasenya_temporal = generar_contrasenya_temporal()
+            user.set_password(contrasenya_temporal)
+            user.save()
             # Actualmente en la base de datos crear usuario significa crearlo como estudiante
             # aqui diferencia entre asignar valores al estudiante creado o asignar estudiante como profesor tambien
             estudiante = Estudiante.objects.get(id=user.id)
@@ -36,7 +43,6 @@ def register_request(request):
             fecha_final = form.cleaned_data.get('fecha_final')
             estudiante.fecha_inicio = fecha_inicio
             estudiante.fecha_final = fecha_final
-
             estudiante.save()
 
             is_staff = form.cleaned_data.get('is_staff')
@@ -48,7 +54,15 @@ def register_request(request):
 
                 profesor = Profesor(user_id=user.id)
                 profesor.save()
-
+            
+            #Envio de email con credenciales.
+            destinatarios = []
+            destinatarios.append(user.email)
+            asunto = "Creación de su usuario en el Sistema de Horas"
+            cuerpo = "¡Hola!\nEn este correo, encontrará la información que necesita para acceder al sistema de horas.\n\nUsuario: "+ estudiante.user.username + "\nContraseña: " + contrasenya_temporal +"\n\nNo olvide establecer su propia contraseña desde 'Perfil'"
+            email_sender = EmailSender()
+            email_sender.send_email(destinatarios,asunto,cuerpo)
+            
             #login(request, user)
             messages.success(request, "Registro de " +
                              user.username+" exitoso.")
@@ -63,26 +77,66 @@ def register_request(request):
 
     return render(request, "registro.html", context)
 
+def generar_contrasenya_temporal():
+    contrasenya_temporal = ''
+    
+    index = 0
+    while index < 10:
+        #De un string que contiene letras mayúsculas y minúsculas, elige una
+        #al azar y la incluye en la contraseña temporal
+        contrasenya_temporal += random.choice(string.ascii_letters)
+        index +=1
+
+    return contrasenya_temporal
 
 def login_request(request):
 
     form = CustomAuthenticationForm(request.POST or None)
     if request.method == "POST":
         form = CustomAuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                #messages.info(request, "You are now logged in as {username}.")
+        
+        #Si el botón de recuperar contraseña fue clickeado
+        if request.POST.get("recuperar"):
+            carnet = request.POST["carnet"]
+            messages.error(request, "Si el carnet fue registrado anteriormente, usted recibirá un mensaje al correo electrónico asociado.")
+            try:
+                email_sender = EmailSender()
+                destinatarios = []
 
-                return redirect(index)
-            else:
+                estudiante = Estudiante.objects.get(user__username = carnet)
+                contrasenya_temporal = generar_contrasenya_temporal()
+                asunto = 'Cambio de contraseña en Sistema de Horas'
+                cuerpo =  '¡Hola! En este mensaje encontrarás tu contraseña temporal.\nContraseña temporal: '+ contrasenya_temporal + '\nNo olvide cambiar su contraseña temporal en la sección "Perfil".' 
+                destinatarios.append(estudiante.user.email)   
+                mensajes_enviados = email_sender.send_email(destinatarios,asunto,cuerpo)
 
-                messages.error(request, "Usuario o contraseña inválido.")
+                #send_email devuelve la cantidad de correos que fueron exitosamente
+                #enviados.
+                if mensajes_enviados > 0:
+                    #Sólo cambia contraseña si el envio fue exitoso.
+                    estudiante.user.set_password(contrasenya_temporal)
+                    estudiante.user.save()
+            
+            except Exception as e:
+                print(e)
+            
         else:
-            messages.error(request, "Usuario o contraseña inválido.")
+           
+            print(request.POST)
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    #messages.info(request, "You are now logged in as {username}.")
+
+                    return redirect(index)
+                else:
+
+                    messages.error(request, "Usuario o contraseña inválido.")
+            else:
+                messages.error(request, "Usuario o contraseña inválido.")
     form = CustomAuthenticationForm()
     return render(request, "ingreso.html", context={"login_form": form})
 
