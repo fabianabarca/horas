@@ -18,14 +18,15 @@ def estudiantes(request):
     registrados para mostrarla en una lista.
     '''
     estudiantes = Estudiante.objects.all().filter(user__is_staff=False, estado='A')
-    
+
     if request.user.is_staff:
         actividades = Actividad.objects.all()
-
+        estudiantesFinalizados = Estudiante.objects.all().filter(user__is_staff=False, estado='F')
+        estudiantesOtrosEstados = Estudiante.objects.all().filter(user__is_staff=False).exclude(estado = 'F').exclude(estado = 'A')
         horasEstudianteslist = []
         porcentajeEstudianteslist = []
         porcentajeWidthEstudianteslist = []
-
+        
         horasTotalesPorEstudiante = 0
         for estudiante in estudiantes:
 
@@ -43,16 +44,21 @@ def estudiantes(request):
 
         informacion = zip(estudiantes, horasEstudianteslist,
                     porcentajeEstudianteslist, porcentajeWidthEstudianteslist)
+        context = {
+            "informacion": informacion,
+            "finalizados": estudiantesFinalizados,
+            "otrosEstados": estudiantesOtrosEstados
+        }
+
     else:
         horasEstudianteslist = [1] * len(estudiantes)
         porcentajeEstudianteslist = [1] * len(estudiantes)
         porcentajeWidthEstudianteslist = [1] * len(estudiantes)
         informacion = zip(estudiantes, horasEstudianteslist,
                     porcentajeEstudianteslist, porcentajeWidthEstudianteslist)
-
-    context = {
-        "informacion": informacion,
-    }
+        context = {
+            "informacion": informacion,
+        }
 
     return render(request, "estudiantes.html", context)
 
