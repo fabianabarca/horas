@@ -45,6 +45,13 @@
           {% for tarea in tareas %}
           <dt>{{ tarea.nombre }}</dt>
           <dd>{{ tarea.descripcion }}</dd>
+        
+          <h6>Estudiantes asignados</h6>
+          <ul>
+          {% for estudiante in tarea.estudiante.all%}
+           <li>{{estudiante.user.first_name}} {{estudiante.user.last_name}}</li>
+          {% endfor %}
+          </ul>
           {% empty %}
           <dt><em>¡No hay tareas todavía!</em></dt>
           <dd>Es posible crear tareas para este objetivo <a href="{% url 'crear_tarea' %}" target="_blank">aquí</a>.</dd>          
