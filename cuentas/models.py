@@ -38,7 +38,7 @@ class Estudiante(models.Model):
     fecha_final = models.DateField(blank=True, null=True)
     estado = models.CharField(blank=False, null=True, choices=ESTADOS, max_length=1, default='A')
     tutor = models.ForeignKey(Profesor, blank=True, null=True, on_delete=models.SET_NULL)
-
+    descripcion_usuario = models.CharField(max_length= 200, default= "Usuario sistema de horas")
     def __str__(self):
         return self.user.first_name
 # @receiver(post_save, sender=User)

@@ -36,15 +36,21 @@ def register_request(request):
             # Actualmente en la base de datos crear usuario significa crearlo como estudiante
             # aqui diferencia entre asignar valores al estudiante creado o asignar estudiante como profesor tambien
             estudiante = Estudiante.objects.get(id=user.id)
+            print(estudiante)
+            print(user)
             estudiante.carrera_id = Carrera.objects.get(
                 nombre__contains=carrera)
             # estudiante.save()
             fecha_inicio = form.cleaned_data.get('fecha_inicio')
             fecha_final = form.cleaned_data.get('fecha_final')
+            descripcion = form.cleaned_data.get('descripcion')
             estudiante.fecha_inicio = fecha_inicio
             estudiante.fecha_final = fecha_final
+            estudiante.descripcion_usuario = descripcion
             estudiante.save()
-
+            print(estudiante.descripcion_usuario)
+            print(estudiante.id)
+            print(user.first_name)
             is_staff = form.cleaned_data.get('is_staff')
 
             if (is_staff):

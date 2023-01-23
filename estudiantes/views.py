@@ -11,6 +11,13 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 
+@login_required(login_url='/cuentas/ingreso/')
+def profesores(request):
+    profesores = Estudiante.objects.all().filter(user__is_staff=True)
+    print(profesores)
+    context = { "profesores": profesores, }
+
+    return render(request, "profesores.html", context)    
 
 @login_required(login_url='/cuentas/ingreso/')
 def estudiantes(request):

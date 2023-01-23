@@ -20,13 +20,13 @@ class NewUserForm(UserCreationForm):
         attrs={'type': 'date', 'style': 'width: 200px;', 'class': 'form-control'}))
     fecha_final = forms.DateField(required=False, widget=forms.DateInput(
         attrs={'type': 'date', 'style': 'width: 200px;', 'class': 'form-control'}))
-
+    descripcion = forms.CharField(required=False)
     class Meta:
         model = User
 
         #fields = ("username", "first_name", "last_name", "email", "carrera","password1", "password2")
         fields = UserCreationForm.Meta.fields + \
-            ('first_name', 'last_name', 'email', 'carrera',
+            ('first_name', 'last_name', 'descripcion','email', 'carrera',
              'is_staff', 'fecha_inicio', 'fecha_final')
 
     def __init__(self, *args, **kwargs):
