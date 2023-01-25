@@ -122,14 +122,27 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
 </script>
 -->
 
+<script></script>
+  
+</script>
+
 <!--Para cargar los proyectos del area-->
 <script>
-  $("#id_area").change(function () {
+  //Para editar_proyecto, se guarda el valor inicial del id para setearlo.
+  const initial_project_id = $("#id_proyecto").val();
+  $("#id_area").change(clear_options);
+  $("#id_area").change(update_projects);
+  
+ 
+  function clear_options(){
     $('#id_proyecto').empty();
     $('#id_objetivo').empty();
     $('#id_tarea').empty();
+  }
+  function update_projects() {
+
     var url = $("#crear_actividad_form").attr("proyectos-url");
-    var areaId = $(this).val();
+    var areaId = $("#id_area").val();
     $.ajax({
       url: url,
       data: {
@@ -137,16 +150,30 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
       },
       success: function (data){
         $("#id_proyecto").html(data);
+        //Cuando editamos una actividad, un proyecto ya fue elegido anteriormente.
+        //Este if es para  setear nuevamente el valor original elegido en editar_actividad.
+        if(initial_project_id != null){
+          $("#id_proyecto").val(initial_project_id)
+          //Vacía valor para que no ingrese más de dos veces.
+          initial_project_id = null
+        }
       }
-    });
-  });
+    })
+    }
+   //Ejecuta este método para cargar lista de proyectos basados
+   //en área seteada anteriormente cuando carga la página. 
+   //Usada para editar_actividad
+   update_projects()
 </script>
 
 <!--Para cargar los objetivos del proyecto-->
 <script>
-  $("#id_proyecto").click(function () {
+  $("#id_proyecto").click(update_objectives);
+  const initial_obj_id =  $("#id_objetivo").val()
+
+  function update_objectives() {
     var url = $("#crear_actividad_form").attr("objetivos-url");
-    var proyectoId = $(this).val();
+    var proyectoId = $("#id_proyecto").val();
     $.ajax({
       url: url,
       data: {
@@ -154,16 +181,24 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
       },
       success: function (data){
         $("#id_objetivo").html(data);
+        if(initial_obj_id != null){
+          $("#id_objetivo").val(initial_obj_id)
+          initial_obj_id = null
+        }
       }
     });
-  });
+    
+  }
+  update_objectives()
 </script>
 
 <!--Para cargar las tareas-->
 <script>
-  $("#id_objetivo").click(function () {
+  $("#id_objetivo").click(update_tareas);
+  const initial_tarea_id =  $("#id_tarea").val()
+  function update_tareas() {
     var url = $("#crear_actividad_form").attr("tareas-url");
-    var objetivoId = $(this).val();
+    var objetivoId = $("#id_objetivo").val();
     $.ajax({
       url: url,
       data: {
@@ -171,9 +206,14 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
       },
       success: function (data){
         $("#id_tarea").html(data);
+        if(initial_tarea_id != null){
+          $("#id_tarea").val(initial_tarea_id)
+          initial_tarea_id = null
+        }
       }
     });
-  });
+  }
+  update_tareas()
 </script>
 
 <!-- Advertencia de abandonar sin guardar cambios -->

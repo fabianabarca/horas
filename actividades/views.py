@@ -127,6 +127,7 @@ def crear_actividad(request):
             print(form.errors.as_data())
 
     form = ActividadesForm()
+
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
     form.fields['enPapelera'].widget = forms.HiddenInput()
@@ -154,9 +155,15 @@ def crear_actividad(request):
 def editar_actividad(request, id):
 
     actividad = get_object_or_404(Actividad, id=id)
-
-    form = ActividadesForm(request.POST or None, instance=actividad)
-
+    
+    form = ActividadesForm(request.POST or None, instance=actividad,
+                             initial={'area': actividad.tarea.objetivo.proyecto.area.id})
+    
+    #Setea valores originales del form en los campos proyecto, objetivo y tarea
+    form.fields['proyecto'].choices = [( actividad.tarea.objetivo.proyecto.id,  actividad.tarea.objetivo.proyecto.nombre)]
+    form.fields['objetivo'].choices = [(actividad.tarea.objetivo.id, actividad.tarea.objetivo.descripcion)]
+    form.fields['tarea'].choices = [(actividad.tarea.id, actividad.tarea.nombre)]
+    
     form.fields['estado'].widget = forms.HiddenInput()
     form.fields['estudiante'].widget = forms.HiddenInput()
     form.fields['enPapelera'].widget = forms.HiddenInput()
@@ -172,10 +179,19 @@ def editar_actividad(request, id):
 
    #form.fields["proyecto"].queryset  = proyectos_noborrados
     form.fields["tarea"].queryset = tareas_noborradas
-
-    if form.is_valid():
-        form.save()
-        return HttpResponseRedirect("/actividades")
+    
+    if request.POST:
+        #Corrige fallo de form inválido.
+        proyecto_id = request.POST.get('proyecto')
+        objetivo_id = request.POST.get('objetivo')
+        tarea_id = request.POST.get('tarea')
+        form.fields['proyecto'].choices = [(proyecto_id, proyecto_id)]
+        form.fields['objetivo'].choices = [(objetivo_id, objetivo_id)]
+        form.fields['tarea'].choices = [(tarea_id, tarea_id)]
+        
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/actividades")
 
     crear = False
     context = {
