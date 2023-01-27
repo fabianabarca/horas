@@ -247,7 +247,12 @@ class TareasForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        #self.fields['objetivo'].queryset = Objetivo.objects.none()
+        #para filtrar usuarios y que solo se puedan asignar estudiantes a tareas
+        estudiantes_nostaff = Estudiante.objects.filter(user__is_staff=False)
+        #Convierte lista dropdown a campo de checkboxes
+        self.fields['estudiante'].widget = forms.CheckboxSelectMultiple()
+        self.fields["estudiante"].queryset = estudiantes_nostaff
+            #self.fields['objetivo'].queryset = Objetivo.objects.none()
 
         # for value in self.data.keys():
         # print(value)

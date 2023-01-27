@@ -62,7 +62,9 @@
                 <i class="icon cil-pencil"></i>
               </a>
               <!-- Eliminar -->
-              <form>
+              <form method="POST">
+                {% csrf_token %}
+
               <button onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
               class="btn btn-link shadow-none p-0 text-danger" value="{{ tarea.id }}" name="deleteButton">
               <i class="icon cil-trash"></i>

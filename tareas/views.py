@@ -30,9 +30,10 @@ def tareas(request):
         tareas = lista_tareas.exclude(estudiante=estudiante_actual)
     else:
         tareas = lista_tareas
-
+    
     # Configura el filtrado de la tabla
     if request.method == "POST":
+        
         form = FiltrosTareaForm(request.POST or None)
         if request.POST.get('deleteButton'):
             deleteButtonItemValue = request.POST.getlist('deleteButton')
@@ -136,11 +137,7 @@ def crear_tarea(request):
     # para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
     tareas_noborradas = Tarea.objects.filter(enPapelera=False)
     form.fields["tareaSuperior"].queryset = tareas_noborradas
-    # para filtrar usuarios y que solo se puedan asignar estudiantes a tareas
-    estudiantes_nostaff = Estudiante.objects.filter(user__is_staff=False)
-    #Convierte lista dropdown a campo de checkboxes
-    form.fields['estudiante'].widget = forms.CheckboxSelectMultiple()
-    form.fields["estudiante"].queryset = estudiantes_nostaff
+   
 
     crear = True
     context = {
@@ -163,7 +160,7 @@ def editar_tarea(request, id):
     # para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
     tareas_noborradas = Tarea.objects.filter(enPapelera=False)
     form.fields["tareaSuperior"].queryset = tareas_noborradas
-
+    
     if form.is_valid():
 
         # Para enviar correos a estudiantes nuevamente asignados
