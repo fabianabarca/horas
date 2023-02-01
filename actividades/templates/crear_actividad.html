@@ -43,7 +43,7 @@
       <!-- Formulario -->
       {{ form | crispy }}
       </p>
-      <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+      <button id="confirm" type="submit" class="btn btn-primary btn-block">Registrar</button>
     </form>
     <br>
     <p><small>
@@ -122,11 +122,9 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
 </script>
 -->
 
-<script></script>
-  
-</script>
 
-<!--Para cargar los proyectos del area-->
+<!--
+
 <script>
   //Para editar_proyecto, se guarda el valor inicial del id para setearlo.
   const initial_project_id = $("#id_proyecto").val();
@@ -166,7 +164,7 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
    update_projects()
 </script>
 
-<!--Para cargar los objetivos del proyecto-->
+
 <script>
   $("#id_proyecto").click(update_objectives);
   const initial_obj_id =  $("#id_objetivo").val()
@@ -192,7 +190,7 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
   update_objectives()
 </script>
 
-<!--Para cargar las tareas-->
+
 <script>
   $("#id_objetivo").click(update_tareas);
   const initial_tarea_id =  $("#id_tarea").val()
@@ -216,7 +214,7 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
   update_tareas()
 </script>
 
-<!-- Advertencia de abandonar sin guardar cambios -->
+
 <script>
   var formSubmitting = false;
   var setFormSubmitting = function () { formSubmitting = true; };
@@ -236,7 +234,7 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
   };
 </script>
 
-<!-- Confirmación de creación de registro -->
+
 <script type="text/javascript">
   function confirmarRegistro() {
     var creacion = confirm('¿Está seguro/a de que desea crear el registro?');
@@ -249,5 +247,7 @@ Para permitir que el dropdown sea limitado por la eleccion de proyecto
     return creacion
   }
 </script>
-
+-->
+<script src="{% static 'custom_js/confirmar_registro.js' %}"></script>
+<script src="{% static 'custom_js/crear_actividad.js' %}"></script>
 {% endblock %}

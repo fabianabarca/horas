@@ -85,20 +85,5 @@
   </div>
 
 </form>
-<script>
-  //Este script desactiva el required de los campos de contraseña y usuario
-  //cuando el campo de carnet está poblado. Reactiva required si el campo está vacío.
-  const carnetField = document.querySelector("#id_carnet")
-  const userField = document.querySelector("#id_username")
-  const passwordField = document.querySelector("#id_password")
-  function validarCarnet(){
-    if(carnetField.value != ""){
-      userField.required = false;
-      passwordField.required = false;
-    }else{
-      userField.required = true;
-      passwordField.required = true;
-    }
-  }
-</script>
+<script src="{% static 'custom_js/ingreso.js' %}"></script>
 {% endblock %}
