@@ -42,7 +42,7 @@
       {{ solicitud_form | crispy }}
       {{ solicitudArchivo_form | crispy }}
       </p>
-      <button type="submit" class="btn btn-primary btn-block" onClick="return confirmarRegistro();">Registrar</button>
+      <button type="submit" class="btn btn-primary btn-block" id="confirm">Registrar</button>
     </form>
   </div>
 </div>
@@ -50,37 +50,9 @@
 <br>
 
 <!-- Advertencia de abandonar sin guardar cambios -->
-<script>
-  var formSubmitting = false;
-  var setFormSubmitting = function () { formSubmitting = true; };
-
-  window.onload = function () {
-    window.addEventListener("beforeunload", function (e) {
-      if (formSubmitting) {
-        return undefined;
-      }
-
-      var confirmationMessage = 'It looks like you have been editing something. '
-        + 'If you leave before saving, your changes will be lost.';
-
-      (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-      return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-    });
-  };
-</script>
+<script type="text/javascript" src="{% static 'custom_js/advertencia_abandono.js' %}"></script>
 
 <!-- Confirmación de creación de registro -->
-<script type="text/javascript">
-  function confirmarRegistro() {
-    var creacion = confirm('¿Desea crear el nuevo registro?');
-    if (creacion) {
-      const collection = document.getElementsByClassName("alert alert-success");
-
-      collection[0].setAttribute("style", "display:block");
-    }
-
-    return creacion
-  }
-</script>
+<script type="text/javascript" src="{% static 'custom_js/confirmar_registro.js' %}"></script>
 
 {% endblock %}
