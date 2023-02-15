@@ -5,6 +5,7 @@ from horas.forms import AreasForm, ProyectosForm, ObjetivosForm, FiltrosProyecto
 from proyectos.models import Area
 from proyectos.models import Proyecto
 from proyectos.models import Objetivo
+from django.contrib import messages
 from tareas.models import Tarea
 from django.contrib.auth.decorators import login_required
 from django.db.models import Subquery
@@ -74,8 +75,8 @@ def crear_proyecto(request):
             #objetivos
             if objetivos != '!#!':
                 guardar_objetivos(proyecto, objetivos)
-           
-        
+            
+            messages.success(request, "Proyecto creado exitosamente.")
             return HttpResponseRedirect("/proyectos")
 
     # Utiliza el formulario de proyectos
@@ -164,6 +165,7 @@ def editar_proyecto(request, id):
             guardar_objetivos(proyecto, objetivos_actualizados)
 
         form.save()
+        messages.success(request, "Cambios guardados exitosamente")
         return HttpResponseRedirect("/proyectos")
 
     # Crear o editar

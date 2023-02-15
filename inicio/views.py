@@ -146,7 +146,7 @@ def index(request, id=9999):
     # ---------------------------------------
     else:
         estudiante_actual = Estudiante.objects.get(user=request.user) # Estudiante actual a trabajar
-        tareas_estudiante = Tarea.objects.filter(estudiante = estudiante_actual)
+        tareas_estudiante = Tarea.objects.filter(estudiante = estudiante_actual, enPapelera=False)
         # Desde aqui se procesa la barra de progreso de dias del TCU por estudiante #
         fecha_hoy = datetime.date.today() # Fecha del día actual de tipo fecha
         inicio_TCU = estudiante_actual.fecha_inicio # Fecha de inicio del TCU del estudiante actual

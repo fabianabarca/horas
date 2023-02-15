@@ -2,6 +2,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from horas.forms import AreasForm, AreasForm
 from proyectos.models import Area
+from django.contrib import messages
 from proyectos.models import Proyecto
 from django import forms
 from django.shortcuts import render
@@ -33,6 +34,7 @@ def crear_area(request):
         form = AreasForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,"Area creada exitosamente")
             return HttpResponseRedirect("/areas")
 
     form = AreasForm()
@@ -61,6 +63,7 @@ def editar_area(request, id):
     # Acción cuando el formulario es válido
     if form.is_valid():
         form.save()
+        messages.success(request, "Cambios guardados exitosamente")
         return HttpResponseRedirect("/areas")
 
     # Ocultar la información de papelera

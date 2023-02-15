@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from horas.forms import FiltrosGestionForm, SolicitudesArchivoForm, SolicitudesForm
 from django.shortcuts import render
 from .models import *
+from django.contrib import messages
 from .models import SolicitudArchivo
 from django.contrib.auth.decorators import login_required
 import time
@@ -38,7 +39,7 @@ class FileFieldFormView(FormView):
 def solicitudes(request):
 
     list_of_inputs = request.POST.getlist('inputs')
-
+    
     # Obtener solicitudes según sea docente (todas)
     # o estudiante (las propias)
     if request.user.is_staff:
@@ -70,6 +71,7 @@ def solicitudes(request):
                     id=input.replace('/', '')).update(estado='R')
 
         if request.POST.get('deleteButton'):
+            print(request.POST)
             deleteButtonItemValue = request.POST.getlist('deleteButton')
             obj = Solicitud(id=deleteButtonItemValue[0])
             Solicitud.objects.filter(
@@ -129,6 +131,7 @@ def crear_solicitud(request):
                 instancia_archivo = SolicitudArchivo(archivo=f, solicitud=post)
                 instancia_archivo.save()
             time.sleep(1)  # para que mensaje de que se creo pueda verse
+            messages.success(request, "Solicitud creada exitosamente.")
             return HttpResponseRedirect("/solicitudes")
         else:
             print(form._errors)  # Adjuntar archivo, el cual no debe estar vacio
@@ -175,6 +178,7 @@ def editar_solicitud(request, id):
             instancia_archivo = SolicitudArchivo(archivo=f, solicitud=post)
             instancia_archivo.save()
         form.save()
+        messages.success(request,"Cambios guardados exitosamente.")
         return HttpResponseRedirect("/solicitudes")
 
     # Acción: editar

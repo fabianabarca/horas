@@ -2,6 +2,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from cuentas.models import Estudiante
 from horas.forms import *
+from django.contrib import messages
 from django.contrib.auth.models import User
 from actividades.models import Actividad
 from tareas.models import Tarea
@@ -122,6 +123,7 @@ def crear_actividad(request):
             post.estudiante = estudiante_actual
             post.save()
             time.sleep(1)  # para que mensaje de que se creo pueda verse
+            messages.success(request,"Actividad registrada exitosamente")
             return HttpResponseRedirect("/actividades")
         else:
             print(form.errors.as_data())
@@ -191,6 +193,7 @@ def editar_actividad(request, id):
         
         if form.is_valid():
             form.save()
+            messages.success(request,"Cambios guardados exitosamente")
             return HttpResponseRedirect("/actividades")
 
     crear = False

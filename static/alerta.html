@@ -1,0 +1,8 @@
+<!--Aviso para cuando se crean o editan cosas (tareas, proyectos, areas, etc..)-->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-info" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}

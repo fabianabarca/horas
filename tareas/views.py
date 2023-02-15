@@ -1,6 +1,7 @@
 from django import forms
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
 from tareas.models import *
 from proyectos.models import *
 from cuentas.models import Estudiante
@@ -121,7 +122,7 @@ def crear_tarea(request):
         form = TareasForm(request.POST)
         if form.is_valid():
             form.save()
-
+            messages.error(request, "La tarea fue creada exitosamente")
             return HttpResponseRedirect("/tareas")
     #Recupera usuario que envió request
     autor = Estudiante.objects.get(user__username = request.user.username)
@@ -222,6 +223,7 @@ def editar_tarea(request, id):
             cambio_objetivos_tareasrecursivas(form, tareaAEditar[0])
 
         form.save()
+        messages.error(request, "Los cambios fueron guardados")
         return HttpResponseRedirect("/tareas")
 
     # para no incluir en opciones de tareas superiores a subordinas o a si mismo

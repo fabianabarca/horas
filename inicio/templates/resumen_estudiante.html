@@ -62,13 +62,19 @@
 <br/>
 
 <h6 class="text-uppercase font-weight-bolder opacity-6">Tareas asignadas</h6>
+{% if tareas %}
 <ul>
-{% for tarea in tareas %}
 
-<li>{{tarea.nombre}}</li>
+    {% for tarea in tareas %}
 
-{% endfor %}
+        <li>{{tarea.nombre}}</li>
+
+    {% endfor %}
 </ul>
+{% else %}
+    <h7>No hay tareas asignadas</h7>
+    <br/>
+{% endif %}
 <br>
 
 <p>
