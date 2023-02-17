@@ -251,6 +251,13 @@ class TareasForm(forms.ModelForm):
 
         # for value in self.data.keys():
         # print(value)
+        #Para filtrar usuarios y que solo se puedan asignar estudiantes a tareas
+        estudiantes_nostaff = Estudiante.objects.filter(user__is_staff=False)
+        #Convierte lista dropdown a campo de checkboxes
+        self.fields['estudiante'].widget = forms.CheckboxSelectMultiple()
+        self.fields["estudiante"].queryset = estudiantes_nostaff
+        
+            #self.fields['objetivo'].queryset = Objetivo.objects.none()
         if 'tareasuperior' in self.data:
             try:
                 tareasuperior_id = int(self.data.get('tareasuperior'))
@@ -263,6 +270,8 @@ class TareasForm(forms.ModelForm):
             #self.fields['objetivo'].queryset = Objetivo.objects.filter(tarea=self.instance)
             self.fields['objetivo'].queryset = Objetivo.objects.filter(
                 enPapelera=False)
+        self.fields['estudiante'].required = True
+        self.fields['estudiante'].help_text = "Elige 1 o más estudiantes."
 
 
 class EstudiantesForm(forms.ModelForm):

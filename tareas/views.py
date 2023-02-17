@@ -122,26 +122,25 @@ def crear_tarea(request):
         form = TareasForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.error(request, "La tarea fue creada exitosamente")
+            messages.success(request, "La tarea fue creada exitosamente")
             return HttpResponseRedirect("/tareas")
-    #Recupera usuario que envió request
-    autor = Estudiante.objects.get(user__username = request.user.username)
-    #Puebla el campo de "creado por" con el carnet del usuario.
-    #Al ser dropdown, el valor inicial debe ser seteado con el valor
-    #que corresponde a la opción que queremos setear. En este dropdown,
-    #cada opción tiene como valor el id de la base de datos.
-    form = TareasForm(initial={'creado_por': autor.user.id })
+        
+    else:
+        #Recupera usuario que envió request
+        autor = Estudiante.objects.get(user__username = request.user.username)
+        #Puebla el campo de "creado por" con el carnet del usuario.
+        #Al ser dropdown, el valor inicial debe ser seteado con el valor
+        #que corresponde a la opción que queremos setear. En este dropdown,
+        #cada opción tiene como valor el id de la base de datos.
+        form = TareasForm(initial={'creado_por': autor.user.id })
+   
     form.fields['enPapelera'].widget = forms.HiddenInput()
     form.fields['fechaPapelera'].widget = forms.HiddenInput()
 
     # para filtrar edicion y que no aparezcan en seleccion lo que esta en la papelera
     tareas_noborradas = Tarea.objects.filter(enPapelera=False)
     form.fields["tareaSuperior"].queryset = tareas_noborradas
-    # para filtrar usuarios y que solo se puedan asignar estudiantes a tareas
-    estudiantes_nostaff = Estudiante.objects.filter(user__is_staff=False)
-    #Convierte lista dropdown a campo de checkboxes
-    form.fields['estudiante'].widget = forms.CheckboxSelectMultiple()
-    form.fields["estudiante"].queryset = estudiantes_nostaff
+        
 
     crear = True
     context = {
@@ -223,7 +222,7 @@ def editar_tarea(request, id):
             cambio_objetivos_tareasrecursivas(form, tareaAEditar[0])
 
         form.save()
-        messages.error(request, "Los cambios fueron guardados")
+        messages.success(request, "Los cambios fueron guardados")
         return HttpResponseRedirect("/tareas")
 
     # para no incluir en opciones de tareas superiores a subordinas o a si mismo
