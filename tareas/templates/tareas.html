@@ -64,10 +64,14 @@
                 <i class="icon cil-pencil"></i>
               </a>
               <!-- Eliminar -->
-              <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
-                class="text-danger" value="{{ tarea.id }}" name="deleteButton">
-                <i class="icon cil-trash"></i>
-              </a>
+              <form method="POST">
+                {% csrf_token %}
+
+              <button onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
+              class="btn btn-link shadow-none p-0 text-danger" value="{{ tarea.id }}" name="deleteButton">
+              <i class="icon cil-trash"></i>
+            </button>
+            </form>
             </td>              
             <!-- Nombre -->
             <td>{{ tarea.nombre }}</td>
@@ -177,10 +181,10 @@
                   <i class="icon cil-pencil"></i>
                 </a>
                 <!-- Eliminar -->
-                <a onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
-                  class="text-danger" value="{{ tarea.id }}" name="deleteButton">
+                <button onclick="return confirm('¿Desea enviar este registro a la papelera?')" type="submit"
+                  class="btn btn-link shadow-none p-0 text-danger" value="{{ tarea.id }}" name="deleteButton">
                   <i class="icon cil-trash"></i>
-                </a>
+              </button>
               </td>              
               <!-- Nombre -->
               <td>{{ tarea.nombre }}</td>
