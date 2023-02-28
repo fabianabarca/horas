@@ -24,12 +24,16 @@ def estudiantes(request):
     '''Recopila la información de todos los estudiantes
     registrados para mostrarla en una lista.
     '''
-    estudiantes = Estudiante.objects.all().filter(user__is_staff=False, estado='A')
+    estudiantes = Estudiante.objects.all().filter(user__is_staff=False)
 
     if request.user.is_staff:
+        estudiantes_finalizados = estudiantes.filter(estado='F')
+        estudiantes_en_prorroga = estudiantes.filter(estado='P')
+        estudiantes_incompletos = estudiantes.filter(estado='I')
+        estudiantes_retirados = estudiantes.filter(estado='R')
+        estudiantes = estudiantes.filter(estado='A')
+
         actividades = Actividad.objects.all()
-        estudiantesFinalizados = Estudiante.objects.all().filter(user__is_staff=False, estado='F')
-        estudiantesOtrosEstados = Estudiante.objects.all().filter(user__is_staff=False).exclude(estado = 'F').exclude(estado = 'A')
         horasEstudianteslist = []
         porcentajeEstudianteslist = []
         porcentajeWidthEstudianteslist = []
@@ -53,11 +57,14 @@ def estudiantes(request):
                     porcentajeEstudianteslist, porcentajeWidthEstudianteslist)
         context = {
             "informacion": informacion,
-            "finalizados": estudiantesFinalizados,
-            "otrosEstados": estudiantesOtrosEstados
+            "estudiantes_retirados": estudiantes_retirados,
+            "estudiantes_incompletos": estudiantes_incompletos,
+            "estudiantes_finalizados": estudiantes_finalizados,
+            "estudiantes_en_prorroga": estudiantes_en_prorroga,
         }
 
     else:
+        estudiantes = estudiantes.filter(estado='A')
         horasEstudianteslist = [1] * len(estudiantes)
         porcentajeEstudianteslist = [1] * len(estudiantes)
         porcentajeWidthEstudianteslist = [1] * len(estudiantes)

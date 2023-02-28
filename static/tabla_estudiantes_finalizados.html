@@ -1,0 +1,88 @@
+<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de estudiantes finalizados</h6>
+
+  {% if estudiantes_finalizados %}
+   <p>
+    <div class="card">
+      <div class="card-body">
+        <!--Tabla de estudiantes finalizados-->
+        <div class="table table-responsive">
+          <table id="estudiantes-finalizados-table" class="table align-items-center table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class="text-center"><i class="icon cil-user"></i></th>
+                <th scope="col"><i class="icon cil-envelope-letter"></i></th>
+                <th scope="col">Carné</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Carrera</th>
+                <th scope="col">Finalización</th>
+                <th scope="col" class="text-center"><i class="icon cil-contact"></i></th>              
+              </tr>
+            </thead>
+            <tbody>
+              {% for estudiante_finalizado in estudiantes_finalizados%}
+              <tr>
+                <!-- Información -->
+                <td scope="col" class="text-center">
+                  <!-- A pagina de estudiante button
+                  <button  class="text-info"  value="{{ estudiante.user.id }}" name="studentButton" type="submit">
+                    <i class="	fa fa-address-card"></i>
+                  </button> -->
+                  <!--
+                  <a  class="text-info"  href="/index/{{estudiante.id }}" role="button">
+                    <i class="	fa fa-address-card"></i>
+                  </a>
+                  -->              
+                  <!-- Información -->
+                  <a href="{{ estudiante_finalizado.user.username }}" style="text-decoration: none;">
+                    <i class="icon cil-bar-chart text-success"></i>
+                  </a>               
+                </td>
+                <!-- Correo electrónico -->
+                <td>
+                  <!-- Correo -->
+                  <a href="mailto:{{ estudiante_finalizado.user.email }}" target="_blank" style="text-decoration: none;">
+                    <i class="icon cil-at text-info"></i>
+                  </a>
+                </td>
+          
+                <!-- ID -->
+                <td>{{ estudiante_finalizado.user.username }}</td>
+               
+                <!-- Nombre -->
+                <td>{{ estudiante_finalizado.user.first_name }} {{ estudiante_finalizado.user.last_name }}</span></td>
+                <!-- Carrera -->
+                <td>{{ estudiante_finalizado.carrera.nombre }}</td>
+                <!-- Finalización -->
+                <td>{{ estudiante_finalizado.fecha_final|date:"j b Y" }}</td>
+                <!-- Tutor -->
+                <td class="text-center">
+                  <span class="small">
+                    <span class="badge rounded-pill text-bg-secondary">
+                      {% if estudiante_finalizado.tutor.user.username == 'fabian' %}
+                      FAC
+                      {% elif estudiante_finalizado.tutor.user.username == 'teodoro' %}
+                      TWC
+                      {% elif estudiante_finalizado.tutor.user.username == 'helber' %}
+                      HMN
+                      {% elif estudiante_finalizado.tutor.user.username == 'david' %}
+                      DMR
+                      {% else %}
+                      N/A
+                      {% endif %}
+                    </span>
+                  </span>
+                </td>
+               
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    </p>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+      No hay estudiantes finalizados.
+    </div>
+    {% endif %}

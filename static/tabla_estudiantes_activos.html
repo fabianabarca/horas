@@ -1,0 +1,113 @@
+<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de estudiantes activos</h6>
+
+
+  
+  {% csrf_token %}
+      
+  {% if informacion %}
+  
+  <!-- Tabla -->
+  <p>
+  <div class="card">
+    <div class="card-body">
+      <!--Tabla de estudiantes-->
+      <div class="table table-responsive">
+        <table id="estudiantes-table" class="table align-items-center table-hover">
+          <thead>
+            <tr>
+              {% if request.user.is_staff %}
+              <th scope="col" class="text-center"><i class="icon cil-user"></i></th>
+              {% endif %}
+              <th scope="col"><i class="icon cil-envelope-letter"></i></th>
+              {% if request.user.is_staff %}
+              <th scope="col">Carné</th>
+              {% endif %}
+              <th scope="col">Nombre</th>
+              <th scope="col">Carrera</th>
+              <th scope="col">Finalización</th>
+              <th scope="col" class="text-center"><i class="icon cil-contact"></i></th>
+              {% if request.user.is_staff %}
+              <th scope="col">Progreso</th>
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for estudiante, horas, porcentaje, porcentajeWidth in informacion %}
+            <tr>
+              <!-- Información -->
+              {% if request.user.is_staff %}
+              <td scope="col" class="text-center">
+                <!-- A pagina de estudiante button
+                <button  class="text-info"  value="{{ estudiante.user.id }}" name="studentButton" type="submit">
+                  <i class="	fa fa-address-card"></i>
+                </button> -->
+                <!--
+                <a  class="text-info"  href="/index/{{estudiante.id }}" role="button">
+                  <i class="	fa fa-address-card"></i>
+                </a>
+                -->              
+                <!-- Información -->
+                <a href="{{ estudiante.user.username }}" style="text-decoration: none;">
+                  <i class="icon cil-bar-chart text-success"></i>
+                </a>               
+              </td>
+              {% endif %}
+              <!-- Correo electrónico -->
+              <td>
+                <!-- Correo -->
+                <a href="mailto:{{ estudiante.user.email }}" target="_blank" style="text-decoration: none;">
+                  <i class="icon cil-at text-info"></i>
+                </a>
+              </td>
+              {% if request.user.is_staff %}
+              <!-- ID -->
+              <td>{{ estudiante.user.username }}</td>
+              {% endif %}
+              <!-- Nombre -->
+              <td>{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</span></td>
+              <!-- Carrera -->
+              <td>{{ estudiante.carrera.nombre }}</td>
+              <!-- Finalización -->
+              <td>{{ estudiante.fecha_final|date:"j b Y" }}</td>
+              <!-- Tutor -->
+              <td class="text-center">
+                <span class="small">
+                  <span class="badge rounded-pill text-bg-secondary">
+                    {% if estudiante.tutor.user.username == 'fabian' %}
+                    FAC
+                    {% elif estudiante.tutor.user.username == 'teodoro' %}
+                    TWC
+                    {% elif estudiante.tutor.user.username == 'helber' %}
+                    HMN
+                    {% elif estudiante.tutor.user.username == 'david' %}
+                    DMR
+                    {% else %}
+                    N/A
+                    {% endif %}
+                  </span>
+                </span>
+              </td>
+              {% if request.user.is_staff %}
+              <!-- Horas -->
+              <td>
+                <span class="small">{{ horas }} de 300 <span class="text-muted">({{ porcentaje }}%)</span></span>
+                <div class="progress progress-thin">
+                  <div class="progress-bar bg-warning" role="progressbar" style="width: {{ porcentajeWidth }}%" aria-valuenow="{{ porcentajeWidth }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </p>
+
+ 
+  {% else %}
+  <div class="alert alert-info" role="alert">
+    No hay estudiantes activos registrados.
+  </div>
+  {% endif %}

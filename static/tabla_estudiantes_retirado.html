@@ -1,0 +1,96 @@
+<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de estudiantes retirados</h6>
+    
+{% if estudiantes_retirados %}
+
+<p>
+  <div class="card">
+    <div class="card-body">
+      <!--Tabla de estudiantes en otros estados-->
+      <div class="table table-responsive">
+        <table id="estudiantes-otros-estados-table" class="table align-items-center table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center"><i class="icon cil-user"></i></th>
+              <th scope="col"><i class="icon cil-envelope-letter"></i></th>
+              <th scope="col">Carné</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Carrera</th>
+              <th scope="col">Finalización</th>
+              <th scope="col">Estado</th>
+              <th scope="col" class="text-center"><i class="icon cil-contact"></i></th>
+              
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for estudiante_retirado in estudiantes_retirados%}
+           
+            <tr>
+              <!-- Información -->
+              <td scope="col" class="text-center">
+                <!-- A pagina de estudiante button
+                <button  class="text-info"  value="{{ estudiante.user.id }}" name="studentButton" type="submit">
+                  <i class="	fa fa-address-card"></i>
+                </button> -->
+                <!--
+                <a  class="text-info"  href="/index/{{estudiante.id }}" role="button">
+                  <i class="	fa fa-address-card"></i>
+                </a>
+                -->              
+                <!-- Información -->
+                <a href="{{ estudiante_retirado.user.username }}" style="text-decoration: none;">
+                  <i class="icon cil-bar-chart text-success"></i>
+                </a>               
+              </td>
+              <!-- Correo electrónico -->
+              <td>
+                <!-- Correo -->
+                <a href="mailto:{{ estudiante_retirado.user.email }}" target="_blank" style="text-decoration: none;">
+                  <i class="icon cil-at text-info"></i>
+                </a>
+              </td>
+        
+              <!-- ID -->
+              <td>{{ estudiante_retirado.user.username }}</td>
+             
+              <!-- Nombre -->
+              <td>{{ estudiante_retirado.user.first_name }} {{ estudiante_retirado.user.last_name }}</span></td>
+              <!-- Carrera -->
+              <td>{{ estudiante_retirado.carrera.nombre }}</td>
+              <!-- Finalización -->
+              <td>{{ estudiante_retirado.fecha_final|date:"j b Y" }}</td>
+              <!--Estado-->
+              <td>{{ estudiante_retirado.estado }}</td>
+              <!-- Tutor -->
+              <td class="text-center">
+                <span class="small">
+                  <span class="badge rounded-pill text-bg-secondary">
+                    {% if estudiante_retirado.tutor.user.username == 'fabian' %}
+                    FAC
+                    {% elif estudiante_retirado.tutor.user.username == 'teodoro' %}
+                    TWC
+                    {% elif estudiante_retirado.tutor.user.username == 'helber' %}
+                    HMN
+                    {% elif estudiante_retirado.tutor.user.username == 'david' %}
+                    DMR
+                    {% else %}
+                    N/A
+                    {% endif %}
+                  </span>
+                </span>
+              </td>
+             
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </p>  
+  {% else %}
+  
+  <div class="alert alert-info" role="alert">
+    No hay estudiantes retirados.
+  </div>
+  {% endif %}

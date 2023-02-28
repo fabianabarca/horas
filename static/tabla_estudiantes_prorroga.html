@@ -1,0 +1,96 @@
+<h6 class="text-uppercase font-weight-bolder opacity-6">Lista de estudiantes prórroga</h6>
+    
+{% if estudiantes_en_prorroga %}
+
+<p>
+  <div class="card">
+    <div class="card-body">
+      <!--Tabla de estudiantes en otros estados-->
+      <div class="table table-responsive">
+        <table id="estudiantes-otros-estados-table" class="table align-items-center table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center"><i class="icon cil-user"></i></th>
+              <th scope="col"><i class="icon cil-envelope-letter"></i></th>
+              <th scope="col">Carné</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Carrera</th>
+              <th scope="col">Finalización</th>
+              <th scope="col">Estado</th>
+              <th scope="col" class="text-center"><i class="icon cil-contact"></i></th>
+              
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for estudiante_en_prorroga in estudiantes_en_prorroga%}
+           
+            <tr>
+              <!-- Información -->
+              <td scope="col" class="text-center">
+                <!-- A pagina de estudiante button
+                <button  class="text-info"  value="{{ estudiante.user.id }}" name="studentButton" type="submit">
+                  <i class="	fa fa-address-card"></i>
+                </button> -->
+                <!--
+                <a  class="text-info"  href="/index/{{estudiante.id }}" role="button">
+                  <i class="	fa fa-address-card"></i>
+                </a>
+                -->              
+                <!-- Información -->
+                <a href="{{ estudiante_en_prorroga.user.username }}" style="text-decoration: none;">
+                  <i class="icon cil-bar-chart text-success"></i>
+                </a>               
+              </td>
+              <!-- Correo electrónico -->
+              <td>
+                <!-- Correo -->
+                <a href="mailto:{{ estudiante_en_prorroga.user.email }}" target="_blank" style="text-decoration: none;">
+                  <i class="icon cil-at text-info"></i>
+                </a>
+              </td>
+        
+              <!-- ID -->
+              <td>{{ estudiante_en_prorroga.user.username }}</td>
+             
+              <!-- Nombre -->
+              <td>{{ estudiante_en_prorroga.user.first_name }} {{ estudiante_en_prorroga.user.last_name }}</span></td>
+              <!-- Carrera -->
+              <td>{{ estudiante_en_prorroga.carrera.nombre }}</td>
+              <!-- Finalización -->
+              <td>{{ estudiante_en_prorroga.fecha_final|date:"j b Y" }}</td>
+              <!--Estado-->
+              <td>{{ estudiante_en_prorroga.estado }}</td>
+              <!-- Tutor -->
+              <td class="text-center">
+                <span class="small">
+                  <span class="badge rounded-pill text-bg-secondary">
+                    {% if estudiante_en_prorroga.tutor.user.username == 'fabian' %}
+                    FAC
+                    {% elif estudiante_en_prorroga.tutor.user.username == 'teodoro' %}
+                    TWC
+                    {% elif estudiante_en_prorroga.tutor.user.username == 'helber' %}
+                    HMN
+                    {% elif estudiante_en_prorroga.tutor.user.username == 'david' %}
+                    DMR
+                    {% else %}
+                    N/A
+                    {% endif %}
+                  </span>
+                </span>
+              </td>
+             
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </p>  
+  {% else %}
+  
+  <div class="alert alert-info" role="alert">
+    No hay estudiantes activos registrados.
+  </div>
+  {% endif %}
